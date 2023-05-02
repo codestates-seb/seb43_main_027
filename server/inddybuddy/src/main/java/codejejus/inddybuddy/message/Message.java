@@ -1,2 +1,4 @@
-package codejejus.inddybuddy.message;public class Message {
+package codejejus.inddybuddy.message;
+
+public class Message {
 }

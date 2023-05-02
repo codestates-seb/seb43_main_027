@@ -1,2 +1,4 @@
-package codejejus.inddybuddy.comment;public class Comment {
+package codejejus.inddybuddy.comment;
+
+public class Comment {
 }

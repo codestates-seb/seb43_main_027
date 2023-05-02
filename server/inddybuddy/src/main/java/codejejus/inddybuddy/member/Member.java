@@ -1,2 +1,4 @@
-package codejejus.inddybuddy.member;public class Member {
+package codejejus.inddybuddy.member;
+
+public class Member {
 }

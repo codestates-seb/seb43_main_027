@@ -1,2 +1,4 @@
-package codejejus.inddybuddy.report;public class Report {
+package codejejus.inddybuddy.report;
+
+public class Report {
 }

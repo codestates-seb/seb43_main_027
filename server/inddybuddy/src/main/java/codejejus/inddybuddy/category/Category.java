@@ -1,2 +1,4 @@
-package codejejus.inddybuddy.category;public class Category {
+package codejejus.inddybuddy.category;
+
+public class Category {
 }
