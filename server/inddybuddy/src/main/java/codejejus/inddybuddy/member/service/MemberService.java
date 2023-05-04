@@ -1,5 +1,7 @@
 package codejejus.inddybuddy.member.service;
 
+import codejejus.inddybuddy.global.exception.CustomException;
+import codejejus.inddybuddy.global.exception.ExceptionCode;
 import codejejus.inddybuddy.member.MemberRepository;
 import codejejus.inddybuddy.member.entity.Member;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +23,8 @@ public class MemberService {
 
     public Member findMember(Long memberId) {
         return memberRepository.findById(memberId)
-                .orElse(null);
+                .orElseThrow(() ->
+                        new CustomException(ExceptionCode.MEMBER_NOT_FOUND));
     }
 
     public void deleteMember(Long memberId) {
