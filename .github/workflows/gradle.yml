@@ -29,12 +29,15 @@ jobs:
       with:
         java-version: '11'
         distribution: 'temurin'        
-        
+    # 작업 폴더 경로 변경
+    - name: Change working directory
+      run: cd ./server/inddybuddy
+            
     - name: Grant execute permission for gradlew
-      run: chmod +x ./server/inddybuddy/gradlew
+      run: chmod +x gradlew
     
     - name: Build with Gradle
-      run: ./server/inddybuddy/gradlew clean build
+      run: ./gradlew clean build
       
     # 디렉토리 생성
     - name: Make Directory
