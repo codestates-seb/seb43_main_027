@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import codejejus.inddybuddy.game.Game;
 import codejejus.inddybuddy.global.audit.Timestamped;
 import codejejus.inddybuddy.member.Member;
 import lombok.Getter;
