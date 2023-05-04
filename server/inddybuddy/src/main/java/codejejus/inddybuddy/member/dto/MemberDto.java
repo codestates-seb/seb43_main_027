@@ -1,4 +1,4 @@
-package codejejus.inddybuddy.member;
+package codejejus.inddybuddy.member.dto;
 
 import codejejus.inddybuddy.member.entity.Member;
 import lombok.AllArgsConstructor;

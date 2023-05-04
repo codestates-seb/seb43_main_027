@@ -1,5 +1,6 @@
 package codejejus.inddybuddy.member;
 
+import codejejus.inddybuddy.member.dto.MemberDto;
 import codejejus.inddybuddy.member.entity.Member;
 import org.mapstruct.Mapper;
 
