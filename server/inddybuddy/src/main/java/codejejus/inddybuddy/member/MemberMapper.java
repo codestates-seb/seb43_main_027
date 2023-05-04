@@ -1,0 +1,13 @@
+package codejejus.inddybuddy.member;
+
+import org.mapstruct.Mapper;
+
+@Mapper(componentModel = "spring")
+public interface MemberMapper {
+
+    Member memberDtoPostToMember(MemberDto.Post post);
+
+    Member memberDtoPatchToMember(MemberDto.Patch patch);
+
+    MemberDto.Response memberToMemberDtoResponse(Member member);
+}
