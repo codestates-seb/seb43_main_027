@@ -23,9 +23,9 @@ public class Message extends Timestamped {
 	@Column(columnDefinition = "TEXT", nullable = false)
 	private String content;
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "member_id")
+	@JoinColumn(name = "sender_id")
 	private Member sender;
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "member_id")
+	@JoinColumn(name = "receiver_id")
 	private Member receiver;
 }
