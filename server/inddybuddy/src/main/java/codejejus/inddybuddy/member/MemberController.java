@@ -2,6 +2,8 @@ package codejejus.inddybuddy.member;
 
 import codejejus.inddybuddy.global.dto.SingleResponse;
 import codejejus.inddybuddy.global.utils.UriCreator;
+import codejejus.inddybuddy.member.entity.Member;
+import codejejus.inddybuddy.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

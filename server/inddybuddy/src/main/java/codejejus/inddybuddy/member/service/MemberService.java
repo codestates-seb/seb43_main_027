@@ -1,5 +1,7 @@
-package codejejus.inddybuddy.member;
+package codejejus.inddybuddy.member.service;
 
+import codejejus.inddybuddy.member.MemberRepository;
+import codejejus.inddybuddy.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

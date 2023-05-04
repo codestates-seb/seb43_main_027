@@ -1,6 +1,6 @@
 package codejejus.inddybuddy.bookmark;
 
-import codejejus.inddybuddy.member.Member;
+import codejejus.inddybuddy.member.entity.Member;
 import codejejus.inddybuddy.post.Post;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
