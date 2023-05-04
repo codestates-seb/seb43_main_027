@@ -1,11 +1,16 @@
 package codejejus.inddybuddy.post;
 
+import codejejus.inddybuddy.comment.Comment;
+import codejejus.inddybuddy.game.Game;
 import codejejus.inddybuddy.global.audit.Timestamped;
+import codejejus.inddybuddy.member.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -22,10 +27,12 @@ public class Post extends Timestamped {
     private String content;
     @Column(nullable = false)
     private Long views = 0L;
-    @Column(nullable = false)
-    private Long memberId;
-    @Column(nullable = false)
-    private Long gameId;
+    @ManyToOne
+    @JoinColumn(name = "MEMBER_ID")
+    private Member memberId;
+    @ManyToOne
+    @JoinColumn(name = "GAME_ID")
+    private Game gameId;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
     private PostTag postTag = PostTag.RECRUITMENT;
