@@ -1,6 +1,6 @@
 package codejejus.inddybuddy.post;
 
-import codejejus.inddybuddy.audit.Timestamped;
+import codejejus.inddybuddy.global.audit.Timestamped;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
