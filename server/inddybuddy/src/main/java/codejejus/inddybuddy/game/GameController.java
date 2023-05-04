@@ -11,10 +11,9 @@ import org.springframework.web.bind.annotation.*;
 public class GameController {
     private final GameService gameService;
 
-    @PostMapping("/categories/{category_id}/games")
-    public ResponseEntity<GameDto.Response> createGame(@PathVariable("category_id") int categoryId,
-                                                       @RequestBody GameDto.Base postDto) {
-        return new ResponseEntity(gameService.createGame(postDto), HttpStatus.CREATED);
+    @PostMapping("/games")
+    public ResponseEntity<GameDto.Response> createGame(@RequestBody GameDto.Base postDto) {
+        return new ResponseEntity<>(gameService.createGame(postDto), HttpStatus.CREATED);
     }
 
 }
