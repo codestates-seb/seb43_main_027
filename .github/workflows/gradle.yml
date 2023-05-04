@@ -49,7 +49,7 @@ jobs:
 
     # build 후 프로젝트를 압축한다
     - name: Make zip file
-      run: zip -r ./codejejus-deploy.zip ./deploy
+      run: zip -r ./codejejus.zip ./deploy
       shell: bash
 
     - name: Configure AWS credentials
