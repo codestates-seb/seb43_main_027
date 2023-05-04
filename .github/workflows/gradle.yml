@@ -1,0 +1,79 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+# This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
+name: Java CI with Gradle
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+permissions:
+  contents: read
+
+env:
+  S3_BUCKET_NAME: codejejus-deploy
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./server/inddybuddy
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      # 디렉토리 생성
+      - name: Make Directory
+        run: mkdir -p deploy
+
+      # Jar 파일 복사
+      - name: Copy Jar
+        run: cp ./build/libs/*.jar ./deploy
+
+      # appspec.yml 파일 복사
+      - name: Copy appspec.yml
+        run: cp appspec.yml ./deploy
+
+      # script files 복사
+      - name: Copy script
+        run: cp ./scripts/*.sh ./deploy
+
+      # build 후 프로젝트를 압축한다
+      - name: Make zip file
+        run: zip -r ./codejejus.zip ./deploy
+        shell: bash
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+      - name: Upload to S3
+        run: aws s3 cp --region ap-northeast-2 ./codejejus.zip s3://$S3_BUCKET_NAME/
+
+        # Code Deploy
+      - name: Deploy
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: >
+          aws deploy create-deployment
+          --application-name inddybuddy
+          --deployment-group-name code-jejus
+          --file-exists-behavior OVERWRITE
+          --s3-location bucket=codejejus-deploy,bundleType=zip,key=codejejus.zip
+          --region ap-northeast-2
