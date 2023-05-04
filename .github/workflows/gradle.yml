@@ -64,7 +64,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: >
           aws deploy create-deployment
-          --application-name inddybudy
+          --application-name inddybuddy
           --deployment-group-name code-jejus
           --file-exists-behavior OVERWRITE
           --s3-location bucket=codejejus-deploy,bundleType=zip,key=codejejus.zip
