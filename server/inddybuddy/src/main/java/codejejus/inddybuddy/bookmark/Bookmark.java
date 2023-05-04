@@ -1,6 +1,5 @@
-package codejejus.inddybuddy.like;
+package codejejus.inddybuddy.bookmark;
 
-import codejejus.inddybuddy.audit.Timestamped;
 import codejejus.inddybuddy.member.Member;
 import codejejus.inddybuddy.post.Post;
 import lombok.Getter;
@@ -11,14 +10,12 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Like extends Timestamped {
-
+public class Bookmark {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long likeId;
+    private Long bookmarkId;
     @Enumerated(EnumType.STRING)
-    @Column(length = 20)
-    private LikeStatus likeStatus;
+    private BookmarkStatus bookmarkStatus;
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
@@ -26,12 +23,11 @@ public class Like extends Timestamped {
     @JoinColumn(name = "post_id")
     private Post post;
 
-    public enum LikeStatus {
-
-        LIKE("좋아요"), DISLIKE("싫어요");
+    public enum BookmarkStatus {
+        ACTIVE("활성화"), DISABLE("비활성화");
         private String description;
 
-        LikeStatus(String description) {
+        BookmarkStatus(String description) {
             this.description = description;
         }
     }
