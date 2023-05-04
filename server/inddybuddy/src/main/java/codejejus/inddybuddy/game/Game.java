@@ -29,7 +29,7 @@ public class Game extends Timestamped {
 	@Column(length = 100)
 	private String gameName;
 	private String downloadUrl;
-	private String mainImageUrl = "default";
+	private String mainImgUrl = "default";
 	@ManyToOne
 	@JoinColumn(name = "member_id")
 	private Member member;
@@ -37,10 +37,11 @@ public class Game extends Timestamped {
 	private List<Category> categories;
 
 	@Builder
-	public Game(String gameName, String downloadUrl, String mainImageUrl, Member member) {
+	public Game(String gameName, String downloadUrl, String mainImgUrl, Member member, List<Category> categories) {
 		this.gameName = gameName;
 		this.downloadUrl = downloadUrl;
-		this.mainImageUrl = mainImageUrl;
+		this.mainImgUrl = mainImgUrl;
 		this.member = member;
+		this.categories = categories;
 	}
 }
