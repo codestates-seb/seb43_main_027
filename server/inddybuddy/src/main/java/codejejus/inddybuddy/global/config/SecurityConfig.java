@@ -3,6 +3,8 @@ package codejejus.inddybuddy.global.config;
 import codejejus.inddybuddy.global.jwt.JwtTokenProvider;
 import codejejus.inddybuddy.global.jwt.filter.JwtAuthenticationFilter;
 import codejejus.inddybuddy.global.jwt.filter.JwtVerificationFilter;
+import codejejus.inddybuddy.global.jwt.handler.MemberAuthenticationFailureHandler;
+import codejejus.inddybuddy.global.jwt.handler.MemberAuthenticationSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,7 +29,7 @@ public class SecurityConfig {
                 .formLogin().disable()
                 .csrf().disable()
                 .apply(new CustomFilterConfigurer())
-                
+
                 .and()
                 .headers().frameOptions().disable()
 
@@ -49,6 +51,8 @@ public class SecurityConfig {
 
             JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenProvider);
             jwtAuthenticationFilter.setFilterProcessesUrl("/api/auth/login");
+            jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler());
+            jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler());
 
             JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenProvider);
 
