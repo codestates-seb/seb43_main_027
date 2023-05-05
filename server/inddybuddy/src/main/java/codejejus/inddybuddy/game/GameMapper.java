@@ -1,6 +1,10 @@
 package codejejus.inddybuddy.game;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class GameMapper {
@@ -23,5 +27,9 @@ public class GameMapper {
                 .downloadUrl(game.getDownloadUrl())
                 .categories(game.getCategories())
                 .build();
+    }
+
+    public Page<GameDto.Response> entityListToResponseList(Page<Game> gamePage) {
+        return gamePage.map(this::entityToResponse);
     }
 }

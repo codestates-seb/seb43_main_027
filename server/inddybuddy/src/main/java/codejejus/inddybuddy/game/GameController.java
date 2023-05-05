@@ -2,10 +2,15 @@ package codejejus.inddybuddy.game;
 
 import codejejus.inddybuddy.member.entity.MemberPrincipal;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,4 +31,8 @@ public class GameController {
         return new ResponseEntity<>(gameService.modifyGame(gameId, memberPrincipal, patchDto), HttpStatus.OK);
     }
 
+    @GetMapping("/games")
+    public ResponseEntity<Page<GameDto.Response>> getAllGames(@PageableDefault(page = 0, size = 30) Pageable pageable) {
+        return new ResponseEntity<>(gameService.getAllGames(pageable), HttpStatus.OK);
+    }
 }
