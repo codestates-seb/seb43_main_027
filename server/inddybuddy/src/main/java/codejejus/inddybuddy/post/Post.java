@@ -25,11 +25,11 @@ public class Post extends Timestamped {
     @Column(nullable = false)
     private Long views = 0L;
     @ManyToOne
-    @JoinColumn(name = "MEMBER_ID")
-    private Member memberId;
+    @JoinColumn(name = "member_id")
+    private Member member;
     @ManyToOne
-    @JoinColumn(name = "GAME_ID")
-    private Game gameId;
+    @JoinColumn(name = "game_id")
+    private Game game;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
     private PostTag postTag = PostTag.RECRUITMENT;
