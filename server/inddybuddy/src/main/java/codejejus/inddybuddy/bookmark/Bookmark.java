@@ -11,6 +11,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 public class Bookmark {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bookmarkId;
@@ -24,6 +25,7 @@ public class Bookmark {
     private Post post;
 
     public enum BookmarkStatus {
+
         ACTIVE("활성화"), DISABLE("비활성화");
         private String description;
 
