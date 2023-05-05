@@ -4,9 +4,12 @@ import codejejus.inddybuddy.global.exception.CustomException;
 import codejejus.inddybuddy.global.exception.ExceptionCode;
 import codejejus.inddybuddy.member.entity.MemberPrincipal;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -35,5 +38,10 @@ public class GameService {
         Game findGame =
                 optionalGame.orElseThrow(() -> new CustomException(ExceptionCode.GAME_NOT_FOUND));
         return findGame;
+    }
+
+    public Page<GameDto.Response> getAllGames(Pageable pageable) {
+        Page<Game> allGames = gameRepository.findAll(pageable);
+        return gameMapper.entityListToResponseList(allGames);
     }
 }
