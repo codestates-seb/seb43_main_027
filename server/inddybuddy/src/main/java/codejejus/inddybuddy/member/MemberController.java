@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
-@RequestMapping("/api/members")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 @RestController
 public class MemberController {
@@ -19,13 +19,13 @@ public class MemberController {
     private final MemberMapper memberMapper;
     private final MemberService memberService;
 
-    @PostMapping
+    @PostMapping("/auth/signup")
     public ResponseEntity<URI> postMember(@RequestBody MemberDto.Post post) {
         Member member = memberService.createMember(memberMapper.memberDtoPostToMember(post));
         return ResponseEntity.created(UriCreator.createURI(member.getMemberId())).build();
     }
 
-    @PatchMapping("/{member-id}")
+    @PatchMapping("/members/{member-id}")
     public ResponseEntity<SingleResponse<MemberDto.Response>> patchMember(@PathVariable("member-id") Long memberId,
                                                                           @RequestBody MemberDto.Patch patch) {
         patch.addMemberId(memberId);
@@ -33,13 +33,13 @@ public class MemberController {
         return ResponseEntity.ok(new SingleResponse<>(memberMapper.memberToMemberDtoResponse(member)));
     }
 
-    @GetMapping("/{member-id}")
+    @GetMapping("/members/{member-id}")
     public ResponseEntity<SingleResponse<MemberDto.Response>> getMember(@PathVariable("member-id") Long memberId) {
         Member member = memberService.findMember(memberId);
         return ResponseEntity.ok(new SingleResponse<>(memberMapper.memberToMemberDtoResponse(member)));
     }
 
-    @DeleteMapping("/{member-id}")
+    @DeleteMapping("/members/{member-id}")
     public ResponseEntity<Member> deleteMember(@PathVariable("member-id") Long memberId) {
         memberService.deleteMember(memberId);
         return ResponseEntity.noContent().build();

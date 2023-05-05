@@ -5,6 +5,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,6 +31,7 @@ public class JwtTokenProvider {
     private final Long ACCESS_TOKEN_EXPIRATION = 1000L * 60 * 60;
     private final Long REFRESH_TOKEN_EXPIRATION = 1000L * 60 * 60 * 60;
     private Key key;
+    @Value("${jwt.secret}")
     private String secretKey;
 
     @PostConstruct
