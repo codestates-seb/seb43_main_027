@@ -1,7 +1,7 @@
 package codejejus.inddybuddy.game;
 
 import codejejus.inddybuddy.category.Category;
-import codejejus.inddybuddy.member.Member;
+import codejejus.inddybuddy.member.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -16,6 +16,10 @@ public class GameDto {
         private String mainImgUrl;
         private Member member;
         private List<Category> categories;
+
+        public void setMember(Member member) {
+            this.member = member;
+        }
     }
 
     public static class Response {

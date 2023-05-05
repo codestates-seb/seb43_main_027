@@ -8,7 +8,7 @@ public class GameMapper {
     public Game baseToEntity(GameDto.Base baseDto) {
         return Game.builder()
                 .gameName(baseDto.getGameName())
-                .mainImgUrl(baseDto.getMainImgUrl())
+                .mainImageUrl(baseDto.getMainImgUrl())
                 .downloadUrl(baseDto.getDownloadUrl())
                 .member(baseDto.getMember())
                 .categories(baseDto.getCategories())
@@ -19,7 +19,7 @@ public class GameMapper {
         return GameDto.Response.builder()
                 .gameId(game.getGameId())
                 .gameName(game.getGameName())
-                .mainImgUrl(game.getMainImgUrl())
+                .mainImgUrl(game.getMainImageUrl())
                 .downloadUrl(game.getDownloadUrl())
                 .categories(game.getCategories())
                 .build();

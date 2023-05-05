@@ -1,8 +1,10 @@
 package codejejus.inddybuddy.game;
 
+import codejejus.inddybuddy.member.entity.MemberPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -12,8 +14,9 @@ public class GameController {
     private final GameService gameService;
 
     @PostMapping("/games")
-    public ResponseEntity<GameDto.Response> createGame(@RequestBody GameDto.Base postDto) {
-        return new ResponseEntity<>(gameService.createGame(postDto), HttpStatus.CREATED);
+    public ResponseEntity<GameDto.Response> createGame(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
+                                                       @RequestBody GameDto.Base baseDto) {
+        return new ResponseEntity<>(gameService.createGame(memberPrincipal, baseDto), HttpStatus.CREATED);
     }
 
 }
