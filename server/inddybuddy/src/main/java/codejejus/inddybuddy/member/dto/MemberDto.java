@@ -4,6 +4,8 @@ import codejejus.inddybuddy.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 public class MemberDto {
 
     @AllArgsConstructor
@@ -39,5 +41,9 @@ public class MemberDto {
         private String email;
         private String username;
         private Member.MemberStatus memberStatus;
+        private String imageUrl;
+        private String aboutMe;
+        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
     }
 }
