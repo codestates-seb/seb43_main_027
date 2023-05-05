@@ -10,7 +10,8 @@ import java.util.List;
 public class GameDto {
 
     @Getter
-    public static class Base {
+    public static class Post {
+
         private String gameName;
         private String downloadUrl;
         private String mainImgUrl;
@@ -22,7 +23,17 @@ public class GameDto {
         }
     }
 
+    @Getter
+    public static class Patch {
+
+        private String gameName;
+        private String downloadUrl;
+        private String mainImgUrl;
+        private List<Category> categories;
+    }
+
     public static class Response {
+
         private Long gameId;
         private String gameName;
         private String downloadUrl;
