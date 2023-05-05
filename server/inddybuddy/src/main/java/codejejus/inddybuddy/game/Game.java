@@ -29,10 +29,11 @@ public class Game extends Timestamped {
     private List<Category> categories;
 
     @Builder
-    public Game(String gameName, String downloadUrl, String mainImageUrl, Member member) {
+    public Game(String gameName, String downloadUrl, String mainImageUrl, Member member, List<Category> categories) {
         this.gameName = gameName;
         this.downloadUrl = downloadUrl;
         this.mainImageUrl = mainImageUrl;
         this.member = member;
+        this.categories = categories;
     }
 }
