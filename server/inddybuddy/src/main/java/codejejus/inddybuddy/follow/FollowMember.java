@@ -13,9 +13,9 @@ public class FollowMember {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long followId;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "follower_id", nullable = false)
     private Member follower;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "following_id", nullable = false)
     private Member following;
 }
