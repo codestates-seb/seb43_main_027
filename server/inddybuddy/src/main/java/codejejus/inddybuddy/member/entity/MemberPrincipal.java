@@ -9,7 +9,7 @@ import java.util.Collection;
 
 @Getter
 public class MemberPrincipal implements UserDetails {
-    
+
     private final Member member;
 
     public MemberPrincipal(Member member) {
@@ -27,12 +27,12 @@ public class MemberPrincipal implements UserDetails {
 
     @Override
     public String getPassword() {
-        return null;
+        return member.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return member.getEmail();
     }
 
     @Override
