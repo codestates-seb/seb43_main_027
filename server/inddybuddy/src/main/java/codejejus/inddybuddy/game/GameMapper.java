@@ -5,13 +5,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class GameMapper {
 
-    public Game baseToEntity(GameDto.Base baseDto) {
+    public Game postToEntity(GameDto.Post postDto) {
         return Game.builder()
-                .gameName(baseDto.getGameName())
-                .mainImageUrl(baseDto.getMainImgUrl())
-                .downloadUrl(baseDto.getDownloadUrl())
-                .member(baseDto.getMember())
-                .categories(baseDto.getCategories())
+                .gameName(postDto.getGameName())
+                .mainImageUrl(postDto.getMainImgUrl())
+                .downloadUrl(postDto.getDownloadUrl())
+                .member(postDto.getMember())
+                .categories(postDto.getCategories())
                 .build();
     }
 

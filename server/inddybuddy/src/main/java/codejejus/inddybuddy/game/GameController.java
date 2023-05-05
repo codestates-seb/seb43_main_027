@@ -15,8 +15,15 @@ public class GameController {
 
     @PostMapping("/games")
     public ResponseEntity<GameDto.Response> createGame(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
-                                                       @RequestBody GameDto.Base baseDto) {
-        return new ResponseEntity<>(gameService.createGame(memberPrincipal, baseDto), HttpStatus.CREATED);
+                                                       @RequestBody GameDto.Post postDto) {
+        return new ResponseEntity<>(gameService.createGame(memberPrincipal, postDto), HttpStatus.CREATED);
+    }
+
+    @PatchMapping("/games/{game-id}")
+    public ResponseEntity<GameDto.Response> modifyGame(@PathVariable("game-id") long gameId,
+                                                       @AuthenticationPrincipal MemberPrincipal memberPrincipal,
+                                                       @RequestBody GameDto.Patch patchDto) {
+        return new ResponseEntity<>(gameService.modifyGame(gameId, memberPrincipal, patchDto), HttpStatus.OK);
     }
 
 }
