@@ -1,16 +1,13 @@
 package codejejus.inddybuddy.post;
 
-import codejejus.inddybuddy.comment.Comment;
 import codejejus.inddybuddy.game.Game;
 import codejejus.inddybuddy.global.audit.Timestamped;
-import codejejus.inddybuddy.member.Member;
+import codejejus.inddybuddy.member.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -52,6 +49,9 @@ public class Post extends Timestamped {
 
         @Getter
         private final String status;
-        PostTag (String status) { this.status = status;}
+
+        PostTag(String status) {
+            this.status = status;
+        }
     }
 }
