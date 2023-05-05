@@ -49,6 +49,9 @@ dependencies {
 
 	// gson
 	implementation 'com.google.code.gson:gson'
+
+	// mysql
+	runtimeOnly 'com.mysql:mysql-connector-j'
 }
 
 tasks.named('test') {

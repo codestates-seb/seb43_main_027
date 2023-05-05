@@ -36,4 +36,19 @@ public class Game extends Timestamped {
         this.member = member;
         this.categories = categories;
     }
+
+    public void updateGame(String gameName, String downloadUrl, String mainImageUrl, List<Category> categories) {
+        if (gameName != null) {
+            this.gameName = gameName;
+        }
+        if (downloadUrl != null) {
+            this.downloadUrl = downloadUrl;
+        }
+        if (mainImageUrl != null) {
+            this.mainImageUrl = mainImageUrl;
+        }
+        if (categories != null) {
+            this.categories = categories;
+        }
+    }
 }
