@@ -5,6 +5,9 @@ import codejejus.inddybuddy.global.jwt.filter.JwtAuthenticationFilter;
 import codejejus.inddybuddy.global.jwt.filter.JwtVerificationFilter;
 import codejejus.inddybuddy.global.jwt.handler.MemberAuthenticationFailureHandler;
 import codejejus.inddybuddy.global.jwt.handler.MemberAuthenticationSuccessHandler;
+import codejejus.inddybuddy.global.oauth.CustomOAuth2UserService;
+import codejejus.inddybuddy.global.oauth.handler.OAuth2LoginFailureHandler;
+import codejejus.inddybuddy.global.oauth.handler.OAuth2LoginSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +26,9 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final CustomOAuth2UserService oAuth2UserService;
+    private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+    private final OAuth2LoginFailureHandler oAuth2LoginFailureHandler;
 
     @Bean
     protected SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception {
@@ -40,13 +46,19 @@ public class SecurityConfig {
 
                 .and()
                 .authorizeRequests()
-                .anyRequest().permitAll();
+                .anyRequest().permitAll()
+
+                .and()
+                .oauth2Login()
+                .successHandler(oAuth2LoginSuccessHandler)
+                .failureHandler(oAuth2LoginFailureHandler)
+                .userInfoEndpoint().userService(oAuth2UserService);
 
         return httpSecurity.build();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public static PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
