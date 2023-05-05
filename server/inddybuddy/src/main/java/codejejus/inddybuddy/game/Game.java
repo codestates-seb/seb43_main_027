@@ -27,6 +27,8 @@ public class Game extends Timestamped {
     private Member member;
     @OneToMany(mappedBy = "game")
     private List<Category> categories;
+    @OneToMany(mappedBy = "game")
+    private List<Member> followers;
 
     @Builder
     public Game(String gameName, String downloadUrl, String mainImageUrl, Member member, List<Category> categories) {

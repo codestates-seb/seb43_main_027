@@ -35,4 +35,14 @@ public class GameController {
     public ResponseEntity<Page<GameDto.Response>> getAllGames(@PageableDefault(page = 0, size = 30) Pageable pageable) {
         return new ResponseEntity<>(gameService.getAllGames(pageable), HttpStatus.OK);
     }
+
+    @GetMapping("/games/popular")
+    public ResponseEntity<Page<GameDto.Response>> getPopularGames(@PageableDefault(page = 0, size = 10) Pageable pageable) {
+        return new ResponseEntity<>(gameService.getPopularGames(pageable), HttpStatus.OK);
+    }
+
+    @GetMapping("/games/new")
+    public ResponseEntity<Page<GameDto.Response>> getNewGames(@PageableDefault(page = 0, size = 10) Pageable pageable) {
+        return new ResponseEntity<>(gameService.getNewGames(pageable), HttpStatus.OK);
+    }
 }

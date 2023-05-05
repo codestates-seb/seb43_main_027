@@ -44,4 +44,14 @@ public class GameService {
         Page<Game> allGames = gameRepository.findAll(pageable);
         return gameMapper.entityListToResponseList(allGames);
     }
+
+    public Page<GameDto.Response> getPopularGames(Pageable pageable) {
+        Page<Game> popularGames = gameRepository.findAllByOrderByFollowersDesc(pageable);
+        return gameMapper.entityListToResponseList(popularGames);
+    }
+
+    public Page<GameDto.Response> getNewGames(Pageable pageable) {
+        Page<Game> newGames = gameRepository.findAllByOrderByCreatedAtDesc(pageable);
+        return gameMapper.entityListToResponseList(newGames);
+    }
 }
