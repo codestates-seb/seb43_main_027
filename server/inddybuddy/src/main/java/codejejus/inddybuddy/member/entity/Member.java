@@ -1,7 +1,9 @@
 package codejejus.inddybuddy.member.entity;
 
 import codejejus.inddybuddy.global.audit.Timestamped;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -11,6 +13,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class Member extends Timestamped {
 
     @Id
@@ -31,6 +34,19 @@ public class Member extends Timestamped {
     private MemberStatus memberStatus = MemberStatus.ACTIVE;
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
+    private String provider;
+    private String providerId;
+
+    @Builder
+    public Member(String email, String password, String username, String imageUrl, List<String> roles, String provider, String providerId) {
+        this.email = email;
+        this.password = password;
+        this.username = username;
+        this.imageUrl = imageUrl;
+        this.roles = roles;
+        this.provider = provider;
+        this.providerId = providerId;
+    }
 
     public enum MemberStatus {
 
