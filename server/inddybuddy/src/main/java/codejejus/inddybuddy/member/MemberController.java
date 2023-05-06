@@ -1,5 +1,6 @@
 package codejejus.inddybuddy.member;
 
+import codejejus.inddybuddy.follow.FollowMember;
 import codejejus.inddybuddy.global.dto.SingleResponse;
 import codejejus.inddybuddy.global.utils.UriCreator;
 import codejejus.inddybuddy.member.dto.MemberDto;
@@ -47,6 +48,20 @@ public class MemberController {
     public ResponseEntity<Member> deleteMember(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
                                                @PathVariable("member-id") Long memberId) {
         memberService.deleteMember(memberId, memberPrincipal);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/members/{member-id}/follow")
+    public ResponseEntity<FollowMember> followMember(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
+                                                     @PathVariable("member-id") Long memberId) {
+        memberService.followMember(memberId, memberPrincipal);
+        return ResponseEntity.created(UriCreator.createURI(memberId)).build();
+    }
+
+    @PostMapping("/members/{member-id}/unfollow")
+    public ResponseEntity<FollowMember> unfollowMember(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
+                                                       @PathVariable("member-id") Long memberId) {
+        memberService.unfollowMember(memberId, memberPrincipal);
         return ResponseEntity.noContent().build();
     }
 }

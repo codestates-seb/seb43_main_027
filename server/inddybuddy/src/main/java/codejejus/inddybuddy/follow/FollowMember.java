@@ -2,11 +2,13 @@ package codejejus.inddybuddy.follow;
 
 import codejejus.inddybuddy.member.entity.Member;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class FollowMember {
 
     @Id
@@ -18,4 +20,9 @@ public class FollowMember {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "following_id", nullable = false)
     private Member following;
+
+    public FollowMember(Member follower, Member following) {
+        this.follower = follower;
+        this.following = following;
+    }
 }

@@ -1,5 +1,6 @@
 package codejejus.inddybuddy.member.service;
 
+import codejejus.inddybuddy.follow.FollowMemberService;
 import codejejus.inddybuddy.global.exception.CustomException;
 import codejejus.inddybuddy.global.exception.ExceptionCode;
 import codejejus.inddybuddy.global.utils.AuthorityUtils;
@@ -21,6 +22,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthorityUtils authorityUtils;
+    private final FollowMemberService followMemberService;
 
     public Member createMember(Member member) {
         verifyExistEmail(member.getEmail());
@@ -58,6 +60,18 @@ public class MemberService {
         verifySameMember(findMember, memberPrincipal.getMember());
         findMember.updateMemberStatus(Member.MemberStatus.DELETE);
         memberRepository.save(findMember);
+    }
+
+    public void followMember(Long memberId, MemberPrincipal memberPrincipal) {
+        Member follow = findVerifyMember(memberId);
+        Member owner = memberPrincipal.getMember();
+        followMemberService.following(follow, owner);
+    }
+
+    public void unfollowMember(Long memberId, MemberPrincipal memberPrincipal) {
+        Member follow = findVerifyMember(memberId);
+        Member owner = memberPrincipal.getMember();
+        followMemberService.unfollowing(follow, owner);
     }
 
     private Member findVerifyMember(Long memberId) {

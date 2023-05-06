@@ -1,5 +1,6 @@
 package codejejus.inddybuddy.member.entity;
 
+import codejejus.inddybuddy.follow.FollowMember;
 import codejejus.inddybuddy.global.audit.Timestamped;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,6 +36,8 @@ public class Member extends Timestamped {
     private List<String> roles = new ArrayList<>();
     private String provider;
     private String providerId;
+    @OneToMany(mappedBy = "follower")
+    private List<FollowMember> followers = new ArrayList<>();
 
     public Member(String email, String password, String username, String imageUrl, List<String> roles, String provider, String providerId) {
         this.email = email;
