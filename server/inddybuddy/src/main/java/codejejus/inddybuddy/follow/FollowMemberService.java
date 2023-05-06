@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -33,6 +34,14 @@ public class FollowMemberService {
 
     public Long getFollowerCount(Member follow) {
         return followMemberRepository.countByFollower(follow);
+    }
+
+    public List<Member> getAllFollowerByMemberId(Long memberId) {
+        return followMemberRepository.findAllByFollower(memberId);
+    }
+
+    public List<Member> getAllFollowingByMemberId(Long memberId) {
+        return followMemberRepository.findAllByFollowing(memberId);
     }
 
     private void verifySelfFollow(Member follow, Member owner) {
