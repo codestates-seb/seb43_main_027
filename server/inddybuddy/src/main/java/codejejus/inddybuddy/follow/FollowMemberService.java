@@ -17,6 +17,7 @@ public class FollowMemberService {
     private final FollowMemberRepository followMemberRepository;
 
     public void following(Member follow, Member owner) {
+        verifySelfFollow(follow, owner);
         verifyExistFollow(follow, owner);
         followMemberRepository.save(new FollowMember(follow, owner));
     }
@@ -24,6 +25,20 @@ public class FollowMemberService {
     public void unfollowing(Member follow, Member owner) {
         FollowMember findFollow = findVerifyFollow(follow, owner);
         followMemberRepository.delete(findFollow);
+    }
+
+    public Long getFollowingCount(Member owner) {
+        return followMemberRepository.countByFollowing(owner);
+    }
+
+    public Long getFollowerCount(Member follow) {
+        return followMemberRepository.countByFollower(follow);
+    }
+
+    private void verifySelfFollow(Member follow, Member owner) {
+        if (follow.getEmail().equals(owner.getEmail())) {
+            throw new CustomException(ExceptionCode.CANT_FOLLOW_SELF);
+        }
     }
 
     private FollowMember findVerifyFollow(Member follow, Member owner) {
