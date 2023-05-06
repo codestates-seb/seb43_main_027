@@ -53,4 +53,19 @@ public class MemberDto {
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
     }
+
+    @AllArgsConstructor
+    @Getter
+    public static class ProfileResponse {
+        private Long memberId;
+        private String email;
+        private String username;
+        private Member.MemberStatus memberStatus;
+        private String imageUrl;
+        private String aboutMe;
+        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
+        private Long followerCount;
+        private Long followingCount;
+    }
 }

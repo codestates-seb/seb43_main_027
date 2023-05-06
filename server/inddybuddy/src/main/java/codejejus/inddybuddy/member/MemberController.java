@@ -1,6 +1,7 @@
 package codejejus.inddybuddy.member;
 
 import codejejus.inddybuddy.follow.FollowMember;
+import codejejus.inddybuddy.follow.FollowMemberService;
 import codejejus.inddybuddy.global.dto.SingleResponse;
 import codejejus.inddybuddy.global.utils.UriCreator;
 import codejejus.inddybuddy.member.dto.MemberDto;
@@ -22,6 +23,7 @@ public class MemberController {
 
     private final MemberMapper memberMapper;
     private final MemberService memberService;
+    private final FollowMemberService followMemberService;
 
     @PostMapping("/auth/signup")
     public ResponseEntity<URI> postMember(@RequestBody MemberDto.Post post) {
@@ -42,6 +44,14 @@ public class MemberController {
     public ResponseEntity<SingleResponse<MemberDto.Response>> getMember(@PathVariable("member-id") Long memberId) {
         Member member = memberService.findMember(memberId);
         return ResponseEntity.ok(new SingleResponse<>(memberMapper.memberToMemberDtoResponse(member)));
+    }
+
+    @GetMapping("/members/{member-id}/profile")
+    public ResponseEntity<SingleResponse<MemberDto.ProfileResponse>> getMemberProfile(@PathVariable("member-id") Long memberId) {
+        Member member = memberService.findMember(memberId);
+        Long followerCount = followMemberService.getFollowerCount(member);
+        Long followingCount = followMemberService.getFollowingCount(member);
+        return ResponseEntity.ok(new SingleResponse<>(memberMapper.memberToMemberProfileDtoResponse(member, followerCount, followingCount)));
     }
 
     @DeleteMapping("/members/{member-id}")

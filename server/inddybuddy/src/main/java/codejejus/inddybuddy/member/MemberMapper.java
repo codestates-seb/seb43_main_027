@@ -12,4 +12,6 @@ public interface MemberMapper {
     Member memberDtoPatchToMember(MemberDto.Patch patch);
 
     MemberDto.Response memberToMemberDtoResponse(Member member);
+
+    MemberDto.ProfileResponse memberToMemberProfileDtoResponse(Member member, Long followerCount, Long followingCount);
 }

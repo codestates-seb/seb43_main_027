@@ -39,8 +39,8 @@ public class MemberService {
         verifySameMember(findMember, memberPrincipal.getMember());
         Optional.ofNullable(member.getMemberStatus())
                 .ifPresent(findMember::setMemberStatus);
-        Optional.ofNullable(passwordEncoder.encode(member.getPassword()))
-                .ifPresent(findMember::setPassword);
+        Optional.ofNullable(member.getPassword())
+                .ifPresent(password -> findMember.setPassword(passwordEncoder.encode(password)));
         Optional.ofNullable(member.getUsername())
                 .ifPresent(findMember::setUsername);
         Optional.ofNullable(member.getImageUrl())
@@ -51,8 +51,7 @@ public class MemberService {
     }
 
     public Member findMember(Long memberId) {
-        return memberRepository.findById(memberId)
-                .orElseThrow(() -> new CustomException(ExceptionCode.MEMBER_NOT_FOUND));
+        return findVerifyMember(memberId);
     }
 
     public void deleteMember(Long memberId, MemberPrincipal memberPrincipal) {
