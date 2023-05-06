@@ -4,11 +4,14 @@ import codejejus.inddybuddy.global.dto.SingleResponse;
 import codejejus.inddybuddy.global.utils.UriCreator;
 import codejejus.inddybuddy.member.dto.MemberDto;
 import codejejus.inddybuddy.member.entity.Member;
+import codejejus.inddybuddy.member.entity.MemberPrincipal;
 import codejejus.inddybuddy.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 
 @RequestMapping("/api")
@@ -26,10 +29,11 @@ public class MemberController {
     }
 
     @PatchMapping("/members/{member-id}")
-    public ResponseEntity<SingleResponse<MemberDto.Response>> patchMember(@PathVariable("member-id") Long memberId,
-                                                                          @RequestBody MemberDto.Patch patch) {
+    public ResponseEntity<SingleResponse<MemberDto.Response>> patchMember(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
+                                                                          @PathVariable("member-id") Long memberId,
+                                                                          @Valid @RequestBody MemberDto.Patch patch) {
         patch.addMemberId(memberId);
-        Member member = memberService.updateMember(memberMapper.memberDtoPatchToMember(patch));
+        Member member = memberService.updateMember(memberMapper.memberDtoPatchToMember(patch), memberPrincipal);
         return ResponseEntity.ok(new SingleResponse<>(memberMapper.memberToMemberDtoResponse(member)));
     }
 
@@ -40,8 +44,9 @@ public class MemberController {
     }
 
     @DeleteMapping("/members/{member-id}")
-    public ResponseEntity<Member> deleteMember(@PathVariable("member-id") Long memberId) {
-        memberService.deleteMember(memberId);
+    public ResponseEntity<Member> deleteMember(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
+                                               @PathVariable("member-id") Long memberId) {
+        memberService.deleteMember(memberId, memberPrincipal);
         return ResponseEntity.noContent().build();
     }
 }
