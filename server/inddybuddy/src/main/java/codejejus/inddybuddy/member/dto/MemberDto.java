@@ -8,6 +8,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class MemberDto {
 
@@ -67,5 +68,16 @@ public class MemberDto {
         private LocalDateTime updatedAt;
         private Long followerCount;
         private Long followingCount;
+        private List<MemberSimpleInfoResponse> followers;
+        private List<MemberSimpleInfoResponse> followings;
+    }
+
+    @AllArgsConstructor
+    @Getter
+    public static class MemberSimpleInfoResponse {
+
+        private Long memberId;
+        private String email;
+        private String username;
     }
 }

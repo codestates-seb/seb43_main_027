@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -49,9 +50,16 @@ public class MemberController {
     @GetMapping("/members/{member-id}/profile")
     public ResponseEntity<SingleResponse<MemberDto.ProfileResponse>> getMemberProfile(@PathVariable("member-id") Long memberId) {
         Member member = memberService.findMember(memberId);
-        Long followerCount = followMemberService.getFollowerCount(member);
-        Long followingCount = followMemberService.getFollowingCount(member);
-        return ResponseEntity.ok(new SingleResponse<>(memberMapper.memberToMemberProfileDtoResponse(member, followerCount, followingCount)));
+        List<Member> followers = followMemberService.getAllFollowerByMemberId(memberId);
+        List<Member> followings = followMemberService.getAllFollowingByMemberId(memberId);
+        MemberDto.ProfileResponse response = memberMapper.memberToMemberProfileDtoResponse(
+                member,
+                (long) followers.size(),
+                (long) followings.size(),
+                followers,
+                followings
+        );
+        return ResponseEntity.ok(new SingleResponse<>(response));
     }
 
     @DeleteMapping("/members/{member-id}")
