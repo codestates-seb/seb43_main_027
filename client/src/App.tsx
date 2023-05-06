@@ -1,7 +1,9 @@
 import React from 'react';
 
 const App = () => {
-  return <div>Hello dude~!!</div>;
+  return <div>
+    nincoding
+  </div>;
 };
 
 export default App;
