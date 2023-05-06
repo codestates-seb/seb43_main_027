@@ -37,7 +37,7 @@ public class MemberService {
         verifySameMember(findMember, memberPrincipal.getMember());
         Optional.ofNullable(member.getMemberStatus())
                 .ifPresent(findMember::setMemberStatus);
-        Optional.ofNullable(member.getPassword())
+        Optional.ofNullable(passwordEncoder.encode(member.getPassword()))
                 .ifPresent(findMember::setPassword);
         Optional.ofNullable(member.getUsername())
                 .ifPresent(findMember::setUsername);
