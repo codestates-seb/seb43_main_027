@@ -54,7 +54,7 @@ public class GameService {
         followGameService.unfollowing(game, follower);
     }
 
-    private Game findVerifidGame(long gameId) {
+    private Game findVerifidGame(Long gameId) {
         Optional<Game> optionalGame = gameRepository.findById(gameId);
         Game findGame =
                 optionalGame.orElseThrow(() -> new CustomException(ExceptionCode.GAME_NOT_FOUND));

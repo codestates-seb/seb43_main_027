@@ -13,6 +13,12 @@ import java.util.stream.Collectors;
 
 public class MemberDto {
 
+    public static List<MemberSimpleInfoResponse> getMemberSimpleInfoResponses(List<Member> members) {
+        return members.stream()
+                .map(member -> new MemberSimpleInfoResponse(member.getMemberId(), member.getEmail(), member.getUsername()))
+                .collect(Collectors.toList());
+    }
+
     @AllArgsConstructor
     @Getter
     public static class Post {
@@ -93,11 +99,5 @@ public class MemberDto {
     public static class FollowResponse {
 
         private List<MemberSimpleInfoResponse> followers;
-    }
-
-    public static List<MemberSimpleInfoResponse> getMemberSimpleInfoResponses(List<Member> members) {
-        return members.stream()
-                .map(member -> new MemberSimpleInfoResponse(member.getMemberId(), member.getEmail(), member.getUsername()))
-                .collect(Collectors.toList());
     }
 }
