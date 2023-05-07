@@ -1,7 +1,10 @@
 package codejejus.inddybuddy.member;
 
+import codejejus.inddybuddy.follow.FollowGameService;
 import codejejus.inddybuddy.follow.FollowMember;
 import codejejus.inddybuddy.follow.FollowMemberService;
+import codejejus.inddybuddy.game.Game;
+import codejejus.inddybuddy.game.GameDto;
 import codejejus.inddybuddy.global.dto.SingleResponse;
 import codejejus.inddybuddy.global.utils.UriCreator;
 import codejejus.inddybuddy.member.dto.MemberDto;
@@ -16,8 +19,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
-@RequestMapping("/api")
+@RequestMapping("/api/members")
 @RequiredArgsConstructor
 @RestController
 public class MemberController {
@@ -25,14 +29,15 @@ public class MemberController {
     private final MemberMapper memberMapper;
     private final MemberService memberService;
     private final FollowMemberService followMemberService;
+    private final FollowGameService followGameService;
 
-    @PostMapping("/auth/signup")
+    @PostMapping("/signup")
     public ResponseEntity<URI> postMember(@RequestBody MemberDto.Post post) {
         Member member = memberService.createMember(memberMapper.memberDtoPostToMember(post));
         return ResponseEntity.created(UriCreator.createURI(member.getMemberId())).build();
     }
 
-    @PatchMapping("/members/{member-id}")
+    @PatchMapping("/{member-id}")
     public ResponseEntity<SingleResponse<MemberDto.Response>> patchMember(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
                                                                           @PathVariable("member-id") Long memberId,
                                                                           @Valid @RequestBody MemberDto.Patch patch) {
@@ -41,42 +46,64 @@ public class MemberController {
         return ResponseEntity.ok(new SingleResponse<>(memberMapper.memberToMemberDtoResponse(member)));
     }
 
-    @GetMapping("/members/{member-id}")
+    @GetMapping("/{member-id}")
     public ResponseEntity<SingleResponse<MemberDto.Response>> getMember(@PathVariable("member-id") Long memberId) {
         Member member = memberService.findMember(memberId);
         return ResponseEntity.ok(new SingleResponse<>(memberMapper.memberToMemberDtoResponse(member)));
     }
 
-    @GetMapping("/members/{member-id}/profile")
+    @GetMapping("/{member-id}/profile")
     public ResponseEntity<SingleResponse<MemberDto.ProfileResponse>> getMemberProfile(@PathVariable("member-id") Long memberId) {
         Member member = memberService.findMember(memberId);
-        List<Member> followers = followMemberService.getAllFollowerByMemberId(memberId);
-        List<Member> followings = followMemberService.getAllFollowingByMemberId(memberId);
         MemberDto.ProfileResponse response = memberMapper.memberToMemberProfileDtoResponse(
                 member,
-                (long) followers.size(),
-                (long) followings.size(),
-                followers,
-                followings
+                followMemberService.getFollowerCount(member),
+                followMemberService.getFollowingCount(member)
         );
         return ResponseEntity.ok(new SingleResponse<>(response));
     }
 
-    @DeleteMapping("/members/{member-id}")
+    @GetMapping("/{member-id}/mygame")
+    public ResponseEntity<SingleResponse<List<GameDto.Response>>> getFollowingGame(@PathVariable("member-id") Long memberId) {
+        List<Game> games = followGameService.getAllFollowGame(memberId);
+        List<GameDto.Response> responses = games.stream()
+                .map(game -> GameDto.Response.builder()
+                        .gameId(game.getGameId())
+                        .mainImgUrl(game.getMainImageUrl())
+                        .downloadUrl(game.getDownloadUrl())
+                        .gameName(game.getGameName())
+                        .categories(game.getCategories())
+                        .build()).collect(Collectors.toList());
+        return ResponseEntity.ok(new SingleResponse<>(responses));
+    }
+
+    @GetMapping("/{member-id}/following")
+    public ResponseEntity<SingleResponse<List<MemberDto.MemberSimpleInfoResponse>>> getFollowingMember(@PathVariable("member-id") Long memberId) {
+        List<Member> followings = followMemberService.getAllFollowingByMemberId(memberId);
+        return ResponseEntity.ok(new SingleResponse<>(MemberDto.getMemberSimpleInfoResponses(followings)));
+    }
+
+    @GetMapping("/{member-id}/follower")
+    public ResponseEntity<SingleResponse<List<MemberDto.MemberSimpleInfoResponse>>> getFollowerMember(@PathVariable("member-id") Long memberId) {
+        List<Member> followers = followMemberService.getAllFollowerByMemberId(memberId);
+        return ResponseEntity.ok(new SingleResponse<>(MemberDto.getMemberSimpleInfoResponses(followers)));
+    }
+
+    @DeleteMapping("/{member-id}")
     public ResponseEntity<Member> deleteMember(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
                                                @PathVariable("member-id") Long memberId) {
         memberService.deleteMember(memberId, memberPrincipal);
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/members/{member-id}/follow")
+    @PostMapping("/{member-id}/follow")
     public ResponseEntity<FollowMember> followMember(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
                                                      @PathVariable("member-id") Long memberId) {
         memberService.followMember(memberId, memberPrincipal);
         return ResponseEntity.created(UriCreator.createURI(memberId)).build();
     }
 
-    @PostMapping("/members/{member-id}/unfollow")
+    @DeleteMapping("/{member-id}/unfollow")
     public ResponseEntity<FollowMember> unfollowMember(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
                                                        @PathVariable("member-id") Long memberId) {
         memberService.unfollowMember(memberId, memberPrincipal);

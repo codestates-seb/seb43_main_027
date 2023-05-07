@@ -1,9 +1,10 @@
 package codejejus.inddybuddy.game;
 
-import codejejus.inddybuddy.category.Category;
 import codejejus.inddybuddy.category.CategoryRepository;
+import codejejus.inddybuddy.follow.FollowGameService;
 import codejejus.inddybuddy.global.exception.CustomException;
 import codejejus.inddybuddy.global.exception.ExceptionCode;
+import codejejus.inddybuddy.member.entity.Member;
 import codejejus.inddybuddy.member.entity.MemberPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,6 +21,7 @@ public class GameService {
     private final GameRepository gameRepository;
     private final CategoryRepository categoryRepository;
     private final GameMapper gameMapper;
+    private final FollowGameService followGameService;
 
     public GameDto.Response createGame(MemberPrincipal memberPrincipal, GameDto.Post postDto) {
         postDto.setMember(memberPrincipal.getMember());
@@ -38,6 +40,25 @@ public class GameService {
         // TODO: 로그인 유저와 게임을 등록한 사람이 일치하는지 확인
         findGame.updateGame(patchDto.getGameName(), patchDto.getDownloadUrl(), patchDto.getMainImgUrl(), patchDto.getCategories());
         return gameMapper.entityToResponse(findGame);
+    }
+
+    public void followGame(Long gameId, MemberPrincipal memberPrincipal) {
+        Game game = findVerifidGame(gameId);
+        Member follower = memberPrincipal.getMember();
+        followGameService.following(game, follower);
+    }
+
+    public void unfollowGame(Long gameId, MemberPrincipal memberPrincipal) {
+        Game game = findVerifidGame(gameId);
+        Member follower = memberPrincipal.getMember();
+        followGameService.unfollowing(game, follower);
+    }
+
+    private Game findVerifidGame(Long gameId) {
+        Optional<Game> optionalGame = gameRepository.findById(gameId);
+        Game findGame =
+                optionalGame.orElseThrow(() -> new CustomException(ExceptionCode.GAME_NOT_FOUND));
+        return findGame;
     }
 
     public Page<GameDto.Response> getAllGames(Pageable pageable) {

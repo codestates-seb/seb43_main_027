@@ -9,8 +9,15 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MemberDto {
+
+    public static List<MemberSimpleInfoResponse> getMemberSimpleInfoResponses(List<Member> members) {
+        return members.stream()
+                .map(member -> new MemberSimpleInfoResponse(member.getMemberId(), member.getEmail(), member.getUsername()))
+                .collect(Collectors.toList());
+    }
 
     @AllArgsConstructor
     @Getter
@@ -58,6 +65,7 @@ public class MemberDto {
     @AllArgsConstructor
     @Getter
     public static class ProfileResponse {
+
         private Long memberId;
         private String email;
         private String username;
@@ -68,8 +76,6 @@ public class MemberDto {
         private LocalDateTime updatedAt;
         private Long followerCount;
         private Long followingCount;
-        private List<MemberSimpleInfoResponse> followers;
-        private List<MemberSimpleInfoResponse> followings;
     }
 
     @AllArgsConstructor
@@ -79,5 +85,19 @@ public class MemberDto {
         private Long memberId;
         private String email;
         private String username;
+    }
+
+    @AllArgsConstructor
+    @Getter
+    public static class FollowingResponse {
+
+        private List<MemberSimpleInfoResponse> followings;
+    }
+
+    @AllArgsConstructor
+    @Getter
+    public static class FollowResponse {
+
+        private List<MemberSimpleInfoResponse> followers;
     }
 }
