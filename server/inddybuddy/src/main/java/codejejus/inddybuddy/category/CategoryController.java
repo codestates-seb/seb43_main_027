@@ -1,5 +1,6 @@
 package codejejus.inddybuddy.category;
 
+import codejejus.inddybuddy.global.dto.SingleResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +16,12 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @PostMapping
-    public ResponseEntity<CategoryDto.Response> createCategory(@RequestBody CategoryDto.Post postDto) {
-        return new ResponseEntity<>(categoryService.createCategory(postDto), HttpStatus.CREATED);
+    public ResponseEntity<SingleResponse<CategoryDto.Response>> createCategory(@RequestBody CategoryDto.Post postDto) {
+        return ResponseEntity.ok(new SingleResponse<>(categoryService.createCategory(postDto)));
     }
 
     @GetMapping
     public ResponseEntity<List<CategoryDto.Response>> getAllCategories() {
-        return new ResponseEntity<>(categoryService.getAllCategories(), HttpStatus.OK);
+        return ResponseEntity.ok(categoryService.getAllCategories());
     }
 }
