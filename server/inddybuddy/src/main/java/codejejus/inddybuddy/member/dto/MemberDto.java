@@ -58,6 +58,7 @@ public class MemberDto {
     @AllArgsConstructor
     @Getter
     public static class ProfileResponse {
+
         private Long memberId;
         private String email;
         private String username;
@@ -68,8 +69,6 @@ public class MemberDto {
         private LocalDateTime updatedAt;
         private Long followerCount;
         private Long followingCount;
-        private List<MemberSimpleInfoResponse> followers;
-        private List<MemberSimpleInfoResponse> followings;
     }
 
     @AllArgsConstructor
@@ -79,5 +78,19 @@ public class MemberDto {
         private Long memberId;
         private String email;
         private String username;
+    }
+
+    @AllArgsConstructor
+    @Getter
+    public static class FollowingResponse {
+
+        private List<MemberSimpleInfoResponse> followings;
+    }
+
+    @AllArgsConstructor
+    @Getter
+    public static class FollowResponse {
+
+        private List<MemberSimpleInfoResponse> followers;
     }
 }
