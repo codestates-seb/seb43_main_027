@@ -9,6 +9,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MemberDto {
 
@@ -92,5 +93,11 @@ public class MemberDto {
     public static class FollowResponse {
 
         private List<MemberSimpleInfoResponse> followers;
+    }
+
+    public static List<MemberSimpleInfoResponse> getMemberSimpleInfoResponses(List<Member> members) {
+        return members.stream()
+                .map(member -> new MemberSimpleInfoResponse(member.getMemberId(), member.getEmail(), member.getUsername()))
+                .collect(Collectors.toList());
     }
 }
