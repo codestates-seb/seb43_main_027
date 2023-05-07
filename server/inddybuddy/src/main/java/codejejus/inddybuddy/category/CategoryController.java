@@ -1,7 +1,12 @@
 package codejejus.inddybuddy.category;
 
+import codejejus.inddybuddy.game.GameDto;
+import codejejus.inddybuddy.global.dto.MultiResponse;
 import codejejus.inddybuddy.global.dto.SingleResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,5 +27,13 @@ public class CategoryController {
     @GetMapping
     public ResponseEntity<List<CategoryDto.Response>> getAllCategories() {
         return ResponseEntity.ok(categoryService.getAllCategories());
+    }
+
+    @GetMapping("/{category-id}/games")
+    public ResponseEntity<MultiResponse<GameDto.Response>> findGamesByCategory(@PathVariable("category-id") long categoryId,
+                                                                               @PageableDefault(page = 0, size = 10) Pageable pageable) {
+        Page<GameDto.Response> pageGames = categoryService.findGamesByCategory(categoryId, pageable);
+        List<GameDto.Response> games = pageGames.getContent();
+        return ResponseEntity.ok(new MultiResponse<>(games, pageGames));
     }
 }

@@ -63,16 +63,21 @@ public class GameService {
 
     public Page<GameDto.Response> getAllGames(Pageable pageable) {
         Page<Game> allGames = gameRepository.findAll(pageable);
-        return gameMapper.entityListToResponseList(allGames);
+        return gameMapper.entityPageToResponsePage(allGames);
     }
 
     public Page<GameDto.Response> getPopularGames(Pageable pageable) {
         Page<Game> popularGames = gameRepository.findAllByOrderByFollowersDesc(pageable);
-        return gameMapper.entityListToResponseList(popularGames);
+        return gameMapper.entityPageToResponsePage(popularGames);
     }
 
     public Page<GameDto.Response> getNewGames(Pageable pageable) {
         Page<Game> newGames = gameRepository.findAllByOrderByCreatedAtDesc(pageable);
-        return gameMapper.entityListToResponseList(newGames);
+        return gameMapper.entityPageToResponsePage(newGames);
+    }
+
+    private Game findVerifidGame(long gameId) {
+        Optional<Game> optionalGame = gameRepository.findById(gameId);
+        return optionalGame.orElseThrow(() -> new CustomException(ExceptionCode.GAME_NOT_FOUND));
     }
 }
