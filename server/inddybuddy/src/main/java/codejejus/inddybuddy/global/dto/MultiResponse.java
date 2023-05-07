@@ -1,5 +1,6 @@
 package codejejus.inddybuddy.global.dto;
 
+import codejejus.inddybuddy.game.GameDto;
 import lombok.Getter;
 import org.springframework.data.domain.Page;
 
@@ -11,7 +12,7 @@ public class MultiResponse<T> {
     private final List<T> data;
     private final PageInfo pageInfo;
 
-    public MultiResponse(List<T> data, Page<PageInfo> page) {
+    public MultiResponse(List<T> data, Page<T> page) {
         this.data = data;
         this.pageInfo = new PageInfo(page.getNumber() + 1, page.getSize(), page.getTotalElements(), page.getTotalPages());
     }
