@@ -4,11 +4,13 @@ import codejejus.inddybuddy.game.Game;
 import codejejus.inddybuddy.global.audit.Timestamped;
 import codejejus.inddybuddy.member.entity.Member;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class FollowGame extends Timestamped {
 
     @Id
@@ -16,8 +18,13 @@ public class FollowGame extends Timestamped {
     private Long followId;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    private Member member;
+    private Member follower;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "game_id")
     private Game game;
+
+    public FollowGame(Member follower, Game game) {
+        this.follower = follower;
+        this.game = game;
+    }
 }
