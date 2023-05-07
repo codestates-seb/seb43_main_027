@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -50,16 +51,30 @@ public class MemberController {
     @GetMapping("/members/{member-id}/profile")
     public ResponseEntity<SingleResponse<MemberDto.ProfileResponse>> getMemberProfile(@PathVariable("member-id") Long memberId) {
         Member member = memberService.findMember(memberId);
-        List<Member> followers = followMemberService.getAllFollowerByMemberId(memberId);
-        List<Member> followings = followMemberService.getAllFollowingByMemberId(memberId);
         MemberDto.ProfileResponse response = memberMapper.memberToMemberProfileDtoResponse(
                 member,
-                (long) followers.size(),
-                (long) followings.size(),
-                followers,
-                followings
+                followMemberService.getFollowerCount(member),
+                followMemberService.getFollowingCount(member)
         );
         return ResponseEntity.ok(new SingleResponse<>(response));
+    }
+
+    @GetMapping("members/{member-id}/following")
+    public ResponseEntity<SingleResponse<List<MemberDto.MemberSimpleInfoResponse>>> getFollowingMember(@PathVariable("member-id") Long memberId) {
+        List<Member> followings = followMemberService.getAllFollowingByMemberId(memberId);
+        List<MemberDto.MemberSimpleInfoResponse> responses = followings.stream()
+                .map(member -> new MemberDto.MemberSimpleInfoResponse(member.getMemberId(), member.getEmail(), member.getUsername()))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(new SingleResponse<>(responses));
+    }
+
+    @GetMapping("members/{member-id}/follower")
+    public ResponseEntity<SingleResponse<List<MemberDto.MemberSimpleInfoResponse>>> getFollowerMember(@PathVariable("member-id") Long memberId) {
+        List<Member> followers = followMemberService.getAllFollowerByMemberId(memberId);
+        List<MemberDto.MemberSimpleInfoResponse> responses = followers.stream()
+                .map(member -> new MemberDto.MemberSimpleInfoResponse(member.getMemberId(), member.getEmail(), member.getUsername()))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(new SingleResponse<>(responses));
     }
 
     @DeleteMapping("/members/{member-id}")
