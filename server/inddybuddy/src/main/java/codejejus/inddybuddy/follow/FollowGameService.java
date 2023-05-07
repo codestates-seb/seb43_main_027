@@ -26,8 +26,12 @@ public class FollowGameService {
         followGameRepository.delete(findFollow);
     }
 
-    public List<Member> getAllFollowerByMemberId(Long memberId) {
-        return followGameRepository.findAllByFollower(memberId);
+    public List<Member> getAllFollowerByMemberId(Long gameId) {
+        return followGameRepository.findAllByFollower(gameId);
+    }
+
+    public List<Game> getAllFollowGame(Long memberId) {
+        return followGameRepository.findAllByGame(memberId);
     }
 
     private FollowGame findVerifyFollow(Game game, Member follow) {

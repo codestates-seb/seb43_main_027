@@ -1,7 +1,10 @@
 package codejejus.inddybuddy.member;
 
+import codejejus.inddybuddy.follow.FollowGameService;
 import codejejus.inddybuddy.follow.FollowMember;
 import codejejus.inddybuddy.follow.FollowMemberService;
+import codejejus.inddybuddy.game.Game;
+import codejejus.inddybuddy.game.GameDto;
 import codejejus.inddybuddy.global.dto.SingleResponse;
 import codejejus.inddybuddy.global.utils.UriCreator;
 import codejejus.inddybuddy.member.dto.MemberDto;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequestMapping("/api/members")
 @RequiredArgsConstructor
@@ -25,6 +29,7 @@ public class MemberController {
     private final MemberMapper memberMapper;
     private final MemberService memberService;
     private final FollowMemberService followMemberService;
+    private final FollowGameService followGameService;
 
     @PostMapping("/signup")
     public ResponseEntity<URI> postMember(@RequestBody MemberDto.Post post) {
@@ -56,6 +61,20 @@ public class MemberController {
                 followMemberService.getFollowingCount(member)
         );
         return ResponseEntity.ok(new SingleResponse<>(response));
+    }
+
+    @GetMapping("/{member-id}/mygame")
+    public ResponseEntity<SingleResponse<List<GameDto.Response>>> getFollowingGame(@PathVariable("member-id") Long memberId) {
+        List<Game> games = followGameService.getAllFollowGame(memberId);
+        List<GameDto.Response> responses = games.stream()
+                .map(game -> GameDto.Response.builder()
+                        .gameId(game.getGameId())
+                        .mainImgUrl(game.getMainImageUrl())
+                        .downloadUrl(game.getDownloadUrl())
+                        .gameName(game.getGameName())
+                        .categories(game.getCategories())
+                        .build()).collect(Collectors.toList());
+        return ResponseEntity.ok(new SingleResponse<>(responses));
     }
 
     @GetMapping("/{member-id}/following")
