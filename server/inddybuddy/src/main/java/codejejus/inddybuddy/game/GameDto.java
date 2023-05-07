@@ -32,6 +32,7 @@ public class GameDto {
         private List<Category> categories;
     }
 
+    @Getter
     public static class Response {
 
         private Long gameId;
