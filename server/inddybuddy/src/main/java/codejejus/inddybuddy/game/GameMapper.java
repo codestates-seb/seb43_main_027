@@ -3,8 +3,6 @@ package codejejus.inddybuddy.game;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class GameMapper {
@@ -15,7 +13,6 @@ public class GameMapper {
                 .mainImageUrl(postDto.getMainImgUrl())
                 .downloadUrl(postDto.getDownloadUrl())
                 .member(postDto.getMember())
-                .categories(postDto.getCategories())
                 .build();
     }
 

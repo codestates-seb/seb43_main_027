@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,14 +19,20 @@ import java.util.Optional;
 @Transactional
 public class GameService {
     private final GameRepository gameRepository;
+    private final CategoryRepository categoryRepository;
     private final GameMapper gameMapper;
     private final FollowGameService followGameService;
 
     public GameDto.Response createGame(MemberPrincipal memberPrincipal, GameDto.Post postDto) {
         postDto.setMember(memberPrincipal.getMember());
         Game game = gameMapper.postToEntity(postDto);
-        gameRepository.save(game);
-        return gameMapper.entityToResponse(game);
+        postDto.getCategories().stream()
+                .map(category -> categoryRepository.findByCategoryName(category.getCategoryName()))
+                .forEach(game::addCategory);
+
+        Game save = gameRepository.save(game);
+
+        return gameMapper.entityToResponse(save);
     }
 
     public GameDto.Response modifyGame(long gameId, MemberPrincipal memberPrincipal, GameDto.Patch patchDto) {
@@ -68,5 +75,4 @@ public class GameService {
         Page<Game> newGames = gameRepository.findAllByOrderByCreatedAtDesc(pageable);
         return gameMapper.entityListToResponseList(newGames);
     }
-
 }

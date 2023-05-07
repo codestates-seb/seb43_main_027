@@ -1,31 +1,34 @@
 package codejejus.inddybuddy.category;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 import codejejus.inddybuddy.game.Game;
-import codejejus.inddybuddy.global.audit.Timestamped;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Getter
-public class Category extends Timestamped {
+@NoArgsConstructor
+public class Category {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long categoryId;
-	@Column(nullable = false, length = 30)
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false, length = 30, unique = true)
 	private CategoryName categoryName;
+	@JsonIgnore
+	@ManyToMany(mappedBy = "categories")
+	private List<Game> games;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "game_id")
-	private Game game;
+	@Builder
+	public Category(CategoryName categoryName) {
+		this.categoryName = categoryName;
+	}
 
 	public enum CategoryName {
 
