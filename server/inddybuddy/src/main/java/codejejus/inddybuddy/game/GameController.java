@@ -29,8 +29,8 @@ public class GameController {
 
     @PatchMapping("/games/{game-id}")
     public ResponseEntity<SingleResponse<GameDto.Response>> modifyGame(@PathVariable("game-id") long gameId,
-                                                       @AuthenticationPrincipal MemberPrincipal memberPrincipal,
-                                                       @RequestBody GameDto.Patch patchDto) {
+                                                                       @AuthenticationPrincipal MemberPrincipal memberPrincipal,
+                                                                       @RequestBody GameDto.Patch patchDto) {
         return ResponseEntity.ok(new SingleResponse<>(gameService.modifyGame(gameId, memberPrincipal, patchDto)));
     }
 

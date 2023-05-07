@@ -26,7 +26,7 @@ public class GameMapper {
                 .build();
     }
 
-    public Page<GameDto.Response> entityListToResponseList(Page<Game> gamePage) {
+    public Page<GameDto.Response> entityPageToResponsePage(Page<Game> gamePage) {
         return gamePage.map(this::entityToResponse);
     }
 }
