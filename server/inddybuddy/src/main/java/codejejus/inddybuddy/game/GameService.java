@@ -1,5 +1,6 @@
 package codejejus.inddybuddy.game;
 
+import codejejus.inddybuddy.category.Category;
 import codejejus.inddybuddy.category.CategoryRepository;
 import codejejus.inddybuddy.follow.FollowGameService;
 import codejejus.inddybuddy.global.exception.CustomException;
@@ -12,7 +13,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -35,10 +38,12 @@ public class GameService {
         return gameMapper.entityToResponse(save);
     }
 
-    public GameDto.Response modifyGame(long gameId, MemberPrincipal memberPrincipal, GameDto.Patch patchDto) {
+    public GameDto.Response modifyGame(Long gameId, MemberPrincipal memberPrincipal, GameDto.Patch patchDto) {
         Game findGame = findVerifidGame(gameId);
         // TODO: 로그인 유저와 게임을 등록한 사람이 일치하는지 확인
-        findGame.updateGame(patchDto.getGameName(), patchDto.getDownloadUrl(), patchDto.getMainImgUrl(), patchDto.getCategories());
+        List<Category> patchCategory = patchDto.getCategories().stream()
+                .map(category -> categoryRepository.findByCategoryName(category.getCategoryName())).collect(Collectors.toList());
+        findGame.updateGame(patchDto.getGameName(), patchDto.getDownloadUrl(), patchDto.getMainImgUrl(), patchCategory);
         return gameMapper.entityToResponse(findGame);
     }
 
@@ -52,13 +57,6 @@ public class GameService {
         Game game = findVerifidGame(gameId);
         Member follower = memberPrincipal.getMember();
         followGameService.unfollowing(game, follower);
-    }
-
-    private Game findVerifidGame(Long gameId) {
-        Optional<Game> optionalGame = gameRepository.findById(gameId);
-        Game findGame =
-                optionalGame.orElseThrow(() -> new CustomException(ExceptionCode.GAME_NOT_FOUND));
-        return findGame;
     }
 
     public Page<GameDto.Response> getAllGames(Pageable pageable) {
@@ -76,8 +74,10 @@ public class GameService {
         return gameMapper.entityPageToResponsePage(newGames);
     }
 
-    private Game findVerifidGame(long gameId) {
+    private Game findVerifidGame(Long gameId) {
         Optional<Game> optionalGame = gameRepository.findById(gameId);
-        return optionalGame.orElseThrow(() -> new CustomException(ExceptionCode.GAME_NOT_FOUND));
+        Game findGame =
+                optionalGame.orElseThrow(() -> new CustomException(ExceptionCode.GAME_NOT_FOUND));
+        return findGame;
     }
 }
