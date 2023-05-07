@@ -29,6 +29,7 @@ public class Member extends Timestamped {
     private String imageUrl = "default";
     @Column(columnDefinition = "TEXT")
     private String aboutMe;
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private MemberStatus memberStatus = MemberStatus.ACTIVE;
     @ElementCollection(fetch = FetchType.EAGER)
