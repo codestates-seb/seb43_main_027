@@ -76,7 +76,7 @@ public class JwtTokenProvider {
         String info = Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
-                .parseClaimsJwt(token)
+                .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
         log.info("토큰에서 회원 이메일 추출 : {}", info);
@@ -117,7 +117,7 @@ public class JwtTokenProvider {
 
     public void sendAccessAndRefreshToken(HttpServletResponse response, String accessToken, String refreshToken) {
         response.setStatus(HttpServletResponse.SC_OK);
-        response.setHeader("Authorization", "Bearer" + accessToken);
+        response.setHeader("Authorization", "Bearer " + accessToken);
         response.setHeader("Refresh", refreshToken);
         log.info("액세스 토큰, 리프레쉬 토큰 헤더 설정");
     }

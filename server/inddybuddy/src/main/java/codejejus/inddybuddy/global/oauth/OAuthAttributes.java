@@ -44,15 +44,16 @@ public class OAuthAttributes {
     }
 
     public Member toEntity(OAuth2UserInfo oAuth2UserInfo,
+                           String provider,
                            PasswordEncoder passwordEncoder) {
-        return Member.builder()
-                .email(oAuth2UserInfo.getEmail())
-                .password(passwordEncoder.encode("OAUTH" + UUID.randomUUID()))
-                .username(oAuth2UserInfo.getUsername())
-                .provider(oAuth2UserInfo.getProviderId())
-                .providerId(oAuth2UserInfo.getProviderId())
-                .imageUrl(oAuth2UserInfo.getImageUrl())
-                .roles(Collections.singletonList("ROLE_USER"))
-                .build();
+        return new Member(
+                oAuth2UserInfo.getEmail(),
+                passwordEncoder.encode("OAUTH" + UUID.randomUUID()),
+                oAuth2UserInfo.getUsername(),
+                oAuth2UserInfo.getImageUrl(),
+                Collections.singletonList("ROLE_USER"),
+                provider,
+                oAuth2UserInfo.getProviderId()
+        );
     }
 }

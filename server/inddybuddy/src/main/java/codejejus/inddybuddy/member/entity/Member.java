@@ -1,7 +1,6 @@
 package codejejus.inddybuddy.member.entity;
 
 import codejejus.inddybuddy.global.audit.Timestamped;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -37,7 +36,6 @@ public class Member extends Timestamped {
     private String provider;
     private String providerId;
 
-    @Builder
     public Member(String email, String password, String username, String imageUrl, List<String> roles, String provider, String providerId) {
         this.email = email;
         this.password = password;
@@ -46,6 +44,10 @@ public class Member extends Timestamped {
         this.roles = roles;
         this.provider = provider;
         this.providerId = providerId;
+    }
+
+    public void updateMemberStatus(MemberStatus memberStatus) {
+        this.memberStatus = memberStatus;
     }
 
     public enum MemberStatus {

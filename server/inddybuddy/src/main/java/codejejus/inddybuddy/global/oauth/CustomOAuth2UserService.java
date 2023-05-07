@@ -41,19 +41,19 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         OAuthAttributes oAuthAttributes = OAuthAttributes.of(provider, providerId, attributes);
 
-        Member member = getMember(oAuthAttributes);
+        Member member = getMember(oAuthAttributes, provider);
 
         log.info("CustomOAuth2User 반환");
         return CustomOAuth2User.of(member, attributes, oAuthAttributes);
     }
 
-    private Member getMember(OAuthAttributes attributes) {
+    private Member getMember(OAuthAttributes attributes, String provider) {
         return memberRepository.findByEmail(attributes.getOAuth2UserInfo().getEmail())
-                .orElseGet(() -> createMember(attributes));
+                .orElseGet(() -> createMember(attributes, provider));
     }
 
-    private Member createMember(OAuthAttributes attributes) {
-        Member member = attributes.toEntity(attributes.getOAuth2UserInfo(), passwordEncoder);
+    private Member createMember(OAuthAttributes attributes, String provider) {
+        Member member = attributes.toEntity(attributes.getOAuth2UserInfo(), provider, passwordEncoder);
         return memberRepository.save(member);
     }
 }
