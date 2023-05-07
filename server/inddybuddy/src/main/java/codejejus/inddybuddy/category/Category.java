@@ -3,22 +3,32 @@ package codejejus.inddybuddy.category;
 import javax.persistence.*;
 
 import codejejus.inddybuddy.game.Game;
-import codejejus.inddybuddy.global.audit.Timestamped;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Getter
-public class Category extends Timestamped {
+@NoArgsConstructor
+public class Category {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long categoryId;
 	@Enumerated(EnumType.STRING)
-	@Column(nullable = false, length = 30)
+	@Column(nullable = false, length = 30, unique = true)
 	private CategoryName categoryName;
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "game_id")
-	private Game game;
+	@JsonIgnore
+	@ManyToMany(mappedBy = "categories")
+	private List<Game> games;
+
+	@Builder
+	public Category(CategoryName categoryName) {
+		this.categoryName = categoryName;
+	}
 
 	public enum CategoryName {
 
