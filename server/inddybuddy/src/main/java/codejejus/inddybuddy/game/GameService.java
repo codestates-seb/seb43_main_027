@@ -1,7 +1,9 @@
 package codejejus.inddybuddy.game;
 
+import codejejus.inddybuddy.follow.FollowGameService;
 import codejejus.inddybuddy.global.exception.CustomException;
 import codejejus.inddybuddy.global.exception.ExceptionCode;
+import codejejus.inddybuddy.member.entity.Member;
 import codejejus.inddybuddy.member.entity.MemberPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -9,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,6 +19,7 @@ import java.util.Optional;
 public class GameService {
     private final GameRepository gameRepository;
     private final GameMapper gameMapper;
+    private final FollowGameService followGameService;
 
     public GameDto.Response createGame(MemberPrincipal memberPrincipal, GameDto.Post postDto) {
         postDto.setMember(memberPrincipal.getMember());
@@ -31,6 +33,18 @@ public class GameService {
         // TODO: 로그인 유저와 게임을 등록한 사람이 일치하는지 확인
         findGame.updateGame(patchDto.getGameName(), patchDto.getDownloadUrl(), patchDto.getMainImgUrl(), patchDto.getCategories());
         return gameMapper.entityToResponse(findGame);
+    }
+
+    public void followGame(Long gameId, MemberPrincipal memberPrincipal) {
+        Game game = findVerifidGame(gameId);
+        Member follower = memberPrincipal.getMember();
+        followGameService.following(game, follower);
+    }
+
+    public void unfollowGame(Long gameId, MemberPrincipal memberPrincipal) {
+        Game game = findVerifidGame(gameId);
+        Member follower = memberPrincipal.getMember();
+        followGameService.unfollowing(game, follower);
     }
 
     private Game findVerifidGame(long gameId) {
@@ -54,4 +68,5 @@ public class GameService {
         Page<Game> newGames = gameRepository.findAllByOrderByCreatedAtDesc(pageable);
         return gameMapper.entityListToResponseList(newGames);
     }
+
 }

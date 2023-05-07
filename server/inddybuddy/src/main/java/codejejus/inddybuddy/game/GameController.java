@@ -1,5 +1,11 @@
 package codejejus.inddybuddy.game;
 
+import codejejus.inddybuddy.follow.FollowGameService;
+import codejejus.inddybuddy.follow.FollowMember;
+import codejejus.inddybuddy.global.dto.SingleResponse;
+import codejejus.inddybuddy.global.utils.UriCreator;
+import codejejus.inddybuddy.member.dto.MemberDto;
+import codejejus.inddybuddy.member.entity.Member;
 import codejejus.inddybuddy.member.entity.MemberPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,7 +22,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class GameController {
+
     private final GameService gameService;
+    private final FollowGameService followGameService;
 
     @PostMapping("/games")
     public ResponseEntity<GameDto.Response> createGame(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
@@ -44,5 +52,25 @@ public class GameController {
     @GetMapping("/games/new")
     public ResponseEntity<Page<GameDto.Response>> getNewGames(@PageableDefault(page = 0, size = 10) Pageable pageable) {
         return new ResponseEntity<>(gameService.getNewGames(pageable), HttpStatus.OK);
+    }
+
+    @PostMapping("/games/{game_id}/follow")
+    public ResponseEntity<FollowMember> followMember(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
+                                                     @PathVariable("game_id") Long gameId) {
+        gameService.followGame(gameId, memberPrincipal);
+        return ResponseEntity.created(UriCreator.createURI(gameId)).build();
+    }
+
+    @DeleteMapping("/games/{game_id}/unfollow")
+    public ResponseEntity<FollowMember> unfollowMember(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
+                                                       @PathVariable("game_id") Long gameId) {
+        gameService.unfollowGame(gameId, memberPrincipal);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/games/{game_id}/follower")
+    public ResponseEntity<SingleResponse<List<MemberDto.MemberSimpleInfoResponse>>> getGameFollowers(@PathVariable("game_id") Long gameId) {
+        List<Member> followers = followGameService.getAllFollowerByMemberId(gameId);
+        return ResponseEntity.ok(new SingleResponse<>(MemberDto.getMemberSimpleInfoResponses(followers)));
     }
 }
