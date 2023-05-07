@@ -1,5 +1,6 @@
 package codejejus.inddybuddy.game;
 
+import codejejus.inddybuddy.category.CategoryRepository;
 import codejejus.inddybuddy.follow.FollowGameService;
 import codejejus.inddybuddy.global.exception.CustomException;
 import codejejus.inddybuddy.global.exception.ExceptionCode;
@@ -11,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service

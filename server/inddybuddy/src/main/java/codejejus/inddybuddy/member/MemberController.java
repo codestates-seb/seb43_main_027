@@ -17,7 +17,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
-@RequestMapping("/api")
+@RequestMapping("/api/members")
 @RequiredArgsConstructor
 @RestController
 public class MemberController {
@@ -26,13 +26,13 @@ public class MemberController {
     private final MemberService memberService;
     private final FollowMemberService followMemberService;
 
-    @PostMapping("/auth/signup")
+    @PostMapping("/signup")
     public ResponseEntity<URI> postMember(@RequestBody MemberDto.Post post) {
         Member member = memberService.createMember(memberMapper.memberDtoPostToMember(post));
         return ResponseEntity.created(UriCreator.createURI(member.getMemberId())).build();
     }
 
-    @PatchMapping("/members/{member-id}")
+    @PatchMapping("/{member-id}")
     public ResponseEntity<SingleResponse<MemberDto.Response>> patchMember(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
                                                                           @PathVariable("member-id") Long memberId,
                                                                           @Valid @RequestBody MemberDto.Patch patch) {
@@ -41,13 +41,13 @@ public class MemberController {
         return ResponseEntity.ok(new SingleResponse<>(memberMapper.memberToMemberDtoResponse(member)));
     }
 
-    @GetMapping("/members/{member-id}")
+    @GetMapping("/{member-id}")
     public ResponseEntity<SingleResponse<MemberDto.Response>> getMember(@PathVariable("member-id") Long memberId) {
         Member member = memberService.findMember(memberId);
         return ResponseEntity.ok(new SingleResponse<>(memberMapper.memberToMemberDtoResponse(member)));
     }
 
-    @GetMapping("/members/{member-id}/profile")
+    @GetMapping("/{member-id}/profile")
     public ResponseEntity<SingleResponse<MemberDto.ProfileResponse>> getMemberProfile(@PathVariable("member-id") Long memberId) {
         Member member = memberService.findMember(memberId);
         MemberDto.ProfileResponse response = memberMapper.memberToMemberProfileDtoResponse(
@@ -58,33 +58,33 @@ public class MemberController {
         return ResponseEntity.ok(new SingleResponse<>(response));
     }
 
-    @GetMapping("members/{member-id}/following")
+    @GetMapping("/{member-id}/following")
     public ResponseEntity<SingleResponse<List<MemberDto.MemberSimpleInfoResponse>>> getFollowingMember(@PathVariable("member-id") Long memberId) {
         List<Member> followings = followMemberService.getAllFollowingByMemberId(memberId);
         return ResponseEntity.ok(new SingleResponse<>(MemberDto.getMemberSimpleInfoResponses(followings)));
     }
 
-    @GetMapping("members/{member-id}/follower")
+    @GetMapping("/{member-id}/follower")
     public ResponseEntity<SingleResponse<List<MemberDto.MemberSimpleInfoResponse>>> getFollowerMember(@PathVariable("member-id") Long memberId) {
         List<Member> followers = followMemberService.getAllFollowerByMemberId(memberId);
         return ResponseEntity.ok(new SingleResponse<>(MemberDto.getMemberSimpleInfoResponses(followers)));
     }
 
-    @DeleteMapping("/members/{member-id}")
+    @DeleteMapping("/{member-id}")
     public ResponseEntity<Member> deleteMember(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
                                                @PathVariable("member-id") Long memberId) {
         memberService.deleteMember(memberId, memberPrincipal);
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/members/{member-id}/follow")
+    @PostMapping("/{member-id}/follow")
     public ResponseEntity<FollowMember> followMember(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
                                                      @PathVariable("member-id") Long memberId) {
         memberService.followMember(memberId, memberPrincipal);
         return ResponseEntity.created(UriCreator.createURI(memberId)).build();
     }
 
-    @DeleteMapping("/members/{member-id}/unfollow")
+    @DeleteMapping("/{member-id}/unfollow")
     public ResponseEntity<FollowMember> unfollowMember(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
                                                        @PathVariable("member-id") Long memberId) {
         memberService.unfollowMember(memberId, memberPrincipal);
