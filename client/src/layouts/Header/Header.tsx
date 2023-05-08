@@ -24,7 +24,7 @@ const Header = () => {
 
 export default Header;
 
-const StyledContainer = styled.div`
+const StyledContainer = styled.header`
   display: flex;
   position: fixed;
   gap: 0.8rem;
