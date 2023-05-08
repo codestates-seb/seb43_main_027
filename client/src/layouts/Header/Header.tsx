@@ -28,7 +28,7 @@ const StyledContainer = styled.div`
   gap: 0.8rem;
   top: 0;
   align-items: center;
-  background-color: var(--cyan-light-100);
+  border-bottom: 2px solid var(--cyan-dark-100);
   height: 50px;
   width: 100vw;
   padding: 0 2rem;
