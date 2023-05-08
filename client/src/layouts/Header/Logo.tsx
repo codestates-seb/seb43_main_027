@@ -1,14 +1,13 @@
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+
+import logo from '../../asset/Inddy.png';
 
 const Logo = () => {
   return (
     <Link to='/'>
-      <StyledContainer>Logo</StyledContainer>
+      <img src={logo} width={40} />
     </Link>
   );
 };
 
 export default Logo;
-
-const StyledContainer = styled.div``;
