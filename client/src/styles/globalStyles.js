@@ -22,6 +22,7 @@ const GlobalStyle = createGlobalStyle`
   --cyan-dark-800: #144848;
   --cyan-dark-900: #113536;
   --cyan-dark-1000: #112123;
+  --loding-bg: #efefef;
 }
 
 * {
