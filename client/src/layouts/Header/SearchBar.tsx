@@ -27,7 +27,10 @@ export default SearchBar;
 
 const StyledContainer = styled.div`
   position: relative;
-  flex: 1 0 0;
+  min-width: 70%;
+  @media screen and (max-width: 650px) {
+    width: 100%;
+  }
 `;
 const StyledInput = styled.input`
   outline: none;
