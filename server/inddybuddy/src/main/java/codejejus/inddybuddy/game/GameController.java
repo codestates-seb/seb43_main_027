@@ -28,16 +28,16 @@ public class GameController {
 
     @PostMapping
     public ResponseEntity<GameDto.Response> createGame(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
-                                                       @RequestBody GameDto.Post postDto) {
-        GameDto.Response gameResponse = gameService.createGame(memberPrincipal, postDto);
+                                                       @RequestBody GameDto.Request requestDto) {
+        GameDto.Response gameResponse = gameService.createGame(memberPrincipal, requestDto);
         return ResponseEntity.created(UriCreator.createURI(gameResponse.getGameId())).build();
     }
 
     @PatchMapping("/{game-id}")
     public ResponseEntity<SingleResponse<GameDto.Response>> modifyGame(@PathVariable("game-id") Long gameId,
                                                                        @AuthenticationPrincipal MemberPrincipal memberPrincipal,
-                                                                       @RequestBody GameDto.Patch patchDto) {
-        return ResponseEntity.ok(new SingleResponse<>(gameService.modifyGame(gameId, memberPrincipal, patchDto)));
+                                                                       @RequestBody GameDto.Request requestDto) {
+        return ResponseEntity.ok(new SingleResponse<>(gameService.modifyGame(gameId, memberPrincipal, requestDto)));
     }
 
     @GetMapping

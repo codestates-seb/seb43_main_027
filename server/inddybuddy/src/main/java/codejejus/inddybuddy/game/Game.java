@@ -37,8 +37,12 @@ public class Game extends Timestamped {
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private List<Category> categories;
 
-    public void addCategory(Category category) {
-        this.categories.add(category);
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
     }
 
     @Builder
