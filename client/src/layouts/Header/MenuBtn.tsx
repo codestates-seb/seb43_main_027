@@ -21,7 +21,7 @@ const StyledMenuButton = styled.div`
     height: 3px;
     background-color: var(--cyan-dark-500);
   }
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 650px) {
     display: flex;
   }
 `;
