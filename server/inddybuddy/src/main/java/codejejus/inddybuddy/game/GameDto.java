@@ -1,7 +1,6 @@
 package codejejus.inddybuddy.game;
 
 import codejejus.inddybuddy.category.Category;
-import codejejus.inddybuddy.member.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -10,26 +9,12 @@ import java.util.List;
 public class GameDto {
 
     @Getter
-    public static class Post {
+    public static class Request {
 
         private String gameName;
         private String downloadUrl;
         private String mainImgUrl;
-        private Member member;
-        private List<Category> categories;
-
-        public void setMember(Member member) {
-            this.member = member;
-        }
-    }
-
-    @Getter
-    public static class Patch {
-
-        private String gameName;
-        private String downloadUrl;
-        private String mainImgUrl;
-        private List<Category> categories;
+        private List<Category.CategoryName> categoryNames;
     }
 
     @Getter

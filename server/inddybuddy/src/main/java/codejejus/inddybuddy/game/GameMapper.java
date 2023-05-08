@@ -7,12 +7,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class GameMapper {
 
-    public Game postToEntity(GameDto.Post postDto) {
+    public Game requestToEntity(GameDto.Request requestDto) {
         return Game.builder()
-                .gameName(postDto.getGameName())
-                .mainImageUrl(postDto.getMainImgUrl())
-                .downloadUrl(postDto.getDownloadUrl())
-                .member(postDto.getMember())
+                .gameName(requestDto.getGameName())
+                .mainImageUrl(requestDto.getMainImgUrl())
+                .downloadUrl(requestDto.getDownloadUrl())
                 .build();
     }
 

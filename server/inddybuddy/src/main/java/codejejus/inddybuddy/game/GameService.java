@@ -2,6 +2,7 @@ package codejejus.inddybuddy.game;
 
 import codejejus.inddybuddy.category.Category;
 import codejejus.inddybuddy.category.CategoryRepository;
+import codejejus.inddybuddy.category.CategoryService;
 import codejejus.inddybuddy.follow.FollowGameService;
 import codejejus.inddybuddy.global.exception.CustomException;
 import codejejus.inddybuddy.global.exception.ExceptionCode;
@@ -15,35 +16,30 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class GameService {
     private final GameRepository gameRepository;
-    private final CategoryRepository categoryRepository;
     private final GameMapper gameMapper;
+    private final CategoryService categoryService;
     private final FollowGameService followGameService;
 
-    public GameDto.Response createGame(MemberPrincipal memberPrincipal, GameDto.Post postDto) {
-        postDto.setMember(memberPrincipal.getMember());
-        Game game = gameMapper.postToEntity(postDto);
-        postDto.getCategories().stream()
-                .map(category -> categoryRepository.findByCategoryName(category.getCategoryName()))
-                .forEach(game::addCategory);
-
+    public GameDto.Response createGame(MemberPrincipal memberPrincipal, GameDto.Request requestDto) {
+        Game game = gameMapper.requestToEntity(requestDto);
+        List<Category> categories = categoryService.getCategoriesByName(requestDto.getCategoryNames());
+        game.setCategories(categories);
+        game.setMember(memberPrincipal.getMember());
         Game save = gameRepository.save(game);
-
         return gameMapper.entityToResponse(save);
     }
 
-    public GameDto.Response modifyGame(Long gameId, MemberPrincipal memberPrincipal, GameDto.Patch patchDto) {
+    public GameDto.Response modifyGame(Long gameId, MemberPrincipal memberPrincipal, GameDto.Request requestDto) {
         Game findGame = findVerifidGame(gameId);
         // TODO: 로그인 유저와 게임을 등록한 사람이 일치하는지 확인
-        List<Category> patchCategory = patchDto.getCategories().stream()
-                .map(category -> categoryRepository.findByCategoryName(category.getCategoryName())).collect(Collectors.toList());
-        findGame.updateGame(patchDto.getGameName(), patchDto.getDownloadUrl(), patchDto.getMainImgUrl(), patchCategory);
+        List<Category> patchCategories = categoryService.getCategoriesByName(requestDto.getCategoryNames());
+        findGame.updateGame(requestDto.getGameName(), requestDto.getDownloadUrl(), requestDto.getMainImgUrl(), patchCategories);
         return gameMapper.entityToResponse(findGame);
     }
 
