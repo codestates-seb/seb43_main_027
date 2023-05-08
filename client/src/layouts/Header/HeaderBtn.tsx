@@ -1,15 +1,13 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-const HeaderBtn = ({
-  path,
-  text,
-  isSignupBtn
-}: {
+type HeaderProps = {
   path: string;
   text: string;
   isSignupBtn: boolean;
-}) => {
+};
+
+const HeaderBtn = ({ path, text, isSignupBtn }: HeaderProps) => {
   return (
     <Link to={path}>
       <StyledBtn isSignup={isSignupBtn}>{text}</StyledBtn>
