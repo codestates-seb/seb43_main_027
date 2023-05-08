@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "likes")
 @Getter
 @NoArgsConstructor
 public class Like extends Timestamped {

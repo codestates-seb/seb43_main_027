@@ -32,7 +32,7 @@ public class Category {
 
     public enum CategoryName {
 
-        RPG("RPG"), ADVENTURE("어드벤쳐"), SHOOTING("슈팅"),
+        FPS("FPS"), RPG("RPG"), ADVENTURE("어드벤쳐"), SHOOTING("슈팅"),
         SIMULATION("시뮬레이션"), ACTION("액션"), SPORTS("스포츠"),
         STRATEGY("전략"), CARD_AND_BOARD("카드 및 보드게임"), PUZZLE("퍼즐"),
         STORY("스토리"), HEALING("힐링"), HORROR("공포"),
