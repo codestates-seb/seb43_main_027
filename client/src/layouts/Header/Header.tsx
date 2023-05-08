@@ -5,8 +5,11 @@ import Logo from './Logo';
 import SearchBar from './SearchBar';
 import HeaderBtnContainer from './HeaderBtnContainer';
 import UserBtn from './UserBtn';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 
 const Header = () => {
+  const user = useSelector((s: RootState) => s.user);
   return (
     <StyledContainer>
       <MenuBtn />
@@ -14,8 +17,7 @@ const Header = () => {
         <Logo />
         <SearchBar />
       </StyledResponsiveContainer>
-      <HeaderBtnContainer />
-      <UserBtn />
+      {user ? <UserBtn /> : <HeaderBtnContainer />}
     </StyledContainer>
   );
 };
