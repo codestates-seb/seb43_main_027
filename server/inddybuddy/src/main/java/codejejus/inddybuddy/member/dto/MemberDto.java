@@ -1,5 +1,6 @@
 package codejejus.inddybuddy.member.dto;
 
+import codejejus.inddybuddy.file.File;
 import codejejus.inddybuddy.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -39,7 +40,6 @@ public class MemberDto {
         private Long memberId;
         private String password;
         private String username;
-        private String imageUrl;
         private String aboutMe;
         private Member.MemberStatus memberStatus;
 

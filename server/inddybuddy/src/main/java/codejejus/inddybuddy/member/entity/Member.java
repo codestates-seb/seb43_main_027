@@ -1,5 +1,6 @@
 package codejejus.inddybuddy.member.entity;
 
+import codejejus.inddybuddy.file.File;
 import codejejus.inddybuddy.global.audit.Timestamped;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +25,8 @@ public class Member extends Timestamped {
     private String password;
     @Column(nullable = false, length = 45, unique = true)
     private String username;
-    // TODO: S3 연결 후 기본 이미지 URL 설정
+    @OneToOne(mappedBy = "member")
+    private File file;
     @Column(nullable = false)
     private String imageUrl = "default";
     @Column(columnDefinition = "TEXT")

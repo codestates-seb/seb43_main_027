@@ -16,7 +16,8 @@ public enum ExceptionCode {
     ALREADY_EXIST_FOLLOW(409, "이미 팔로우 관계입니다."),
     FOLLOW_NOT_FOUND(404, "팔로워 관계가 아닙니다."),
     CANT_FOLLOW_SELF(403, "자기 자신은 팔로우할 수 없습니다."),
-    CATEGORY_NOT_FOUND(404, "카테고리를 찾을 수 없습니다.");
+    CATEGORY_NOT_FOUND(404, "카테고리를 찾을 수 없습니다."),
+    EMPTY_FILE(400, "빈 파일입니다.");
 
     private final int code;
     private final String message;
