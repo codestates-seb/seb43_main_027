@@ -43,7 +43,7 @@ const SearchHintItem = ({ item }: { item: Hint }) => {
 
 export default SearchHint;
 
-const StyledContainer = styled.div`
+const StyledContainer = styled.ul`
   position: absolute;
   display: flex;
   flex-wrap: wrap;
