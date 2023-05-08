@@ -4,6 +4,7 @@ import MenuBtn from './MenuBtn';
 import Logo from './Logo';
 import SearchBar from './SearchBar';
 import HeaderBtnContainer from './HeaderBtnContainer';
+import UserBtn from './UserBtn';
 
 const Header = () => {
   return (
@@ -14,6 +15,7 @@ const Header = () => {
         <SearchBar />
       </StyledResponsiveContainer>
       <HeaderBtnContainer />
+      <UserBtn />
     </StyledContainer>
   );
 };
