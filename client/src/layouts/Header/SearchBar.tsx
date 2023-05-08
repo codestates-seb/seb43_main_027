@@ -1,32 +1,50 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { AiOutlineSearch } from 'react-icons/ai';
 
 import SearchHint from './SearchHint';
+import { useNavigate } from 'react-router-dom';
+
+type SubmitEvent =
+  | React.FormEvent<HTMLFormElement>
+  | React.MouseEvent<HTMLButtonElement>;
 
 const SearchBar = () => {
   const [showHint, setShowHint] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const navigation = useNavigate();
 
   const invertShowHint = () => setShowHint((prev) => !prev);
 
+  const onSubmitHandler = (e: SubmitEvent) => {
+    e.preventDefault();
+    navigation('/search');
+
+    // 입력 완료 시 인풋창을 비우고 포커스아웃한다.
+    if (inputRef.current) {
+      inputRef.current.value = '';
+      inputRef.current.blur();
+    }
+  };
   return (
-    <StyledContainer>
+    <StyledFormContainer onSubmit={onSubmitHandler}>
       <StyledInput
         placeholder='search...'
         onFocus={invertShowHint}
         onBlur={invertShowHint}
+        ref={inputRef}
       />
-      <StyledSearchButton>
+      <StyledSearchButton onClick={onSubmitHandler}>
         <AiOutlineSearch />
       </StyledSearchButton>
       {showHint && <SearchHint />}
-    </StyledContainer>
+    </StyledFormContainer>
   );
 };
 
 export default SearchBar;
 
-const StyledContainer = styled.div`
+const StyledFormContainer = styled.form`
   position: relative;
   min-width: 70%;
   @media screen and (max-width: 650px) {
