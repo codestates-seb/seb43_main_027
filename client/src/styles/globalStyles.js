@@ -111,5 +111,5 @@ body::-webkit-scrollbar {
     background: hsla(0, 0%, 42%, 0.69);
     opacity: 0.5;
   }
-`
+`;
 export default GlobalStyle;
