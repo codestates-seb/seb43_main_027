@@ -1,7 +1,12 @@
 import React from 'react';
+import GlobalStyle from './styles/globalStyles';
 
 const App = () => {
-  return <div>김진완</div>;
+  return (
+    <>
+      <GlobalStyle />
+    </>
+  );
 };
 
 export default App;
