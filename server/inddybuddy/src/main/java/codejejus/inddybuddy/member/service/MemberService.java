@@ -1,5 +1,7 @@
 package codejejus.inddybuddy.member.service;
 
+import codejejus.inddybuddy.file.File;
+import codejejus.inddybuddy.file.FileService;
 import codejejus.inddybuddy.follow.FollowMemberService;
 import codejejus.inddybuddy.global.exception.CustomException;
 import codejejus.inddybuddy.global.exception.ExceptionCode;
@@ -11,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -23,18 +26,22 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final AuthorityUtils authorityUtils;
     private final FollowMemberService followMemberService;
+    private final FileService fileService;
 
-    public Member createMember(Member member) {
+    public Member createMember(Member member, MultipartFile multipartFile) {
         verifyExistEmail(member.getEmail());
         verifyExistUsername(member.getUsername());
         String encryptedPassword = passwordEncoder.encode(member.getPassword());
         member.setPassword(encryptedPassword);
         member.setRoles(authorityUtils.createRoles(member.getEmail()));
-        member.setImageUrl("default");
+        if (multipartFile != null) {
+            File memberImg = fileService.createMemberImg(multipartFile, member);
+            member.setImageUrl(memberImg.getFileUrl());
+        }
         return memberRepository.save(member);
     }
 
-    public Member updateMember(Member member, MemberPrincipal memberPrincipal) {
+    public Member updateMember(Member member, MemberPrincipal memberPrincipal, MultipartFile multipartFile) {
         Member findMember = findVerifyMember(member.getMemberId());
         verifySameMember(findMember, memberPrincipal.getMember());
         Optional.ofNullable(member.getMemberStatus())
@@ -47,6 +54,11 @@ public class MemberService {
                 .ifPresent(findMember::setImageUrl);
         Optional.ofNullable(member.getAboutMe())
                 .ifPresent(findMember::setAboutMe);
+        if (multipartFile != null) {
+            fileService.deleteMemberImg(findMember);
+            File memberImg = fileService.createMemberImg(multipartFile, findMember);
+            findMember.setImageUrl(memberImg.getFileUrl());
+        }
         return memberRepository.save(findMember);
     }
 
@@ -59,6 +71,7 @@ public class MemberService {
         verifySameMember(findMember, memberPrincipal.getMember());
         findMember.updateMemberStatus(Member.MemberStatus.DELETE);
         memberRepository.save(findMember);
+        fileService.deleteMemberImg(findMember);
     }
 
     public void followMember(Long memberId, MemberPrincipal memberPrincipal) {
@@ -92,7 +105,7 @@ public class MemberService {
         }
     }
 
-    private void verifySameMember(Member member, Member memberPrincipal) {
+    public void verifySameMember(Member member, Member memberPrincipal) {
         if (!member.getEmail().equals(memberPrincipal.getEmail())) {
             throw new CustomException(ExceptionCode.MEMBER_NOT_SAME);
         }

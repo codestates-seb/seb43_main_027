@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -32,17 +33,19 @@ public class MemberController {
     private final FollowGameService followGameService;
 
     @PostMapping("/signup")
-    public ResponseEntity<URI> postMember(@RequestBody MemberDto.Post post) {
-        Member member = memberService.createMember(memberMapper.memberDtoPostToMember(post));
+    public ResponseEntity<URI> postMember(@RequestPart MemberDto.Post post,
+                                          @RequestPart(value = "file", required = false) MultipartFile multipartFile) {
+        Member member = memberService.createMember(memberMapper.memberDtoPostToMember(post), multipartFile);
         return ResponseEntity.created(UriCreator.createURI(member.getMemberId())).build();
     }
 
     @PatchMapping("/{member-id}")
     public ResponseEntity<SingleResponse<MemberDto.Response>> patchMember(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
                                                                           @PathVariable("member-id") Long memberId,
-                                                                          @Valid @RequestBody MemberDto.Patch patch) {
+                                                                          @Valid @RequestPart MemberDto.Patch patch,
+                                                                          @RequestPart(value = "file", required = false) MultipartFile multipartFile) {
         patch.addMemberId(memberId);
-        Member member = memberService.updateMember(memberMapper.memberDtoPatchToMember(patch), memberPrincipal);
+        Member member = memberService.updateMember(memberMapper.memberDtoPatchToMember(patch), memberPrincipal, multipartFile);
         return ResponseEntity.ok(new SingleResponse<>(memberMapper.memberToMemberDtoResponse(member)));
     }
 
