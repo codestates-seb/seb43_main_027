@@ -1,7 +1,8 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import { AiOutlineSearch } from 'react-icons/ai';
+
 import SearchHint from './SearchHint';
-import { useState } from 'react';
 
 const SearchBar = () => {
   const [showHint, setShowHint] = useState(false);
