@@ -9,15 +9,3 @@ export type ButtonType = {
   border?: string,
   hoverBg?: string,
 }
-
-export type InputType = {
-  fontSize?: string,
-  fontWeight?: string,
-  bg?: string,
-  fontColor?: string,
-  margin?: string,
-  padding?: string,  
-  radius?: string,
-  border?: string,
-  hoverBg?: string,
-}
