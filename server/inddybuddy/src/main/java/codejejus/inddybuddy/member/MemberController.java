@@ -33,9 +33,8 @@ public class MemberController {
     private final FollowGameService followGameService;
 
     @PostMapping("/signup")
-    public ResponseEntity<URI> postMember(@RequestPart MemberDto.Post post,
-                                          @RequestPart(value = "file", required = false) MultipartFile multipartFile) {
-        Member member = memberService.createMember(memberMapper.memberDtoPostToMember(post), multipartFile);
+    public ResponseEntity<URI> postMember(@RequestBody MemberDto.Post post) {
+        Member member = memberService.createMember(memberMapper.memberDtoPostToMember(post));
         return ResponseEntity.created(UriCreator.createURI(member.getMemberId())).build();
     }
 
