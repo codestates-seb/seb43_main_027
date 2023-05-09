@@ -56,7 +56,9 @@ public class GameService {
         Member follower = memberPrincipal.getMember();
         followGameService.unfollowing(game, follower);
     }
-
+    public Game findGame(Long gameId) {
+        return findVerifidGame(gameId);
+    }
     public Page<GameDto.Response> getAllGames(Pageable pageable, Filter filter) {
         Page<Game> games;
 
