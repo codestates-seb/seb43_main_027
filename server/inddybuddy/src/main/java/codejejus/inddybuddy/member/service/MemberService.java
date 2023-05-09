@@ -28,16 +28,12 @@ public class MemberService {
     private final FollowMemberService followMemberService;
     private final FileService fileService;
 
-    public Member createMember(Member member, MultipartFile multipartFile) {
+    public Member createMember(Member member) {
         verifyExistEmail(member.getEmail());
         verifyExistUsername(member.getUsername());
         String encryptedPassword = passwordEncoder.encode(member.getPassword());
         member.setPassword(encryptedPassword);
         member.setRoles(authorityUtils.createRoles(member.getEmail()));
-        if (multipartFile != null) {
-            File memberImg = fileService.createMemberImg(multipartFile, member);
-            member.setImageUrl(memberImg.getFileUrl());
-        }
         return memberRepository.save(member);
     }
 
@@ -55,7 +51,8 @@ public class MemberService {
         Optional.ofNullable(member.getAboutMe())
                 .ifPresent(findMember::setAboutMe);
         if (multipartFile != null) {
-            fileService.deleteMemberImg(findMember);
+            // TODO : 미리 등록한 이미지 S3에서 삭제
+            // fileService.deleteMemberImg(findMember);
             File memberImg = fileService.createMemberImg(multipartFile, findMember);
             findMember.setImageUrl(memberImg.getFileUrl());
         }

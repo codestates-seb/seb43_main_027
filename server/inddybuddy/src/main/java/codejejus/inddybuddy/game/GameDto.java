@@ -25,13 +25,15 @@ public class GameDto {
         private String downloadUrl;
         private String mainImgUrl;
         private List<Category> categories;
+        private Long followerCount;
 
         @Builder
-        public Response(Long gameId, String gameName, String downloadUrl, String mainImgUrl, List<Category> categories) {
+        public Response(Long gameId, String gameName, String downloadUrl, String mainImgUrl, List<Category> categories, Long followerCount) {
             this.gameId = gameId;
             this.gameName = gameName;
             this.downloadUrl = downloadUrl;
             this.mainImgUrl = mainImgUrl;
+            this.followerCount = followerCount;
             this.categories = categories;
         }
     }
