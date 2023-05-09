@@ -27,6 +27,9 @@ const GlobalStyle = createGlobalStyle`
   /* 요소 색상 */
   --button-inactive-color: #555555;
   --button-inactive-hover-color: #eb2f96;
+  
+  /* 로딩 배경 */
+  --loding-bg: #efefef;
 }
 
 * {
@@ -116,5 +119,5 @@ body::-webkit-scrollbar {
     background: hsla(0, 0%, 42%, 0.69);
     opacity: 0.5;
   }
-`
+`;
 export default GlobalStyle;
