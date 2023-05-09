@@ -4,16 +4,16 @@ import { ButtonType } from '../../types/componentsTypes';
 
 const StyledBtn = styled.button<ButtonType>`
   font-size: ${(props) => props.fontSize || '1.3rem'};
-  font-weight: ${(props) => props.fontWeight || '700'};
+  font-weight: ${(props) => props.fontWeight || '600'};
   text-align: center;
-  background-color: ${(props) => props.bg || 'var(--cyan-dark-500)'};
+  background-color: ${(props) => props.bg || 'var(--cyan-dark-400)'};
   color: ${(props) => props.fontColor || 'white'};
   margin: ${(props) => props.margin || '0.5rem 0.7rem'};
   padding: ${(props) => props.padding || '0.5rem 0.7rem'};
   border-radius: ${(props) => props.radius || '5px'};
-  border: ${(props) => props.border};
+  border: ${(props) => props.border || 'none'};
   &:hover {
-    background-color: ${(props) => props.hoverBg};
+    background-color: ${(props) => props.hoverBg || 'var(--cyan-dark-500)'};
   }
 `;
 
