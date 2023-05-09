@@ -9,7 +9,7 @@ const App = () => {
     <>
       <GlobalStyle />
       <Header setShow={setShow} show={show} />
-      <Nav show={show} />
+      <Nav show={show} setShow={setShow} />
     </>
   );
 };

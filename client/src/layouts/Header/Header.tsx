@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import MenuBtn from './MenuBtn';
@@ -5,16 +6,11 @@ import Logo from './Logo';
 import SearchBar from './SearchBar';
 import HeaderBtnContainer from './HeaderBtnContainer';
 import UserBtn from './UserBtn';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
 
-const Header = ({
-  setShow,
-  show
-}: {
-  setShow: React.Dispatch<React.SetStateAction<boolean>>;
-  show: boolean;
-}) => {
+import { RootState } from '../../store/store';
+import { NavStateType } from '../../types/propsTypes';
+
+const Header = ({ setShow, show }: NavStateType) => {
   const user = useSelector((s: RootState) => s.user);
   return (
     <StyledContainer>

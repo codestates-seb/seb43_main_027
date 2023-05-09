@@ -1,12 +1,8 @@
 import styled from 'styled-components';
 
-const MenuBtn = ({
-  setShow,
-  show
-}: {
-  setShow: React.Dispatch<React.SetStateAction<boolean>>;
-  show: boolean;
-}) => {
+import { NavStateType } from '../../types/propsTypes';
+
+const MenuBtn = ({ setShow, show }: NavStateType) => {
   const onClickHandler = () => {
     setShow((prev) => !prev);
   };
