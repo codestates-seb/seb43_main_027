@@ -34,6 +34,7 @@ const StyledContainer = styled.header`
   height: 50px;
   width: 100vw;
   padding: 0 2rem;
+  background-color: #fff;
   z-index: 10;
 `;
 const StyledResponsiveContainer = styled.div`
