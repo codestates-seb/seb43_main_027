@@ -20,4 +20,6 @@ public interface FollowGameRepository extends JpaRepository<FollowGame, Long> {
     @Query(value = "select g from FollowGame f inner join Game g " +
             "ON f.game.gameId = g.gameId where f.follower.memberId = :memberId")
     List<Game> findAllByGame(@Param("memberId") Long memberId);
+
+    Long countByGame(Game game);
 }

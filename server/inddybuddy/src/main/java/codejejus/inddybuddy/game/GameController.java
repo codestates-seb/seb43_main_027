@@ -2,6 +2,7 @@ package codejejus.inddybuddy.game;
 
 import codejejus.inddybuddy.follow.FollowGameService;
 import codejejus.inddybuddy.follow.FollowMember;
+import codejejus.inddybuddy.global.constant.Filter;
 import codejejus.inddybuddy.global.dto.MultiResponse;
 import codejejus.inddybuddy.global.dto.SingleResponse;
 import codejejus.inddybuddy.global.utils.UriCreator;
@@ -41,22 +42,9 @@ public class GameController {
     }
 
     @GetMapping
-    public ResponseEntity<MultiResponse<GameDto.Response>> getAllGames(@PageableDefault(page = 0, size = 30) Pageable pageable) {
-        Page<GameDto.Response> pageGames = gameService.getAllGames(pageable);
-        List<GameDto.Response> games = pageGames.getContent();
-        return ResponseEntity.ok(new MultiResponse<>(games, pageGames));
-    }
-
-    @GetMapping("/popular")
-    public ResponseEntity<MultiResponse<GameDto.Response>> getPopularGames(@PageableDefault(page = 0, size = 10) Pageable pageable) {
-        Page<GameDto.Response> pageGames = gameService.getPopularGames(pageable);
-        List<GameDto.Response> games = pageGames.getContent();
-        return ResponseEntity.ok(new MultiResponse<>(games, pageGames));
-    }
-
-    @GetMapping("/new")
-    public ResponseEntity<MultiResponse<GameDto.Response>> getNewGames(@PageableDefault(page = 0, size = 10) Pageable pageable) {
-        Page<GameDto.Response> pageGames = gameService.getNewGames(pageable);
+    public ResponseEntity<MultiResponse<GameDto.Response>> getAllGames(@PageableDefault(page = 0, size = 30) Pageable pageable,
+                                                                       @RequestParam(required = false) Filter filter) {
+        Page<GameDto.Response> pageGames = gameService.getAllGames(pageable, filter);
         List<GameDto.Response> games = pageGames.getContent();
         return ResponseEntity.ok(new MultiResponse<>(games, pageGames));
     }
