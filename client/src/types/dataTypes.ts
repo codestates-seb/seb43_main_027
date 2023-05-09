@@ -3,7 +3,7 @@ import { ReactElement } from 'react';
 export type NavItemType = {
   type: 'user' | 'bookmark' | 'games';
   element: ReactElement;
-  contentElement: () => JSX.Element;
+  contentElement: (props: any) => JSX.Element;
 };
 
 export type User = {
