@@ -15,3 +15,22 @@ export type User = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type CategoryType = {
+  categoryId: number;
+  categoryName: string;
+};
+
+export type GameType = {
+  gameId: number;
+  gameName: string;
+  downloadUrl: string;
+  mainImgUrl: string;
+  categories: CategoryType[];
+};
+export type PageInfoType = {
+  page: number;
+  size: number;
+  totalSize: number;
+  totalPage: number;
+};
