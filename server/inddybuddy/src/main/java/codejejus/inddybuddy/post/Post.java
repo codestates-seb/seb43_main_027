@@ -1,13 +1,16 @@
 package codejejus.inddybuddy.post;
 
+import codejejus.inddybuddy.file.File;
 import codejejus.inddybuddy.game.Game;
 import codejejus.inddybuddy.global.audit.Timestamped;
 import codejejus.inddybuddy.member.entity.Member;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -17,7 +20,7 @@ public class Post extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long PostId;
+    private Long postId;
     @Column(nullable = false, length = 100)
     private String title;
     @Column(nullable = false, columnDefinition = "TEXT")
@@ -30,9 +33,29 @@ public class Post extends Timestamped {
     @ManyToOne
     @JoinColumn(name = "game_id")
     private Game game;
+
+    // TODO : 일대다 매핑을 위해 수정 필요
+//    @ManyToOne
+//    @JoinColumn(name = "file_id")
+//    private File file;
+//    @OneToMany(mappedBy = "post")
+//    private List<File> fileList;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
     private PostTag postTag = PostTag.RECRUITMENT;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 30)
+    private PostStatus postStatus = PostStatus.POST_REGISTRATION;
+
+    // Todo : 글 제목, 글 내용, 멤버, 첨부 파일(들), 게임 이름?
+    @Builder
+    public Post(String title, String content, Member member) {
+        this.title = title;
+        this.content = content;
+        this.member = member;
+
+    }
 
     public enum PostTag {
 
@@ -53,5 +76,14 @@ public class Post extends Timestamped {
         PostTag(String status) {
             this.status = status;
         }
+    }
+
+    public enum PostStatus {
+        POST_REGISTRATION("게시글 등록"),
+        POST_DELETED("게시글 삭제");
+
+        @Getter
+        private final String status;
+        PostStatus(String status) {this.status = status;}
     }
 }
