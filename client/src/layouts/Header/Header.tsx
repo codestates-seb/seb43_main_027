@@ -8,11 +8,17 @@ import UserBtn from './UserBtn';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 
-const Header = () => {
+const Header = ({
+  setShow,
+  show
+}: {
+  setShow: React.Dispatch<React.SetStateAction<boolean>>;
+  show: boolean;
+}) => {
   const user = useSelector((s: RootState) => s.user);
   return (
     <StyledContainer>
-      <MenuBtn />
+      <MenuBtn setShow={setShow} show={show} />
       <StyledResponsiveContainer>
         <Logo />
         <SearchBar />
