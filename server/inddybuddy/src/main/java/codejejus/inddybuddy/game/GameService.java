@@ -1,13 +1,14 @@
 package codejejus.inddybuddy.game;
 
 import codejejus.inddybuddy.category.Category;
-import codejejus.inddybuddy.category.CategoryRepository;
 import codejejus.inddybuddy.category.CategoryService;
 import codejejus.inddybuddy.follow.FollowGameService;
+import codejejus.inddybuddy.global.constant.Filter;
 import codejejus.inddybuddy.global.exception.CustomException;
 import codejejus.inddybuddy.global.exception.ExceptionCode;
 import codejejus.inddybuddy.member.entity.Member;
 import codejejus.inddybuddy.member.entity.MemberPrincipal;
+import codejejus.inddybuddy.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +25,7 @@ public class GameService {
     private final GameRepository gameRepository;
     private final GameMapper gameMapper;
     private final CategoryService categoryService;
+    private final MemberService memberService;
     private final FollowGameService followGameService;
 
     public GameDto.Response createGame(MemberPrincipal memberPrincipal, GameDto.Request requestDto) {
@@ -37,7 +39,7 @@ public class GameService {
 
     public GameDto.Response modifyGame(Long gameId, MemberPrincipal memberPrincipal, GameDto.Request requestDto) {
         Game findGame = findVerifidGame(gameId);
-        // TODO: 로그인 유저와 게임을 등록한 사람이 일치하는지 확인
+        memberService.verifySameMember(findGame.getMember(), memberPrincipal.getMember());
         List<Category> patchCategories = categoryService.getCategoriesByName(requestDto.getCategoryNames());
         findGame.updateGame(requestDto.getGameName(), requestDto.getDownloadUrl(), requestDto.getMainImgUrl(), patchCategories);
         return gameMapper.entityToResponse(findGame);
@@ -55,25 +57,19 @@ public class GameService {
         followGameService.unfollowing(game, follower);
     }
 
-    public Page<GameDto.Response> getAllGames(Pageable pageable) {
-        Page<Game> allGames = gameRepository.findAll(pageable);
-        return gameMapper.entityPageToResponsePage(allGames);
-    }
+    public Page<GameDto.Response> getAllGames(Pageable pageable, Filter filter) {
+        Page<Game> games;
 
-    public Page<GameDto.Response> getPopularGames(Pageable pageable) {
-        Page<Game> popularGames = gameRepository.findAllByOrderByFollowersDesc(pageable);
-        return gameMapper.entityPageToResponsePage(popularGames);
-    }
+        if (filter == null) games = gameRepository.findAll(pageable);
+        else if (filter.equals(Filter.POPULAR)) games = gameRepository.findAllByOrderByFollowersDesc(pageable);
+        else if (filter.equals(Filter.NEW)) games = gameRepository.findAllByOrderByCreatedAtDesc(pageable);
+        else throw new CustomException(ExceptionCode.FILTER_NOT_FOUND);
 
-    public Page<GameDto.Response> getNewGames(Pageable pageable) {
-        Page<Game> newGames = gameRepository.findAllByOrderByCreatedAtDesc(pageable);
-        return gameMapper.entityPageToResponsePage(newGames);
+        return gameMapper.entityPageToResponsePage(games);
     }
 
     private Game findVerifidGame(Long gameId) {
         Optional<Game> optionalGame = gameRepository.findById(gameId);
-        Game findGame =
-                optionalGame.orElseThrow(() -> new CustomException(ExceptionCode.GAME_NOT_FOUND));
-        return findGame;
+        return optionalGame.orElseThrow(() -> new CustomException(ExceptionCode.GAME_NOT_FOUND));
     }
 }
