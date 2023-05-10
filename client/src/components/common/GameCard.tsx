@@ -1,33 +1,19 @@
 import styled from 'styled-components';
 
-import logo from '../../asset/logo.png';
 import Badge from '../ui/Badge';
 
 import { GameType } from '../../types/dataTypes';
 
-const dummy: GameType = {
-  gameId: 1,
-  mainImgUrl: logo,
-  downloadUrl: 'test',
-  gameName: 'testtestsetset',
-  categories: [
-    {
-      categoryId: 1,
-      categoryName: 'RPG'
-    }
-  ]
-};
-
-const GameCard = () => {
+const GameCard = ({ mainImgUrl, categories, gameName }: GameType) => {
   return (
     <StyledContainer>
-      <StyledImg src={dummy.mainImgUrl} />
+      <StyledImg src={mainImgUrl} />
       <StyledBadgeContainer>
-        {dummy.categories.map((category) => (
+        {categories.map((category) => (
           <Badge text={category.categoryName} key={category.categoryId} />
         ))}
       </StyledBadgeContainer>
-      <StyledTitle>{dummy.gameName}</StyledTitle>
+      <StyledTitle>{gameName}</StyledTitle>
     </StyledContainer>
   );
 };
