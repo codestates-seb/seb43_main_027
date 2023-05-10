@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import useInput from '../../hooks/useInput';
@@ -16,11 +16,7 @@ const oauthSignUp = () => {
 
 const SignUp = () => {
   const navigator = useNavigate();
-  // const [signUpInfo, setSignUpInfo] = useState({
-  //   username: '',
-  //   email: '',
-  //   password: ''
-  // });
+
   const [userNameProps, setUserName] = useInput('');
   const [emailProps, setEmail] = useInput('');
   const [passWordProps, setPassWord] = useInput('');
@@ -29,16 +25,7 @@ const SignUp = () => {
   const [emailValid, setEmailValid] = useState(true);
   const [passWordValid, setPassWordValid] = useState(true);
 
-  // useEffect(() => {
-  //   setSignUpInfo({
-  //     username: userNameProps.value,
-  //     email: emailProps.value,
-  //     password: passWordProps.value
-  //   });
-  // }, [userNameProps, emailProps, passWordProps]);
-
   const emailSignUp: React.MouseEventHandler = async (e: React.MouseEvent) => {
-    //  이거 안하면 get 요청도 보내고, 쿼리스트링도 맘대로 달아버림.
     e.preventDefault();
     try {
       await axios
@@ -57,7 +44,6 @@ const SignUp = () => {
           navigator('/login');
         });
     } catch (error) {
-      /** 중복인 경우와 다른이유로 실패한 경우 삼항으로 구분 */
       console.log(error);
       alert('you failed to signup!');
       navigator('/error');
