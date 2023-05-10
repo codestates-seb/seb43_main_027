@@ -73,6 +73,7 @@ const StyledLoadingWrapper = styled.div`
   display: grid;
   place-items: center;
   background-color: var(--loding-bg);
+  z-index: 9999;
 `;
 
 const StyledSpinner = styled.span`
