@@ -23,6 +23,10 @@ const GlobalStyle = createGlobalStyle`
   --cyan-dark-900: #113536;
   --cyan-dark-1000: #112123;
   --loding-bg: #efefef;
+  /* category-games-palette */
+  --title-bg: #f7f7f8;
+  --sub-text-color: #53535f;
+  --button-hover-color: #eb2f96;
 }
 
 * {
