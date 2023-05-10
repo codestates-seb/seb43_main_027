@@ -1,12 +1,16 @@
 import { IoGameControllerOutline } from 'react-icons/io5';
 import styled from 'styled-components';
+import { CategoryType } from '../../types/dataTypes';
+import { Link } from 'react-router-dom';
 
-const CategoryCard = () => {
+const CategoryCard = ({ categoryId, categoryName }: CategoryType) => {
   return (
-    <StyledContainer>
-      <IoGameControllerOutline size={'3rem'} />
-      <StyledText>gameasdfasdfsfdasdfsd</StyledText>
-    </StyledContainer>
+    <Link to={`/category/${categoryId}`}>
+      <StyledContainer>
+        <IoGameControllerOutline size={'3rem'} />
+        <StyledText>{categoryName}</StyledText>
+      </StyledContainer>
+    </Link>
   );
 };
 
@@ -23,7 +27,7 @@ const StyledContainer = styled.div`
   aspect-ratio: 1/1;
   color: var(--cyan-dark-500);
   border: 1px solid var(--cyan-dark-500);
-  font-size: 2rem;
+  font-size: 1rem;
   border-radius: 5px;
 
   cursor: pointer;
@@ -36,5 +40,6 @@ const StyledContainer = styled.div`
 const StyledText = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
+  text-align: center;
   width: 100%;
 `;
