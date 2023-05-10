@@ -9,7 +9,7 @@ export const StyledInput = styled.input<InputType>`
 
   &:focus {
     background-color: var(--cyan-light-200);
-    box-shadow: 0 10px 24px var(--cyan-dark-300),
-      0 20px 48px var(--cyan-dark-300), 0 1px 4px var(--cyan-dark-300);
+    box-shadow: 0 5px 12px var(--cyan-dark-200),
+      0 10px 24px var(--cyan-dark-200), 0 1px 2px var(--cyan-dark-200);
   }
 `;
