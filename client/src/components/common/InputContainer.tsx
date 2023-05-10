@@ -2,20 +2,60 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { StyledInput } from '../elements/Input';
+import { StyledLabel } from '../elements/Label';
+
+import { useInputReturn } from '../../types/costomHooksTypes';
+
+interface InputContainerType {
+  placeholder?: string;
+  title?: string;
+  onChange?: React.ChangeEvent;
+  useInput?: useInputReturn;
+}
+
+const InputContainer = ({
+  placeholder = 'ex)',
+  title = '입력창',
+  useInput
+}: InputContainerType) => {
+  return (
+    <InputContainerWrapper>
+      <StyledLabelContainer>
+        <Label>{title}</Label>
+      </StyledLabelContainer>
+      <Field>
+        <InputEl
+          placeholder={placeholder}
+          value={useInput ? useInput.value : ''}
+          onChange={
+            useInput
+              ? useInput.onChange
+              : () => {
+                  console.log('error');
+                }
+          }
+        ></InputEl>
+      </Field>
+    </InputContainerWrapper>
+  );
+};
+
+export default InputContainer;
 
 export const InputContainerWrapper = styled.div`
   padding: 0 0 24px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  width: 100%;
 `;
-export const Label = styled.div`
+export const StyledLabelContainer = styled.div`
   padding: 0 0 8px;
   display: flex;
   align-items: center;
   align-self: stretch;
 `;
-export const Title = styled.label`
+const Label = styled(StyledLabel)`
   font-family: 'Roboto';
   font-size: 1.4rem;
   line-height: 2.2rem;
@@ -37,19 +77,3 @@ export const InputEl = styled(StyledInput)`
   flex: 1;
   border: 1px solid rgba(217, 217, 217, 1);
 `;
-
-// eslint-disable-next-line react/prop-types
-const InputContainer = ({ placeholder = 'example', title = 'Field A' }) => {
-  return (
-    <InputContainerWrapper>
-      <Label>
-        <Title>{title}</Title>
-      </Label>
-      <Field>
-        <InputEl placeholder={placeholder}></InputEl>
-      </Field>
-    </InputContainerWrapper>
-  );
-};
-
-export default InputContainer;
