@@ -25,6 +25,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional
 public class GameService {
+
     private final GameRepository gameRepository;
     private final GameMapper gameMapper;
     private final CategoryService categoryService;

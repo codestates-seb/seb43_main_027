@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class GameMapper {
+
     private final FollowGameService followGameService;
 
     public Game requestToEntity(GameDto.Request requestDto) {

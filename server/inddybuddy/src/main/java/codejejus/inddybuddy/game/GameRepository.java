@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface GameRepository extends JpaRepository<Game, Long> {
+
     Page<Game> findAllByOrderByFollowersDesc(Pageable pageable);
     Page<Game> findAllByOrderByCreatedAtDesc(Pageable pageable);
 }
