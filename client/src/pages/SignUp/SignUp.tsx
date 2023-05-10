@@ -14,11 +14,13 @@ const oauthSignUp = () => {
   console.log('oauth');
 };
 
-const emailSignUp = () => {
-  console.log('email');
-};
-
 const SignUp = () => {
+  const navigator = useNavigate();
+  // const [signUpInfo, setSignUpInfo] = useState({
+  //   username: '',
+  //   email: '',
+  //   password: ''
+  // });
   const [userNameProps, setUserName] = useInput('');
   const [emailProps, setEmail] = useInput('');
   const [passWordProps, setPassWord] = useInput('');
@@ -26,7 +28,42 @@ const SignUp = () => {
   const [usernameValid, setUserNameValid] = useState(true);
   const [emailValid, setEmailValid] = useState(true);
   const [passWordValid, setPassWordValid] = useState(true);
-  console.log(userNameProps);
+
+  // useEffect(() => {
+  //   setSignUpInfo({
+  //     username: userNameProps.value,
+  //     email: emailProps.value,
+  //     password: passWordProps.value
+  //   });
+  // }, [userNameProps, emailProps, passWordProps]);
+
+  const emailSignUp: React.MouseEventHandler = async (e: React.MouseEvent) => {
+    //  이거 안하면 get 요청도 보내고, 쿼리스트링도 맘대로 달아버림.
+    e.preventDefault();
+    try {
+      await axios
+        .post(
+          'http://ec2-13-209-70-188.ap-northeast-2.compute.amazonaws.com:8080/api/members/signup',
+          {
+            username: userNameProps.value,
+            email: emailProps.value,
+            password: passWordProps.value
+          }
+        )
+        .then((response) => {
+          console.log(`this is response:${response}`);
+          console.log(`this is username:${userNameProps.value}`);
+          alert('you successfully signed up!');
+          navigator('/login');
+        });
+    } catch (error) {
+      /** 중복인 경우와 다른이유로 실패한 경우 삼항으로 구분 */
+      console.log(error);
+      alert('you failed to signup!');
+      navigator('/error');
+    }
+  };
+
   return (
     <StyledSignUpContainer>
       <StyledSignUpFormWrapper>
