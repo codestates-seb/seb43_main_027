@@ -1,11 +1,15 @@
 package codejejus.inddybuddy.post;
 
 import codejejus.inddybuddy.game.GameService;
+import codejejus.inddybuddy.global.exception.CustomException;
+import codejejus.inddybuddy.global.exception.ExceptionCode;
 import codejejus.inddybuddy.member.entity.MemberPrincipal;
 import codejejus.inddybuddy.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -28,15 +32,20 @@ public class PostService {
         Post save = postRepository.save(post);
         return postMapper.entityToReesponse(save);
     }
-//    public Post createPost2(Post post) {  // 단순한 생성 방식
-//        verifyPost(post);
-//
-//        return postRepository.save(post);
-//    }
 
+    public PostDto.Response modifyPost(Long postId, MemberPrincipal memberPrincipal, PostDto.Request requestDto) {
+        Post findPost = findVerifidPost(postId);
+        memberService.verifySameMember(findPost.getMember(), memberPrincipal.getMember()); // 회원 검증
+        // Todo : 이미지 리스트, 파일 리스트 추가 필요
+        findPost.updatePost(requestDto.getTitle(), requestDto.getContent(), requestDto.getPostTag());
+        return postMapper.entityToReesponse(findPost);
+    }
     private void verifyPost(Post post) {
         Long memberId = post.getMember().getMemberId();
         memberService.findMember(memberId);
     }
-
+    private Post findVerifidPost(Long postId) {
+        Optional<Post> optionalPost = postRepository.findById(postId);
+        return optionalPost.orElseThrow(() -> new CustomException(ExceptionCode.POST_NOT_FOUND));
+    }
 }
