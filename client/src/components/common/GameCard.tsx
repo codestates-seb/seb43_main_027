@@ -5,6 +5,7 @@ import Badge from '../ui/Badge';
 import { GameType } from '../../types/dataTypes';
 
 const GameCard = ({ mainImgUrl, categories, gameName }: GameType) => {
+  // TODO: 게임 클릭 시 해당 게임 페이지로 이동
   return (
     <StyledContainer>
       <StyledImg src={mainImgUrl} />
