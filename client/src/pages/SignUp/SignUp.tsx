@@ -9,6 +9,7 @@ import SignUpFieldsContainer from './SignUpFieldsContainer';
 import SignUpTopWrapper from './SignUpTopWrapper';
 import SignUpOauthContainer from './SignUpOauthContainer';
 import SignUpButtonsContainer from './SignUpButtonsContainer';
+import Modal from '../../components/common/Modal';
 
 const oauthSignUp = () => {
   console.log('oauth');
@@ -52,6 +53,7 @@ const SignUp = () => {
 
   return (
     <StyledSignUpContainer>
+      <Modal></Modal>
       <StyledSignUpFormWrapper>
         {/* top - component */}
         <SignUpTopWrapper />
