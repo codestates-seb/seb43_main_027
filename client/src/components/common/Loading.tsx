@@ -1,10 +1,10 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
-const Loading : React.FunctionComponent = () => {
+const Loading: React.FunctionComponent = () => {
   return (
     <StyledLoadingWrapper>
-      <StyledSpinner/>
+      <StyledSpinner />
     </StyledLoadingWrapper>
   );
 };

@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import MenuBtn from './MenuBtn';
@@ -5,14 +6,15 @@ import Logo from './Logo';
 import SearchBar from './SearchBar';
 import HeaderBtnContainer from './HeaderBtnContainer';
 import UserBtn from './UserBtn';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
 
-const Header = () => {
+import { RootState } from '../../store/store';
+import { NavStateType } from '../../types/propsTypes';
+
+const Header = ({ setShow, show }: NavStateType) => {
   const user = useSelector((s: RootState) => s.user);
   return (
     <StyledContainer>
-      <MenuBtn />
+      <MenuBtn setShow={setShow} show={show} />
       <StyledResponsiveContainer>
         <Logo />
         <SearchBar />
@@ -34,6 +36,7 @@ const StyledContainer = styled.header`
   height: 50px;
   width: 100vw;
   padding: 0 2rem;
+  background-color: #fff;
   z-index: 10;
 `;
 const StyledResponsiveContainer = styled.div`
