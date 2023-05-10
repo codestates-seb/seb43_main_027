@@ -1,5 +1,6 @@
 package codejejus.inddybuddy.file;
 
+import codejejus.inddybuddy.game.Game;
 import codejejus.inddybuddy.member.entity.Member;
 import codejejus.inddybuddy.post.Post;
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -27,18 +28,16 @@ public class File {
     @OneToOne
     @JoinColumn(name = "member_id")
     private Member member;
+    @OneToOne
+    @JoinColumn(name = "game_id")
+    private Game game;
 
     @Builder
-    public File(String fileUrl, String fileName, Member member) {
+    public File(String fileUrl, String fileName, Member member, Game game, Post post) {
         this.fileUrl = fileUrl;
         this.fileName = fileName;
         this.member = member;
-    }
-
-    @Builder
-    public File(String fileUrl, String fileName, Post post) {
-        this.fileUrl = fileUrl;
-        this.fileName = fileName;
+        this.game = game;
         this.post = post;
     }
 }
