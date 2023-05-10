@@ -1,4 +1,7 @@
-export type ButtonType = {
+import { useInputReturn } from './costomHooksTypes';
+
+export interface ButtonType {
+  flex?: string,
   fontSize?: string,
   fontWeight?: string,
   bg?: string,
@@ -10,7 +13,7 @@ export type ButtonType = {
   hoverBg?: string,
 }
 
-export type InputType = {
+export interface InputType {
   fontSize?: string,
   fontWeight?: string,
   bg?: string,
@@ -21,4 +24,14 @@ export type InputType = {
   border?: string,
   hoverBg?: string,
   boxShadow?: string,
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void | undefined,
+  useInput?: useInputReturn
+}
+
+export interface LabelType {
+  fontSize?: string;
+  fontWeight?: string;
+  fontColor?: string;
+  margin?: string;
+  padding?: string;
 }
