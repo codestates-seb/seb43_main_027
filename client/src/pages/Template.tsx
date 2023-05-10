@@ -24,7 +24,7 @@ export default Template;
 const StyledFlexBox = styled.div`
   display: flex;
   flex-direction: column;
-  @media screen and (min-width: 650px) {
+  @media screen and (min-width: none) {
     flex-direction: row;
   }
 `;
