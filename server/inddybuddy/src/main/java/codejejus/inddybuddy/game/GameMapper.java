@@ -14,7 +14,6 @@ public class GameMapper {
     public Game requestToEntity(GameDto.Request requestDto) {
         return Game.builder()
                 .gameName(requestDto.getGameName())
-                .mainImageUrl(requestDto.getMainImgUrl())
                 .downloadUrl(requestDto.getDownloadUrl())
                 .build();
     }

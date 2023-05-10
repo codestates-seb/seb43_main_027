@@ -16,6 +16,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -29,16 +30,18 @@ public class GameController {
 
     @PostMapping
     public ResponseEntity<GameDto.Response> createGame(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
-                                                       @RequestBody GameDto.Request requestDto) {
-        GameDto.Response gameResponse = gameService.createGame(memberPrincipal, requestDto);
+                                                       @RequestPart GameDto.Request post,
+                                                       @RequestPart(value = "file", required = false) MultipartFile multipartFile) {
+        GameDto.Response gameResponse = gameService.createGame(memberPrincipal, post, multipartFile);
         return ResponseEntity.created(UriCreator.createURI(gameResponse.getGameId())).build();
     }
 
     @PatchMapping("/{game-id}")
     public ResponseEntity<SingleResponse<GameDto.Response>> modifyGame(@PathVariable("game-id") Long gameId,
                                                                        @AuthenticationPrincipal MemberPrincipal memberPrincipal,
-                                                                       @RequestBody GameDto.Request requestDto) {
-        return ResponseEntity.ok(new SingleResponse<>(gameService.modifyGame(gameId, memberPrincipal, requestDto)));
+                                                                       @RequestPart GameDto.Request patch,
+                                                                       @RequestPart(value = "file", required = false) MultipartFile multipartFile) {
+        return ResponseEntity.ok(new SingleResponse<>(gameService.modifyGame(gameId, memberPrincipal, patch, multipartFile)));
     }
 
     @GetMapping
