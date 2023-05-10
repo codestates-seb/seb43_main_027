@@ -1,6 +1,7 @@
 package codejejus.inddybuddy.post;
 
 import codejejus.inddybuddy.game.GameDto;
+import codejejus.inddybuddy.global.dto.SingleResponse;
 import codejejus.inddybuddy.global.utils.UriCreator;
 import codejejus.inddybuddy.member.entity.MemberPrincipal;
 import lombok.RequiredArgsConstructor;
@@ -34,14 +35,10 @@ public class PostController {
         return ResponseEntity.created(uri).build();
     }
 
-    // 단순한 생성 방식, 매퍼 Interface로 사용할 때
-//    @PostMapping
-//    public ResponseEntity<?> createPost2(@RequestBody PostDto.Post post) {
-//        // Todo : 게임을 선택하고 그 안에 post를 만든다.
-//        Post findPost = postService.createPost(postMapper.postDtoPostToPost(post));
-//        Post post = postMapper.requestToEntity(requestDto);
-//        URI uri = UriCreator.createURI(findPost.getPostId());
-//
-//        return ResponseEntity.created(uri).build();
-//    }
+    @PatchMapping("/{post-id}")
+    public ResponseEntity<SingleResponse<PostDto.Response>> modifyPost(@PathVariable("post-id") Long postId,
+                                                       @AuthenticationPrincipal MemberPrincipal memberPrincipal,
+                                                       @RequestBody PostDto.Request requestDto) {
+        return ResponseEntity.ok(new SingleResponse<>(postService.modifyPost(postId, memberPrincipal, requestDto)));
+    }
 }

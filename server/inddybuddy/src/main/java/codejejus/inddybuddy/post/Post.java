@@ -49,6 +49,7 @@ public class Post extends Timestamped {
     private PostStatus postStatus = PostStatus.POST_REGISTRATION;
 
     // Todo : 글 제목, 글 내용, 멤버, 첨부 파일(들), 게임 이름?
+    // DTO를 위해 만들어놓음?
     @Builder
     public Post(String title, String content, Member member) {
         this.title = title;
@@ -85,5 +86,19 @@ public class Post extends Timestamped {
         @Getter
         private final String status;
         PostStatus(String status) {this.status = status;}
+    }
+
+    // for 캡슐화, 응집도, 재사용성. 서비스 계층과 컨트롤러 계층에서 사용 가능
+    // Todo : file과 imgURl 추가 필요
+    public void updatePost(String title, String content, PostTag postTag) {
+        if(title != null) {
+            this.title = title;
+        }
+        if(content != null) {
+            this.content = content;
+        }
+        if(postTag != null) {
+            this.postTag = postTag;
+        }
     }
 }
