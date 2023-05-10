@@ -1,8 +1,56 @@
-import styled from 'styled-components';
-import logo from '../../asset/logo.png';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import useInput from '../../hooks/useInput';
 
-import ButtonEl from '../../components/elements/Button';
-import InputContainer from '../../components/common/InputContainer';
+import styled from 'styled-components';
+
+import SignUpFieldsContainer from './SignUpFieldsContainer';
+import SignUpTopWrapper from './SignUpTopWrapper';
+import SignUpOauthContainer from './SignUpOauthContainer';
+import SignUpButtonsContainer from './SignUpButtonsContainer';
+
+const oauthSignUp = () => {
+  console.log('oauth');
+};
+
+const emailSignUp = () => {
+  console.log('email');
+};
+
+const SignUp = () => {
+  const [userNameProps, setUserName] = useInput('');
+  const [emailProps, setEmail] = useInput('');
+  const [passWordProps, setPassWord] = useInput('');
+
+  const [usernameValid, setUserNameValid] = useState(true);
+  const [emailValid, setEmailValid] = useState(true);
+  const [passWordValid, setPassWordValid] = useState(true);
+  console.log(userNameProps);
+  return (
+    <StyledSignUpContainer>
+      <StyledSignUpFormWrapper>
+        {/* top - component */}
+        <SignUpTopWrapper />
+        {/* Form - component */}
+        <StyledSignUpFormContainer>
+          {/* Oauth - component */}
+          <SignUpOauthContainer onClick={oauthSignUp} />
+          {/* Input - components */}
+          <SignUpFieldsContainer
+            inputUserName={userNameProps}
+            inputEmail={emailProps}
+            inputPassWord={passWordProps}
+          />
+          {/* Button - components */}
+          <SignUpButtonsContainer onClick={emailSignUp} />
+        </StyledSignUpFormContainer>
+      </StyledSignUpFormWrapper>
+    </StyledSignUpContainer>
+  );
+};
+
+export default SignUp;
 
 const StyledSignUpContainer = styled.div`
   flex: 1 1;
@@ -26,117 +74,18 @@ const StyledSignUpFormWrapper = styled.div`
   }
 
   p {
-    font-size: 2rem;
+    font-size: 1.6rem;
     margin: 0.3rem;
+    white-space: nowrap;
   }
-`;
-
-const StyledSignUpFormTopWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
 `;
 
 const StyledSignUpFormContainer = styled.form`
   display: flex;
   flex-direction: column;
-  width: 380px;
-`;
-
-const StyledSignUpOauthContainer = styled.div`
-  margin-bottom: 24px;
-`;
-
-const StyledSignUpFieldsContainer = styled.div`
-  margin-bottom: 24px;
-`;
-
-const StyledSignUpButtonsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 16px;
+  width: 100%;
 
   @media screen and (max-width: 650px) {
-    flex-direction: row;
-    p {
-      display: none;
-    }
+    width: 80%;
   }
 `;
-
-const StyledOauthButton = ButtonEl({
-  fontSize: '2rem',
-  fontWeight: '600'
-});
-
-const StyledSignUpButton = ButtonEl({
-  fontSize: '1.6rem'
-});
-
-const StyledSignInButton = ButtonEl({
-  fontSize: '1.6rem',
-  bg: 'var(--button-inactive-color)',
-  hoverBg: 'var(--button-inactive-hover-color)'
-});
-
-const oauthSignUp = () => {
-  console.log('oauth');
-};
-
-const emailSignUp = () => {
-  console.log('email');
-};
-
-const moveSignIn = () => {
-  console.log('gosignin');
-};
-
-function SignUp() {
-  return (
-    <StyledSignUpContainer>
-      <StyledSignUpFormWrapper>
-        {/* top - component */}
-        <StyledSignUpFormTopWrapper>
-          <img src={logo} width={'200rem'} />
-          <div className='cover'>
-            <p>인디벗에서 취향이 맞는 벗과</p>
-            <p>다양한 인디게임을 즐겨보세요!</p>
-          </div>
-        </StyledSignUpFormTopWrapper>
-        {/* Oauthcomponent */}
-        <StyledSignUpOauthContainer>
-          <StyledOauthButton onClick={oauthSignUp}>
-            <p>Google 회원가입</p>
-          </StyledOauthButton>
-        </StyledSignUpOauthContainer>
-        {/* Form component */}
-        <StyledSignUpFormContainer>
-          <StyledSignUpFieldsContainer>
-            <InputContainer
-              placeholder='ex)인디벗'
-              title='닉네임'
-            ></InputContainer>
-            <InputContainer
-              placeholder='ex)inddy@gmail.com'
-              title='아이디'
-            ></InputContainer>
-            <InputContainer
-              placeholder='8자리 이상'
-              title='비밀번호'
-            ></InputContainer>
-          </StyledSignUpFieldsContainer>
-          <StyledSignUpButtonsContainer>
-            <StyledSignUpButton onClick={emailSignUp}>
-              <p>회원가입!!</p>
-            </StyledSignUpButton>
-            <p>이미 회원이신가요?</p>
-            <StyledSignInButton onClick={moveSignIn}>로그인</StyledSignInButton>
-          </StyledSignUpButtonsContainer>
-        </StyledSignUpFormContainer>
-      </StyledSignUpFormWrapper>
-    </StyledSignUpContainer>
-  );
-}
-
-export default SignUp;
