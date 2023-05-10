@@ -34,7 +34,6 @@ const itemList: NavItemType[] = [
 const Nav = ({ show, setShow }: NavStateType) => {
   const [selectedInd, setSelectedInd] = useState(0);
   const [isOpened, setIsOpened] = useState(false);
-
   const onClickHandler = (i: number) => () => {
     setSelectedInd(i);
     setIsOpened(true);

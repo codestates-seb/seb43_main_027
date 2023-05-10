@@ -1,16 +1,13 @@
-import React from 'react';
 import styled from 'styled-components';
-import Header from '../layouts/Header/Header';
+
 import MainContainer from '../layouts/CategoryGames/MainContainer';
 
 const CategoryGames = () => {
   return (
     <>
-    <Header />
-    <StyledCategoryGamesWrapper>
-      <p>나브바</p>
-      <MainContainer />
-    </StyledCategoryGamesWrapper>
+      <StyledCategoryGamesWrapper>
+        <MainContainer />
+      </StyledCategoryGamesWrapper>
     </>
   );
 };
