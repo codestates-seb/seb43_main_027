@@ -6,7 +6,6 @@ const CategoryGames = () => {
   return (
     <>
       <StyledCategoryGamesWrapper>
-        <p>나브바</p>
         <MainContainer />
       </StyledCategoryGamesWrapper>
     </>
