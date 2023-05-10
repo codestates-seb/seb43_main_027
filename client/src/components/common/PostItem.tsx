@@ -5,63 +5,46 @@ import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import Badge from '../ui/Badge';
 
 const PostItem = () => {
-  return (
-    <StyledContainer>
-      <div>
-        <PostTitle />
-        <PostInfo />
-      </div>
-      <StyledSubContent>
-        <PostSubContent />
-      </StyledSubContent>
-    </StyledContainer>
-  );
-};
-
-const PostInfo = () => {
-  return (
-    <StyledPostInfoContainer>
-      <span>작성자: username</span>
-      <span>작성일: 1분 전</span>
-      <span>추천 수: 0</span>
-    </StyledPostInfoContainer>
-  );
-};
-
-const PostTitle = () => {
-  return (
-    <StyledTitleContainer>
-      <StyledTitle>title</StyledTitle>
-      <Badge text='모집 중' />
-    </StyledTitleContainer>
-  );
-};
-
-const PostSubContent = () => {
   const [marked, setMarked] = useState(false);
 
   const invertMarked = () => {
     setMarked((prev) => !prev);
   };
   return (
-    <StyledPostSubContentContainer>
-      <span>댓글 : 0</span>
-      {marked ? (
-        <AiFillStar
-          color={'var(--cyan-dark-500)'}
-          size={20}
-          onClick={invertMarked}
-        />
-      ) : (
-        <AiOutlineStar
-          color={'var(--cyan-dark-500)'}
-          size={20}
-          onClick={invertMarked}
-        />
-      )}
-    </StyledPostSubContentContainer>
+    <StyledContainer>
+      <div>
+        <StyledTitleContainer>
+          <StyledTitle>title</StyledTitle>
+          <Badge text='모집 중' />
+        </StyledTitleContainer>
+        <StyledPostInfoContainer>
+          <span>작성자: username</span>
+          <span>작성일: 1분 전</span>
+          <span>추천 수: 0</span>
+        </StyledPostInfoContainer>
+      </div>
+      <StyledSubContent>
+        <StyledPostSubContentContainer>
+          <span>댓글 : 0</span>
+          {marked ? (
+            <AiFillStar
+              color={'var(--cyan-dark-500)'}
+              size={20}
+              onClick={invertMarked}
+            />
+          ) : (
+            <AiOutlineStar
+              color={'var(--cyan-dark-500)'}
+              size={20}
+              onClick={invertMarked}
+            />
+          )}
+        </StyledPostSubContentContainer>
+      </StyledSubContent>
+    </StyledContainer>
   );
 };
+
 export default PostItem;
 
 const StyledContainer = styled.div`
