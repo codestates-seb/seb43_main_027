@@ -30,6 +30,10 @@ const GlobalStyle = createGlobalStyle`
   
   /* 로딩 배경 */
   --loding-bg: #efefef;
+  /* category-games-palette */
+  --title-bg: #f7f7f8;
+  --sub-text-color: #53535f;
+  --button-hover-color: #eb2f96;
 }
 
 * {

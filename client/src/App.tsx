@@ -1,14 +1,17 @@
-import React from 'react';
-import GlobalStyle from './styles/GlobalStyles';
-import SignUp from './pages/SignUp/SignUp';
-import Header from './layouts/Header/Header';
+import GlobalStyle from './styles/globalStyles';
+
+import { Route, Routes } from 'react-router-dom';
+import Template from './pages/Template';
+import CategoryGames from './pages/CategoryGames';
 
 const App = () => {
   return (
     <>
-      <GlobalStyle />
-      <Header />
-      <SignUp />
+      <Routes>
+        <Route path='/' element={<Template />}>
+          <Route path='/category/:id' element={<CategoryGames />} />
+        </Route>
+      </Routes>
     </>
   );
 };

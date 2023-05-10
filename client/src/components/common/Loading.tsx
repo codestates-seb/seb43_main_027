@@ -1,10 +1,10 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
-const Loading : React.FunctionComponent = () => {
+const Loading: React.FunctionComponent = () => {
   return (
     <StyledLoadingWrapper>
-      <StyledSpinner/>
+      <StyledSpinner />
     </StyledLoadingWrapper>
   );
 };
@@ -73,6 +73,7 @@ const StyledLoadingWrapper = styled.div`
   display: grid;
   place-items: center;
   background-color: var(--loding-bg);
+  z-index: 9999;
 `;
 
 const StyledSpinner = styled.span`
