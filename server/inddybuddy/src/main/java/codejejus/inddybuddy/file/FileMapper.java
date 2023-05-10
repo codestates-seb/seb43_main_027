@@ -9,6 +9,8 @@ public class FileMapper {
                 .fileName(fileDto.getFileName())
                 .fileUrl(fileDto.getFileUrl())
                 .member(fileDto.getMember())
+                .game(fileDto.getGame())
+                .post(fileDto.getPost())
                 .build();
     }
 }

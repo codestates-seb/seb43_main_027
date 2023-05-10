@@ -13,7 +13,6 @@ public class GameDto {
 
         private String gameName;
         private String downloadUrl;
-        private String mainImgUrl;
         private List<Category.CategoryName> categoryNames;
     }
 

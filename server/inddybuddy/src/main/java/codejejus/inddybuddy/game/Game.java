@@ -45,24 +45,23 @@ public class Game extends Timestamped {
         this.member = member;
     }
 
-    @Builder
-    public Game(String gameName, String downloadUrl, String mainImageUrl, Member member, List<Category> categories) {
-        this.gameName = gameName;
-        this.downloadUrl = downloadUrl;
+    public void setMainImageUrl(String mainImageUrl) {
         this.mainImageUrl = mainImageUrl;
-        this.member = member;
-        this.categories = new ArrayList<>();
     }
 
-    public void updateGame(String gameName, String downloadUrl, String mainImageUrl, List<Category> categories) {
+    @Builder
+    public Game(String gameName, String downloadUrl, Member member) {
+        this.gameName = gameName;
+        this.downloadUrl = downloadUrl;
+        this.member = member;
+    }
+
+    public void updateGame(String gameName, String downloadUrl, List<Category> categories) {
         if (gameName != null) {
             this.gameName = gameName;
         }
         if (downloadUrl != null) {
             this.downloadUrl = downloadUrl;
-        }
-        if (mainImageUrl != null) {
-            this.mainImageUrl = mainImageUrl;
         }
         if (categories != null) {
             this.categories = categories;

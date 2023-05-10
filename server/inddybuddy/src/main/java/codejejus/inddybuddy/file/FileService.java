@@ -1,5 +1,6 @@
 package codejejus.inddybuddy.file;
 
+import codejejus.inddybuddy.game.Game;
 import codejejus.inddybuddy.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,15 @@ public class FileService {
     public File createMemberImg(MultipartFile multipartFile, Member member) {
         String fileName = amazonS3Service.saveUploadFile(multipartFile);
         String fileUrl = amazonS3Service.getFilePath(fileName);
-        FileDto memberFileDto = new FileDto(fileName, fileUrl, member);
+        FileDto memberFileDto = new FileDto(fileName, fileUrl, member, null, null);
+        File file = fileMapper.memberFileDtoToEntity(memberFileDto);
+        return fileRepository.save(file);
+    }
+
+    public File createGameImg(MultipartFile multipartFile, Game game) {
+        String fileName = amazonS3Service.saveUploadFile(multipartFile);
+        String fileUrl = amazonS3Service.getFilePath(fileName);
+        FileDto memberFileDto = new FileDto(fileName, fileUrl, null, game, null);
         File file = fileMapper.memberFileDtoToEntity(memberFileDto);
         return fileRepository.save(file);
     }
@@ -27,5 +36,4 @@ public class FileService {
         File file = fileRepository.findByMember(member);
         amazonS3Service.deleteFile(file.getFileName());
     }
-
 }
