@@ -84,8 +84,11 @@ table {
 a {
     text-decoration: none;
   }
+a:link {
+  color: inherit;
+}
 a:visited {
-  color:inherit;
+  color: inherit;
 }
 
 button {
