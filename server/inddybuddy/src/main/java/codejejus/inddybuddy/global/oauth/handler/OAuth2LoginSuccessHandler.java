@@ -42,7 +42,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         jwtTokenProvider.sendAccessAndRefreshToken(response, accessToken, refreshToken);
         response.addCookie(jwtToCookie(accessToken));
         log.info(request.getServletPath());
-        response.sendRedirect(createURI());
+        response.sendRedirect(createURI(accessToken));
     }
 
     private Cookie jwtToCookie(String accessToken) {
@@ -53,12 +53,13 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         return cookie;
     }
 
-    private String createURI() {
+    private String createURI(String accessToken) {
         return UriComponentsBuilder.newInstance()
                 .scheme("http")
                 .host("localhost")
                 .port(3000)
                 .path("googleLogin")
+                .queryParam(accessToken)
                 .encode(StandardCharsets.UTF_8)
                 .build()
                 .toUriString();
