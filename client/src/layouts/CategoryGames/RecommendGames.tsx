@@ -1,9 +1,10 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import SwiperInstance, { EffectCoverflow } from 'swiper';
+import SwiperInstance, { Autoplay, FreeMode, Pagination, EffectCoverflow } from 'swiper';
 import 'swiper/css';
-import 'swiper/css/effect-coverflow';
+import 'swiper/css/free-mode';
+import 'swiper/css/pagination';
 
 interface Swiper {
   swiper: SwiperInstance;
@@ -13,6 +14,10 @@ type Slide = {
   key: number;
   image: string;
 };
+
+interface StyledContainerProps {
+  backgroundImage: string;
+}
 
 const slides: Slide[] = [
   {
@@ -36,50 +41,40 @@ const slides: Slide[] = [
     key: 4,
     image: 'https://m.gjcdn.net/game-thumbnail/1000/415163-pm6dqtkg-v4.webp'
   },
-  {
-    key: 5,
-    image:
-      'https://m.gjcdn.net/game-thumbnail/1000/370565-crop0_3_616_350-hhcbzd8r-v4.webp'
-  },
-  {
-    key: 6,
-    image: 'https://m.gjcdn.net/game-thumbnail/1000/651214-rpywxctu-v4.webp'
-  }
 ];
 
 const RecommedGames = () => {
-  const swiperRef = useRef<Swiper>(null);
 
-  useEffect(() => {
-    const swiper = swiperRef.current?.swiper;
-    if (!swiper) return;
-
-    const interval = setInterval(() => {
-      swiper.slideNext();
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, []);
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const currentSlide = slides[currentSlideIndex];
 
   return (
-    <StyledContainer>
+    <StyledContainer backgroundImage={currentSlide.image}>
       <StyledSwiperContainer
-        ref={swiperRef}
-        effect={'coverflow'}
-        grabCursor={true}
+        slidesPerView={3}
+        freeMode={true}
         centeredSlides={true}
-        loop={true}
-        slidesPerView={'auto'}
+        pagination={{
+          clickable: true,
+        }}
+        autoplay={{
+          delay: 2500,
+          disableOnInteraction: false,
+        }}
+        navigation={true}
+        effect={'coverflow'}
         coverflowEffect={{
           rotate: 0,
           stretch: 0,
-          depth: 100,
-          modifier: 2.5
+          depth: 70,
+          modifier: 1.5,
         }}
-        modules={[EffectCoverflow]}
+        modules={[Autoplay, FreeMode, Pagination, EffectCoverflow]}
+        onSlideChange={(swiper) => setCurrentSlideIndex(swiper.activeIndex)}
       >
         {slides.map((slide) => (
           <StyledSwiperSlide key={slide.key}>
+            <StyledBadge>TOP</StyledBadge>
             <StyledSwiperSlideImg src={slide.image} alt='slide_image' />
           </StyledSwiperSlide>
         ))}
@@ -90,48 +85,70 @@ const RecommedGames = () => {
 
 export default React.memo(RecommedGames);
 
-const StyledContainer = styled.div`
-  font-size: 1.6rem;
-  background: var(--cyan-dark-1000);
-  scroll-behavior: smooth;
-  max-width: 132rem;
-  padding: 1rem 1rem;
-  margin: 0 auto;
-
-  .swiper {
-    z-index: 0;
+const StyledContainer = styled.div<StyledContainerProps>`
+  width: 100%;
+  height: 450px;
+  background: 
+    linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+    url(${(props) => props.backgroundImage});
+  background-position: center;
+  background-size: cover;
+  transition: background-image 1s ease-in-out;
+  @media screen and (max-width: 650px) {
+    height: 400px;
   }
 `;
 
 const StyledSwiperContainer = styled(Swiper)`
-  height: 44rem;
-  padding: 1rem 0;
-  position: relative;
-  @media screen and (max-width: 650px) {
-    height: 40rem;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  box-shadow: none;
+  .swiper-slide-shadow-left,
+  .swiper-slide-shadow-right {
+    display: none;
   }
 `;
 
 const StyledSwiperSlide = styled(SwiperSlide)`
-  width: 37rem;
-  height: 42rem;
-  position: relative;
-  @media screen and (max-width: 650px) {
-    width: 28rem !important;
-    height: 36rem !important;
-  }
+  min-height: 240px;
+  text-align: center;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const StyledSwiperSlideImg = styled.img`
-  width: 37rem;
-  height: 42rem;
-  border-radius: 2rem;
+  width: 100%;
+  height: 80%;
+  min-width: 250px;
+  min-height: 350px;
   object-fit: cover;
+  border-radius: 15px;
   cursor: pointer;
-  box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1), 0px 6px 6px rgba(0, 0, 0, 0.1);
-  filter: drop-shadow(0px 10px 10px rgba(0, 0, 0, 0.1));
-  @media (max-width: 650px) {
-    width: 28rem !important;
-    height: 36rem !important;
+  @media screen and (max-width: 650px) {
+    min-height: 240px;
+  }
+`;
+
+const StyledBadge = styled.div`
+  padding: 10px 20px 10px 15px;
+  word-break: keep-all;
+  background-color: #fff;
+  color: var(--cyan-dark-500);
+  font-size: 16px;
+  position: relative;
+  top: -120px;
+  left: 50px;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  text-align: center;
+  font-weight: 700;
+  opacity: 0.8;
+  @media screen and (max-width: 650px) {
+    position: absolute;
+    top: 50px;
+    left: -60px;
   }
 `;
