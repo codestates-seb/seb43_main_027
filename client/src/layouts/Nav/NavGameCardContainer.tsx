@@ -10,6 +10,7 @@ const dummy: GameType = {
   mainImgUrl: logo,
   downloadUrl: 'test',
   gameName: 'testtestsetset',
+  followerCount: 1,
   categories: [
     {
       categoryId: 1,

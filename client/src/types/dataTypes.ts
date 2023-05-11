@@ -26,6 +26,7 @@ export type GameType = {
   gameName: string;
   downloadUrl: string;
   mainImgUrl: string;
+  followerCount: number;
   categories: CategoryType[];
 };
 export type PageInfoType = {
