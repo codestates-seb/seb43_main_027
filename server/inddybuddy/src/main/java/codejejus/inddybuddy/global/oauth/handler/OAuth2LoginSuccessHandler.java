@@ -59,7 +59,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
                 .host("localhost")
                 .port(3000)
                 .path("googleLogin")
-                .queryParam(accessToken)
+                .queryParam("token", accessToken)
                 .encode(StandardCharsets.UTF_8)
                 .build()
                 .toUriString();
