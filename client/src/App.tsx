@@ -8,7 +8,6 @@ import Home from './pages/Home';
 const App = () => {
   return (
     <>
-      <GlobalStyle />
       <Routes>
         <Route path='/' element={<Template />}>
           <Route path='/' element={<Home />} />

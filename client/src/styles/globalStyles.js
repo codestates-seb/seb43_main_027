@@ -2,6 +2,7 @@ import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
 :root {
+  /* 프로젝트 메인 색상표 */
   --cyan-light-100: #E6FFFB;
   --cyan-light-200: #B5F5EC;
   --cyan-light-300: #87E8DE;
@@ -22,6 +23,12 @@ const GlobalStyle = createGlobalStyle`
   --cyan-dark-800: #144848;
   --cyan-dark-900: #113536;
   --cyan-dark-1000: #112123;
+
+  /* 요소 색상 */
+  --button-inactive-color: #555555;
+  --button-inactive-hover-color: #eb2f96;
+  
+  /* 로딩 배경 */
   --loding-bg: #efefef;
   /* category-games-palette */
   --title-bg: #f7f7f8;
@@ -81,8 +88,11 @@ table {
 a {
     text-decoration: none;
   }
+a:link {
+  color: inherit;
+}
 a:visited {
-  color:inherit;
+  color: inherit;
 }
 
 button {
