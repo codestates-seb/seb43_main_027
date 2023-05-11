@@ -9,12 +9,10 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -22,19 +20,6 @@ import java.util.Optional;
 public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     private final JwtTokenProvider jwtTokenProvider;
-
-    private static Optional<Cookie> getCookie(HttpServletRequest request, String name) {
-        Cookie[] cookies = request.getCookies();
-
-        if (cookies != null && cookies.length > 0) {
-            for (Cookie cookie : cookies) {
-                if (name.equals(cookie.getName())) {
-                    return Optional.of(cookie);
-                }
-            }
-        }
-        return Optional.empty();
-    }
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
@@ -61,7 +46,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
                 .scheme("http")
                 .host("localhost")
                 .port(3000)
-                .path("googleLogin")
+                .path("signup")
                 .encode(StandardCharsets.UTF_8)
                 .build()
                 .toUriString();
