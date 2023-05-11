@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperInstance, { Autoplay, FreeMode, Pagination, EffectCoverflow } from 'swiper';
@@ -17,6 +17,11 @@ type Slide = {
 
 interface StyledContainerProps {
   backgroundImage: string;
+}
+
+interface StyledIntroduceTextProps {
+  introduceMode: boolean;
+  currentSlideKey: number;
 }
 
 const slides: Slide[] = [
@@ -46,9 +51,33 @@ const slides: Slide[] = [
 const RecommedGames = () => {
 
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const [currentText, setCurrentText] = useState('');
+  const [introduceMode, setIntroduceMode] = useState(false);
   const currentSlide = slides[currentSlideIndex];
 
+  const firstMessage = '인디벗에서 다양한 커뮤니티를 함께 즐겨보세요!';
+  const lastMessage = '원하는 게임이 없다면 지금 바로 게임채널을 만들어보세요!';
+
+  useEffect (() => {
+    if (currentSlide.key === 0) {
+      setIntroduceMode(true);
+      setCurrentText(firstMessage);
+      return;
+    }
+    if (currentSlide.key === slides[slides.length - 1].key) {
+      setIntroduceMode(true);
+      setCurrentText(lastMessage);
+      return;
+    } else {
+      setIntroduceMode(false);
+    }
+  }, [currentSlide]);
+
   return (
+    <>
+    <StyledIntroduceText introduceMode={introduceMode} currentSlideKey={currentSlide.key}>
+      <p>{currentText}</p>
+    </StyledIntroduceText>
     <StyledContainer backgroundImage={currentSlide.image}>
       <StyledSwiperContainer
         slidesPerView={3}
@@ -80,6 +109,7 @@ const RecommedGames = () => {
         ))}
       </StyledSwiperContainer>
     </StyledContainer>
+    </>
   );
 };
 
@@ -96,6 +126,36 @@ const StyledContainer = styled.div<StyledContainerProps>`
   transition: background-image 1s ease-in-out;
   @media screen and (max-width: 650px) {
     height: 400px;
+  }
+`;
+
+const StyledIntroduceText = styled.div<StyledIntroduceTextProps>`
+  display: ${({introduceMode}) => introduceMode ? 'flex' : 'none'};
+  flex-direction: column;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  width: 300px;
+  height: 300px;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: #fff;
+  padding: 30px;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  animation: slide-up 1s ease-in-out;
+  right: ${({currentSlideKey}) => currentSlideKey === slides[slides.length - 1].key ? '50px' : ''};
+  @keyframes slide-up {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+  @media screen and (max-width: 650px) {
+    display: none;
   }
 `;
 
