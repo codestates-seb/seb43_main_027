@@ -3,6 +3,7 @@ package codejejus.inddybuddy.global.jwt;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SecurityException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -73,14 +74,11 @@ public class JwtTokenProvider {
     }
 
     public String getEmailByToken(String token) {
-        String info = Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token)
+        String email = getClaims(token)
                 .getBody()
                 .getSubject();
-        log.info("토큰에서 회원 이메일 추출 : {}", info);
-        return info;
+        log.info("토큰에서 회원 이메일 추출 : {}", email);
+        return email;
     }
 
     public String resolveToken(HttpServletRequest httpServletRequest) {
@@ -88,31 +86,37 @@ public class JwtTokenProvider {
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer")) {
             return bearerToken.replace("Bearer ", "");
         }
-        // TODO : 토큰 에러 throw
         return null;
+    }
+
+    public Jws<Claims> getClaims(String token) {
+        log.info("토큰 claims 가져오기 시작");
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token);
+        } catch (SecurityException e) {
+            log.info("Invalid JWT signature");
+            throw new JwtException("유효하지 않은 시그니처입니다.");
+        } catch (MalformedJwtException e) {
+            log.info("Invalid JWT Token", e);
+            throw new JwtException("유효하지 않은 토큰입니다.");
+        } catch (UnsupportedJwtException e) {
+            log.info("Unsupported JWT Token", e);
+            throw new JwtException("지원하지 않는 토큰입니다.");
+        } catch (ExpiredJwtException e) {
+            log.info("Expired JWT Token", e);
+            throw new JwtException("토큰 기한이 만료되었습니다.");
+        }
     }
 
     public boolean validateToken(String token) {
         log.info("토큰 유효 체크 시작");
-        try {
-            Jws<Claims> claims = Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(token);
-            log.info("body : {}, header : {}, signature : {}", claims.getBody(), claims.getHeader(), claims.getSignature());
-            return claims.getBody()
-                    .getExpiration()
-                    .after(new Date());
-        } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-            log.info("Invalid JWT Token", e);
-        } catch (ExpiredJwtException e) {
-            log.info("Expired JWT Token", e);
-        } catch (UnsupportedJwtException e) {
-            log.info("Unsupported JWT Token", e);
-        } catch (IllegalArgumentException e) {
-            log.info("JWT claims string is empty.", e);
-        }
-        return false;
+        return getClaims(token)
+                .getBody()
+                .getExpiration()
+                .after(new Date());
     }
 
     public void sendAccessAndRefreshToken(HttpServletResponse response, String accessToken, String refreshToken) {

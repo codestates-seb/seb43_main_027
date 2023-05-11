@@ -2,7 +2,9 @@ package codejejus.inddybuddy.global.config;
 
 import codejejus.inddybuddy.global.jwt.JwtTokenProvider;
 import codejejus.inddybuddy.global.jwt.filter.JwtAuthenticationFilter;
+import codejejus.inddybuddy.global.jwt.filter.JwtExceptionFilter;
 import codejejus.inddybuddy.global.jwt.filter.JwtVerificationFilter;
+import codejejus.inddybuddy.global.jwt.handler.JwtAccessDeniedHandler;
 import codejejus.inddybuddy.global.jwt.handler.MemberAuthenticationFailureHandler;
 import codejejus.inddybuddy.global.jwt.handler.MemberAuthenticationSuccessHandler;
 import codejejus.inddybuddy.global.oauth.CustomOAuth2UserService;
@@ -19,6 +21,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -86,7 +89,7 @@ public class SecurityConfig {
     public class CustomFilterConfigurer extends AbstractHttpConfigurer<CustomFilterConfigurer, HttpSecurity> {
 
         @Override
-        public void configure(HttpSecurity httpSecurity) {
+        public void configure(HttpSecurity httpSecurity) throws Exception {
             AuthenticationManager authenticationManager = httpSecurity.getSharedObject(AuthenticationManager.class);
 
             JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenProvider);
@@ -96,8 +99,12 @@ public class SecurityConfig {
 
             JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenProvider);
 
-            httpSecurity.addFilter(jwtAuthenticationFilter)
-                    .addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class);
+            httpSecurity
+                    .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                    .addFilterBefore(jwtVerificationFilter, JwtAuthenticationFilter.class)
+                    .addFilterBefore(new JwtExceptionFilter(), jwtVerificationFilter.getClass())
+                    .exceptionHandling()
+                    .accessDeniedHandler(new JwtAccessDeniedHandler());
         }
     }
 }
