@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { navigat}
 import styled from 'styled-components';
 
 import ButtonEl from '../elements/Button';
@@ -9,7 +8,12 @@ const Modal = ({ confirmMessage, confirmOnClick, cancelOnClick }: any) => {
   const openModalHandler = () => {
     setIsOpen(!isOpen);
   };
-  console.log(confirmMessage);
+
+  const closeModalHandler = () => {
+    openModalHandler();
+    if (cancelOnClick) cancelOnClick();
+  };
+
   return (
     <>
       <ModalContainer>
@@ -23,8 +27,12 @@ const Modal = ({ confirmMessage, confirmOnClick, cancelOnClick }: any) => {
                 &times;
               </span>
               <div className='desc'>{confirmMessage}</div>
-              <ModalConfirmButton onClick={confirmOnClick}>확인</ModalConfirmButton>
-              <ModalCancelButton onClick={cancelOnClick}>취소</ModalCancelButton>
+              <ModalConfirmButton onClick={confirmOnClick}>
+                확인
+              </ModalConfirmButton>
+              <ModalCancelButton onClick={closeModalHandler}>
+                취소
+              </ModalCancelButton>
             </ModalView>
           </ModalBackdrop>
         ) : null}
@@ -90,6 +98,6 @@ export const ModalView = styled.div.attrs((props) => ({
 
   @media screen and (max-width: 650px) {
     width: 30rem;
-  height: 10rem;
+    height: 10rem;
   }
 `;
