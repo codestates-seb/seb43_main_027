@@ -7,7 +7,6 @@ import CategoryGames from './pages/CategoryGames';
 const App = () => {
   return (
     <>
-      <GlobalStyle />
       <Routes>
         <Route path='/' element={<Template />}>
           <Route path='/category/:id' element={<CategoryGames />} />
