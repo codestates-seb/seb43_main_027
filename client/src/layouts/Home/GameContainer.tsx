@@ -44,10 +44,6 @@ const StyledWrapper = styled.div`
 
 const StyledContainer = styled.div`
   width: 100%;
-
-  @media screen and (min-width: 650px) {
-    width: 90%;
-  }
 `;
 
 const StyledCardContainer = styled.div`
