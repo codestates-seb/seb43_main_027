@@ -41,4 +41,12 @@ public class PostController {
                                                        @RequestBody PostDto.Request requestDto) {
         return ResponseEntity.ok(new SingleResponse<>(postService.modifyPost(postId, memberPrincipal, requestDto)));
     }
+
+    // Todo : 댓글 구현 후, 게시글 삭제 시 댓글까지 삭제 구현하기
+    @DeleteMapping("/{post-id}")
+    public ResponseEntity<Post> deletePost(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
+                                           @PathVariable("post-id") Long postId) {
+        postService.deletePost(postId, memberPrincipal);
+        return ResponseEntity.noContent().build();
+    }
 }

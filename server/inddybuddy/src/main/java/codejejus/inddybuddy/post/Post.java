@@ -49,7 +49,6 @@ public class Post extends Timestamped {
     private PostStatus postStatus = PostStatus.POST_REGISTRATION;
 
     // Todo : 글 제목, 글 내용, 멤버, 첨부 파일(들), 게임 이름?
-    // DTO를 위해 만들어놓음?
     @Builder
     public Post(String title, String content, Member member) {
         this.title = title;
@@ -77,6 +76,10 @@ public class Post extends Timestamped {
         PostTag(String status) {
             this.status = status;
         }
+    }
+
+    public void updatePostStatus(PostStatus postStatus) {
+        this.postStatus = postStatus;
     }
 
     public enum PostStatus {
