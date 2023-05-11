@@ -6,6 +6,7 @@ import CategoryCard from '../../components/common/CategoryCard';
 import Title from './Title';
 import CreateChannelButton from '../../components/ui/CreateChannelButton';
 
+import iconData from '../../data/categoryIcons';
 import { CategoryType } from '../../types/dataTypes';
 
 const CategoryContainer = () => {
@@ -17,7 +18,12 @@ const CategoryContainer = () => {
         const { data }: { data: CategoryType[] } = await axios(
           `${process.env.REACT_APP_API_URL}/api/categories`
         );
-        setCategories(data);
+        setCategories(
+          data.map((category) => ({
+            ...category,
+            categoryIcon: iconData[category.categoryName]
+          }))
+        );
       } catch (err) {
         console.error(err);
       }
