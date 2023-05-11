@@ -80,7 +80,7 @@ const StyledItemContainer = styled.div`
     top: 70px;
     width: 100%;
     max-width: 36rem;
-    max-height: 60rem;
+    max-height: 40vh;
     overflow: scroll;
   }
 `;
