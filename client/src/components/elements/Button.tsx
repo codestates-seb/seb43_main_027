@@ -21,7 +21,7 @@ function ButtonEl(props: ButtonType) {
 export default ButtonEl;
 
 const StyledBtn = styled.button<ButtonType>`
-  flex: ${(props) => props.flex || '1'};
+  flex: ${(props) => props.flex || ''};
   font-size: ${(props) => props.fontSize || '1.3rem'};
   font-weight: ${(props) => props.fontWeight || '600'};
   text-align: center;
