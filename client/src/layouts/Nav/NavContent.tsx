@@ -15,15 +15,17 @@ const NavContent = ({
 
   return (
     <StyledContainer>
-      <StyledItemContainer>
-        {user ? (
-          [1, 2, 3].map((a) => <Content key={a} />)
-        ) : (
-          <StyledNotiMsgContainer>
-            <span>로그인이 필요한 서비스입니다.</span>
-          </StyledNotiMsgContainer>
-        )}
-      </StyledItemContainer>
+      <StyledRelativeBox>
+        <StyledItemContainer>
+          {user ? (
+            [1, 2, 3, 4, 5, 6, 7].map((a) => <Content key={a} />)
+          ) : (
+            <StyledNotiMsgContainer>
+              <span>로그인이 필요한 서비스입니다.</span>
+            </StyledNotiMsgContainer>
+          )}
+        </StyledItemContainer>
+      </StyledRelativeBox>
     </StyledContainer>
   );
 };
@@ -58,10 +60,22 @@ const StyledNotiMsgContainer = styled(StyledContainer)`
   font-size: 2rem;
 `;
 
+const StyledRelativeBox = styled.div`
+  position: relative;
+  height: 100%;
+`;
+
 const StyledItemContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   height: fit-content;
   justify-content: space-between;
   gap: 2rem;
+  @media screen and (min-width: 650px) {
+    position: fixed;
+    top: 70px;
+    max-width: 36rem;
+    max-height: 60rem;
+    overflow: scroll;
+  }
 `;

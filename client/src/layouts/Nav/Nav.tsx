@@ -76,7 +76,8 @@ export default Nav;
 
 const StyledNav = styled.nav<{ show: boolean }>`
   display: ${(props) => (props.show ? 'block' : 'none')};
-  position: absolute;
+  position: fixed;
+  top: 50px;
   width: 100%;
   height: 50px;
   background-color: #fff;
@@ -87,6 +88,7 @@ const StyledNav = styled.nav<{ show: boolean }>`
     display: block;
     width: 50px;
     height: inherit;
+    top: 0;
   }
 `;
 const StyledStickyBox = styled.div`
