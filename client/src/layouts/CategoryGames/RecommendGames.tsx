@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperInstance, { Autoplay, FreeMode, Pagination, EffectCoverflow } from 'swiper';
+import { slides } from '../../data/dummyCategories';
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/pagination';
@@ -9,11 +10,6 @@ import 'swiper/css/pagination';
 interface Swiper {
   swiper: SwiperInstance;
 }
-
-type Slide = {
-  key: number;
-  image: string;
-};
 
 interface StyledContainerProps {
   backgroundImage: string;
@@ -23,30 +19,6 @@ interface StyledIntroduceTextProps {
   introduceMode: boolean;
   currentSlideKey: number;
 }
-
-const slides: Slide[] = [
-  {
-    key: 0,
-    image: 'https://m.gjcdn.net/game-thumbnail/1000/435648-bcpdubiq-v4.webp'
-  },
-  {
-    key: 1,
-    image: 'https://m.gjcdn.net/game-thumbnail/1000/164227-f2fvqeih-v4.webp'
-  },
-  {
-    key: 2,
-    image:
-      'https://m.gjcdn.net/game-thumbnail/1000/348021-crop10_0_598_331-w5vedzau-v4.webp'
-  },
-  {
-    key: 3,
-    image: 'https://m.gjcdn.net/game-thumbnail/1000/352743-an4gjy3v-v4.webp'
-  },
-  {
-    key: 4,
-    image: 'https://m.gjcdn.net/game-thumbnail/1000/415163-pm6dqtkg-v4.webp'
-  },
-];
 
 const RecommedGames = () => {
 
