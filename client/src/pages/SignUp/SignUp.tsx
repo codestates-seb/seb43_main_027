@@ -53,7 +53,7 @@ const SignUp = () => {
 
   return (
     <StyledSignUpContainer>
-      <Modal></Modal>
+      <Modal confirmMessage={'정말입니까'} />
       <StyledSignUpFormWrapper>
         {/* top - component */}
         <SignUpTopWrapper />
