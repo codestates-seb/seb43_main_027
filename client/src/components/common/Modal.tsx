@@ -21,11 +21,9 @@ const Modal = ({ confirmMessage, confirmOnClick, cancelOnClick }: any) => {
           {isOpen === false ? 'Open Modal' : 'Opened!'}
         </ModalButton>
         {isOpen === true ? (
+          //  모달 바깥을 클릭해도 취소가 되도록 할지 여부에 따라 backdrop 온클릭 속성 유무 결정
           <ModalBackdrop onClick={openModalHandler}>
             <ModalView onClick={(e) => e.stopPropagation()}>
-              <span onClick={openModalHandler} className='close-btn'>
-                &times;
-              </span>
               <div className='desc'>{confirmMessage}</div>
               <ModalConfirmButton onClick={confirmOnClick}>
                 확인
