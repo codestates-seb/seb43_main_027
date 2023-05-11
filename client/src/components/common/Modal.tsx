@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-const Modal = ({ confirmMessage }) => {
+import ButtonEl from '../elements/Button';
+
+const Modal = ({ confirmMessage }: any) => {
   const [isOpen, setIsOpen] = useState(false);
   const openModalHandler = () => {
     setIsOpen(!isOpen);
   };
+  console.log(confirmMessage);
   return (
     <>
       <ModalContainer>
-        <ModalBtn onClick={openModalHandler}>
+        <ModalButton onClick={openModalHandler}>
           {isOpen === false ? 'Open Modal' : 'Opened!'}
-        </ModalBtn>
+        </ModalButton>
         {isOpen === true ? (
           <ModalBackdrop onClick={openModalHandler}>
             <ModalView onClick={(e) => e.stopPropagation()}>
@@ -19,6 +22,8 @@ const Modal = ({ confirmMessage }) => {
                 &times;
               </span>
               <div className='desc'>{confirmMessage}</div>
+              <ModalConfirmButton>확인</ModalConfirmButton>
+              <ModalCancelButton>취소</ModalCancelButton>
             </ModalView>
           </ModalBackdrop>
         ) : null}
@@ -47,15 +52,31 @@ export const ModalContainer = styled.div`
   margin: 120px auto;
 `;
 
-export const ModalBtn = styled.button`
-  background-color: #4000c7;
-  text-decoration: none;
-  border: none;
-  padding: 20px;
-  color: white;
-  border-radius: 30px;
-  cursor: grab;
-`;
+// export const ModalBtn = styled.button`
+//   background-color: #4000c7;
+//   text-decoration: none;
+//   border: none;
+//   padding: 20px;
+//   color: white;
+//   border-radius: 30px;
+//   cursor: grab;
+// `;
+
+const ModalButton = ButtonEl({
+  bg: 'white',
+  padding: '20px',
+  radius: '30px'
+});
+
+const ModalConfirmButton = ButtonEl({
+  bg: 'var(--cyan-dark-400)',
+  hoverBg: 'var(--cyan-dark-500)'
+});
+
+const ModalCancelButton = ButtonEl({
+  bg: 'var(--button-inactive-color)',
+  hoverBg: 'var(--button-inactive-hover-color)'
+});
 
 export const ModalView = styled.div.attrs((props) => ({
   // attrs 메소드를 이용해서 아래와 같이 div 엘리먼트에 속성을 추가할 수 있습니다.
@@ -63,8 +84,8 @@ export const ModalView = styled.div.attrs((props) => ({
 }))`
   border-radius: 10px;
   background-color: #ffffff;
-  width: 300px;
-  height: 100px;
+  width: 45rem;
+  height: 15rem;
 
   > span.close-btn {
     margin-top: 5px;
