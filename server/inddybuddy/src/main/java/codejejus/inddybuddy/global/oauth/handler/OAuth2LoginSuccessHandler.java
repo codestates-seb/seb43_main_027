@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -23,19 +22,6 @@ import java.util.Optional;
 public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
     private final JwtTokenProvider jwtTokenProvider;
-
-    private static Optional<Cookie> getCookie(HttpServletRequest request, String name) {
-        Cookie[] cookies = request.getCookies();
-
-        if (cookies != null && cookies.length > 0) {
-            for (Cookie cookie : cookies) {
-                if (name.equals(cookie.getName())) {
-                    return Optional.of(cookie);
-                }
-            }
-        }
-        return Optional.empty();
-    }
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
@@ -54,7 +40,17 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         log.info("accessToken : {}", accessToken);
         log.info("refreshToken : {}", refreshToken);
         jwtTokenProvider.sendAccessAndRefreshToken(response, accessToken, refreshToken);
+        response.addCookie(jwtToCookie(accessToken));
+        log.info(request.getServletPath());
         response.sendRedirect(createURI());
+    }
+
+    private Cookie jwtToCookie(String accessToken) {
+        String COOKIE_NAME = "token";
+        Cookie cookie = new Cookie(COOKIE_NAME, accessToken);
+        cookie.setMaxAge(3600);  // 테스트 후 더 짧게 유지할 계획입니다.
+        cookie.setPath("/");
+        return cookie;
     }
 
     private String createURI() {
