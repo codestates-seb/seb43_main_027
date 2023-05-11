@@ -54,8 +54,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         log.info("accessToken : {}", accessToken);
         log.info("refreshToken : {}", refreshToken);
         jwtTokenProvider.sendAccessAndRefreshToken(response, accessToken, refreshToken);
-        String redirectUri = getCookie(request, "redirect_uri").map(Cookie::getValue).orElse(getDefaultTargetUrl());
-        response.sendRedirect(redirectUri);
+        response.sendRedirect(createURI());
     }
 
     private String createURI() {
