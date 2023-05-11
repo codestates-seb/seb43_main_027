@@ -52,10 +52,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         response.setHeader("Refresh", refreshToken);
         log.info("accessToken : {}", accessToken);
         log.info("refreshToken : {}", refreshToken);
-
-        Optional<String> redirectUri = getCookie(request, "redirect_uri").map(Cookie::getValue);
         jwtTokenProvider.sendAccessAndRefreshToken(response, accessToken, refreshToken);
-        response.sendRedirect(redirectUri.orElseGet(this::createURI));
+        response.sendRedirect(createURI());
     }
 
     private String createURI() {
@@ -63,6 +61,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
                 .scheme("http")
                 .host("localhost")
                 .port(3000)
+                .path("googleLogin")
                 .encode(StandardCharsets.UTF_8)
                 .build()
                 .toUriString();
