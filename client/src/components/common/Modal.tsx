@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
+import { navigat}
 import styled from 'styled-components';
 
 import ButtonEl from '../elements/Button';
 
-const Modal = ({ confirmMessage }: any) => {
+const Modal = ({ confirmMessage, confirmOnClick, cancelOnClick }: any) => {
   const [isOpen, setIsOpen] = useState(false);
   const openModalHandler = () => {
     setIsOpen(!isOpen);
@@ -22,8 +23,8 @@ const Modal = ({ confirmMessage }: any) => {
                 &times;
               </span>
               <div className='desc'>{confirmMessage}</div>
-              <ModalConfirmButton>확인</ModalConfirmButton>
-              <ModalCancelButton>취소</ModalCancelButton>
+              <ModalConfirmButton onClick={confirmOnClick}>확인</ModalConfirmButton>
+              <ModalCancelButton onClick={cancelOnClick}>취소</ModalCancelButton>
             </ModalView>
           </ModalBackdrop>
         ) : null}
@@ -52,18 +53,8 @@ export const ModalContainer = styled.div`
   margin: 120px auto;
 `;
 
-// export const ModalBtn = styled.button`
-//   background-color: #4000c7;
-//   text-decoration: none;
-//   border: none;
-//   padding: 20px;
-//   color: white;
-//   border-radius: 30px;
-//   cursor: grab;
-// `;
-
 const ModalButton = ButtonEl({
-  bg: 'white',
+  // bg: 'var(--cyan-light-400)',
   padding: '20px',
   radius: '30px'
 });
