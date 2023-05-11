@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { HTMLInputTypeAttribute } from 'react';
 import styled from 'styled-components';
 
 import { StyledInput } from '../elements/Input';
@@ -11,12 +11,14 @@ interface InputContainerType {
   title?: string;
   onChange?: React.ChangeEvent;
   useInput?: useInputReturn;
+  type?: string;
 }
 
 const InputContainer = ({
   placeholder = 'ex)',
   title = '입력창',
-  useInput
+  useInput,
+  type
 }: InputContainerType) => {
   return (
     <InputContainerWrapper>
@@ -34,6 +36,7 @@ const InputContainer = ({
                   console.log('error');
                 }
           }
+          type={type}
         ></InputEl>
       </Field>
     </InputContainerWrapper>

@@ -25,6 +25,7 @@ const SignUpFieldsContainer = ({
         placeholder='8자리 이상'
         title='비밀번호'
         useInput={inputPassWord}
+        type='password'
       ></InputContainer>
     </StyledSignUpFieldsContainer>
   );
