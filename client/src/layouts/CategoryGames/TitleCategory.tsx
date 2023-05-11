@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import CreateChannelButton from '../../components/ui/CreateChannelButton';
-import dummyCategories from '../../data/dummyCategories';
+import { dummyCategories } from '../../data/dummyCategories';
 
 const TitleCategory: React.FC = ()  => {
 
