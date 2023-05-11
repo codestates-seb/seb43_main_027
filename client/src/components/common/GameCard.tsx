@@ -1,33 +1,20 @@
 import styled from 'styled-components';
 
-import logo from '../../asset/logo.png';
 import Badge from '../ui/Badge';
 
 import { GameType } from '../../types/dataTypes';
 
-const dummy: GameType = {
-  gameId: 1,
-  mainImgUrl: logo,
-  downloadUrl: 'test',
-  gameName: 'testtestsetset',
-  categories: [
-    {
-      categoryId: 1,
-      categoryName: 'RPG'
-    }
-  ]
-};
-
-const GameCard = () => {
+const GameCard = ({ mainImgUrl, categories, gameName }: GameType) => {
+  // TODO: 게임 클릭 시 해당 게임 페이지로 이동
   return (
     <StyledContainer>
-      <StyledImg src={dummy.mainImgUrl} />
+      <StyledImg src={mainImgUrl} />
       <StyledBadgeContainer>
-        {dummy.categories.map((category) => (
+        {categories.map((category) => (
           <Badge text={category.categoryName} key={category.categoryId} />
         ))}
       </StyledBadgeContainer>
-      <StyledTitle>{dummy.gameName}</StyledTitle>
+      <StyledTitle>{gameName}</StyledTitle>
     </StyledContainer>
   );
 };
@@ -37,7 +24,7 @@ export default GameCard;
 const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 45%;
+  width: 100%;
   gap: 0.8rem;
 `;
 const StyledImg = styled.img`
