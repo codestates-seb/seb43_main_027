@@ -17,7 +17,7 @@ const NavContent = ({
     <StyledContainer>
       <StyledRelativeBox>
         <StyledItemContainer>
-          {user ? (
+          {user.memberId === -1 ? (
             [1, 2, 3, 4, 5, 6, 7].map((a) => <Content key={a} />)
           ) : (
             <StyledNotiMsgContainer>
@@ -51,17 +51,20 @@ const StyledContainer = styled.div`
   }
 `;
 
-const StyledNotiMsgContainer = styled(StyledContainer)`
+const StyledNotiMsgContainer = styled.div`
   display: flex;
   justify-content: center;
   top: 0;
   left: 0;
+  width: 100%;
   align-items: center;
   font-size: 2rem;
+  padding: 0;
 `;
 
 const StyledRelativeBox = styled.div`
   position: relative;
+  width: 100%;
   height: 100%;
 `;
 
@@ -69,11 +72,13 @@ const StyledItemContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   height: fit-content;
+  min-height: 30rem;
   justify-content: space-between;
   gap: 2rem;
   @media screen and (min-width: 650px) {
     position: fixed;
     top: 70px;
+    width: 100%;
     max-width: 36rem;
     max-height: 60rem;
     overflow: scroll;
