@@ -30,7 +30,7 @@ public class PostService {
         post.setGame(gameService.findGame(requestDto.getGameId()));
         post.setMember(memberPrincipal.getMember());
         Post save = postRepository.save(post);
-        return postMapper.entityToReesponse(save);
+        return postMapper.entityToResponse(save);
     }
 
     public PostDto.Response modifyPost(Long postId, MemberPrincipal memberPrincipal, PostDto.Request requestDto) {
@@ -38,7 +38,15 @@ public class PostService {
         memberService.verifySameMember(findPost.getMember(), memberPrincipal.getMember()); // 회원 검증
         // Todo : 이미지 리스트, 파일 리스트 추가 필요
         findPost.updatePost(requestDto.getTitle(), requestDto.getContent(), requestDto.getPostTag());
-        return postMapper.entityToReesponse(findPost);
+        return postMapper.entityToResponse(findPost);
+    }
+    // Todo : 댓글 구현 후, 게시글 삭제 시 댓글까지 삭제 구현하기
+    public PostDto.Response deletePost(Long postId, MemberPrincipal memberPrincipal) {
+        Post findPost = findVerifidPost(postId);
+        memberService.verifySameMember(findPost.getMember(), memberPrincipal.getMember());
+        findPost.updatePostStatus(Post.PostStatus.POST_DELETED);
+        postRepository.save(findPost);
+        return postMapper.entityToResponse(findPost);
     }
     private void verifyPost(Post post) {
         Long memberId = post.getMember().getMemberId();

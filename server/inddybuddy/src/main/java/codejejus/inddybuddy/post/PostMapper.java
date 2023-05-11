@@ -14,7 +14,7 @@ public class PostMapper {
 //                .fileList(requestDto.getFileList())
                 .build();
     }
-    public PostDto.Response entityToReesponse(Post post) {
+    public PostDto.Response entityToResponse(Post post) {
         return PostDto.Response.builder()
                 .postId(post.getPostId())
                 .gameId(post.getGame().getGameId())
@@ -26,11 +26,3 @@ public class PostMapper {
     }
 }
 
-// Interface로 만들 때
-//@Mapper(componentModel = "spring")
-//public interface PostMapper {
-//
-//    Post postDtoPostToPost(PostDto.Post post);
-//    Post postDtoPatchToPost(PostDto.Patch patch);
-//    PostDto.Response postToPostDtoResponse(Post post);
-//}
