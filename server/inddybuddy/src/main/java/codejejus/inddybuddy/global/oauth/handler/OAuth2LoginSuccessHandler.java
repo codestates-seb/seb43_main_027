@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -19,7 +20,7 @@ import java.util.Optional;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
+public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -53,8 +54,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         log.info("accessToken : {}", accessToken);
         log.info("refreshToken : {}", refreshToken);
         jwtTokenProvider.sendAccessAndRefreshToken(response, accessToken, refreshToken);
-        getCookie(request, "redirect_uri");
-        response.sendRedirect(createURI());
+        String redirectUri = getCookie(request, "redirect_uri").map(Cookie::getValue).orElse(getDefaultTargetUrl());
+        response.sendRedirect(redirectUri);
     }
 
     private String createURI() {
@@ -62,7 +63,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
                 .scheme("http")
                 .host("localhost")
                 .port(3000)
-                .path("signup")
+                .path("googleLogin")
                 .encode(StandardCharsets.UTF_8)
                 .build()
                 .toUriString();
