@@ -87,4 +87,9 @@ export const ModalView = styled.div.attrs((props) => ({
     margin-top: 25px;
     color: #4000c7;
   }
+
+  @media screen and (max-width: 650px) {
+    width: 30rem;
+  height: 10rem;
+  }
 `;
