@@ -16,7 +16,7 @@ const NavContent = ({
   const user = useSelector((s: RootState) => s.user);
   const apiRef = useRef<{ [key: string]: string }>({
     user: `/api/members/${user.memberId}/following`,
-    bookmark: `/api/members/${user.memberId}/following`,
+    bookmark: `/api/members/${user.memberId}/bookmark`,
     games: `/api/members/${user.memberId}/mygame`
   });
   // TODO: type에 따라서 데이터 패칭을 다르게 하고 보여준다.
