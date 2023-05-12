@@ -8,7 +8,9 @@ import { InputContainerType } from '../../types/componentsTypes';
 const InputContainer = ({
   placeholder = 'ex)',
   title = '입력창',
-  useInput
+  useInput,
+  validmessage,
+  validity
 }: InputContainerType) => {
   return (
     <InputContainerWrapper>
@@ -26,7 +28,12 @@ const InputContainer = ({
                   console.log('error');
                 }
           }
-        ></InputEl>
+        />
+        {validity || validity === undefined ? (
+          <ValidMessageInvisible>Invisible</ValidMessageInvisible>
+        ) : (
+          <ValidMessage>{validmessage}</ValidMessage>
+        )}
       </Field>
     </InputContainerWrapper>
   );
@@ -60,6 +67,7 @@ export const Field = styled.div`
   overflow: hidden;
   border-radius: 2px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   align-self: stretch;
 `;
@@ -68,4 +76,12 @@ export const InputEl = styled(StyledInput)`
   align-items: center;
   flex: 1;
   border: 1px solid rgba(217, 217, 217, 1);
+`;
+
+// 나중에 p 태그 따로 element로 빼고 싶어서 Styled 안붙임.
+const ValidMessage = styled.p`
+  color: red;
+`;
+const ValidMessageInvisible = styled.p`
+  color: transparent;
 `;
