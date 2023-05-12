@@ -1,14 +1,23 @@
+import React from 'react';
 import styled from 'styled-components';
-
-import MainContainer from '../layouts/CategoryGames/MainContainer';
+import GameList from '../layouts/CategoryGames/GameList';
+import FilterTap from '../components/common/FilterTap';
+import RecommendGames from '../layouts/CategoryGames/RecommendGames';
+import TitleCategory from '../layouts/CategoryGames/TitleCategory';
 
 const CategoryGames = () => {
+
+  const filterList = ['전체 게임', '인기 게임', '신규 게임', '팔로우 게임'];
+
   return (
-    <>
-      <StyledCategoryGamesWrapper>
-        <MainContainer />
-      </StyledCategoryGamesWrapper>
-    </>
+    <StyledCategoryGamesWrapper>
+      <StyleContain>
+        <TitleCategory />
+        <RecommendGames />
+        <FilterTap filterList={filterList} />
+        <GameList />
+      </StyleContain>
+    </StyledCategoryGamesWrapper>
   );
 };
 
@@ -23,4 +32,11 @@ const StyledCategoryGamesWrapper = styled.div`
   flex-direction: row;
   flex-grow: 1;
   overflow-x: hidden;
+`;
+
+const StyleContain = styled.div`
+  width: 100%;
+  height: 100%;
+  background-color: var(--title-bg);
+  position: relative;
 `;
