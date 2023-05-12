@@ -9,7 +9,10 @@ const GameList = ()  => {
     <StyledGameList>
       {
         dummyGameData.map((item, index) => (
-          <GameItem key={index} />
+          <GameItem 
+            key={item.gameId} 
+            gameId={item.gameId}
+          />
         ))
       }
     </StyledGameList>

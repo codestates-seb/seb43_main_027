@@ -3,7 +3,7 @@ type CategoryType = {
   categoryName: string;
 };
 
-type Game = {
+export type Game = {
   gameId: number;
   gameName: string;
   downloadUrl: string;
@@ -45,7 +45,19 @@ export const dummyGameData : Game[] = [
       {
         categoryId: 7,
         categoryName: '아케이드'
-      }
+      },
+      {
+        categoryId: 9,
+        categoryName: '호러'
+      },
+      {
+        categoryId: 10,
+        categoryName: '액션'
+      },
+      {
+        categoryId: 13,
+        categoryName: '카드'
+      },
     ],
   },
   {
@@ -76,15 +88,15 @@ export const dummyGameData : Game[] = [
     categories: [
       {
         categoryId: 1,
-        categoryName: 'FPS'
+        categoryName: 'AOBS'
       },
       {
         categoryId: 2,
-        categoryName: '힐링'
+        categoryName: '전략'
       },
       {
         categoryId: 3,
-        categoryName: '공포'
+        categoryName: '시뮬레이션'
       }
     ],
   },
