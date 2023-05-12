@@ -4,8 +4,9 @@ export interface useInputType {
   inputPassWord: useInputReturn;
 }
 
-export type useInputReturn = {
+export interface useInputReturn {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   setValue: React.Dispatch<React.SetStateAction<string>>;
 };
+
