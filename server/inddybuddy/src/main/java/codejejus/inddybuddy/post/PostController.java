@@ -1,12 +1,9 @@
 package codejejus.inddybuddy.post;
 
-import codejejus.inddybuddy.game.GameDto;
 import codejejus.inddybuddy.global.constant.Filter;
 import codejejus.inddybuddy.global.dto.MultiResponse;
 import codejejus.inddybuddy.global.dto.SingleResponse;
 import codejejus.inddybuddy.global.utils.UriCreator;
-import codejejus.inddybuddy.member.dto.MemberDto;
-import codejejus.inddybuddy.member.entity.Member;
 import codejejus.inddybuddy.member.entity.MemberPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,10 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -27,10 +22,7 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
-    private final PostMapper postMapper;
 
-
-    // Mapper를 클래스, 엔티티에 builder 생성시
     @PostMapping
     public ResponseEntity<PostDto.Response> createPost(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
                                         @RequestBody PostDto.Request requestDto,
@@ -60,7 +52,7 @@ public class PostController {
                                                                        @RequestParam(required = false)Post.PostTag postTag,
                                                                        @RequestParam(required = false)Filter filter) {
         Page<PostDto.Response> pagePosts = postService.getAllPosts(pageable, postTag, filter);
-        List<PostDto.Response> posts = pagePosts.getContent(); // 필요한지 검증
+        List<PostDto.Response> posts = pagePosts.getContent();
         return ResponseEntity.ok(new MultiResponse<>(posts, pagePosts));
     }
 

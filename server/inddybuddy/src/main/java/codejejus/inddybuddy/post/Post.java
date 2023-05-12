@@ -1,6 +1,5 @@
 package codejejus.inddybuddy.post;
 
-import codejejus.inddybuddy.file.File;
 import codejejus.inddybuddy.game.Game;
 import codejejus.inddybuddy.global.audit.Timestamped;
 import codejejus.inddybuddy.like.Like;
@@ -86,8 +85,6 @@ public class Post extends Timestamped {
         PostStatus(String status) {this.status = status;}
     }
 
-    // for 캡슐화, 응집도, 재사용성. 서비스 계층과 컨트롤러 계층에서 사용 가능
-    // Todo : file과 imgURl 추가 필요
     public void updatePost(String title, String content, PostTag postTag) {
 
         if(title != null) {

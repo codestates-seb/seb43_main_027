@@ -1,6 +1,5 @@
 package codejejus.inddybuddy.post;
 
-import codejejus.inddybuddy.file.File;
 import codejejus.inddybuddy.like.Like;
 import codejejus.inddybuddy.post.Post.PostTag;
 import lombok.AllArgsConstructor;
@@ -9,7 +8,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class PostDto {
@@ -21,8 +19,6 @@ public class PostDto {
         private long gameId;
         private String content;
         private PostTag postTag;
-//        private List<String> imgUrls;
-//        private List<File> fileList;
         public void addGameId(Long gameId) {
             this.gameId = gameId;
         }

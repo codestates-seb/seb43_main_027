@@ -6,7 +6,6 @@ import codejejus.inddybuddy.global.exception.CustomException;
 import codejejus.inddybuddy.global.exception.ExceptionCode;
 import codejejus.inddybuddy.member.entity.MemberPrincipal;
 import codejejus.inddybuddy.member.service.MemberService;
-import codejejus.inddybuddy.post.Post;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
