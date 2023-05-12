@@ -8,9 +8,15 @@ import CreateChannelButton from '../../components/ui/CreateChannelButton';
 
 import iconData from '../../data/categoryIcons';
 import { CategoryType } from '../../types/dataTypes';
+import { useNavigate } from 'react-router-dom';
 
 const CategoryContainer = () => {
   const [categories, setCategories] = useState<CategoryType[]>([]);
+  const navigation = useNavigate();
+
+  const onClickCreateButtonHandler = () => {
+    navigation('/game');
+  };
 
   useEffect(() => {
     (async () => {
@@ -36,7 +42,7 @@ const CategoryContainer = () => {
         <Title text='카테고리' />
         <CreateChannelButton
           text='게임채널 추가'
-          onClick={() => console.log('test')}
+          onClick={onClickCreateButtonHandler}
         />
       </StyledTitleContainer>
       <StyledCategoryCardContainer>
