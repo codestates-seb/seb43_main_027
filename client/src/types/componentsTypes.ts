@@ -28,6 +28,14 @@ export interface InputType {
   useInput?: useInputReturn
 }
 
+export interface InputContainerType {
+  placeholder?: string;
+  title?: string;
+  onChange?: React.ChangeEvent;
+  useInput?: useInputReturn;
+  validmessage?: string;
+}
+
 export interface LabelType {
   fontSize?: string;
   fontWeight?: string;
