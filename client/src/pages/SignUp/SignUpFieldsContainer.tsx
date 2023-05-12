@@ -4,16 +4,11 @@ import SignUpFieldsInputContainer from './SignUpFieldsInputContainer';
 
 import { useInputType } from '../../types/costomHooksTypes';
 
-interface SignUpFieldsInputType extends useInputType {
-  validmessage: string;
-}
-
 const SignUpFieldsContainer = ({
   inputUserName,
   inputEmail,
-  inputPassWord,
-  validmessage
-}: SignUpFieldsInputType) => {
+  inputPassWord
+}: useInputType) => {
   return (
     <StyledSignUpFieldsContainer>
       <SignUpFieldsInputContainer
