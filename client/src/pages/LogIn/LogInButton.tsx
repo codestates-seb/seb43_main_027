@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 import ButtonEl from '../../components/elements/Button';
 
-export interface LogInButton {
+export interface LogInButtonType {
   onClick: React.MouseEventHandler;
 }
 
-const LogInBtn = ({ onClick }: LogInButton) => {
+const LogInButton = ({ onClick }: LogInButtonType) => {
   return (
     <StyledLogInBtnContainer>
       <StyledLogInBtn onClick={onClick}>
@@ -15,7 +15,7 @@ const LogInBtn = ({ onClick }: LogInButton) => {
   );
 };
 
-export default LogInBtn;
+export default LogInButton;
 
 const StyledLogInBtnContainer = styled.div`
   display: flex;
