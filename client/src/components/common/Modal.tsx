@@ -41,7 +41,7 @@ const Modal = ({ confirmMessage, confirmOnClick, cancelOnClick }: any) => {
 
 export default Modal;
 
-export const ModalBackdrop = styled.div`
+const ModalBackdrop = styled.div`
   position: fixed;
   z-index: 999;
   top: 0;
@@ -53,7 +53,7 @@ export const ModalBackdrop = styled.div`
   place-items: center;
 `;
 
-export const ModalContainer = styled.div`
+const ModalContainer = styled.div`
   height: 15rem;
   text-align: center;
   margin: 120px auto;
@@ -74,8 +74,7 @@ const ModalCancelButton = ButtonEl({
   hoverBg: 'var(--button-inactive-hover-color)'
 });
 
-export const ModalView = styled.div.attrs((props) => ({
-  // attrs 메소드를 이용해서 아래와 같이 div 엘리먼트에 속성을 추가할 수 있습니다.
+const ModalView = styled.div.attrs((props) => ({
   role: 'dialog'
 }))`
   border-radius: 10px;
