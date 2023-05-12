@@ -6,10 +6,17 @@ import CategoryCard from '../../components/common/CategoryCard';
 import Title from './Title';
 import CreateChannelButton from '../../components/ui/CreateChannelButton';
 
+import iconData from '../../data/categoryIcons';
 import { CategoryType } from '../../types/dataTypes';
+import { useNavigate } from 'react-router-dom';
 
 const CategoryContainer = () => {
   const [categories, setCategories] = useState<CategoryType[]>([]);
+  const navigation = useNavigate();
+
+  const onClickCreateButtonHandler = () => {
+    navigation('/game');
+  };
 
   useEffect(() => {
     (async () => {
@@ -17,7 +24,12 @@ const CategoryContainer = () => {
         const { data }: { data: CategoryType[] } = await axios(
           `${process.env.REACT_APP_API_URL}/api/categories`
         );
-        setCategories(data);
+        setCategories(
+          data.map((category) => ({
+            ...category,
+            categoryIcon: iconData[category.categoryName]
+          }))
+        );
       } catch (err) {
         console.error(err);
       }
@@ -30,7 +42,7 @@ const CategoryContainer = () => {
         <Title text='카테고리' />
         <CreateChannelButton
           text='게임채널 추가'
-          onClick={() => console.log('test')}
+          onClick={onClickCreateButtonHandler}
         />
       </StyledTitleContainer>
       <StyledCategoryCardContainer>

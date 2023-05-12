@@ -19,6 +19,7 @@ export type User = {
 export type CategoryType = {
   categoryId: number;
   categoryName: string;
+  categoryIcon?: ReactElement;
 };
 
 export type GameType = {
