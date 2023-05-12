@@ -1,6 +1,7 @@
 package codejejus.inddybuddy.post;
 
 import codejejus.inddybuddy.file.File;
+import codejejus.inddybuddy.like.Like;
 import codejejus.inddybuddy.post.Post.PostTag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,17 +37,18 @@ public class PostDto {
         private String content;
         private long views;
         private PostTag postTag;
+        private List<Like> likes;
 //        private long memberId;
-//        private LocalDateTime createdAt;
-//        private LocalDateTime updatedAt;
+
         @Builder
-        public Response(Long postId, Long gameId, String title, String content, Long views, PostTag postTag) {
+        public Response(Long postId, Long gameId, String title, String content, Long views, PostTag postTag, List<Like> likes) {
             this.postId = postId;
             this.gameId = gameId;
             this.title = title;
             this.content = content;
             this.postTag = postTag;
             this.views = views;
+            this.likes = likes;
         }
     }
 

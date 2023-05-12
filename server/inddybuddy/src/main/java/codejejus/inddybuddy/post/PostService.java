@@ -1,11 +1,15 @@
 package codejejus.inddybuddy.post;
 
 import codejejus.inddybuddy.game.GameService;
+import codejejus.inddybuddy.global.constant.Filter;
 import codejejus.inddybuddy.global.exception.CustomException;
 import codejejus.inddybuddy.global.exception.ExceptionCode;
 import codejejus.inddybuddy.member.entity.MemberPrincipal;
 import codejejus.inddybuddy.member.service.MemberService;
+import codejejus.inddybuddy.post.Post;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,12 +25,10 @@ public class PostService {
     private final GameService gameService;
     private final PostMapper postMapper;
 
-    // 멤버 서비스에서 멤버프린시펄로 받아온 값
-    // 포스트할 때 멤버 아이디 들어오는데 정보
-
     public PostDto.Response createPost(MemberPrincipal memberPrincipal, PostDto.Request requestDto) {  // 단순한 생성 방식
         Post post = postMapper.requestToEntity(requestDto);
-        // 게임 선택, 멤버 검증
+        post.setPostTag(requestDto.getPostTag()); // 태그 받아오기
+//        post.setPostTag(post.getPostTag()); <- X : client에서 요청한 것은 request에 담겨옴
         post.setGame(gameService.findGame(requestDto.getGameId()));
         post.setMember(memberPrincipal.getMember());
         Post save = postRepository.save(post);
@@ -40,6 +42,31 @@ public class PostService {
         findPost.updatePost(requestDto.getTitle(), requestDto.getContent(), requestDto.getPostTag());
         return postMapper.entityToResponse(findPost);
     }
+
+    // PostTag 적용
+    public Page<PostDto.Response> getAllPosts(Pageable pageable, Post.PostTag postTag, Filter filter) {
+        Page<Post> posts;
+
+        if(postTag == null) {
+            posts = postRepository.findAll(pageable);
+        } else{
+            if (filter == null) {
+                posts = postRepository.findAllByPostTag(postTag, pageable);
+            } else if (filter.equals(Filter.NEW)) {
+                posts = postRepository.findAllByPostTagOrderByCreatedAtDesc(postTag, pageable);
+            } else if (filter.equals(Filter.MOST_VIEWS)) {
+                posts = postRepository.findAllByPostTagOrderByViewsDesc(postTag, pageable);
+            } else if (filter.equals(Filter.LIKE)) {
+                posts = postRepository.findAllByPostTagOrderByLikesDesc(postTag, pageable);
+            } else {
+                throw new CustomException(ExceptionCode.FILTER_NOT_FOUND);
+            }
+        }
+
+
+        return postMapper.entityPageToResponsePage(posts);
+    }
+
     // Todo : 댓글 구현 후, 게시글 삭제 시 댓글까지 삭제 구현하기
     public PostDto.Response deletePost(Long postId, MemberPrincipal memberPrincipal) {
         Post findPost = findVerifidPost(postId);

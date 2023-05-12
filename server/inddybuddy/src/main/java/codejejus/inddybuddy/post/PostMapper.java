@@ -1,6 +1,6 @@
 package codejejus.inddybuddy.post;
 
-import org.mapstruct.Mapper;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 //@Mapper(componentModel = "spring")
@@ -22,7 +22,13 @@ public class PostMapper {
                 .content(post.getContent())
                 .postTag(post.getPostTag())
                 .views(post.getViews())
+//                .likes(post.getLikes().size())   // Like 수
+                .likes(post.getLikes())   // Like 수
                 .build();
+    }
+
+    public Page<PostDto.Response> entityPageToResponsePage(Page<Post> postPage) {
+        return postPage.map(this::entityToResponse);
     }
 }
 
