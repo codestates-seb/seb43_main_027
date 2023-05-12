@@ -1,17 +1,9 @@
-import React from 'react';
 import styled from 'styled-components';
 
 import { StyledInput } from '../elements/Input';
 import { StyledLabel } from '../elements/Label';
 
-import { useInputReturn } from '../../types/costomHooksTypes';
-
-interface InputContainerType {
-  placeholder?: string;
-  title?: string;
-  onChange?: React.ChangeEvent;
-  useInput?: useInputReturn;
-}
+import { InputContainerType } from '../../types/componentsTypes';
 
 const InputContainer = ({
   placeholder = 'ex)',
