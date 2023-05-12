@@ -34,6 +34,7 @@ export interface InputContainerType {
   onChange?: React.ChangeEvent;
   useInput?: useInputReturn;
   validmessage?: string;
+  validity?: boolean;
 }
 
 export interface LabelType {
