@@ -1,18 +1,38 @@
 import React from 'react';
 import styled from 'styled-components';
+import CategoryTag from '../../components/common/CategoryTag';
+import { dummyGameData, Game } from '../../data/dummyCategories';
+import { Link } from 'react-router-dom';
 
-const GameItem = ()  => {
+const GameItem = ({ gameId }: { gameId: number })  => {
+
+  const game: Game | undefined = dummyGameData.find(item => item.gameId.toString() === gameId.toString());
+  const currentGameData = game?.categories ?? [];
+  const followNumber = 10; // 데이터패칭 해야됨 + 팔로우 기능추가 (버튼클릭시 텍스트변경)
+
+  const handleClick = () => {
+    window.scrollTo(0, 0);
+  }
+
   return (
-    <StyledItemWrapper>
-      <StyledImg src='https://m.gjcdn.net/game-thumbnail/1000/164227-f2fvqeih-v4.webp' alt='game-image' />
+    <Link to={`/games/${gameId}`} onClick={handleClick}>
+    <StyledItemWrapper >
+      <StyledImg src={game?.mainImgUrl} alt='game-image' />
       <StyledTagContain>
-        <StyledTag>FPS</StyledTag>
-        <StyledTag>힐링</StyledTag>
-        <StyledTag>아케이드</StyledTag>
+      {
+        currentGameData.map((item, index) => (
+          <CategoryTag 
+            key={index}
+            index={index}
+            categoryName={item.categoryName}
+          />
+        ))
+      }
       </StyledTagContain>
-      <StyledTitle>리얼극장121323132132312332323232</StyledTitle>
-      <StyledFollow>팔로워: 40</StyledFollow>
+      <StyledTitle>{game?.gameName}</StyledTitle>
+      <StyledFollow>팔로워: {followNumber}</StyledFollow>
     </StyledItemWrapper>
+    </Link>
   );
 };
 
@@ -42,15 +62,7 @@ const StyledTagContain = styled.div`
   flex-direction: row;
   gap: 10px;
   max-width: 200px;
-`;
-
-const StyledTag = styled.span`
-  font-size: 12px;
-  font-weight: bold;
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: var(--cyan-dark-500);
-  background-color: var(--cyan-dark-100);
+  flex-wrap: wrap;
 `;
 
 const StyledTitle = styled.h2`
