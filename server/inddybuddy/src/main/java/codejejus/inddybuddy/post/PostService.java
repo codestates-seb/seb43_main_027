@@ -27,8 +27,7 @@ public class PostService {
 
     public PostDto.Response createPost(MemberPrincipal memberPrincipal, PostDto.Request requestDto) {  // 단순한 생성 방식
         Post post = postMapper.requestToEntity(requestDto);
-        post.setPostTag(requestDto.getPostTag()); // 태그 받아오기
-//        post.setPostTag(post.getPostTag()); <- X : client에서 요청한 것은 request에 담겨옴
+        post.setPostTag(requestDto.getPostTag());
         post.setGame(gameService.findGame(requestDto.getGameId()));
         post.setMember(memberPrincipal.getMember());
         Post save = postRepository.save(post);
@@ -43,7 +42,11 @@ public class PostService {
         return postMapper.entityToResponse(findPost);
     }
 
-    // PostTag 적용
+    public PostDto.Response findPost(Long postId) {
+        Post post = findVerifidPost(postId);
+        return postMapper.entityToResponse(post);
+    }
+
     public Page<PostDto.Response> getAllPosts(Pageable pageable, Post.PostTag postTag, Filter filter) {
         Page<Post> posts;
 

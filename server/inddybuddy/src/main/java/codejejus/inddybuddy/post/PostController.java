@@ -5,6 +5,8 @@ import codejejus.inddybuddy.global.constant.Filter;
 import codejejus.inddybuddy.global.dto.MultiResponse;
 import codejejus.inddybuddy.global.dto.SingleResponse;
 import codejejus.inddybuddy.global.utils.UriCreator;
+import codejejus.inddybuddy.member.dto.MemberDto;
+import codejejus.inddybuddy.member.entity.Member;
 import codejejus.inddybuddy.member.entity.MemberPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -48,7 +50,11 @@ public class PostController {
         return ResponseEntity.ok(new SingleResponse<>(postService.modifyPost(postId, memberPrincipal, requestDto)));
     }
 
-    // Todo : postTag 적용
+    @GetMapping("/{post-id}")
+    public ResponseEntity<PostDto.Response> findPost(@PathVariable("post-id") Long postId) {
+        return ResponseEntity.ok(postService.findPost(postId));
+    }
+
     @GetMapping
     public ResponseEntity<MultiResponse<PostDto.Response>> getAllPosts(@PageableDefault(page = 0, size = 20)Pageable pageable,
                                                                        @RequestParam(required = false)Post.PostTag postTag,
