@@ -13,9 +13,9 @@ import SignUpButtonsContainer from './SignUpButtonsContainer';
 const SignUp = () => {
   const navigator = useNavigate();
 
-  const [userNameProps, setUserName] = useInput('');
-  const [emailProps, setEmail] = useInput('');
-  const [passWordProps, setPassWord] = useInput('');
+  const [userNameProps, setUserName] = useInput('', 'username');
+  const [emailProps, setEmail] = useInput('', 'email');
+  const [passWordProps, setPassWord] = useInput('', 'password');
 
   const [usernameValid, setUserNameValid] = useState(true);
   const [emailValid, setEmailValid] = useState(true);
