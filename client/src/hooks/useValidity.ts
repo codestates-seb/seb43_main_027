@@ -24,13 +24,22 @@ const passwordValidityTest = (value:string) => {
 
 function useValidity(inputtype:useValidityType,value:string):boolean {
   if(inputtype === 'username') {
-    if(usernameValidityTest(value)) return true;
+    if(usernameValidityTest(value)) {
+      console.log('usernameValidityTest')
+      return true;
+    }
   }
   if(inputtype === 'email') {
-    if(emailValidityTest(value)) return true;
+    if(emailValidityTest(value)) {
+      console.log('emailValidityTest')
+      return true;
+    }
   }
   if(inputtype === 'password') {
-    if(passwordValidityTest(value)) return true;
+    if(passwordValidityTest(value)) {
+      console.log('passwordValidityTest')
+      return true;
+    }
   }
 
   return false;
