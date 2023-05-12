@@ -4,6 +4,8 @@ import SignUpFieldsInputContainer from './SignUpFieldsInputContainer';
 
 import { useInputType } from '../../types/costomHooksTypes';
 
+/** Input 엘리먼트 각각에 유효성 검사를 넣지말고 여기서 검사해서 validmessage 조정 */
+
 const SignUpFieldsContainer = ({
   inputUserName,
   inputEmail,
