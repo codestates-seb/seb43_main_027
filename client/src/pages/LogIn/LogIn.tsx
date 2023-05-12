@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import useInput from '../../hooks/useInput';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../slice/userSlice';
 
 import styled from 'styled-components';
 
@@ -12,6 +14,8 @@ import LogInButtonsContainer from './LogInButtonsContainer';
 
 const LogIn = () => {
   const navigator = useNavigate();
+
+  const dispatch = useDispatch();
 
   const [emailProps, setEmail] = useInput('', 'email');
   const [passWordProps, setPassWord] = useInput('', 'password');
@@ -33,13 +37,17 @@ const LogIn = () => {
     try {
       await axios
         .post(
-          'http://ec2-13-209-70-188.ap-northeast-2.compute.amazonaws.com:8080/api/members/login',
+          'http://ec2-13-209-70-188.ap-northeast-2.compute.amazonaws.com:8080/api/auth/login',
           {
             email: emailProps.value,
             password: passWordProps.value
           }
         )
         .then((response) => {
+          localStorage.setItem('access_token', response.headers.authorization);
+          localStorage.setItem('refresh_token', response.headers.refresh);
+          const userdata = response.data;
+          dispatch(setUser({ payload: userdata }));
           alert('you successfully logged in!');
           navigator('/');
         });
