@@ -60,7 +60,6 @@ export const ModalContainer = styled.div`
 `;
 
 const ModalButton = ButtonEl({
-  // bg: 'var(--cyan-light-400)',
   padding: '20px',
   radius: '30px'
 });
@@ -83,16 +82,6 @@ export const ModalView = styled.div.attrs((props) => ({
   background-color: #ffffff;
   width: 45rem;
   height: 15rem;
-
-  > span.close-btn {
-    margin-top: 5px;
-    cursor: pointer;
-  }
-
-  > div.desc {
-    margin-top: 25px;
-    color: #4000c7;
-  }
 
   @media screen and (max-width: 650px) {
     width: 30rem;
