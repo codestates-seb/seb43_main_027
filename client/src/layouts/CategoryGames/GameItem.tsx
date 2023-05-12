@@ -4,34 +4,33 @@ import CategoryTag from '../../components/common/CategoryTag';
 import { dummyGameData, Game } from '../../data/dummyCategories';
 import { Link } from 'react-router-dom';
 
-const GameItem = ({ gameId }: { gameId: number })  => {
-
-  const game: Game | undefined = dummyGameData.find(item => item.gameId.toString() === gameId.toString());
+const GameItem = ({ gameId }: { gameId: number }) => {
+  const game: Game | undefined = dummyGameData.find(
+    (item) => item.gameId.toString() === gameId.toString()
+  );
   const currentGameData = game?.categories ?? [];
   const followNumber = 10; // 데이터패칭 해야됨 + 팔로우 기능추가 (버튼클릭시 텍스트변경)
 
   const handleClick = () => {
     window.scrollTo(0, 0);
-  }
+  };
 
   return (
     <Link to={`/games/${gameId}`} onClick={handleClick}>
-    <StyledItemWrapper >
-      <StyledImg src={game?.mainImgUrl} alt='game-image' />
-      <StyledTagContain>
-      {
-        currentGameData.map((item, index) => (
-          <CategoryTag 
-            key={index}
-            index={index}
-            categoryName={item.categoryName}
-          />
-        ))
-      }
-      </StyledTagContain>
-      <StyledTitle>{game?.gameName}</StyledTitle>
-      <StyledFollow>팔로워: {followNumber}</StyledFollow>
-    </StyledItemWrapper>
+      <StyledItemWrapper>
+        <StyledImg src={game?.mainImgUrl} alt='game-image' />
+        <StyledTagContain>
+          {currentGameData.map((item, index) => (
+            <CategoryTag
+              key={index}
+              index={index}
+              categoryName={item.categoryName}
+            />
+          ))}
+        </StyledTagContain>
+        <StyledTitle>{game?.gameName}</StyledTitle>
+        <StyledFollow>팔로워: {followNumber}</StyledFollow>
+      </StyledItemWrapper>
     </Link>
   );
 };
@@ -46,7 +45,7 @@ const StyledItemWrapper = styled.div`
   gap: 10px;
   cursor: pointer;
   width: 200px;
-  &:hover{
+  &:hover {
     color: var(--cyan-dark-600);
   }
 `;

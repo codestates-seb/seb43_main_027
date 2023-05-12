@@ -3,11 +3,15 @@ import styled from 'styled-components';
 import { CategoryType } from '../../types/dataTypes';
 import { Link } from 'react-router-dom';
 
-const CategoryCard = ({ categoryId, categoryName }: CategoryType) => {
+const CategoryCard = ({
+  categoryId,
+  categoryName,
+  categoryIcon
+}: CategoryType) => {
   return (
     <Link to={`/category/${categoryId}`}>
       <StyledContainer>
-        <IoGameControllerOutline size={'3rem'} />
+        {categoryIcon || <IoGameControllerOutline />}
         <StyledText>{categoryName}</StyledText>
       </StyledContainer>
     </Link>
@@ -31,6 +35,9 @@ const StyledContainer = styled.div`
   border-radius: 5px;
 
   cursor: pointer;
+  > :first-child {
+    font-size: 4rem;
+  }
   &:hover {
     background-color: var(--cyan-dark-300);
     color: white;
