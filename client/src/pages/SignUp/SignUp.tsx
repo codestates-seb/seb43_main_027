@@ -42,8 +42,6 @@ const SignUp = () => {
           }
         )
         .then((response) => {
-          console.log(`this is response:${response}`);
-          console.log(`this is username:${userNameProps.value}`);
           alert('you successfully signed up!');
           navigator('/login');
         });
