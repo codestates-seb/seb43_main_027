@@ -23,6 +23,7 @@ const StyledSignUpButtonContainer = styled.div`
 `;
 
 const StyledSignUpButton = ButtonEl({
+  flex: '1',
   fontSize: '1.6rem',
   bg: 'var(--button-inactive-color)',
   hoverBg: 'var(--button-inactive-hover-color)'

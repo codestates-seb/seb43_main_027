@@ -9,7 +9,7 @@ const LogInButton = ({ onClick }: LogInButtonType) => {
   return (
     <StyledLogInBtnContainer>
       <StyledLogInBtn onClick={onClick}>
-        <p>회원가입</p>
+        <p>로그인</p>
       </StyledLogInBtn>
     </StyledLogInBtnContainer>
   );
@@ -24,5 +24,6 @@ const StyledLogInBtnContainer = styled.div`
 `;
 
 const StyledLogInBtn = ButtonEl({
+  flex: '1',
   fontSize: '1.6rem'
 });
