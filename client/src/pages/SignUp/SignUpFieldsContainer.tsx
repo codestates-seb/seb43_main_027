@@ -1,31 +1,39 @@
 import styled from 'styled-components';
 
-import InputContainer from '../../components/common/InputContainer';
+import SignUpFieldsInputContainer from './SignUpFieldsInputContainer';
 
 import { useInputType } from '../../types/costomHooksTypes';
+
+interface SignUpFieldsInputType extends useInputType {
+  validmessage: string;
+}
 
 const SignUpFieldsContainer = ({
   inputUserName,
   inputEmail,
-  inputPassWord
-}: useInputType) => {
+  inputPassWord,
+  validmessage
+}: SignUpFieldsInputType) => {
   return (
     <StyledSignUpFieldsContainer>
-      <InputContainer
+      <SignUpFieldsInputContainer
         placeholder='ex)인디벗'
         title='닉네임'
         useInput={inputUserName}
-      ></InputContainer>
-      <InputContainer
+        validmessage={validmessage}
+      ></SignUpFieldsInputContainer>
+      <SignUpFieldsInputContainer
         placeholder='ex)inddy@gmail.com'
         title='아이디'
         useInput={inputEmail}
-      ></InputContainer>
-      <InputContainer
+        validmessage={validmessage}
+      ></SignUpFieldsInputContainer>
+      <SignUpFieldsInputContainer
         placeholder='8자리 이상'
         title='비밀번호'
         useInput={inputPassWord}
-      ></InputContainer>
+        validmessage={validmessage}
+      ></SignUpFieldsInputContainer>
     </StyledSignUpFieldsContainer>
   );
 };
