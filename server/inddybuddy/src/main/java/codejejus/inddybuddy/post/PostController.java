@@ -1,10 +1,15 @@
 package codejejus.inddybuddy.post;
 
 import codejejus.inddybuddy.game.GameDto;
+import codejejus.inddybuddy.global.constant.Filter;
+import codejejus.inddybuddy.global.dto.MultiResponse;
 import codejejus.inddybuddy.global.dto.SingleResponse;
 import codejejus.inddybuddy.global.utils.UriCreator;
 import codejejus.inddybuddy.member.entity.MemberPrincipal;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
@@ -12,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -41,6 +47,17 @@ public class PostController {
                                                        @RequestBody PostDto.Request requestDto) {
         return ResponseEntity.ok(new SingleResponse<>(postService.modifyPost(postId, memberPrincipal, requestDto)));
     }
+
+    // Todo : postTag 적용
+    @GetMapping
+    public ResponseEntity<MultiResponse<PostDto.Response>> getAllPosts(@PageableDefault(page = 0, size = 20)Pageable pageable,
+                                                                       @RequestParam(required = false)Post.PostTag postTag,
+                                                                       @RequestParam(required = false)Filter filter) {
+        Page<PostDto.Response> pagePosts = postService.getAllPosts(pageable, postTag, filter);
+        List<PostDto.Response> posts = pagePosts.getContent(); // 필요한지 검증
+        return ResponseEntity.ok(new MultiResponse<>(posts, pagePosts));
+    }
+
 
     // Todo : 댓글 구현 후, 게시글 삭제 시 댓글까지 삭제 구현하기
     @DeleteMapping("/{post-id}")

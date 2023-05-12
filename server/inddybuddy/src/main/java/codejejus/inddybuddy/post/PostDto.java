@@ -37,8 +37,7 @@ public class PostDto {
         private long views;
         private PostTag postTag;
 //        private long memberId;
-//        private LocalDateTime createdAt;
-//        private LocalDateTime updatedAt;
+
         @Builder
         public Response(Long postId, Long gameId, String title, String content, Long views, PostTag postTag) {
             this.postId = postId;

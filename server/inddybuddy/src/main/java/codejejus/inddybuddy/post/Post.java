@@ -27,6 +27,8 @@ public class Post extends Timestamped {
     private String content;
     @Column(nullable = false)
     private Long views = 0L;
+    @Column(nullable = false)
+    private Long likes = 0L;
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
