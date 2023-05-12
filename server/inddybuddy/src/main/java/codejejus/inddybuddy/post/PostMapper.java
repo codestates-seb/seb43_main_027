@@ -3,7 +3,6 @@ package codejejus.inddybuddy.post;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
-//@Mapper(componentModel = "spring")
 @Component
 public class PostMapper {
 
@@ -11,7 +10,6 @@ public class PostMapper {
         return Post.builder()
                 .title(requestDto.getTitle())
                 .content(requestDto.getContent())
-//                .fileList(requestDto.getFileList())
                 .build();
     }
     public PostDto.Response entityToResponse(Post post) {
@@ -22,8 +20,7 @@ public class PostMapper {
                 .content(post.getContent())
                 .postTag(post.getPostTag())
                 .views(post.getViews())
-//                .likes(post.getLikes().size())   // Like 수
-                .likes(post.getLikes())   // Like 수
+                .likes(post.getLikes())
                 .build();
     }
 

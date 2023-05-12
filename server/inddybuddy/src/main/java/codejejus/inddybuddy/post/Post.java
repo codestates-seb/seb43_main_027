@@ -1,6 +1,5 @@
 package codejejus.inddybuddy.post;
 
-import codejejus.inddybuddy.file.File;
 import codejejus.inddybuddy.game.Game;
 import codejejus.inddybuddy.global.audit.Timestamped;
 import codejejus.inddybuddy.like.Like;
@@ -28,9 +27,6 @@ public class Post extends Timestamped {
     private String content;
     @Column(nullable = false)
     private Long views = 0L;
-//    @Column(nullable = false)
-//    private Long likes = 0L;
-
     @OneToMany(mappedBy = "post")
     private List<Like> likes;
     @ManyToOne
@@ -39,14 +35,6 @@ public class Post extends Timestamped {
     @ManyToOne
     @JoinColumn(name = "game_id")
     private Game game;
-
-    // TODO : 일대다 매핑을 위해 수정 필요
-//    @ManyToOne
-//    @JoinColumn(name = "file_id")
-//    private File file;
-//    @OneToMany(mappedBy = "post")
-//    private List<File> fileList;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
     private PostTag postTag = PostTag.RECRUITMENT;
@@ -57,10 +45,10 @@ public class Post extends Timestamped {
     // Todo : 글 제목, 글 내용, 멤버, 첨부 파일(들), 게임 이름?
     @Builder
     public Post(String title, String content, Member member) {
+
         this.title = title;
         this.content = content;
         this.member = member;
-
     }
 
     public enum PostTag {
@@ -78,7 +66,6 @@ public class Post extends Timestamped {
 
         @Getter
         private final String status;
-
         PostTag(String status) {
             this.status = status;
         }
@@ -89,6 +76,7 @@ public class Post extends Timestamped {
     }
 
     public enum PostStatus {
+
         POST_REGISTRATION("게시글 등록"),
         POST_DELETED("게시글 삭제");
 
@@ -97,9 +85,8 @@ public class Post extends Timestamped {
         PostStatus(String status) {this.status = status;}
     }
 
-    // for 캡슐화, 응집도, 재사용성. 서비스 계층과 컨트롤러 계층에서 사용 가능
-    // Todo : file과 imgURl 추가 필요
     public void updatePost(String title, String content, PostTag postTag) {
+
         if(title != null) {
             this.title = title;
         }
