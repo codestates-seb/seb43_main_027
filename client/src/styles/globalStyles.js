@@ -34,6 +34,7 @@ const GlobalStyle = createGlobalStyle`
   --title-bg: #f7f7f8;
   --sub-text-color: #53535f;
   --button-hover-color: #eb2f96;
+  --default-text-color: #626262;
 }
 
 * {

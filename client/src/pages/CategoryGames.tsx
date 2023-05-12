@@ -16,14 +16,11 @@ export default CategoryGames;
 
 const StyledCategoryGamesWrapper = styled.div`
   background-color: var(--cyan-light-100);
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
   display: flex;
   text-align: center;
   justify-content: center;
   flex-direction: row;
-
-  p {
-    width: 50px;
-  }
+  flex-grow: 1;
+  overflow-x: hidden;
 `;

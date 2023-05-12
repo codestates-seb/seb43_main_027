@@ -9,9 +9,9 @@ import NavItem from './NavItem';
 import NavContent from './NavContent';
 import UserNavItem from './UserNavItem';
 import PostItem from '../../components/common/PostItem';
-import GameCard from '../../components/common/GameCard';
 
 import { NavStateType } from '../../types/propsTypes';
+import NavGameCardContainer from './NavGameCardContainer';
 
 const itemList: NavItemType[] = [
   {
@@ -27,7 +27,7 @@ const itemList: NavItemType[] = [
   {
     type: 'games',
     element: <IoGameControllerOutline />,
-    contentElement: GameCard
+    contentElement: NavGameCardContainer
   }
 ];
 
@@ -76,16 +76,19 @@ export default Nav;
 
 const StyledNav = styled.nav<{ show: boolean }>`
   display: ${(props) => (props.show ? 'block' : 'none')};
-  position: relative;
+  position: fixed;
+  top: 50px;
   width: 100%;
   height: 50px;
   background-color: #fff;
   z-index: 2;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
   @media screen and (min-width: 650px) {
+    position: relative;
     display: block;
     width: 50px;
-    height: 100vh;
+    height: inherit;
+    top: 0;
   }
 `;
 const StyledStickyBox = styled.div`
