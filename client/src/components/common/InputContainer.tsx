@@ -67,9 +67,14 @@ export const Field = styled.div`
   overflow: hidden;
   border-radius: 2px;
   display: flex;
+  flex: 1;
   flex-direction: column;
-  align-items: center;
   align-self: stretch;
+
+  p {
+    display: flex;
+    justify-content: center;
+  }
 `;
 export const InputEl = styled(StyledInput)`
   display: flex;
