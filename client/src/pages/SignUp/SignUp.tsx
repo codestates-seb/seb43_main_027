@@ -10,10 +10,6 @@ import SignUpTopWrapper from './SignUpTopWrapper';
 import SignUpOauthContainer from './SignUpOauthContainer';
 import SignUpButtonsContainer from './SignUpButtonsContainer';
 
-const oauthSignUp = () => {
-  console.log('oauth');
-};
-
 const SignUp = () => {
   const navigator = useNavigate();
 
@@ -25,8 +21,16 @@ const SignUp = () => {
   const [emailValid, setEmailValid] = useState(true);
   const [passWordValid, setPassWordValid] = useState(true);
 
+  const oauthSignUp: React.MouseEventHandler = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    // 유효성 검사 들어갈 자리
+    const googleAuthUrl = `${process.env.REACT_APP_SERVER}/oauth2/authorization/google?redirect_uri=http://localhost:3000/signup`;
+    window.location.href = googleAuthUrl;
+  };
+
   const emailSignUp: React.MouseEventHandler = async (e: React.MouseEvent) => {
     e.preventDefault();
+    // 유효성 검사 들어갈 자리
     try {
       await axios
         .post(
