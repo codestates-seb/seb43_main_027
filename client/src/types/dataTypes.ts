@@ -16,6 +16,12 @@ export type User = {
   updatedAt: string;
 };
 
+export interface Validity {
+  usernameValid: boolean,
+  emailValid: boolean,
+  passwordValid: boolean
+}
+
 export type CategoryType = {
   categoryId: number;
   categoryName: string;
