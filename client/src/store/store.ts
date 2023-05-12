@@ -1,11 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
 import userSlice from '../slice/userSlice';
-import validitySlice from '../slice/validitySlice';
 
 const store = configureStore({
   reducer: {
-    user: userSlice,
-    validity: validitySlice,
+    user: userSlice
   }
 });
 export type RootState = ReturnType<typeof store.getState>;
