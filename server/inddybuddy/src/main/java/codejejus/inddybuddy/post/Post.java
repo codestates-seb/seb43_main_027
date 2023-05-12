@@ -3,6 +3,7 @@ package codejejus.inddybuddy.post;
 import codejejus.inddybuddy.file.File;
 import codejejus.inddybuddy.game.Game;
 import codejejus.inddybuddy.global.audit.Timestamped;
+import codejejus.inddybuddy.like.Like;
 import codejejus.inddybuddy.member.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,8 +28,11 @@ public class Post extends Timestamped {
     private String content;
     @Column(nullable = false)
     private Long views = 0L;
-    @Column(nullable = false)
-    private Long likes = 0L;
+//    @Column(nullable = false)
+//    private Long likes = 0L;
+
+    @OneToMany(mappedBy = "post")
+    private List<Like> likes;
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;

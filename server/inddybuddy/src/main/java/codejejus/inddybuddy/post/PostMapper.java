@@ -22,6 +22,8 @@ public class PostMapper {
                 .content(post.getContent())
                 .postTag(post.getPostTag())
                 .views(post.getViews())
+//                .likes(post.getLikes().size())   // Like 수
+                .likes(post.getLikes())   // Like 수
                 .build();
     }
 
