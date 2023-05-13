@@ -1,14 +1,12 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { dummyGameData, Game } from '../../data/dummyCategories';
+import { dummyGameData } from '../../data/dummyCategories';
 import CategoryTag from '../../components/common/CategoryTag';
 import CreateChannelButton from '../../components/ui/CreateChannelButton';
 
-const GameTitle = ()  => {
+const GameTitle = ({ gameId }: { gameId: string | undefined})  => {
 
-  const { id } = useParams();
-  const game: Game | undefined = dummyGameData.find(item => item.gameId.toString() === id);
+  const game = dummyGameData.find(item => item.gameId.toString() === gameId);
   const followNumber = 10; // 데이터패칭 해야됨 + 팔로우 기능추가 (버튼클릭시 텍스트변경)
 
   if (!game) {
