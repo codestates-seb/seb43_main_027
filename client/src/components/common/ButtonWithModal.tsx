@@ -39,31 +39,29 @@ const ButtonWithModal = ({
   };
 
   return (
-    <>
-      <StyledModalContainer>
-        <StyledModalButtonContainer>
-          <ModalButton onClick={openModalHandler}>
-            {isOpen === false ? buttonName : buttonNameBackgroud}
-          </ModalButton>
-        </StyledModalButtonContainer>
-        {isOpen === true ? (
-          //  모달 바깥을 클릭해도 취소가 되도록 할지 여부에 따라 backdrop 온클릭 속성 유무 결정
-          <StyledModalBackdrop onClick={openModalHandler}>
-            <StyledModalView onClick={(e) => e.stopPropagation()}>
-              <StyledConfirmMessageContainer>
-                <StyledConfirmMessage>{confirmMessage}</StyledConfirmMessage>
-              </StyledConfirmMessageContainer>
-              <ModalConfirmButton onClick={closeModalHandlerWithConfirm}>
-                확인
-              </ModalConfirmButton>
-              <ModalCancelButton onClick={closeModalHandlerWithCancel}>
-                취소
-              </ModalCancelButton>
-            </StyledModalView>
-          </StyledModalBackdrop>
-        ) : null}
-      </StyledModalContainer>
-    </>
+    <StyledModalContainer>
+      <StyledModalButtonContainer>
+        <ModalButton onClick={openModalHandler}>
+          {isOpen === false ? buttonName : buttonNameBackgroud}
+        </ModalButton>
+      </StyledModalButtonContainer>
+      {isOpen === true ? (
+        //  모달 바깥을 클릭해도 취소가 되도록 할지 여부에 따라 backdrop 온클릭 속성 유무 결정
+        <StyledModalBackdrop onClick={openModalHandler}>
+          <StyledModalView onClick={(e) => e.stopPropagation()}>
+            <StyledConfirmMessageContainer>
+              <StyledConfirmMessage>{confirmMessage}</StyledConfirmMessage>
+            </StyledConfirmMessageContainer>
+            <ModalConfirmButton onClick={closeModalHandlerWithConfirm}>
+              확인
+            </ModalConfirmButton>
+            <ModalCancelButton onClick={closeModalHandlerWithCancel}>
+              취소
+            </ModalCancelButton>
+          </StyledModalView>
+        </StyledModalBackdrop>
+      ) : null}
+    </StyledModalContainer>
   );
 };
 
