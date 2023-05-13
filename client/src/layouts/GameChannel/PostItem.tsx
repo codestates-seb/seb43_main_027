@@ -2,8 +2,20 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import CategoryTag from '../../components/common/CategoryTag';
 import { StarTwoTone } from '@ant-design/icons';
+import { Post } from '../../data/dummyPostList';
 
-const PostItem = ()  => {
+const PostItem = ({
+  postId,
+  title,
+  tag,
+  createdAt,
+  updatedAt,
+  view,
+  userName,
+  memberStatus,
+  likeCount,
+  commentCount
+}: Post)  => {
 
   const [ isMarked, setMarked ] = useState(false);
 
@@ -11,29 +23,46 @@ const PostItem = ()  => {
     setMarked((prev) => !prev)
   }
 
-  // 필터링 데이터패칭 해서 받아와야됨, 글자수 제한 ... 
+  // 필터링 데이터패칭 해서 받아와야됨, 페이지네이션,글자수 제한 ...
+  // 날짜 분, 시, 일, 년전
+  // 북마크,내가쓴글,팔로우 로그인상태만 허용
+
+  const dateStr = createdAt;
+  const date = new Date(dateStr);
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const hour = date.getHours();
+  const minute = date.getMinutes();
+
+  const formattedDate = `${year}년 ${month}월 ${day}일 ${hour}시 ${minute}분`;
 
   return (
     <StyledWrapper>
       <StyledContent>
         <StyledFlexRow>
           <StyledTitle>
-            제목 엄청나게 긴 제목제목 엄청나게 긴 제목 ...
+            {title}
           </StyledTitle>
-          <CategoryTag index={0} categoryName='모집'/>
+          <CategoryTag index={0} categoryName={tag} />
         </StyledFlexRow>
         <StyledFlexRow>
           <StyledInfo>
-            <p>작성자: </p>
-            <p>작성일: </p>
-            <p>추천수: </p>
-            <p>조회수: </p>      
+            <StyledSpan>작성자:</StyledSpan>
+            {userName}
+            <StyledSpan>작성일:</StyledSpan>
+            {formattedDate}
+            <StyledSpan>추천 수:</StyledSpan>
+            {likeCount}
+            <StyledSpan>조회 수:</StyledSpan>
+            {view}
           </StyledInfo>
         </StyledFlexRow>
       </StyledContent>
       <StyledFlexRow>
       <StyledInfo>
-        <p>댓글: 0</p>
+        <StyledSpan>댓글:</StyledSpan>
+        {commentCount}
         <StarTwoTone
           onClick={handleMark}
           twoToneColor={ isMarked ? '#13A8A8'  : '#b4b4b4' }
@@ -53,7 +82,7 @@ const StyledWrapper = styled.div`
   align-items: center;
   padding: 25px 10px;
   border-bottom: 1px solid green;
-  cursor: pointer;
+
   &:hover {
     box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
   }
@@ -78,15 +107,24 @@ const StyledTitle = styled.h3`
   margin-right: 20px;
   word-break: keep-all;
   overflow-wrap: break-word;
+  cursor: pointer;
+  &:hover {
+    color: var(--cyan-light-800);
+  }
 `;
 
-const StyledInfo = styled.p`
+const StyledInfo = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-content: center;
-  gap: 10px;
+  gap: 5px;
   margin-top: 10px;
-  font-size: 14px;
+  font-size: 12px;
   color: var(--default-text-color);
-`
+`;
+
+const StyledSpan = styled.span`
+  font-weight: 600;
+  color: var(--sub-text-color);
+`;
