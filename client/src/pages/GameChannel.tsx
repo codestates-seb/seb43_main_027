@@ -1,33 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useParams } from 'react-router';
 import styled from 'styled-components';
 import GameTitle from '../layouts/GameChannel/GameTitle';
 import FilterTap from '../components/common/FilterTap';
 import CreateChannelButton from '../components/ui/CreateChannelButton';
 import SelectTag from '../components/common/SelectTag';
 import PostList from '../layouts/GameChannel/PostList';
+import postOptionTags from '../data/postOptionTags';
+import { gameChannelFilterTab } from '../data/filterTapList';
 
 const GameChannel = ()  => {
 
-  const filterList = ['전체글', '인기순', '조회순', '최신순', '북마크 글', '내가 쓴 글'];
-  const optionsTag = [
-    { value: '전체', label: '전체' },
-    { value: '모집', label: '모집' },
-    { value: '공략', label: '공략' },
-    { value: '완료', label: '완료' },
-  ];
+  const { id } = useParams();
+  const [ isSelectTag, setIsSelectTag ] = useState<string>('전체');
+  const [ isSelectTab, setIsSelectTab ] = useState<string>(gameChannelFilterTab[0]);
 
   const handleChange = (value: string) => {
-    console.log(`selected ${value}`);
+    setIsSelectTag(value);
   };
 
+  const handleClick = (item: string) => {
+    setIsSelectTab(item);
+  }
+  
   return (
     <StyledGameChannelWrapper>
       <StyledGameChannelContain>
-        <GameTitle />
+        <GameTitle gameId={id} />
         <StyledMainContent>
         <StyledSubContent>
           <SelectTag 
-            options={optionsTag}
+            options={postOptionTags}
             onChange={handleChange}
           />
           <CreateChannelButton 
@@ -35,8 +38,15 @@ const GameChannel = ()  => {
             onClick={() => {console.log('게시글작성페이지로 이동')}}
           />
         </StyledSubContent>
-          <FilterTap filterList={filterList} />
-          <PostList />
+          <FilterTap
+            filterList={gameChannelFilterTab}
+            onClickFilter={handleClick}
+          />
+          <PostList 
+            gameId={id} 
+            isSelectTag={isSelectTag}
+            isSelectTab={isSelectTab}
+          />
         </StyledMainContent>
       </StyledGameChannelContain>
     </StyledGameChannelWrapper>
