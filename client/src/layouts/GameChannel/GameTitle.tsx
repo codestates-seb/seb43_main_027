@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import styled from 'styled-components';
-import { dummyGameData } from '../../data/dummyCategories';
+import { dummyCategoriesGames } from '../../data/dummyCategories';
 import CategoryTag from '../../components/common/CategoryTag';
 import CreateChannelButton from '../../components/ui/CreateChannelButton';
 
@@ -15,15 +15,15 @@ const GameTitle = ()  => {
   const memberId = useSelector((state: RootState) => state.user.memberId);
 
   const navigate = useNavigate();
-  const game = dummyGameData.find(item => item.gameId.toString() === gameId);
-  const followNumber = 10; // 데이터패칭 해야됨 + 팔로우 기능추가 (버튼클릭시 텍스트변경)
+  const filteredGames = dummyCategoriesGames.data.find((item) => item.gameId.toString() === gameId);
+  const followNumber = filteredGames?.followerCount; // 팔로우 기능추가 (버튼클릭시 텍스트변경)
 
-  if (!game) {
+  if (!filteredGames) {
     // 게임이 없을때 404페이지로 변경
     return <div>게임을 찾을 수 없습니다.</div>
   }
 
-  const currentGameData = game.categories;
+  const currentGameData = filteredGames.categories;
 
   const handleFollow = () => {
     if (memberId === -1) {
@@ -36,11 +36,11 @@ const GameTitle = ()  => {
   return (
     <StyledTitleWrapper>
       <StlyedGameImg 
-        src={game.mainImgUrl}
+        src={filteredGames.mainImgUrl}
         alt='game-image'
       />
       <StyledGameName>
-        {game.gameName}
+        {filteredGames.gameName}
       </StyledGameName>
       <StyledTagContain>
       {
