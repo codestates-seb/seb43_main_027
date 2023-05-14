@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import CategoryTag from '../../components/common/CategoryTag';
 import { StarTwoTone } from '@ant-design/icons';
@@ -17,6 +18,7 @@ const PostItem = ({
   commentCount
 }: Post)  => {
 
+  const { id } = useParams();
   const [ isMarked, setMarked ] = useState(false);
 
   const handleMark = () => {
@@ -41,9 +43,11 @@ const PostItem = ({
     <StyledWrapper>
       <StyledContent>
         <StyledFlexRow>
+        <Link to={`/games/${id}/posts/${postId}`}>
           <StyledTitle>
             {title}
           </StyledTitle>
+        </Link>
           <CategoryTag index={0} categoryName={tag} />
         </StyledFlexRow>
         <StyledFlexRow>
