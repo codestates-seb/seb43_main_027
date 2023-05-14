@@ -205,3 +205,85 @@ export const dummyPostList: PostListResponse = {
     },
   ]
 };
+
+export const dummyBookmarkList: PostListResponse = {
+  'post': [
+    {
+      'postId': 1,
+      'title': '첫 번째 게시글',
+      'tag': '모집',
+      'createdAt': '2022-05-09T09:25:00Z',
+      'updatedAt': '2022-05-09T09:25:00Z',
+      'view': 100,
+      'userName': 'user1',
+      'memberStatus': '', 
+      'likeCount': 20,
+      'commentCount': 10
+    },
+    {
+      'postId': 2,
+      'title': '두 번째 게시글',
+      'tag': '공략',
+      'createdAt': '2022-05-10T12:30:00Z',
+      'updatedAt': '2022-05-10T12:30:00Z',
+      'view': 200,
+      'userName': 'user2',
+      'memberStatus': '', 
+      'likeCount': 10,
+      'commentCount': 5
+    },
+    {
+      'postId': 3,
+      'title': '세 번째 게시글',
+      'tag': '질문',
+      'createdAt': '2022-05-11T18:45:00Z',
+      'updatedAt': '2022-05-11T18:45:00Z',
+      'view': 50,
+      'userName': 'user3',
+      'memberStatus': '', 
+      'likeCount': 5,
+      'commentCount': 2
+    },
+  ]
+};
+
+export const dummyMyList: PostListResponse = {
+  'post': [
+    {
+      'postId': 1,
+      'title': '내가 쓴 1번째 게시글',
+      'tag': '모집',
+      'createdAt': '2022-05-09T09:25:00Z',
+      'updatedAt': '2022-05-09T09:25:00Z',
+      'view': 100,
+      'userName': 'user11',
+      'memberStatus': '', 
+      'likeCount': 20,
+      'commentCount': 10
+    },
+    {
+      'postId': 2,
+      'title': '내가 쓴 2번째 게시글',
+      'tag': '공략',
+      'createdAt': '2022-05-10T12:30:00Z',
+      'updatedAt': '2022-05-10T12:30:00Z',
+      'view': 200,
+      'userName': 'user11',
+      'memberStatus': '', 
+      'likeCount': 10,
+      'commentCount': 5
+    },
+    {
+      'postId': 3,
+      'title': '내가 쓴 3번째 게시글',
+      'tag': '질문',
+      'createdAt': '2022-05-11T18:45:00Z',
+      'updatedAt': '2022-05-11T18:45:00Z',
+      'view': 50,
+      'userName': 'user11',
+      'memberStatus': '', 
+      'likeCount': 5,
+      'commentCount': 2
+    },
+  ]
+};
