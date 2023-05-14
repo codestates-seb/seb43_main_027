@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import Pagination from 'react-js-pagination';
 import PostItem from './PostItem';
 import { dummyPostList } from '../../data/dummyPostList';
 
@@ -11,8 +12,14 @@ interface Props {
 
 const PostList: React.FC<Props> = ({ gameId, isSelectTag ,isSelectTab }) => {
   const [filteredPosts, setFilteredPosts] = useState(dummyPostList.post);
+  const [page, setPage] = useState(1);
+
+  const handlePageChange = (page: number) => {
+    setPage(page);
+  };
 
   useEffect(() => {
+    setPage(1);
     const postData = dummyPostList.post;
   
     switch (isSelectTab) {
@@ -35,15 +42,18 @@ const PostList: React.FC<Props> = ({ gameId, isSelectTag ,isSelectTab }) => {
     }
   }, [isSelectTab, isSelectTag]);
 
-  console.log(filteredPosts);
+  const ITEMS_PER_PAGE = 10;
+  const lastIndex = page * ITEMS_PER_PAGE;
+  const firstIndex = lastIndex - ITEMS_PER_PAGE;
+  const currentPagePosts = filteredPosts.slice(firstIndex, lastIndex);
 
   return (
     <PostListWrapper>
       {
-        filteredPosts.length > 0 ? 
-        filteredPosts.map((post) => (
+        currentPagePosts.length > 0 ? 
+        currentPagePosts.map((post, index) => (
           <PostItem
-            key={post.postId}
+            key={index}
             postId={post.postId}
             title={post.title}
             tag={post.tag}
@@ -55,11 +65,22 @@ const PostList: React.FC<Props> = ({ gameId, isSelectTag ,isSelectTab }) => {
             likeCount={post.likeCount}
             commentCount={post.commentCount}
           />
-        )) : 
+        )) :
         <StyledEmptyItem>
           작성된 게시글이 없습니다.
         </StyledEmptyItem>
       }
+      <StyledPagination>
+      <Pagination
+        activePage={page}
+        itemsCountPerPage={10}
+        totalItemsCount={filteredPosts.length}
+        pageRangeDisplayed={5}
+        prevPageText={'‹'}
+        nextPageText={'›'}
+        onChange={handlePageChange}
+    />
+    </StyledPagination>
     </PostListWrapper>
   );
 };
@@ -69,8 +90,6 @@ export default PostList;
 const PostListWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  overflow-y: scroll;
-  max-height: 380px;
   @media screen and (max-width: 650px) {
     padding: 0px 5px;
     max-height: 100%;
@@ -85,4 +104,62 @@ const StyledEmptyItem = styled.div`
   font-size: 18px;
   font-weight: 700;
   color: var(--default-text-color);
+`;
+
+const StyledPagination = styled.div`
+  padding: 20px;
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  ul.pagination li {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--loding-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+  }
+
+  ul.pagination li:first-child{
+    border-radius: 5px 0 0 5px;
+  }
+
+  ul.pagination li:last-child{
+    border-radius: 0 5px 5px 0;
+  }
+  
+  ul.pagination li a {
+    text-decoration: none;
+    color: var(--cyan-light-600);
+    font-size: 1rem;
+  }
+  
+  ul.pagination li.active a {
+    color: white;
+  }
+
+  ul.pagination li.active {
+    background-color: var(--cyan-light-800);
+  }
+  
+  ul.pagination li a:hover,
+  ul.pagination li a.active {
+    color: var(--cyan-light-300);
+  }
+  
+  .page-selection {
+    width: 48px;
+    height: 30px;
+    color: var(--cyan-light-800);
+  }
 `;
