@@ -44,16 +44,23 @@ const GameRegister = () => {
       >
         <StyledGameNameContainer>
           <Label htmlFor='channeltitle'>채널(게임) 이름</Label>
-          <Input name='channeltitle' placeholder='ex)Crypt of Necrodancer' />
+          <Input
+            name='channeltitle'
+            placeholder='ex)Crypt of Necrodancer'
+            className='colorchange'
+          />
         </StyledGameNameContainer>
+
         <StyledGameDetailContainer>
           <Label htmlFor='channeltitle'>게임 설명</Label>
           <TextArea
             rows={6}
             placeholder='ex)Crypt of Necrodancer는 주인공이 리듬에 맞춰 던젼을 탐험하며 아버지의 유산과 자신의 존재의미를 찾는 여정을 담은 rpg와 로그라이크 요소가 결합된 리듬게임입니다.'
             maxLength={600}
+            className='colorchange'
           />
         </StyledGameDetailContainer>
+
         <StyledImageContainer>
           <Label htmlFor='게임대표사진'>게임대표사진</Label>
           <Form.Item
@@ -68,33 +75,15 @@ const GameRegister = () => {
           </Form.Item>
         </StyledImageContainer>
 
-        {/* <Form.Item>
-          <Form.Item
-            name='dragger'
-            valuePropName='fileList'
-            getValueFromEvent={normFile}
-            noStyle
-          >
-            <Upload.Dragger name='files' action='/upload.do'>
-              <p className='ant-upload-drag-icon'>
-                <InboxOutlined />
-              </p>
-              <p className='ant-upload-text'>
-                파일을 추가하려면 드래그하거나 클릭해주세요.
-              </p>
-              <p className='ant-upload-hint'>
-                여러 개의 파일을 업로드 할 수 있습니다.
-              </p>
-            </Upload.Dragger>
-          </Form.Item>
-        </Form.Item> */}
         <StyledButtonsContainer>
           <Form.Item>
             <Space>
-              <Button type='primary' htmlType='submit'>
+              <Button type='primary' htmlType='submit' className='enroll'>
                 등록
               </Button>
-              <Button htmlType='reset'>취소</Button>
+              <Button htmlType='reset' className='cancel'>
+                취소
+              </Button>
             </Space>
           </Form.Item>
         </StyledButtonsContainer>
@@ -110,12 +99,14 @@ const StyledFormContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: (100%-147px);
+  height: (100%-50px);
   margin-top: 1rem;
   > form {
     width: 50rem;
     @media screen and (max-width: 650px) {
       width: 40rem;
+      margin-top: 5rem;
+      margin-bottom: 12rem;
     }
   }
 `;
@@ -139,6 +130,17 @@ const StyledGameNameContainer = styled.div`
     margin: 0.5rem 1rem;
   }
 
+  .colorchange {
+    margin: 1rem;
+    &:hover {
+      border-color: var(--cyan-light-400);
+    }
+    &:focus {
+      border-color: var(--cyan-light-400);
+      box-shadow: 0 0 0 2px var(--cyan-light-200);
+    }
+  }
+
   @media screen and (max-width: 650px) {
     flex-direction: row;
     > label {
@@ -151,13 +153,16 @@ const StyledGameNameContainer = styled.div`
 `;
 
 const StyledGameDetailContainer = styled(StyledGameNameContainer)`
+  textarea {
+    min-height: 25rem;
+  }
   @media screen and (max-width: 650px) {
     flex-direction: column;
     > label {
       margin: 0rem 1rem;
     }
-    > input {
-      margin: 1rem;
+    textarea {
+      min-height: 40rem;
     }
   }
 `;
@@ -166,12 +171,27 @@ const StyledImageContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
   > label {
     display: flex;
     margin: 0.5rem 1rem;
   }
+
   > form {
     display: flex;
+  }
+
+  button {
+    &:hover {
+      color: var(--cyan-dark-400) !important;
+      border-color: var(--cyan-dark-400) !important;
+    }
+  }
+
+  > svg {
+    &:hover {
+      background-color: var(--cyan-dark-400);
+    }
   }
 `;
 
@@ -180,8 +200,18 @@ const StyledButtonsContainer = styled.div`
   flex-direction: row;
   justify-content: center;
 
-  > form {
-    display: flex;
+  .enroll {
+    background-color: var(--cyan-dark-400);
+    &:hover {
+      background-color: var(--cyan-dark-500);
+    }
+  }
+  .cancel {
+    &:hover {
+      color: white;
+      background-color: var(--button-inactive-hover-color);
+      border-color: var(--button-inactive-hover-color);
+    }
   }
 `;
 
