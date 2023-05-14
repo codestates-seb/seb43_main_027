@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router';
+import { useParams, useNavigate } from 'react-router';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/store';
 import GameTitle from '../layouts/GameChannel/GameTitle';
 import FilterTap from '../components/common/FilterTap';
 import CreateChannelButton from '../components/ui/CreateChannelButton';
@@ -12,8 +14,10 @@ import { gameChannelFilterTab } from '../data/filterTapList';
 const GameChannel = ()  => {
 
   const { id } = useParams();
+  const navigate = useNavigate();
   const [ isSelectTag, setIsSelectTag ] = useState<string>('전체');
   const [ isSelectTab, setIsSelectTab ] = useState<string>(gameChannelFilterTab[0]);
+  const memberId = useSelector((state: RootState) => state.user.memberId);
 
   const handleChange = (value: string) => {
     setIsSelectTag(value);
@@ -21,8 +25,18 @@ const GameChannel = ()  => {
 
   const handleClick = (item: string) => {
     setIsSelectTab(item);
-  }
-  
+  };
+
+  const handleCreate = () => {
+    if (memberId === -1) {
+      navigate('/login');
+    } else {
+      // 게시글 작성페이지로 경로이동
+      // navigate('/');
+      console.log('게시글 작성페이지로 이동');
+    }
+  };
+
   return (
     <StyledGameChannelWrapper>
       <StyledGameChannelContain>
@@ -35,7 +49,7 @@ const GameChannel = ()  => {
           />
           <CreateChannelButton 
             text='게시글 작성' 
-            onClick={() => {console.log('게시글작성페이지로 이동')}}
+            onClick={handleCreate}
           />
         </StyledSubContent>
           <FilterTap
