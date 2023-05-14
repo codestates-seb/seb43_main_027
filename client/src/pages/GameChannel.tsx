@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useParams, useNavigate } from 'react-router';
-import styled from 'styled-components';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
+import styled from 'styled-components';
 import GameTitle from '../layouts/GameChannel/GameTitle';
 import FilterTap from '../components/common/FilterTap';
 import CreateChannelButton from '../components/ui/CreateChannelButton';
@@ -11,13 +11,17 @@ import PostList from '../layouts/GameChannel/PostList';
 import postOptionTags from '../data/postOptionTags';
 import { gameChannelFilterTab } from '../data/filterTapList';
 
+// todo: 버튼 클릭시 경로 설정
+
 const GameChannel = ()  => {
 
-  const { id } = useParams();
+  const { gameId } = useParams();
+
   const navigate = useNavigate();
+  const memberId = useSelector((state: RootState) => state.user.memberId);
+
   const [ isSelectTag, setIsSelectTag ] = useState<string>('전체');
   const [ isSelectTab, setIsSelectTab ] = useState<string>(gameChannelFilterTab[0]);
-  const memberId = useSelector((state: RootState) => state.user.memberId);
 
   const handleChange = (value: string) => {
     setIsSelectTag(value);
@@ -40,7 +44,7 @@ const GameChannel = ()  => {
   return (
     <StyledGameChannelWrapper>
       <StyledGameChannelContain>
-        <GameTitle gameId={id} />
+        <GameTitle />
         <StyledMainContent>
         <StyledSubContent>
           <SelectTag 
@@ -57,7 +61,6 @@ const GameChannel = ()  => {
             onClickFilter={handleClick}
           />
           <PostList 
-            gameId={id} 
             isSelectTag={isSelectTag}
             isSelectTab={isSelectTab}
           />
