@@ -1,23 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/store';
 import styled from 'styled-components';
 import GameTitle from '../layouts/GameChannel/GameTitle';
 import FilterTap from '../components/common/FilterTap';
 import CreateChannelButton from '../components/ui/CreateChannelButton';
 import SelectTag from '../components/common/SelectTag';
 import PostList from '../layouts/GameChannel/PostList';
+import postOptionTags from '../data/postOptionTags';
+import { gameChannelFilterTab } from '../data/filterTapList';
+
+// todo: 버튼 클릭시 경로 설정
 
 const GameChannel = ()  => {
 
-  const filterList = ['전체글', '인기순', '조회순', '최신순', '북마크 글', '내가 쓴 글'];
-  const optionsTag = [
-    { value: '전체', label: '전체' },
-    { value: '모집', label: '모집' },
-    { value: '공략', label: '공략' },
-    { value: '완료', label: '완료' },
-  ];
+  const { gameId } = useParams();
+
+  const navigate = useNavigate();
+  const memberId = useSelector((state: RootState) => state.user.memberId);
+
+  const [ isSelectTag, setIsSelectTag ] = useState<string>('전체');
+  const [ isSelectTab, setIsSelectTab ] = useState<string>(gameChannelFilterTab[0]);
 
   const handleChange = (value: string) => {
-    console.log(`selected ${value}`);
+    setIsSelectTag(value);
+  };
+
+  const handleClick = (item: string) => {
+    setIsSelectTab(item);
+  };
+
+  const handleCreate = () => {
+    if (memberId === -1) {
+      navigate('/login');
+    } else {
+      // 게시글 작성페이지로 경로이동
+      // navigate('/');
+      console.log('게시글 작성페이지로 이동');
+    }
   };
 
   return (
@@ -27,16 +48,22 @@ const GameChannel = ()  => {
         <StyledMainContent>
         <StyledSubContent>
           <SelectTag 
-            options={optionsTag}
+            options={postOptionTags}
             onChange={handleChange}
           />
           <CreateChannelButton 
             text='게시글 작성' 
-            onClick={() => {console.log('게시글작성페이지로 이동')}}
+            onClick={handleCreate}
           />
         </StyledSubContent>
-          <FilterTap filterList={filterList} />
-          <PostList />
+          <FilterTap
+            filterList={gameChannelFilterTab}
+            onClickFilter={handleClick}
+          />
+          <PostList 
+            isSelectTag={isSelectTag}
+            isSelectTab={isSelectTab}
+          />
         </StyledMainContent>
       </StyledGameChannelContain>
     </StyledGameChannelWrapper>
