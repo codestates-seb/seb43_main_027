@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import InputContainer from '../../components/common/InputContainer';
 
-import { useInputType } from '../../types/costomHooksTypes';
+import { useInputType } from '../../types/customHooksTypes';
 
 const SignUpFieldsContainer = ({
   inputUserName,

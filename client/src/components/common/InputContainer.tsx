@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { StyledInput } from '../elements/Input';
 import { StyledLabel } from '../elements/Label';
 
-import { useInputReturn } from '../../types/costomHooksTypes';
+import { useInputReturn } from '../../types/customHooksTypes';
 
 interface InputContainerType {
   placeholder?: string;
