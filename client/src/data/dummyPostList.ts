@@ -119,5 +119,89 @@ export const dummyPostList: PostListResponse = {
       'likeCount': 25,
       'commentCount': 5
     },
+    {
+      'postId': 8,
+      'title': '8 번째 게시글',
+      'tag': '모집',
+      'createdAt': '2022-05-09T09:25:00Z',
+      'updatedAt': '2022-05-09T09:25:00Z',
+      'view': 100,
+      'userName': 'user1',
+      'memberStatus': '', 
+      'likeCount': 20,
+      'commentCount': 10
+    },
+    {
+      'postId': 9,
+      'title': '9 번째 게시글',
+      'tag': '공략',
+      'createdAt': '2022-05-10T12:30:00Z',
+      'updatedAt': '2022-05-10T12:30:00Z',
+      'view': 200,
+      'userName': 'user2',
+      'memberStatus': '', 
+      'likeCount': 10,
+      'commentCount': 5
+    },
+    {
+      'postId': 10,
+      'title': '10 번째 게시글',
+      'tag': '질문',
+      'createdAt': '2022-05-11T18:45:00Z',
+      'updatedAt': '2022-05-11T18:45:00Z',
+      'view': 50,
+      'userName': 'user3',
+      'memberStatus': '', 
+      'likeCount': 5,
+      'commentCount': 2
+    },
+    {
+      'postId': 11,
+      'title': '11 번째 게시글',
+      'tag': '모집',
+      'createdAt': '2022-05-11T19:45:00Z',
+      'updatedAt': '2022-05-11T19:45:00Z',
+      'view': 51,
+      'userName': 'user3',
+      'memberStatus': '', 
+      'likeCount': 23,
+      'commentCount': 3
+    },
+    {
+      'postId': 12,
+      'title': '12 번째 게시글',
+      'tag': '모집',
+      'createdAt': '2023-05-11T03:10:00Z',
+      'updatedAt': '2023-05-11T03:10:00Z',
+      'view': 51,
+      'userName': 'user3',
+      'memberStatus': '', 
+      'likeCount': 24,
+      'commentCount': 4
+    },
+    {
+      'postId': 13,
+      'title': '13 번째 게시글',
+      'tag': '모집',
+      'createdAt': '2023-05-13T10:14:16.244Z',
+      'updatedAt': '2023-05-13T10:14:16.244Z',
+      'view': 51,
+      'userName': 'user3',
+      'memberStatus': '', 
+      'likeCount': 24,
+      'commentCount': 4
+    },
+    {
+      'postId': 14,
+      'title': '14 번째 게시글',
+      'tag': '모집',
+      'createdAt': '2023-05-13T10:14:19.700Z',
+      'updatedAt': '2023-05-13T10:14:19.700Z',
+      'view': 49,
+      'userName': 'user3',
+      'memberStatus': '', 
+      'likeCount': 25,
+      'commentCount': 5
+    },
   ]
 };
