@@ -7,7 +7,7 @@ import { ButtonType } from '../../types/componentsTypes';
 /** Modal 창이 포함된 Button 컴포넌트 입니다. 가장 바깥 div의 크기가 100%로 지정되어있으므로 감싸는 Container로 크기를 조정해 줄 수 있습니다.
  *
  * @param {string}buttonName -확인버튼의 표시되는 텍스트입니다. ex) 삭제, 언팔로우
- * @param {string}buttonNameBackground -확인모달이 표시 중에 버튼 텍스트입니다. ex) 언팔로우 확인 모달 표출 중 언팔로우 버튼의 텍스트
+ * @param {string}buttonTextWhileBackground -확인모달이 활성화 중에 백그라운드에 표시되는 버튼 텍스트입니다. ex) 언팔로우 확인 모달 표출 중 언팔로우 버튼의 텍스트
  * @param {string}comfirmMessage -확인 내용을 표시하는 인자입니다. ex) 정말 삭제하시겠습니까?
  * @param {function}comfirmOnClick -모달 창에서 확인을 눌렀을 경우 실행되고자 하는 함수를 () => void 형태로 사용할 수 있습니다.
  * @param {function}cancelOnClick -모달 창에서 취소를 눌렀을 경우 실행되고자 하는 함수를 () => void 형태로 사용할 수 있습니다.
@@ -17,8 +17,8 @@ import { ButtonType } from '../../types/componentsTypes';
  */
 
 const ButtonWithModal = ({
-  buttonName,
-  buttonNameBackgroud,
+  buttonText,
+  buttonTextWhileBackgroud,
   confirmMessage,
   confirmOnClick,
   cancelOnClick
@@ -42,10 +42,10 @@ const ButtonWithModal = ({
     <StyledModalContainer>
       <StyledModalButtonContainer>
         <ModalButton onClick={openModalHandler}>
-          {!isOpen ? buttonName : buttonNameBackgroud}
+          {!isOpen ? buttonText : buttonTextWhileBackgroud}
         </ModalButton>
       </StyledModalButtonContainer>
-      {isOpen === true ? (
+      {isOpen && (
         //  모달 바깥을 클릭해도 취소가 되도록 할지 여부에 따라 backdrop 온클릭 속성 유무 결정
         <StyledModalBackdrop onClick={openModalHandler}>
           <StyledModalView onClick={(e) => e.stopPropagation()}>
@@ -60,14 +60,14 @@ const ButtonWithModal = ({
             </ModalCancelButton>
           </StyledModalView>
         </StyledModalBackdrop>
-      ) : null}
+      )}
     </StyledModalContainer>
   );
 };
 
 interface ModalButtonType extends ButtonType {
-  buttonName: string;
-  buttonNameBackgroud?: string;
+  buttonText: string;
+  buttonTextWhileBackgroud?: string;
   confirmMessage: string;
   confirmOnClick?: () => void;
   cancelOnClick?: () => void;
