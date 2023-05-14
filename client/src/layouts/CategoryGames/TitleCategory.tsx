@@ -1,18 +1,34 @@
 import React from 'react';
+import { useNavigate, useParams } from 'react-router';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 import CreateChannelButton from '../../components/ui/CreateChannelButton';
 import { dummyCategories } from '../../data/dummyCategories';
 
 const TitleCategory: React.FC = ()  => {
 
-  /**
-   *  todo: 
-   *  1. 현재 URL경로의 카테고리 아이디로 필터링 하기 (필터링) - useParms
-   *  2. 채널생성 버튼 클릭시 로그인시에만 생성경로로 이동, 비로그인시엔 로그인페이지로 이동 (라우팅) - onClick이벤트
-   *  3. 상수 contant로 빼기 - 텍스트 메세지
-   */
+  // todo: 홈에서 카테고리 클릭시 카테고리정보 리덕스에 저장 후 사용하는 방식으로 구현
+  const { categoryId } = useParams();
+  const memberId = useSelector((state: RootState) => state.user.memberId);
+  const navigate = useNavigate();
 
-  const currentCategory: string = dummyCategories[0].categoryName;
+  const currentCategory = dummyCategories.find(item => item.categoryId.toString() === categoryId);
+  if (!currentCategory) {
+    // 카테고리가 없을때 404페이지로 이동
+    return <div>페이지를 찾을 수 없습니다.</div>
+  };
+
+  // todo: 페이지별 중복사용하는 핸들러 함수 모듈화 리팩토링하기
+  const handleCreate = () => {
+    if (memberId === -1) {
+      navigate('/login');
+    } else {
+      // 게시글 작성페이지로 경로이동
+      // navigate('/');
+      console.log('게시글 작성페이지로 이동');
+    };
+  };
 
   return (
     <StyledTitleWrapper>
@@ -20,18 +36,18 @@ const TitleCategory: React.FC = ()  => {
         <StyledTitle>
           <StyledTitleName>
             {
-              currentCategory
+              currentCategory.categoryName
             }
           </StyledTitleName>
           <StyledSubText>
             {
-              `${currentCategory} 장르의 다양한 게임 채널들을 살펴보세요!`
+              `${currentCategory.categoryName} 장르의 다양한 게임 채널들을 살펴보세요!`
             }
           </StyledSubText>
         </StyledTitle>
         <CreateChannelButton 
           text={'게임채널 추가'} 
-          onClick={() => console.log('로그인 시에만 게임등록 채널로 이동')}
+          onClick={handleCreate}
         />
       </StyledTitleContainer>
     </StyledTitleWrapper>
