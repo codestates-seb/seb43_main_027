@@ -42,7 +42,7 @@ const ButtonWithModal = ({
     <StyledModalContainer>
       <StyledModalButtonContainer>
         <ModalButton onClick={openModalHandler}>
-          {isOpen === false ? buttonName : buttonNameBackgroud}
+          {!isOpen ? buttonName : buttonNameBackgroud}
         </ModalButton>
       </StyledModalButtonContainer>
       {isOpen === true ? (
