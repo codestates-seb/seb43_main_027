@@ -1,24 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import Pagination from 'react-js-pagination';
-import PostItem from './PostItem';
-import { dummyPostList, dummyBookmarkList, dummyMyList } from '../../data/dummyPostList';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
+import Pagination from 'react-js-pagination';
+import styled from 'styled-components';
+import PostItem from './PostItem';
+import { dummyPostList, dummyBookmarkList, dummyMyList } from '../../data/dummyPostList';
 
 interface Props {
-  gameId?: string;
   isSelectTab: string;
   isSelectTag: string;
 };
 
-const PostList: React.FC<Props> = ({ gameId, isSelectTag ,isSelectTab }) => {
+// todo: 게임아이디에 맞게 게시글 데이터 패칭
+
+const PostList: React.FC<Props> = ({ isSelectTag ,isSelectTab }) => {
+  
+  const { gameId } = useParams();
+  const memberId = useSelector((state: RootState) => state.user.memberId);
+
   const [filteredPosts, setFilteredPosts] = useState(dummyPostList.post);
   const [page, setPage] = useState(1);
   const [userMessage, setUserMessage ] = useState('작성된 게시글이 없습니다.');
-  const memberId = useSelector((state: RootState) => state.user.memberId);
-
+ 
   const handlePageChange = (page: number) => {
     setPage(page);
   };

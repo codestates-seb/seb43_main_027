@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import styled from 'styled-components';
@@ -7,14 +7,19 @@ import { dummyGameData } from '../../data/dummyCategories';
 import CategoryTag from '../../components/common/CategoryTag';
 import CreateChannelButton from '../../components/ui/CreateChannelButton';
 
-const GameTitle = ({ gameId }: { gameId: string | undefined})  => {
+// todo: 게임 팔로우 기능 추가, 게임아이디에 맞게 게임 데이터 패칭, 경로 쿼리 재설정
+
+const GameTitle = ()  => {
   
+  const { gameId } = useParams();
+  const memberId = useSelector((state: RootState) => state.user.memberId);
+
   const navigate = useNavigate();
   const game = dummyGameData.find(item => item.gameId.toString() === gameId);
   const followNumber = 10; // 데이터패칭 해야됨 + 팔로우 기능추가 (버튼클릭시 텍스트변경)
-  const memberId = useSelector((state: RootState) => state.user.memberId);
 
   if (!game) {
+    // 게임이 없을때 404페이지로 변경
     return <div>게임을 찾을 수 없습니다.</div>
   }
 

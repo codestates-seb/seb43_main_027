@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import CategoryTag from '../../components/common/CategoryTag';
-import { StarTwoTone } from '@ant-design/icons';
 import { Post } from '../../data/dummyPostList';
+import { StarTwoTone } from '@ant-design/icons';
 
 const PostItem = ({
   postId,
@@ -18,16 +18,14 @@ const PostItem = ({
   commentCount
 }: Post)  => {
 
-  const { id } = useParams();
+  const { gameId } = useParams();
   const [ isMarked, setMarked ] = useState(false);
 
   const handleMark = () => {
     setMarked((prev) => !prev)
   }
 
-  // 필터링 데이터패칭 해서 받아와야됨, 페이지네이션,글자수 제한 ...
-  // 날짜 분, 시, 일, 년전
-  // 북마크,내가쓴글,팔로우 로그인상태만 허용
+  // todo: 게시글 팔로우 기능 추가, 날짜 분, 시, 일, 년전, 제목 글자수 제한 ... 으로 바꾸기, 경로 쿼리 재설정
 
   const dateStr = createdAt;
   const date = new Date(dateStr);
@@ -43,7 +41,7 @@ const PostItem = ({
     <StyledWrapper>
       <StyledContent>
         <StyledFlexRow>
-        <Link to={`/games/${id}/posts/${postId}`}>
+        <Link to={`/games/${gameId}/posts/${postId}`}>
           <StyledTitle>
             {title}
           </StyledTitle>
