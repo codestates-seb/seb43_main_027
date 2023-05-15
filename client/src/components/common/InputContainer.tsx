@@ -29,10 +29,14 @@ const InputContainer = ({
                 }
           }
         />
-        {validity || validity === undefined ? (
-          <ValidMessageInvisible>Invisible</ValidMessageInvisible>
+        {!validity ? (
+          useInput?.value === '' ? (
+            <ValidMessageInvisible>Invisible</ValidMessageInvisible>
+          ) : (
+            <ValidMessage>{validmessage}</ValidMessage>
+          )
         ) : (
-          <ValidMessage>{validmessage}</ValidMessage>
+          <ValidMessageInvisible>Invisible</ValidMessageInvisible>
         )}
       </Field>
     </InputContainerWrapper>
