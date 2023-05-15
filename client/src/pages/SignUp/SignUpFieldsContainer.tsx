@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import SignUpFieldsInputContainer from './SignUpFieldsInputContainer';
 
-import { useInputType } from '../../types/costomHooksTypes';
+import { useInputType } from '../../types/customHooksTypes';
 
 /** Input 엘리먼트 각각에 유효성 검사를 넣지말고 여기서 검사해서 validmessage 조정 */
 

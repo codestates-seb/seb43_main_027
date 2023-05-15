@@ -72,7 +72,6 @@ export const Field = styled.div`
   flex-direction: column;
   align-items: center;
 
-
   p {
     display: flex;
     justify-content: center;

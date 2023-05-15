@@ -1,4 +1,4 @@
-import { useInputReturn } from './costomHooksTypes';
+import { useInputReturn } from './customHooksTypes';
 
 export interface ButtonType {
   flex?: string,
