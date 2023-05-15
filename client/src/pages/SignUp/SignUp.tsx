@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import useInput from '../../hooks/useInput';
@@ -13,24 +12,20 @@ import SignUpButtonsContainer from './SignUpButtonsContainer';
 const SignUp = () => {
   const navigator = useNavigate();
 
-  const [userNameProps, setUserName] = useInput('', 'username');
-  const [emailProps, setEmail] = useInput('', 'email');
-  const [passWordProps, setPassWord] = useInput('', 'password');
-
-  const [usernameValid, setUserNameValid] = useState(true);
-  const [emailValid, setEmailValid] = useState(true);
-  const [passWordValid, setPassWordValid] = useState(true);
+  const userNameProps = useInput('', 'username');
+  const emailProps = useInput('', 'email');
+  const passWordProps = useInput('', 'password');
+  // 현재 유효성검사 useInput에 포함되어서 처리 중인데,
+  // 관심사 분리에 따라 useValidation으로 분리해서 하는 것도 좋아보임.
 
   const oauthSignUp: React.MouseEventHandler = async (e: React.MouseEvent) => {
     e.preventDefault();
-    // 유효성 검사 들어갈 자리
     const googleAuthUrl = `${process.env.REACT_APP_SERVER}/oauth2/authorization/google?redirect_uri=http://localhost:3000/signup`;
     window.location.href = googleAuthUrl;
   };
 
   const emailSignUp: React.MouseEventHandler = async (e: React.MouseEvent) => {
     e.preventDefault();
-    // 유효성 검사 들어갈 자리
     try {
       await axios
         .post(
