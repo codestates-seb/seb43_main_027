@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import CategoryTag from '../../components/common/CategoryTag';
-import { dummyCategoriesGames } from '../../data/dummyCategories';
+import { dummyGamesData } from '../../data/dummyCategories';
 import { Link } from 'react-router-dom';
 
 type CategoryType = {
