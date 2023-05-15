@@ -31,9 +31,11 @@ const InputContainer = ({
         />
         {!validity ? (
           useInput?.value === '' ? (
-            <ValidMessageInvisible>Invisible</ValidMessageInvisible>
+            <ValidMessageInvisible className='invisible'>
+              Invisible
+            </ValidMessageInvisible>
           ) : (
-            <ValidMessage>{validmessage}</ValidMessage>
+            <ValidMessage className='msg'>{validmessage}</ValidMessage>
           )
         ) : (
           <ValidMessageInvisible>Invisible</ValidMessageInvisible>
@@ -74,6 +76,10 @@ export const Field = styled.div`
   flex-direction: column;
   align-items: center;
   align-self: stretch;
+  .msg {
+    font-size: 1.2rem;
+    margin-top: 0.7rem;
+  }
 `;
 export const InputEl = styled(StyledInput)`
   display: flex;
@@ -85,6 +91,9 @@ export const InputEl = styled(StyledInput)`
 // 나중에 p 태그 따로 element로 빼고 싶어서 Styled 안붙임.
 const ValidMessage = styled.p`
   color: red;
+  .msg {
+    font-size: 1.2rem;
+  }
 `;
 const ValidMessageInvisible = styled.p`
   color: transparent;
