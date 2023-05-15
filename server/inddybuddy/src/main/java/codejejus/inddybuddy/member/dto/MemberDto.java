@@ -9,23 +9,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class MemberDto {
-
-    public static List<MemberSimpleInfoResponse> getMemberSimpleInfoResponses(List<Member> members) {
-        return members.stream()
-                .map(MemberDto::getMemberSimpleInfoResponse)
-                .collect(Collectors.toList());
-    }
-
-    public static MemberSimpleInfoResponse getMemberSimpleInfoResponse(Member member) {
-        return new MemberSimpleInfoResponse(
-                member.getMemberId(),
-                member.getEmail(),
-                member.getUsername(),
-                member.getImageUrl());
-    }
 
     @AllArgsConstructor
     @Getter
