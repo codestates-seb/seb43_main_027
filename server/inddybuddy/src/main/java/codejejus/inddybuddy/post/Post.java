@@ -39,9 +39,6 @@ public class Post extends Timestamped {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
     private PostTag postTag = PostTag.RECRUITMENT;
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 30)
-    private PostStatus postStatus = PostStatus.POST_REGISTRATION;
     @OneToMany(mappedBy = "post")
     private List<File> files;
 
@@ -72,20 +69,6 @@ public class Post extends Timestamped {
         PostTag(String status) {
             this.status = status;
         }
-    }
-
-    public void updatePostStatus(PostStatus postStatus) {
-        this.postStatus = postStatus;
-    }
-
-    public enum PostStatus {
-
-        POST_REGISTRATION("게시글 등록"),
-        POST_DELETED("게시글 삭제");
-
-        @Getter
-        private final String status;
-        PostStatus(String status) {this.status = status;}
     }
 
     public void updatePost(String title, String content, PostTag postTag) {
