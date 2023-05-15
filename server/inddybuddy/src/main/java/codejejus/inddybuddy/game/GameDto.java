@@ -20,13 +20,13 @@ public class GameDto {
     @Getter
     public static class Response {
 
-        private Long gameId;
-        private String gameName;
-        private String downloadUrl;
-        private String mainImgUrl;
-        private List<Category> categories;
-        private Long followerCount;
-        private LocalDateTime createdAt;
+        private final Long gameId;
+        private final String gameName;
+        private final String downloadUrl;
+        private final String mainImgUrl;
+        private final List<Category> categories;
+        private final Long followerCount;
+        private final LocalDateTime createdAt;
 
         @Builder
         public Response(Long gameId, String gameName, String downloadUrl, String mainImgUrl, List<Category> categories, Long followerCount, LocalDateTime createdAt) {
