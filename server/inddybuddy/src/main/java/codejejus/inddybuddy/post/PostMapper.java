@@ -1,7 +1,10 @@
 package codejejus.inddybuddy.post;
 
+import codejejus.inddybuddy.file.File;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
+
+import java.util.stream.Collectors;
 
 @Component
 public class PostMapper {
@@ -12,6 +15,7 @@ public class PostMapper {
                 .content(requestDto.getContent())
                 .build();
     }
+
     public PostDto.Response entityToResponse(Post post) {
         return PostDto.Response.builder()
                 .postId(post.getPostId())
@@ -20,7 +24,8 @@ public class PostMapper {
                 .content(post.getContent())
                 .postTag(post.getPostTag())
                 .views(post.getViews())
-                .likes(post.getLikes())
+                .likeCount(post.getLikeCount())
+                .fileUrlList(post.getFiles().stream().map(File::getFileUrl).collect(Collectors.toList()))
                 .build();
     }
 

@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class FileMapper {
+
     public File memberFileDtoToEntity(FileDto fileDto) {
         return File.builder()
                 .fileName(fileDto.getFileName())

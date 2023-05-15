@@ -13,6 +13,7 @@ import codejejus.inddybuddy.member.entity.MemberPrincipal;
 import codejejus.inddybuddy.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +26,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional
 public class GameService {
+
     private final GameRepository gameRepository;
     private final GameMapper gameMapper;
     private final CategoryService categoryService;
@@ -38,7 +40,7 @@ public class GameService {
         game.setCategories(categories);
         game.setMember(memberPrincipal.getMember());
         if (multipartFile != null) {
-            File memberImg = fileService.createGameImg(multipartFile, game);
+            File memberImg = fileService.createFile(multipartFile, game);
             game.setMainImageUrl(memberImg.getFileUrl());
         }
         Game save = gameRepository.save(game);
@@ -52,7 +54,7 @@ public class GameService {
         if (multipartFile != null) {
             // TODO : 미리 등록한 이미지 S3에서 삭제
             // fileService.deleteMemberImg(findMember);
-            File memberImg = fileService.createGameImg(multipartFile, findGame);
+            File memberImg = fileService.createFile(multipartFile, findGame);
             findGame.setMainImageUrl(memberImg.getFileUrl());
         }
         findGame.updateGame(requestDto.getGameName(), requestDto.getDownloadUrl(), patchCategories);
@@ -78,10 +80,12 @@ public class GameService {
     public Page<GameDto.Response> getAllGames(Pageable pageable, Filter filter) {
         Page<Game> games;
 
-        if (filter == null) games = gameRepository.findAll(pageable);
-        else if (filter.equals(Filter.POPULAR)) games = gameRepository.findAllByOrderByFollowersDesc(pageable);
-        else if (filter.equals(Filter.NEW)) games = gameRepository.findAllByOrderByCreatedAtDesc(pageable);
-        else throw new CustomException(ExceptionCode.FILTER_NOT_FOUND);
+        try {
+            if (filter != null) pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), filter.getSort());
+            games = gameRepository.findAll(pageable);
+        } catch (RuntimeException e) {
+            throw new CustomException(ExceptionCode.FILTER_NOT_FOUND);
+        }
 
         return gameMapper.entityPageToResponsePage(games);
     }

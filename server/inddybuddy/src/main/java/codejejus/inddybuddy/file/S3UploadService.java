@@ -49,11 +49,6 @@ public class S3UploadService {
         return fileName;
     }
 
-    @Transactional
-    public List<String> saveUploadFiles(List<MultipartFile> multipartFiles) {
-        return multipartFiles.stream().map(this::saveUploadFile).collect(Collectors.toList());
-    }
-
     public String getFilePath(String fileName) {
         return amazonS3Client.getUrl(bucket, fileName).toString();
     }

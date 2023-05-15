@@ -33,18 +33,19 @@ public class PostDto {
         private String content;
         private long views;
         private PostTag postTag;
-        private List<Like> likes;
-//        private long memberId;
+        private Long likeCount;
+        private List<String> fileUrlList;
 
         @Builder
-        public Response(Long postId, Long gameId, String title, String content, Long views, PostTag postTag, List<Like> likes) {
+        public Response(Long postId, Long gameId, String title, String content, Long views, PostTag postTag, Long likeCount, List<String> fileUrlList) {
             this.postId = postId;
             this.gameId = gameId;
             this.title = title;
             this.content = content;
             this.postTag = postTag;
             this.views = views;
-            this.likes = likes;
+            this.likeCount = likeCount;
+            this.fileUrlList = fileUrlList;
         }
     }
 

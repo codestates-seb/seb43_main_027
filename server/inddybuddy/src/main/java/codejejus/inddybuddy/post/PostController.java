@@ -12,6 +12,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URI;
 import java.util.List;
@@ -25,11 +26,11 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity<PostDto.Response> createPost(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
-                                        @RequestBody PostDto.Request requestDto,
-                                        @PathVariable("game-id") Long gameId) {
-        // Todo : 게임을 선택하고 그 안에 post를 만든다.
-        requestDto.addGameId(gameId);
-        PostDto.Response PostResponse = postService.createPost(memberPrincipal, requestDto);
+                                                       @RequestPart PostDto.Request post,
+                                                       @PathVariable("game-id") Long gameId,
+                                                       @RequestPart(value = "files", required = false) List<MultipartFile> multipartFiles) {
+        post.addGameId(gameId);
+        PostDto.Response PostResponse = postService.createPost(memberPrincipal, post, multipartFiles);
         URI uri = UriCreator.createURI(PostResponse.getPostId());
 
         return ResponseEntity.created(uri).build();
@@ -37,9 +38,10 @@ public class PostController {
 
     @PatchMapping("/{post-id}")
     public ResponseEntity<SingleResponse<PostDto.Response>> modifyPost(@PathVariable("post-id") Long postId,
-                                                       @AuthenticationPrincipal MemberPrincipal memberPrincipal,
-                                                       @RequestBody PostDto.Request requestDto) {
-        return ResponseEntity.ok(new SingleResponse<>(postService.modifyPost(postId, memberPrincipal, requestDto)));
+                                                                       @AuthenticationPrincipal MemberPrincipal memberPrincipal,
+                                                                       @RequestPart PostDto.Request patch,
+                                                                       @RequestPart(value = "files", required = false) List<MultipartFile> multipartFiles) {
+        return ResponseEntity.ok(new SingleResponse<>(postService.modifyPost(postId, memberPrincipal, patch, multipartFiles)));
     }
 
     @GetMapping("/{post-id}")
@@ -48,16 +50,14 @@ public class PostController {
     }
 
     @GetMapping
-    public ResponseEntity<MultiResponse<PostDto.Response>> getAllPosts(@PageableDefault(page = 0, size = 20)Pageable pageable,
-                                                                       @RequestParam(required = false)Post.PostTag postTag,
-                                                                       @RequestParam(required = false)Filter filter) {
+    public ResponseEntity<MultiResponse<PostDto.Response>> getAllPosts(@PageableDefault(page = 0, size = 20) Pageable pageable,
+                                                                       @RequestParam(required = false) Post.PostTag postTag,
+                                                                       @RequestParam(required = false) Filter filter) {
         Page<PostDto.Response> pagePosts = postService.getAllPosts(pageable, postTag, filter);
         List<PostDto.Response> posts = pagePosts.getContent();
         return ResponseEntity.ok(new MultiResponse<>(posts, pagePosts));
     }
 
-
-    // Todo : 댓글 구현 후, 게시글 삭제 시 댓글까지 삭제 구현하기
     @DeleteMapping("/{post-id}")
     public ResponseEntity<Post> deletePost(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
                                            @PathVariable("post-id") Long postId) {

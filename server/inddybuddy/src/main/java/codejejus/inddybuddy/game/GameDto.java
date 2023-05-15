@@ -4,6 +4,7 @@ import codejejus.inddybuddy.category.Category;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class GameDto {
@@ -25,15 +26,17 @@ public class GameDto {
         private String mainImgUrl;
         private List<Category> categories;
         private Long followerCount;
+        private LocalDateTime createdAt;
 
         @Builder
-        public Response(Long gameId, String gameName, String downloadUrl, String mainImgUrl, List<Category> categories, Long followerCount) {
+        public Response(Long gameId, String gameName, String downloadUrl, String mainImgUrl, List<Category> categories, Long followerCount, LocalDateTime createdAt) {
             this.gameId = gameId;
             this.gameName = gameName;
             this.downloadUrl = downloadUrl;
             this.mainImgUrl = mainImgUrl;
             this.followerCount = followerCount;
             this.categories = categories;
+            this.createdAt = createdAt;
         }
     }
 }

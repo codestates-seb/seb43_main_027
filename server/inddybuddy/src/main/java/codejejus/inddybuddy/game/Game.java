@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -30,6 +31,8 @@ public class Game extends Timestamped {
     private Member member;
     @OneToMany(mappedBy = "game")
     private List<FollowGame> followers;
+    @Formula("(select count(*) from follow_game fg where fg.game_id = game_id)")
+    private Long followerCount;
     @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "Game_Category",
@@ -48,6 +51,14 @@ public class Game extends Timestamped {
     public void setMainImageUrl(String mainImageUrl) {
         this.mainImageUrl = mainImageUrl;
     }
+
+//    public void increaseFollowerCount() {
+//        this.followerCount += 1;
+//    }
+//
+//    public void decreaseFollowerCount() {
+//        this.followerCount -= 1;
+//    }
 
     @Builder
     public Game(String gameName, String downloadUrl, Member member) {
