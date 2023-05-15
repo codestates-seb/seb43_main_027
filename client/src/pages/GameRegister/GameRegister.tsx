@@ -4,7 +4,6 @@ import Label from '../../components/elements/Label';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-// import useInput from '../../hooks/useInput';
 
 import styled from 'styled-components';
 
@@ -14,7 +13,6 @@ const GameRegister = () => {
   const [title, setTitle] = useState('');
   const [detail, setDetail] = useState('');
   const [url, setUrl] = useState('');
-  // const [tags, setTags] = useState([]);
 
   const titleOnChange = (e) => {
     setTitle(e.target.value);
@@ -26,11 +24,6 @@ const GameRegister = () => {
   const urlOnChange = (e) => {
     setUrl(e.target.value);
   };
-  //   const tagsOnClick = (e) => {
-  //     if(tags.findIndex(e.target.value)>-1){
-  //       setTags(tags.filter(el => el !== e.target.value));
-  //     } else setTags([...tags, e.target.value]);
-  //   }
 
   const formItemLayout = {
     labelCol: { span: 6 },
@@ -110,7 +103,7 @@ const GameRegister = () => {
           />
         </StyledGameNameContainer>
         {/* 태그 선택 */}
-        <></>
+        <GameTagsContainer></GameTagsContainer>
         {/* 게임 설명 */}
         <StyledGameDetailContainer>
           <Label htmlFor='channeltitle'>게임 설명</Label>
