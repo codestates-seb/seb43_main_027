@@ -1,12 +1,12 @@
 package codejejus.inddybuddy.post;
 
+import codejejus.inddybuddy.comment.CommentDto;
+import codejejus.inddybuddy.member.dto.MemberDto;
 import codejejus.inddybuddy.post.Post.PostTag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
-import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 public class PostDto {
@@ -14,9 +14,8 @@ public class PostDto {
     @Getter
     public static class Request {
 
-        // TODO : , 게시글 제목, 게시글 내용, 게시글 태그?, 첨부 파일(null) 리스트, 게임 이름?, 멤버 아이디
         private String title;
-        private long gameId;
+        private Long gameId;
         private String content;
         private PostTag postTag;
 
@@ -29,51 +28,30 @@ public class PostDto {
     @AllArgsConstructor
     public static class Response {
 
-        private long postId;
-        private long gameId;
+        private Long postId;
+        private Long gameId;
+        private MemberDto.MemberSimpleInfoResponse member;
         private String title;
         private String content;
         private long views;
         private PostTag postTag;
         private Long likeCount;
         private List<String> fileUrlList;
+        private List<CommentDto.Response> comments;
 
         @Builder
-        public Response(Long postId, Long gameId, String title, String content, Long views, PostTag postTag, Long likeCount, List<String> fileUrlList) {
+        public Response(Long postId, Long gameId, MemberDto.MemberSimpleInfoResponse member, String title, String content, Long views, PostTag postTag, Long likeCount, List<String> fileUrlList, List<CommentDto.Response> comments) {
+
             this.postId = postId;
             this.gameId = gameId;
+            this.member = member;
             this.title = title;
             this.content = content;
             this.postTag = postTag;
             this.views = views;
             this.likeCount = likeCount;
             this.fileUrlList = fileUrlList;
+            this.comments = comments;
         }
-    }
-
-    @Getter
-    public static class Post {
-
-        private long memberId;
-        private long gameId;
-        @NotBlank
-        private String title;
-        @NotBlank
-        private String content;
-
-        public void addGameId(Long gameId) {
-            this.gameId = gameId;
-        }
-    }
-
-    @Getter
-    public static class Patch {
-
-        @Setter
-        private Long postId;
-        @NotBlank
-        private String title;
-        @NotBlank
-        private String content;
     }
 }
