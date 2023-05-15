@@ -8,9 +8,11 @@ import { categoryFilterTab } from '../data/filterTapList';
 
 const CategoryGames = () => {
 
+  const [ isSelectTab, setIsSelectTab ] = useState<string>(categoryFilterTab[0]);
+
   const handleClick = (item: string) => {
-    console.log(item);
-  }
+    setIsSelectTab(item);
+  };
 
   return (
     <StyledCategoryGamesWrapper>
@@ -21,7 +23,9 @@ const CategoryGames = () => {
           onClickFilter={handleClick}
           filterList={categoryFilterTab} 
         />
-        <GameList />
+        <GameList 
+          isSelectTab={isSelectTab}
+        />
       </StyleContain>
     </StyledCategoryGamesWrapper>
   );
