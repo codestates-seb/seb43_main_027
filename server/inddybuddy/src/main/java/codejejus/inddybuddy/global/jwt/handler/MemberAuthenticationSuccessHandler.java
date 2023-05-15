@@ -29,7 +29,7 @@ public class MemberAuthenticationSuccessHandler implements AuthenticationSuccess
     public void setMemberResponse(HttpServletResponse response, Member member) throws IOException {
         MemberDto.Response memberResponse = memberToMemberDtoResponse(member);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.setStatus(HttpServletResponse.SC_CREATED);
+        response.setStatus(HttpServletResponse.SC_OK);
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(GsonUtils.gson.toJson(memberResponse, MemberDto.Response.class));
     }
@@ -38,7 +38,6 @@ public class MemberAuthenticationSuccessHandler implements AuthenticationSuccess
         if (member == null) {
             return null;
         }
-
         return new MemberDto.Response(
                 member.getMemberId(),
                 member.getEmail(),
