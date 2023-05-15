@@ -4,60 +4,84 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import GameItem from './GameItem';
-import { dummyCategoriesGames } from '../../data/dummyCategories';
+import { dummyGamesData } from '../../data/dummyCategories';
+import { type CategoryGameType } from '../../types/dataTypes';
+import { type TabSelectType } from '../../types/propsTypes';
+import axios from 'axios';
 
-interface Props {
-  isSelectTab: string;
-};
+const GameList: React.FC<TabSelectType> = ({ isSelectTab })  => {
 
-const GameList: React.FC<Props> = ({ isSelectTab })  => {
-
-  // todo: 전체게임, 인기게임, 신규게임, 팔로우게임 필터링 조건 추가
-  // 전체데이터 받아올때 생성시간 데이터 추가가 필요함
-  // 조회는 무한스크롤
+  // todo: 데이터가 많아질때, 조회는 무한스크롤
   const { categoryId } = useParams<{ categoryId: string}>();
   const memberId = useSelector((state: RootState) => state.user.memberId);
-
-  const filteredGames = dummyCategoriesGames.data
-    .filter((game) => game.categories.some((category) => category.categoryId.toString() === categoryId));
-  
-  const [ isFilteredGames, setIsFilteredGames ] = useState(filteredGames);
+  const [ isFilteredGames, setIsFilteredGames ] = useState<CategoryGameType[]>([]);
   const [ userMessage, setUserMessage ] = useState('팔로우한 게임이 없습니다.');
 
   useEffect(() => {
-    switch (isSelectTab) {
-      case '전체 게임':
-        // 채널 생성 시간 데이터 있어야됨
-        setIsFilteredGames(filteredGames);
-        break;
-      case '인기 게임':
-        setIsFilteredGames([...filteredGames].sort((a, b) => b.followerCount - a.followerCount))
-        break;
-      case '최신 게임':
-        // 채널 생성 시간 데이터 있어야됨
-        setIsFilteredGames(filteredGames);
-        break;
-      case '팔로우 게임':
-        // 팔로우 기능 구현시 데이터 추가하기
-        if (memberId === -1) {
-          setIsFilteredGames([]);
-          setUserMessage('로그인이 필요한 기능입니다.');
-        } else {
-          setIsFilteredGames([]);
-        }
-        break;
-      default:
-        setIsFilteredGames(filteredGames);
-        break;
-    }
+    const fetchGamesData = async () => {
+      try {
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/categories/${categoryId}/games`);
+      
+      const gamesData = res.data.data;
+      // 더미데이터 테스트 코드
+      // const gamesData = dummyGamesData.data;
+      if (gamesData) {
+        const filteredGames = gamesData
+          .sort((a: { createdAt: string }, b: { createdAt: string }) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+          if (isFilteredGames.length === 0) setUserMessage('등록된 게임채널이 없습니다.');
+          
+          switch (isSelectTab) {
+            case '전체 게임':
+              setIsFilteredGames([...filteredGames]);
+              break;
+            case '인기 게임': {
+              const popularGames = filteredGames.filter((game: any) => game.followerCount >= 1);
+              popularGames.sort((a: { followerCount: number }, b: { followerCount: number }) => b.followerCount - a.followerCount);
+              setIsFilteredGames([...popularGames]);
+              break;
+            }
+            case '신규 게임': {
+              const currentDate = new Date();
+              const oneMonthAgo = new Date();
+              oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
 
+              const newGames = filteredGames.filter((game: any) => {
+                const createdAt = new Date(game.createdAt);
+                return createdAt >= oneMonthAgo && createdAt <= currentDate;
+              });
+              setIsFilteredGames([...newGames]);
+              break;
+            }
+            case '팔로우 게임':
+              // todo: 팔로우 기능 구현시 데이터 추가하기
+              if (memberId === -1) {
+                setIsFilteredGames([]);
+                setUserMessage('로그인이 필요한 기능입니다.');
+              } else {
+                setIsFilteredGames([]);
+                setUserMessage('팔로우한 게임채널이 없습니다.');
+              }
+              break;
+            default:
+              setIsFilteredGames(filteredGames);
+              break;
+          }
+      } else {
+        // todo: 404페이지 경로로 이동 시키기
+        // return navigate('/');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+    fetchGamesData();
   }, [isSelectTab, memberId]);
 
   return (
     <StyledGameList>
       {
         isFilteredGames.length > 0 ?
-        isFilteredGames.map((item, index) => (
+        isFilteredGames.map((item) => (
           <GameItem
             key={item.gameId}
             gameId={item.gameId}
@@ -87,6 +111,7 @@ const StyledGameList = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   flex-basis: 100%;
+  min-height: 45vh;
   @media screen and (max-width: 650px) {
     flex-wrap: wrap;
     flex-basis: 50%;
