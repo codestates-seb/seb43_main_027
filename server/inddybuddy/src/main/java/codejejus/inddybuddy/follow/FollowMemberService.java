@@ -28,14 +28,6 @@ public class FollowMemberService {
         followMemberRepository.delete(findFollow);
     }
 
-    public Long getFollowingCount(Member owner) {
-        return followMemberRepository.countByFollowing(owner);
-    }
-
-    public Long getFollowerCount(Member follow) {
-        return followMemberRepository.countByFollower(follow);
-    }
-
     public List<Member> getAllFollowerByMemberId(Long memberId) {
         return followMemberRepository.findAllByFollower(memberId);
     }

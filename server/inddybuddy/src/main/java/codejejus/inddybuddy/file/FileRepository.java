@@ -10,6 +10,8 @@ import java.util.List;
 public interface FileRepository extends JpaRepository<File, Long> {
 
     File findByMember(Member member);
+
     File findByGame(Game game);
+
     List<File> findByPost(Post post);
 }

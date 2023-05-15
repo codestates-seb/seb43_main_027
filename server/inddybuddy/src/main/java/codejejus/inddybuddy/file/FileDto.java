@@ -7,8 +7,9 @@ import lombok.Getter;
 
 @Getter
 public class FileDto {
-    private String fileName;
-    private String fileUrl;
+
+    private final String fileName;
+    private final String fileUrl;
     private Member member;
     private Game game;
     private Post post;

@@ -43,6 +43,7 @@ public class GameService {
             File memberImg = fileService.createFile(multipartFile, game);
             game.setMainImageUrl(memberImg.getFileUrl());
         }
+        // TODO : 중복된 이름 게임 예외 처리
         Game save = gameRepository.save(game);
         return gameMapper.entityToResponse(save);
     }
@@ -77,16 +78,8 @@ public class GameService {
         return findVerifidGame(gameId);
     }
 
-    public Page<GameDto.Response> getAllGames(Pageable pageable, Filter filter) {
-        Page<Game> games;
-
-        try {
-            if (filter != null) pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), filter.getSort());
-            games = gameRepository.findAll(pageable);
-        } catch (RuntimeException e) {
-            throw new CustomException(ExceptionCode.FILTER_NOT_FOUND);
-        }
-
+    public Page<GameDto.Response> getAllGames(Pageable pageable, String filter) {
+        Page<Game> games = gameRepository.findAll(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Filter.getMatchedSort(filter)));
         return gameMapper.entityPageToResponsePage(games);
     }
 

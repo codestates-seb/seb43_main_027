@@ -8,14 +8,15 @@ public class CategoryDto {
 
     @Getter
     public static class Post {
+
         private Category.CategoryName categoryName;
     }
 
     @Getter
     public static class Response {
 
-        private Long categoryId;
-        private Category.CategoryName categoryName;
+        private final Long categoryId;
+        private final Category.CategoryName categoryName;
 
         @Builder
         public Response(Long categoryId, Category.CategoryName categoryName) {

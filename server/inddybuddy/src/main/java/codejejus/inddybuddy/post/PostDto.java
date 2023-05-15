@@ -1,6 +1,5 @@
 package codejejus.inddybuddy.post;
 
-import codejejus.inddybuddy.like.Like;
 import codejejus.inddybuddy.post.Post.PostTag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,11 +13,13 @@ public class PostDto {
 
     @Getter
     public static class Request {
+
         // TODO : , 게시글 제목, 게시글 내용, 게시글 태그?, 첨부 파일(null) 리스트, 게임 이름?, 멤버 아이디
         private String title;
         private long gameId;
         private String content;
         private PostTag postTag;
+
         public void addGameId(Long gameId) {
             this.gameId = gameId;
         }
@@ -27,6 +28,7 @@ public class PostDto {
     @Getter
     @AllArgsConstructor
     public static class Response {
+
         private long postId;
         private long gameId;
         private String title;
@@ -66,6 +68,7 @@ public class PostDto {
 
     @Getter
     public static class Patch {
+
         @Setter
         private Long postId;
         @NotBlank

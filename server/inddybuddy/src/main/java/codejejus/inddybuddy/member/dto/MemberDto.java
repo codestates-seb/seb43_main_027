@@ -1,6 +1,5 @@
 package codejejus.inddybuddy.member.dto;
 
-import codejejus.inddybuddy.file.File;
 import codejejus.inddybuddy.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,8 +15,16 @@ public class MemberDto {
 
     public static List<MemberSimpleInfoResponse> getMemberSimpleInfoResponses(List<Member> members) {
         return members.stream()
-                .map(member -> new MemberSimpleInfoResponse(member.getMemberId(), member.getEmail(), member.getUsername()))
+                .map(MemberDto::getMemberSimpleInfoResponse)
                 .collect(Collectors.toList());
+    }
+
+    public static MemberSimpleInfoResponse getMemberSimpleInfoResponse(Member member) {
+        return new MemberSimpleInfoResponse(
+                member.getMemberId(),
+                member.getEmail(),
+                member.getUsername(),
+                member.getImageUrl());
     }
 
     @AllArgsConstructor
@@ -85,6 +92,7 @@ public class MemberDto {
         private Long memberId;
         private String email;
         private String username;
+        private String imageUrl;
     }
 
     @AllArgsConstructor

@@ -13,5 +13,5 @@ public interface MemberMapper {
 
     MemberDto.Response memberToMemberDtoResponse(Member member);
 
-    MemberDto.ProfileResponse memberToMemberProfileDtoResponse(Member member, Long followerCount, Long followingCount);
+    MemberDto.ProfileResponse memberToMemberProfileDtoResponse(Member member);
 }

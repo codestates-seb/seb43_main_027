@@ -3,6 +3,9 @@ package codejejus.inddybuddy.global.constant;
 import lombok.Getter;
 import org.springframework.data.domain.Sort;
 
+import java.util.Arrays;
+import java.util.Locale;
+
 @Getter
 public enum Filter {
 
@@ -17,5 +20,14 @@ public enum Filter {
     Filter(String name, Sort sort) {
         this.name = name;
         this.sort = sort;
+    }
+
+    public static Sort getMatchedSort(String filter) {
+        if (filter == null) return NEW.sort;
+        return Arrays.stream(values())
+                .filter(filterType -> filterType.name().equals(filter.toUpperCase(Locale.ROOT)))
+                .findAny()
+                .orElse(NEW)
+                .sort;
     }
 }

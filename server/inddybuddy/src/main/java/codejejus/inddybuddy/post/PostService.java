@@ -53,18 +53,14 @@ public class PostService {
         return postMapper.entityToResponse(post);
     }
 
-    public Page<PostDto.Response> getAllPosts(Pageable pageable, Post.PostTag postTag, Filter filter) {
-        Page<Post> posts;
-
-        try {
-            if (filter != null) pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), filter.getSort());
-            if (postTag == null) posts = postRepository.findAll(pageable);
-            else posts = postRepository.findAllByPostTag(postTag, pageable);
-        } catch (RuntimeException e) {
-            throw new CustomException(ExceptionCode.FILTER_NOT_FOUND);
-        }
-
+    public Page<PostDto.Response> getAllPosts(Pageable pageable, Post.PostTag postTag, String filter) {
+        Page<Post> posts = getPosts(postTag, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Filter.getMatchedSort(filter)));
         return postMapper.entityPageToResponsePage(posts);
+    }
+
+    private Page<Post> getPosts(Post.PostTag postTag, Pageable pageable) {
+        if (postTag == null) return postRepository.findAll(pageable);
+        return postRepository.findAllByPostTag(postTag, pageable);
     }
 
     // Todo : 댓글 구현 후, 게시글 삭제 시 댓글까지 삭제 구현하기

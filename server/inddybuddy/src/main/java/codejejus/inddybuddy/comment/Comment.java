@@ -42,7 +42,8 @@ public class Comment extends Timestamped {
         COMMENT_REGISTRATION("댓글 등록"),
         COMMENT_DELETED("삭제된 댓글입니다.");
         @Getter
-        private String status;
+        private final String status;
+
         CommentStatus(String status) {
             this.status = status;
         }

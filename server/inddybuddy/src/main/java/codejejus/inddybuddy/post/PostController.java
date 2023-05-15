@@ -1,6 +1,5 @@
 package codejejus.inddybuddy.post;
 
-import codejejus.inddybuddy.global.constant.Filter;
 import codejejus.inddybuddy.global.dto.MultiResponse;
 import codejejus.inddybuddy.global.dto.SingleResponse;
 import codejejus.inddybuddy.global.utils.UriCreator;
@@ -52,7 +51,7 @@ public class PostController {
     @GetMapping
     public ResponseEntity<MultiResponse<PostDto.Response>> getAllPosts(@PageableDefault(page = 0, size = 20) Pageable pageable,
                                                                        @RequestParam(required = false) Post.PostTag postTag,
-                                                                       @RequestParam(required = false) Filter filter) {
+                                                                       @RequestParam(required = false) String filter) {
         Page<PostDto.Response> pagePosts = postService.getAllPosts(pageable, postTag, filter);
         List<PostDto.Response> posts = pagePosts.getContent();
         return ResponseEntity.ok(new MultiResponse<>(posts, pagePosts));

@@ -51,6 +51,18 @@ public class Post extends Timestamped {
         this.member = member;
     }
 
+    public void updatePost(String title, String content, PostTag postTag) {
+        if (title != null) {
+            this.title = title;
+        }
+        if (content != null) {
+            this.content = content;
+        }
+        if (postTag != null) {
+            this.postTag = postTag;
+        }
+    }
+
     public enum PostTag {
 
         RECRUITMENT("모집"),
@@ -66,21 +78,9 @@ public class Post extends Timestamped {
 
         @Getter
         private final String status;
+
         PostTag(String status) {
             this.status = status;
-        }
-    }
-
-    public void updatePost(String title, String content, PostTag postTag) {
-
-        if(title != null) {
-            this.title = title;
-        }
-        if(content != null) {
-            this.content = content;
-        }
-        if(postTag != null) {
-            this.postTag = postTag;
         }
     }
 }

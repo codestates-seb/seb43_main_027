@@ -40,9 +40,7 @@ public class CategoryService {
 
     public Category findVerifiedCategory(Category.CategoryName categoryName) {
         Optional<Category> optionalCategory = categoryRepository.findByCategoryName(categoryName);
-        Category findCategory =
-                optionalCategory.orElseThrow(() -> new CustomException(ExceptionCode.CATEGORY_NOT_FOUND));
-        return findCategory;
+        return optionalCategory.orElseThrow(() -> new CustomException(ExceptionCode.CATEGORY_NOT_FOUND));
     }
 
     public List<Category> getCategoriesByName(List<Category.CategoryName> categoryNames) {

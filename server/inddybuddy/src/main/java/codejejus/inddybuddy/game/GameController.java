@@ -2,7 +2,6 @@ package codejejus.inddybuddy.game;
 
 import codejejus.inddybuddy.follow.FollowGameService;
 import codejejus.inddybuddy.follow.FollowMember;
-import codejejus.inddybuddy.global.constant.Filter;
 import codejejus.inddybuddy.global.dto.MultiResponse;
 import codejejus.inddybuddy.global.dto.SingleResponse;
 import codejejus.inddybuddy.global.utils.UriCreator;
@@ -46,7 +45,7 @@ public class GameController {
 
     @GetMapping
     public ResponseEntity<MultiResponse<GameDto.Response>> getAllGames(@PageableDefault(page = 0, size = 30) Pageable pageable,
-                                                                       @RequestParam(required = false) Filter filter) {
+                                                                       @RequestParam(required = false) String filter) {
         Page<GameDto.Response> pageGames = gameService.getAllGames(pageable, filter);
         List<GameDto.Response> games = pageGames.getContent();
         return ResponseEntity.ok(new MultiResponse<>(games, pageGames));

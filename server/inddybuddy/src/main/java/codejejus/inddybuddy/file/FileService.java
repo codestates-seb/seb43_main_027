@@ -1,6 +1,6 @@
 package codejejus.inddybuddy.file;
 
-import codejejus.inddybuddy.game.Game;
+import codejejus.inddybuddy.global.constant.Constants;
 import codejejus.inddybuddy.member.entity.Member;
 import codejejus.inddybuddy.post.Post;
 import lombok.RequiredArgsConstructor;
@@ -36,8 +36,10 @@ public class FileService {
 
     public void deleteMemberImg(Member member) {
         File file = fileRepository.findByMember(member);
-        amazonS3Service.deleteFile(file.getFileName());
-        fileRepository.delete(file);
+        if (!file.getFileUrl().equals(Constants.MEMBER_DEFAULT_IMG)) {
+            amazonS3Service.deleteFile(file.getFileName());
+            fileRepository.delete(file);
+        }
     }
 
     public void deletePostFiles(Post post) {
