@@ -2,6 +2,8 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { RootState } from '../../store/store';
+import { useEffect, useRef, useState } from 'react';
+import axios from 'axios';
 
 const NavContent = ({
   type,
@@ -10,15 +12,34 @@ const NavContent = ({
   type: string;
   Content: (props: any) => JSX.Element;
 }) => {
+  const [data, setData] = useState([]);
   const user = useSelector((s: RootState) => s.user);
+  const apiRef = useRef<{ [key: string]: string }>({
+    user: `/api/members/${user.memberId}/following`,
+    bookmark: `/api/members/${user.memberId}/bookmark`,
+    games: `/api/members/${user.memberId}/mygame`
+  });
   // TODO: type에 따라서 데이터 패칭을 다르게 하고 보여준다.
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await axios(
+          `${process.env.REACT_APP_API_URL}${apiRef.current[type]}`
+        );
+        setData(res.data.data);
+      } catch (err) {
+        console.error(err);
+      }
+    })();
+  }, [type]);
 
   return (
     <StyledContainer>
       <StyledRelativeBox>
         <StyledItemContainer>
           {user.memberId === -1 ? (
-            [1, 2, 3, 4, 5, 6, 7].map((a) => <Content key={a} />)
+            data.map((a) => <Content key={a} />)
           ) : (
             <StyledNotiMsgContainer>
               <span>로그인이 필요한 서비스입니다.</span>

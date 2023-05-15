@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-const FilterTap = ({ filterList }: { filterList: string[]})  => {
+type Props = {
+  filterList: string[];
+  onClickFilter: (item: string) => void;
+};
 
-  // todo: 클릭한 상태값 담아서 내보내기
+const FilterTap = ({ filterList, onClickFilter }: Props)  => {
 
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const handleItemClick = (index: number) => {
+  const handleItemClick = (item: string, index: number) => {
     setActiveIndex(index);
+    onClickFilter(item);
   };
 
   return (
@@ -18,7 +22,7 @@ const FilterTap = ({ filterList }: { filterList: string[]})  => {
           <FiterItem
             key={index}
             className={activeIndex === index ? 'active' : ''}
-            onClick={() => handleItemClick(index)}
+            onClick={() => handleItemClick(item, index)}
           >
             {item}
           </FiterItem>

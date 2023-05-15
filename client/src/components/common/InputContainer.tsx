@@ -67,9 +67,11 @@ export const Field = styled.div`
   overflow: hidden;
   border-radius: 2px;
   display: flex;
+
   flex: 1;
   flex-direction: column;
-  align-self: stretch;
+  align-items: center;
+
 
   p {
     display: flex;

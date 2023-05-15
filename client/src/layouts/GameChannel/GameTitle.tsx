@@ -1,21 +1,37 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 import styled from 'styled-components';
-import { dummyGameData, Game } from '../../data/dummyCategories';
+import { dummyGameData } from '../../data/dummyCategories';
 import CategoryTag from '../../components/common/CategoryTag';
 import CreateChannelButton from '../../components/ui/CreateChannelButton';
 
-const GameTitle = ()  => {
+// todo: 게임 팔로우 기능 추가, 게임아이디에 맞게 게임 데이터 패칭, 경로 쿼리 재설정
 
-  const { id } = useParams();
-  const game: Game | undefined = dummyGameData.find(item => item.gameId.toString() === id);
+const GameTitle = ()  => {
+  
+  const { gameId } = useParams();
+  const memberId = useSelector((state: RootState) => state.user.memberId);
+
+  const navigate = useNavigate();
+  const game = dummyGameData.find(item => item.gameId.toString() === gameId);
   const followNumber = 10; // 데이터패칭 해야됨 + 팔로우 기능추가 (버튼클릭시 텍스트변경)
 
   if (!game) {
+    // 게임이 없을때 404페이지로 변경
     return <div>게임을 찾을 수 없습니다.</div>
   }
 
   const currentGameData = game.categories;
+
+  const handleFollow = () => {
+    if (memberId === -1) {
+      navigate('/login');
+    } else {
+      console.log('게임 팔로우 기능 추가');
+    }
+  }
 
   return (
     <StyledTitleWrapper>
@@ -38,8 +54,15 @@ const GameTitle = ()  => {
       }
       </StyledTagContain>
       <StyledFollowContain>
-        <p>게임 팔로워: {followNumber}</p>
-        <CreateChannelButton text='게임 팔로우' onClick={() => {console.log('팔로우 기능추가')}}/>
+      <Link to={`/games/${gameId}/follower`} >
+        <StyledFollowNumber>
+          게임 팔로워: {followNumber}
+        </StyledFollowNumber>
+      </Link>
+        <CreateChannelButton 
+          text='게임 팔로우' 
+          onClick={handleFollow}
+        />
       </StyledFollowContain>
     </StyledTitleWrapper>
   );
@@ -104,3 +127,10 @@ const StyledFollowContain = styled.div`
     width: 80%;
   }
 `;
+
+const StyledFollowNumber = styled.p`
+  cursor: pointer;
+  &:hover {
+    color: var(--cyan-dark-700);
+  }
+`
