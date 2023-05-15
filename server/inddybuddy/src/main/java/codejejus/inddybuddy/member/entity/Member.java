@@ -2,6 +2,7 @@ package codejejus.inddybuddy.member.entity;
 
 import codejejus.inddybuddy.file.File;
 import codejejus.inddybuddy.global.audit.Timestamped;
+import codejejus.inddybuddy.global.constant.Constants;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,7 +30,7 @@ public class Member extends Timestamped {
     @OneToOne(mappedBy = "member")
     private File file;
     @Column(nullable = false)
-    private String imageUrl = "https://codejejus-deploy.s3.ap-northeast-2.amazonaws.com/images/defaultUserImg.png";
+    private String imageUrl = Constants.MEMBER_DEFAULT_IMG;
     @Column(columnDefinition = "TEXT")
     private String aboutMe;
     @Enumerated(EnumType.STRING)

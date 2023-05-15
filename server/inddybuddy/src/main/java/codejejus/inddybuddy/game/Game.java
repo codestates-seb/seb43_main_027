@@ -2,6 +2,7 @@ package codejejus.inddybuddy.game;
 
 import codejejus.inddybuddy.category.Category;
 import codejejus.inddybuddy.global.audit.Timestamped;
+import codejejus.inddybuddy.global.constant.Constants;
 import codejejus.inddybuddy.member.entity.Member;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
@@ -23,7 +24,7 @@ public class Game extends Timestamped {
     @Column(length = 100, unique = true)
     private String gameName;
     private String downloadUrl;
-    private String mainImageUrl = "https://codejejus-deploy.s3.ap-northeast-2.amazonaws.com/images/defaultGameImg.png";
+    private String mainImageUrl = Constants.GAME_DEFAULT_IMG;
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
