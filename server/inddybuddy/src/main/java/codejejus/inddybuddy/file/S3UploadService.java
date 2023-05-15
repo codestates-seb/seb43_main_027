@@ -18,10 +18,8 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -71,5 +69,4 @@ public class S3UploadService {
             throw new CustomException(ExceptionCode.EMPTY_FILE);
         }
     }
-
 }

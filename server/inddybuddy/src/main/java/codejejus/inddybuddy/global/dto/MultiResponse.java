@@ -1,6 +1,5 @@
 package codejejus.inddybuddy.global.dto;
 
-import codejejus.inddybuddy.game.GameDto;
 import lombok.Getter;
 import org.springframework.data.domain.Page;
 
