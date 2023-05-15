@@ -25,19 +25,16 @@ const passwordValidityTest = (value:string) => {
 function useValidation(inputtype:useValidationType,value:string):boolean {
   if(inputtype === 'username') {
     if(usernameValidityTest(value)) {
-      console.log('usernameValidityTest')
       return true;
     }
   }
   if(inputtype === 'email') {
     if(emailValidityTest(value)) {
-      console.log('emailValidityTest')
       return true;
     }
   }
   if(inputtype === 'password') {
     if(passwordValidityTest(value)) {
-      console.log('passwordValidityTest')
       return true;
     }
   }
