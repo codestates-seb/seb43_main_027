@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import useValidity from './useValidity';
-import { useValidityType } from '../types/costomHooksTypes';
+import { useValidityType } from '../types/customHooksTypes';
 
 /**
  * input 상태를 관리하는 커스텀 훅입니다.
