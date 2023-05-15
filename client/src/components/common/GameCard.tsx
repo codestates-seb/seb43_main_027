@@ -1,34 +1,23 @@
 import styled from 'styled-components';
 
-import logo from '../../asset/logo.png';
 import Badge from '../ui/Badge';
 
 import { GameType } from '../../types/dataTypes';
+import { Link } from 'react-router-dom';
 
-const dummy: GameType = {
-  gameId: 1,
-  mainImgUrl: logo,
-  downloadUrl: 'test',
-  gameName: 'testtestsetset',
-  categories: [
-    {
-      categoryId: 1,
-      categoryName: 'RPG'
-    }
-  ]
-};
-
-const GameCard = () => {
+const GameCard = ({ mainImgUrl, categories, gameName, gameId }: GameType) => {
   return (
-    <StyledContainer>
-      <StyledImg src={dummy.mainImgUrl} />
-      <StyledBadgeContainer>
-        {dummy.categories.map((category) => (
-          <Badge text={category.categoryName} key={category.categoryId} />
-        ))}
-      </StyledBadgeContainer>
-      <StyledTitle>{dummy.gameName}</StyledTitle>
-    </StyledContainer>
+    <Link to={`/games/${gameId}`}>
+      <StyledContainer>
+        <StyledImg src={mainImgUrl} />
+        <StyledBadgeContainer>
+          {categories.map((category) => (
+            <Badge text={category.categoryName} key={category.categoryId} />
+          ))}
+        </StyledBadgeContainer>
+        <StyledTitle>{gameName}</StyledTitle>
+      </StyledContainer>
+    </Link>
   );
 };
 
@@ -37,7 +26,7 @@ export default GameCard;
 const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 45%;
+  width: 100%;
   gap: 0.8rem;
 `;
 const StyledImg = styled.img`

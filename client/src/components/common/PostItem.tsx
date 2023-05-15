@@ -68,6 +68,7 @@ const StyledTitleContainer = styled.div`
 const StyledTitle = styled.h3`
   font-weight: bold;
   font-size: 2rem;
+  cursor: pointer;
 `;
 const StyledPostInfoContainer = styled.div`
   display: flex;
