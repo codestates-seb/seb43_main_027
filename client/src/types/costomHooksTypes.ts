@@ -1,5 +1,5 @@
 export interface useInputType {
-  inputUserName: useInputReturn;
+  inputUserName?: useInputReturn;
   inputEmail: useInputReturn;
   inputPassWord: useInputReturn;
 }
