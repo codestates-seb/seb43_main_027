@@ -19,3 +19,7 @@ export type SwiperInfoType = {
   isLastCurrent: boolean;
   currentSlideIndex: number;
 };
+
+export type TabSelectType = {
+  isSelectTab: string;
+};
