@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import GameList from '../layouts/CategoryGames/GameList';
 import FilterTap from '../components/common/FilterTap';
