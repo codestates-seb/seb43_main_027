@@ -40,7 +40,7 @@ public class GameService {
         game.setCategories(categories);
         game.setMember(memberPrincipal.getMember());
         if (multipartFile != null) {
-            File memberImg = fileService.createGameImg(multipartFile, game);
+            File memberImg = fileService.createFile(multipartFile, game);
             game.setMainImageUrl(memberImg.getFileUrl());
         }
         Game save = gameRepository.save(game);
@@ -54,7 +54,7 @@ public class GameService {
         if (multipartFile != null) {
             // TODO : 미리 등록한 이미지 S3에서 삭제
             // fileService.deleteMemberImg(findMember);
-            File memberImg = fileService.createGameImg(multipartFile, findGame);
+            File memberImg = fileService.createFile(multipartFile, findGame);
             findGame.setMainImageUrl(memberImg.getFileUrl());
         }
         findGame.updateGame(requestDto.getGameName(), requestDto.getDownloadUrl(), patchCategories);
