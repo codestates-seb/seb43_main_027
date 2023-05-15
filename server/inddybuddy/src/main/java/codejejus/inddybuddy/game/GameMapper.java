@@ -25,6 +25,7 @@ public class GameMapper {
                 .downloadUrl(game.getDownloadUrl())
                 .categories(game.getCategories())
                 .followerCount(game.getFollowerCount())
+                .createdAt(game.getCreatedAt())
                 .build();
     }
 
