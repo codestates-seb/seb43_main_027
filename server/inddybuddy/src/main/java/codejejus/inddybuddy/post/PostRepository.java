@@ -13,14 +13,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Optional<Post> findByIdNotDeleted(Long postId);
     Page<Post> findAll(Pageable pageable);
     Page<Post> findAllByPostTag(Post.PostTag postTag, Pageable pageale);
-    Page<Post> findAllByPostTagOrderByCreatedAtDesc(Post.PostTag postTag, Pageable pageale);
-    Page<Post> findAllByPostTagOrderByViewsDesc(Post.PostTag postTag, Pageable pageale);
-    Page<Post> findAllByPostTagOrderByLikesDesc(Post.PostTag postTag, Pageable pageale);
-
-    Page<Post> findAllByOrderByCreatedAtDesc(Pageable pageable);
-    Page<Post> findAllByOrderByViewsDesc(Pageable pageable);
-    Page<Post> findAllByOrderByLikesDesc(Pageable pageable);
-
 }
 
 
