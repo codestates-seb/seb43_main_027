@@ -63,7 +63,6 @@ public class PostService {
         return postRepository.findAllByPostTag(postTag, pageable);
     }
 
-    // Todo : 댓글 구현 후, 게시글 삭제 시 댓글까지 삭제 구현하기
     public void deletePost(Long postId, MemberPrincipal memberPrincipal) {
         Post findPost = findVerifidPost(postId);
         memberService.verifySameMember(findPost.getMember(), memberPrincipal.getMember());
@@ -76,7 +75,7 @@ public class PostService {
         memberService.findMember(memberId);
     }
 
-    private Post findVerifidPost(Long postId) {
+    public Post findVerifidPost(Long postId) {
         Optional<Post> optionalPost = postRepository.findById(postId);
         return optionalPost.orElseThrow(() -> new CustomException(ExceptionCode.POST_NOT_FOUND));
     }

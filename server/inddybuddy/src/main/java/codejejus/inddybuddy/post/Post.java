@@ -1,6 +1,7 @@
 package codejejus.inddybuddy.post;
 
 import codejejus.inddybuddy.file.File;
+import codejejus.inddybuddy.comment.Comment;
 import codejejus.inddybuddy.game.Game;
 import codejejus.inddybuddy.global.audit.Timestamped;
 import codejejus.inddybuddy.member.entity.Member;
@@ -11,6 +12,7 @@ import lombok.Setter;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -41,8 +43,9 @@ public class Post extends Timestamped {
     private PostTag postTag = PostTag.RECRUITMENT;
     @OneToMany(mappedBy = "post")
     private List<File> files;
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
 
-    // Todo : 글 제목, 글 내용, 멤버, 첨부 파일(들), 게임 이름?
     @Builder
     public Post(String title, String content, Member member) {
 
