@@ -5,6 +5,7 @@ import codejejus.inddybuddy.global.audit.Timestamped;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class Member extends Timestamped {
     @OneToOne(mappedBy = "member")
     private File file;
     @Column(nullable = false)
-    private String imageUrl = "default";
+    private String imageUrl = "https://codejejus-deploy.s3.ap-northeast-2.amazonaws.com/images/defaultUserImg.png";
     @Column(columnDefinition = "TEXT")
     private String aboutMe;
     @Enumerated(EnumType.STRING)
@@ -38,6 +39,10 @@ public class Member extends Timestamped {
     private List<String> roles = new ArrayList<>();
     private String provider;
     private String providerId;
+    @Formula("(select count(*) from follow_member where follow_member.follower_id = member_id)")
+    private Long followerCount;
+    @Formula("(select count(*) from follow_member where follow_member.following_id = member_id)")
+    private Long followingCount;
 
     public Member(String email, String password, String username, String imageUrl, List<String> roles, String provider, String providerId) {
         this.email = email;

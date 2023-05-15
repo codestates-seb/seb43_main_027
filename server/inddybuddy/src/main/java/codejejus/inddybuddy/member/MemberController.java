@@ -5,6 +5,7 @@ import codejejus.inddybuddy.follow.FollowMember;
 import codejejus.inddybuddy.follow.FollowMemberService;
 import codejejus.inddybuddy.game.Game;
 import codejejus.inddybuddy.game.GameDto;
+import codejejus.inddybuddy.game.GameMapper;
 import codejejus.inddybuddy.global.dto.SingleResponse;
 import codejejus.inddybuddy.global.utils.UriCreator;
 import codejejus.inddybuddy.member.dto.MemberDto;
@@ -28,6 +29,7 @@ import java.util.stream.Collectors;
 public class MemberController {
 
     private final MemberMapper memberMapper;
+    private final GameMapper gameMapper;
     private final MemberService memberService;
     private final FollowMemberService followMemberService;
     private final FollowGameService followGameService;
@@ -57,25 +59,14 @@ public class MemberController {
     @GetMapping("/{member-id}/profile")
     public ResponseEntity<SingleResponse<MemberDto.ProfileResponse>> getMemberProfile(@PathVariable("member-id") Long memberId) {
         Member member = memberService.findMember(memberId);
-        MemberDto.ProfileResponse response = memberMapper.memberToMemberProfileDtoResponse(
-                member,
-                followMemberService.getFollowerCount(member),
-                followMemberService.getFollowingCount(member)
-        );
+        MemberDto.ProfileResponse response = memberMapper.memberToMemberProfileDtoResponse(member);
         return ResponseEntity.ok(new SingleResponse<>(response));
     }
 
     @GetMapping("/{member-id}/mygame")
     public ResponseEntity<SingleResponse<List<GameDto.Response>>> getFollowingGame(@PathVariable("member-id") Long memberId) {
         List<Game> games = followGameService.getAllFollowGame(memberId);
-        List<GameDto.Response> responses = games.stream()
-                .map(game -> GameDto.Response.builder()
-                        .gameId(game.getGameId())
-                        .mainImgUrl(game.getMainImageUrl())
-                        .downloadUrl(game.getDownloadUrl())
-                        .gameName(game.getGameName())
-                        .categories(game.getCategories())
-                        .build()).collect(Collectors.toList());
+        List<GameDto.Response> responses = games.stream().map(gameMapper::entityToResponse).collect(Collectors.toList());
         return ResponseEntity.ok(new SingleResponse<>(responses));
     }
 
