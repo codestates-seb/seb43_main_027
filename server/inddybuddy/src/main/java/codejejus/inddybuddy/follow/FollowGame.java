@@ -17,7 +17,7 @@ public class FollowGame extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long followId;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "follower_id")
     private Member follower;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "game_id")

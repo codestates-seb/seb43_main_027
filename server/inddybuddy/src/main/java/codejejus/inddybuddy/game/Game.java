@@ -1,7 +1,6 @@
 package codejejus.inddybuddy.game;
 
 import codejejus.inddybuddy.category.Category;
-import codejejus.inddybuddy.follow.FollowGame;
 import codejejus.inddybuddy.global.audit.Timestamped;
 import codejejus.inddybuddy.member.entity.Member;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -11,7 +10,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -25,12 +23,10 @@ public class Game extends Timestamped {
     @Column(length = 100, unique = true)
     private String gameName;
     private String downloadUrl;
-    private String mainImageUrl = "default";
+    private String mainImageUrl = "https://codejejus-deploy.s3.ap-northeast-2.amazonaws.com/images/defaultGameImg.png";
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
-    @OneToMany(mappedBy = "game")
-    private List<FollowGame> followers;
     @Formula("(select count(*) from follow_game fg where fg.game_id = game_id)")
     private Long followerCount;
     @JsonIgnore
@@ -39,6 +35,13 @@ public class Game extends Timestamped {
             joinColumns = @JoinColumn(name = "game_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private List<Category> categories;
+
+    @Builder
+    public Game(String gameName, String downloadUrl, Member member) {
+        this.gameName = gameName;
+        this.downloadUrl = downloadUrl;
+        this.member = member;
+    }
 
     public void setCategories(List<Category> categories) {
         this.categories = categories;
@@ -50,21 +53,6 @@ public class Game extends Timestamped {
 
     public void setMainImageUrl(String mainImageUrl) {
         this.mainImageUrl = mainImageUrl;
-    }
-
-//    public void increaseFollowerCount() {
-//        this.followerCount += 1;
-//    }
-//
-//    public void decreaseFollowerCount() {
-//        this.followerCount -= 1;
-//    }
-
-    @Builder
-    public Game(String gameName, String downloadUrl, Member member) {
-        this.gameName = gameName;
-        this.downloadUrl = downloadUrl;
-        this.member = member;
     }
 
     public void updateGame(String gameName, String downloadUrl, List<Category> categories) {
