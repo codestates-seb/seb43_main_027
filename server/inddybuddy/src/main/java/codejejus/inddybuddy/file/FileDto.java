@@ -13,11 +13,11 @@ public class FileDto {
     private Game game;
     private Post post;
 
-    public FileDto(String fileName, String fileUrl, Member member, Game game, Post post) {
+    public FileDto(String fileName, String fileUrl, Object object) {
         this.fileName = fileName;
         this.fileUrl = fileUrl;
-        this.member = member;
-        this.game = game;
-        this.post = post;
+        if (object instanceof Member) this.member = (Member) object;
+        if (object instanceof Game) this.game = (Game) object;
+        if (object instanceof Post) this.post = (Post) object;
     }
 }

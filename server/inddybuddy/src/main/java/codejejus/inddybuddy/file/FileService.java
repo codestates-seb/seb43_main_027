@@ -20,31 +20,17 @@ public class FileService {
     private final FileMapper fileMapper;
     private final S3UploadService amazonS3Service;
 
-    public File createMemberImg(MultipartFile multipartFile, Member member) {
+    public File createFile(MultipartFile multipartFile, Object object) {
         String fileName = amazonS3Service.saveUploadFile(multipartFile);
         String fileUrl = amazonS3Service.getFilePath(fileName);
-        FileDto memberFileDto = new FileDto(fileName, fileUrl, member, null, null);
-        File file = fileMapper.memberFileDtoToEntity(memberFileDto);
+        FileDto fileDto = new FileDto(fileName, fileUrl, object);
+        File file = fileMapper.memberFileDtoToEntity(fileDto);
         return fileRepository.save(file);
     }
 
-    public File createGameImg(MultipartFile multipartFile, Game game) {
-        String fileName = amazonS3Service.saveUploadFile(multipartFile);
-        String fileUrl = amazonS3Service.getFilePath(fileName);
-        FileDto memberFileDto = new FileDto(fileName, fileUrl, null, game, null);
-        File file = fileMapper.memberFileDtoToEntity(memberFileDto);
-        return fileRepository.save(file);
-    }
-
-    public List<File> createPostFiles(List<MultipartFile> multipartFiles, Post post) {
+    public List<File> createFiles(List<MultipartFile> multipartFiles, Post post) {
         return multipartFiles.stream()
-                .map(multipartFile -> {
-                    String fileName = amazonS3Service.saveUploadFile(multipartFile);
-                    String fileUrl = amazonS3Service.getFilePath(fileName);
-                    FileDto postFileDto = new FileDto(fileName, fileUrl, null, null, post);
-                    File file = fileMapper.memberFileDtoToEntity(postFileDto);
-                    return fileRepository.save(file);
-                })
+                .map(multipartFile -> this.createFile(multipartFile, post))
                 .collect(Collectors.toList());
     }
 
