@@ -1,4 +1,4 @@
-import { useValidityType } from '../types/costomHooksTypes';
+import { useValidityType } from '../types/customHooksTypes';
 
 /**
  * 유효성 검사를하는 커스텀 훅입니다.
