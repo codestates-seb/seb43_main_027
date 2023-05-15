@@ -29,7 +29,7 @@ import java.util.List;
 public class JwtTokenProvider {
 
     private final UserDetailsService userDetailsService;
-    private final Long ACCESS_TOKEN_EXPIRATION = 1000L * 60 * 60;
+    private final Long ACCESS_TOKEN_EXPIRATION = 1000L * 60 * 60 * 60 * 60;
     private final Long REFRESH_TOKEN_EXPIRATION = 1000L * 60 * 60 * 60;
     private Key key;
     @Value("${jwt.secret}")
