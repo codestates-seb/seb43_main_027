@@ -30,7 +30,9 @@ public class MemberDto {
     public static class Patch {
 
         private Long memberId;
+        @Pattern(regexp = "(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,16}", message = "비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.")
         private String password;
+        @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-z0-9-_]{2,10}$", message = "닉네임은 특수문자를 제외한 2~10자리여야 합니다.")
         private String username;
         private String aboutMe;
         private Member.MemberStatus memberStatus;
@@ -72,7 +74,7 @@ public class MemberDto {
 
     @AllArgsConstructor
     @Getter
-    public static class MemberSimpleInfoResponse {
+    public static class SimpleInfoResponse {
 
         private Long memberId;
         private String email;
@@ -84,13 +86,13 @@ public class MemberDto {
     @Getter
     public static class FollowingResponse {
 
-        private List<MemberSimpleInfoResponse> followings;
+        private List<SimpleInfoResponse> followings;
     }
 
     @AllArgsConstructor
     @Getter
     public static class FollowResponse {
 
-        private List<MemberSimpleInfoResponse> followers;
+        private List<SimpleInfoResponse> followers;
     }
 }

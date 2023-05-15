@@ -18,14 +18,14 @@ public interface MemberMapper {
 
     MemberDto.ProfileResponse memberToMemberProfileDtoResponse(Member member);
 
-    default List<MemberDto.MemberSimpleInfoResponse> getMemberSimpleInfoResponses(List<Member> members) {
+    default List<MemberDto.SimpleInfoResponse> getMemberSimpleInfoResponses(List<Member> members) {
         return members.stream()
                 .map(this::getMemberSimpleInfoResponse)
                 .collect(Collectors.toList());
     }
 
-    default MemberDto.MemberSimpleInfoResponse getMemberSimpleInfoResponse(Member member) {
-        return new MemberDto.MemberSimpleInfoResponse(
+    default MemberDto.SimpleInfoResponse getMemberSimpleInfoResponse(Member member) {
+        return new MemberDto.SimpleInfoResponse(
                 member.getMemberId(),
                 member.getEmail(),
                 member.getUsername(),
