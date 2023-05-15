@@ -34,7 +34,7 @@ public class PostService {
         post.setPostTag(requestDto.getPostTag());
         post.setGame(gameService.findGame(requestDto.getGameId()));
         post.setMember(memberPrincipal.getMember());
-        if (multipartFiles != null) fileService.createPostFiles(multipartFiles, post);
+        if (multipartFiles != null) fileService.createFiles(multipartFiles, post);
         Post save = postRepository.save(post);
         return postMapper.entityToResponse(save);
     }
@@ -43,7 +43,7 @@ public class PostService {
         Post findPost = findVerifidPost(postId);
         memberService.verifySameMember(findPost.getMember(), memberPrincipal.getMember()); // 회원 검증
         // Todo : 미리 등록한 이미지 S3에서 삭제
-        if (multipartFiles != null) fileService.createPostFiles(multipartFiles, findPost);
+        if (multipartFiles != null) fileService.createFiles(multipartFiles, findPost);
         findPost.updatePost(requestDto.getTitle(), requestDto.getContent(), requestDto.getPostTag());
         return postMapper.entityToResponse(findPost);
     }
@@ -68,20 +68,18 @@ public class PostService {
     }
 
     // Todo : 댓글 구현 후, 게시글 삭제 시 댓글까지 삭제 구현하기
-    public PostDto.Response deletePost(Long postId, MemberPrincipal memberPrincipal) {
+    public void deletePost(Long postId, MemberPrincipal memberPrincipal) {
         Post findPost = findVerifidPost(postId);
         memberService.verifySameMember(findPost.getMember(), memberPrincipal.getMember());
-        findPost.updatePostStatus(Post.PostStatus.POST_DELETED);
-        // TODO : 게시글 삭제 시 복구 가능하도록 할 것인가?
-        //  STATUS로 표현하면 파일을 삭제하면 안된다, get에서 Delete 상태인지 확인해야함
+        postRepository.delete(findPost);
         fileService.deletePostFiles(findPost);
-        postRepository.save(findPost);
-        return postMapper.entityToResponse(findPost);
     }
+
     private void verifyPost(Post post) {
         Long memberId = post.getMember().getMemberId();
         memberService.findMember(memberId);
     }
+
     private Post findVerifidPost(Long postId) {
         Optional<Post> optionalPost = postRepository.findById(postId);
         return optionalPost.orElseThrow(() -> new CustomException(ExceptionCode.POST_NOT_FOUND));
