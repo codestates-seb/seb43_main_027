@@ -1,13 +1,14 @@
 package codejejus.inddybuddy.post;
 
+import codejejus.inddybuddy.file.File;
 import codejejus.inddybuddy.game.Game;
 import codejejus.inddybuddy.global.audit.Timestamped;
-import codejejus.inddybuddy.like.Like;
 import codejejus.inddybuddy.member.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.util.List;
@@ -27,8 +28,8 @@ public class Post extends Timestamped {
     private String content;
     @Column(nullable = false)
     private Long views = 0L;
-    @OneToMany(mappedBy = "post")
-    private List<Like> likes;
+    @Formula("(select count(*) from likes l where l.post_id=post_id)")
+    private Long likeCount = 0L;
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
@@ -41,6 +42,8 @@ public class Post extends Timestamped {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
     private PostStatus postStatus = PostStatus.POST_REGISTRATION;
+    @OneToMany(mappedBy = "post")
+    private List<File> files;
 
     // Todo : 글 제목, 글 내용, 멤버, 첨부 파일(들), 게임 이름?
     @Builder
