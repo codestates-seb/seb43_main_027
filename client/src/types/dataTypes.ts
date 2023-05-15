@@ -19,6 +19,7 @@ export type User = {
 export type CategoryType = {
   categoryId: number;
   categoryName: string;
+  categoryIcon?: ReactElement;
 };
 
 export type GameType = {
@@ -26,6 +27,7 @@ export type GameType = {
   gameName: string;
   downloadUrl: string;
   mainImgUrl: string;
+  followerCount: number;
   categories: CategoryType[];
 };
 export type PageInfoType = {

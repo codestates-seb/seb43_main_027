@@ -1,16 +1,16 @@
-import ButtonEl from '../elements/Button';
+import styled from 'styled-components';
 
 const Badge = ({ text }: { text: string }) => {
-  return <BadgeBtn onClick={() => console.log('test')}>{text}</BadgeBtn>;
+  return <StyledTag onClick={() => console.log('test')}>{text}</StyledTag>;
 };
 
-const BadgeBtn = ButtonEl({
-  fontSize: '.8rem',
-  fontWeight: '400',
-  border: 'none',
-  padding: '.4rem 1.2rem',
-  hoverBg: 'var(--cyan-dark-700)',
-  margin: 'none'
-});
+const StyledTag = styled.span`
+  font-size: 12px;
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: var(--cyan-dark-500);
+  background-color: var(--cyan-dark-100);
+`;
 
 export default Badge;

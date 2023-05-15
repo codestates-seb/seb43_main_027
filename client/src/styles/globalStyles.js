@@ -30,10 +30,27 @@ const GlobalStyle = createGlobalStyle`
   
   /* 로딩 배경 */
   --loding-bg: #efefef;
+
   /* category-games-palette */
   --title-bg: #f7f7f8;
   --sub-text-color: #53535f;
   --button-hover-color: #eb2f96;
+  --default-text-color: #626262;
+
+  /* 카테고리별 태그 색상 파레트 */
+  --category-tag-color-default: #fff;
+  --category-tag-bg-default: #3e3948;
+  --category-tag-color-0: #13A8A8;
+  --category-tag-bg-0: #B2F1E8;
+  --category-tag-color-1: #fff;
+  --category-tag-bg-1: #ff55b2;
+  --category-tag-color-2: #ff5b55;
+  --category-tag-bg-2: #fff955;
+  --category-tag-color-3: #2f2ba8;
+  --category-tag-bg-3: #557dff;
+
+  /* 게임채널 색상 파레트 */
+  --page-bg: #f7f7f8;
 }
 
 * {

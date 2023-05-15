@@ -1,4 +1,4 @@
-import { useInputReturn } from './costomHooksTypes';
+import { useInputReturn } from './customHooksTypes';
 
 export interface ButtonType {
   flex?: string,
@@ -26,6 +26,15 @@ export interface InputType {
   boxShadow?: string,
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void | undefined,
   useInput?: useInputReturn
+}
+
+export interface InputContainerType {
+  placeholder?: string;
+  title?: string;
+  onChange?: React.ChangeEvent;
+  useInput?: useInputReturn;
+  validmessage?: string;
+  validity?: boolean;
 }
 
 export interface LabelType {
