@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import CategoryTag from '../../components/common/CategoryTag';
+import CategoryTag from '../common/CategoryTag';
 import { dummyGamesData } from '../../data/dummyCategories';
 import { Link } from 'react-router-dom';
 

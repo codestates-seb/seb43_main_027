@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import CategoryTag from '../../components/common/CategoryTag';
+import CategoryTag from '../common/CategoryTag';
 import { Post } from '../../data/dummyPostList';
 import { StarTwoTone } from '@ant-design/icons';
 

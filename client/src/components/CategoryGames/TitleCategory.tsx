@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
-import CreateChannelButton from '../../components/ui/CreateChannelButton';
+import CreateChannelButton from '../ui/CreateChannelButton';
 import { dummyCategories } from '../../data/dummyCategories';
 
 const TitleCategory: React.FC = ()  => {

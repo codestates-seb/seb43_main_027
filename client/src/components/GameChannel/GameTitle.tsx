@@ -4,8 +4,8 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import styled from 'styled-components';
 import { dummyGamesData } from '../../data/dummyCategories';
-import CategoryTag from '../../components/common/CategoryTag';
-import CreateChannelButton from '../../components/ui/CreateChannelButton';
+import CategoryTag from '../common/CategoryTag';
+import CreateChannelButton from '../ui/CreateChannelButton';
 
 // todo: 게임 팔로우 기능 추가, 게임아이디에 맞게 게임 데이터 패칭, 경로 쿼리 재설정
 
