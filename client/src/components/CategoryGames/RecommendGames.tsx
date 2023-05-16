@@ -1,22 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import styled from 'styled-components';
+import axios from 'axios';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, FreeMode, Pagination, EffectCoverflow } from 'swiper';
-import { dummyCategoriesGames } from '../../data/dummyCategories';
+import { dummyGamesData } from '../../data/dummyCategories';
+import { type CategoryGameType } from '../../types/dataTypes';
 import { type SwiperBgType, type SwiperInfoType } from '../../types/propsTypes';
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/pagination';
+import MainBanner from '../../asset/MainBanner.png';
 
 const RecommedGames = () => {
-
-  // todo: 카테고리 아이디에 맞는 추천 게임데이터 받아서 스와이핑하기
-  // 1. 모든 게임들 중 인기게임 조회(팔로우많은 게임 30개)중 현재 카테고리 아이디에 맞는 게임 5개만 추려낼지,
-  // 2. 아니면 현재 카테고리를 기준으로 모든 게임을 다 받고 팔로우 많은 순 5개를 추려낼지 선택
-  // 더미데이터 2로 진행- followerCount 추가데이터 필요함
-  // 인기순으로 재정렬해서 5개만 조회하기
-  // 데이터가 없을때 디폴트 이미지 보여주기
 
   const { categoryId } = useParams<{ categoryId: string }>();
 
@@ -24,34 +20,70 @@ const RecommedGames = () => {
   const [ currentText, setCurrentText ] = useState('');
   const [ introduceMode, setIntroduceMode ] = useState(false);
   const [ isLastCurrent, setIsLastCurrent ] = useState(false);
+  const [ gamesList, setGamesList ] = useState<CategoryGameType[]>([]);
+  const [ currentSlide, isCurrentSlide ] = useState<CategoryGameType | undefined>(undefined);
 
-  const filteredGames = dummyCategoriesGames.data
-  .filter((game) => game.categories.some((category) => category.categoryId.toString() === categoryId))
-  .sort((a, b) => b.followerCount - a.followerCount) // 인기순으로 재정렬
-  .slice(0, 5); // 최대 5개까지 저장
-
-  const currentSlide = filteredGames[currentSlideIndex];
-
+  // 리팩토링 고민: 상수 분리
   const firstMessage = '인디벗에서 다양한 커뮤니티를 함께 즐겨보세요!';
   const lastMessage = '원하는 게임이 없다면 지금 바로 게임채널을 만들어보세요!';
 
-  useEffect (() => {
-    if (currentSlideIndex === 0) {
-      setIntroduceMode(true);
-      setIsLastCurrent(false);
-      setCurrentText(firstMessage);
-      return;
-    }
-    if (currentSlideIndex === filteredGames.length - 1) {
-      setIntroduceMode(true);
-      setIsLastCurrent(true);
-      setCurrentText(lastMessage);
-      return;
-    } else {
-      setIntroduceMode(false);
-      setIsLastCurrent(false);
-    }
-  }, [currentSlide]);
+  // 특정 카테고리의 모든 게임 조회 api 사용해서 현재 카테고리의 모든 게임정보 가져옴
+  useEffect(() => {
+    const fetchGamesData = async () => {
+      try {
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/categories/${categoryId}/games`);
+        const gamesData = res.data.data;
+        // 더미데이터 테스트 코드
+        // const gamesData = dummyGamesData.data;
+        if (gamesData) {
+          const filteredGames = gamesData
+            .filter((game: { followerCount: number }) => game.followerCount >= 5)
+            .sort((a: { followerCount: number }, b: { followerCount: number }) => b.followerCount - a.followerCount)
+            .slice(0, 5);
+
+          isCurrentSlide(filteredGames[currentSlideIndex]);
+          setGamesList(filteredGames);
+          
+          if (currentSlideIndex === 0) {
+            setIntroduceMode(true);
+            setIsLastCurrent(false);
+            setCurrentText(firstMessage);
+            return;
+          }
+          if (currentSlideIndex === filteredGames.length - 1) {
+            setIntroduceMode(true);
+            setIsLastCurrent(true);
+            setCurrentText(lastMessage);
+            return;
+          }
+          setIntroduceMode(false);
+          setIsLastCurrent(false);
+        } else {
+          // todo: 404페이지 경로로 이동 시키기
+          // return navigate('/');
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchGamesData();
+  }, [categoryId, currentSlide, currentSlideIndex]);
+
+  const handleSlideChange = (swiper: any) => {
+    setCurrentSlideIndex(swiper.activeIndex);
+  };
+
+  const renderGameSlides = () => {
+    return gamesList.map((item, index) => (
+      <StyledSwiperSlide key={index}>
+        <Link to={`/games/${item.gameId}`}>
+          <StyledBadge>TOP:{item.gameName}</StyledBadge>
+          <StyledSwiperSlideImg src={item.mainImgUrl} alt='slide_image' />
+        </Link>
+      </StyledSwiperSlide>
+    ));
+  };
 
   return (
     <>
@@ -62,7 +94,7 @@ const RecommedGames = () => {
     >
       <p>{currentText}</p>
     </StyledIntroduceText>
-    <StyledContainer backgroundImage={currentSlide.mainImgUrl}>
+    <StyledContainer backgroundImage={currentSlide?.mainImgUrl ||  MainBanner}>
       <StyledSwiperContainer
         slidesPerView={3}
         freeMode={true}
@@ -83,21 +115,9 @@ const RecommedGames = () => {
           modifier: 1.5,
         }}
         modules={[Autoplay, FreeMode, Pagination, EffectCoverflow]}
-        onSlideChange={(swiper) => setCurrentSlideIndex(swiper.activeIndex)}
+        onSlideChange={handleSlideChange}
       >
-        {
-          filteredGames.map((item, index) => (
-              <StyledSwiperSlide key={index} >
-                <Link to={`/games/${item.gameId}`} >
-                <StyledBadge>TOP:{item.gameName}</StyledBadge>
-                <StyledSwiperSlideImg 
-                  src={item.mainImgUrl}
-                  alt='slide_image' 
-                />
-                </Link>
-              </StyledSwiperSlide>
-          ))
-        }
+        {renderGameSlides()}
       </StyledSwiperContainer>
     </StyledContainer>
     </>
@@ -179,6 +199,7 @@ const StyledSwiperSlideImg = styled.img`
   object-fit: cover;
   border-radius: 15px;
   cursor: pointer;
+  background-color: #fff;
   @media screen and (max-width: 650px) {
     min-height: 240px;
   }

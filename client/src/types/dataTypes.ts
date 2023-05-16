@@ -36,3 +36,16 @@ export type PageInfoType = {
   totalSize: number;
   totalPage: number;
 };
+
+export type CategoryGameType = {
+  gameId: number;
+  gameName: string;
+  downloadUrl: string;
+  mainImgUrl: string;
+  categories: {
+    categoryId: number;
+    categoryName: string;
+  }[];
+  followerCount: number;
+  createdAt: string;
+}
