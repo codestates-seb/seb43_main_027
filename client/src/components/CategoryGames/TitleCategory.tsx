@@ -33,7 +33,7 @@ const TitleCategory: React.FC = ()  => {
         console.error(error);
       }
     })();
-  }, []);
+  }, [categoryId]);
 
   // 더미데이터 테스트 코드
   // const isCurrentCategory = dummyCategories.find(item => item.categoryId.toString() === categoryId)?.categoryName;
