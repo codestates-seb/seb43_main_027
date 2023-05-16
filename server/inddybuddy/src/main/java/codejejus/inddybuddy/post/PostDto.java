@@ -30,7 +30,7 @@ public class PostDto {
 
         private Long postId;
         private Long gameId;
-        private MemberDto.MemberSimpleInfoResponse member;
+        private MemberDto.SimpleInfoResponse member;
         private String title;
         private String content;
         private long views;
@@ -40,7 +40,7 @@ public class PostDto {
         private List<CommentDto.Response> comments;
 
         @Builder
-        public Response(Long postId, Long gameId, MemberDto.MemberSimpleInfoResponse member, String title, String content, Long views, PostTag postTag, Long likeCount, List<String> fileUrlList, List<CommentDto.Response> comments) {
+        public Response(Long postId, Long gameId, MemberDto.SimpleInfoResponse member, String title, String content, Long views, PostTag postTag, Long likeCount, List<String> fileUrlList, List<CommentDto.Response> comments) {
 
             this.postId = postId;
             this.gameId = gameId;

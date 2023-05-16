@@ -5,6 +5,7 @@ import codejejus.inddybuddy.follow.FollowMember;
 import codejejus.inddybuddy.global.dto.MultiResponse;
 import codejejus.inddybuddy.global.dto.SingleResponse;
 import codejejus.inddybuddy.global.utils.UriCreator;
+import codejejus.inddybuddy.member.MemberMapper;
 import codejejus.inddybuddy.member.dto.MemberDto;
 import codejejus.inddybuddy.member.entity.Member;
 import codejejus.inddybuddy.member.entity.MemberPrincipal;
@@ -25,6 +26,7 @@ import java.util.List;
 public class GameController {
 
     private final GameService gameService;
+    private final MemberMapper memberMapper;
     private final FollowGameService followGameService;
 
     @PostMapping
@@ -44,7 +46,7 @@ public class GameController {
     }
 
     @GetMapping
-    public ResponseEntity<MultiResponse<GameDto.Response>> getAllGames(@PageableDefault(page = 0, size = 30) Pageable pageable,
+    public ResponseEntity<MultiResponse<GameDto.Response>> getAllGames(@PageableDefault(page = 1, size = 30) Pageable pageable,
                                                                        @RequestParam(required = false) String filter) {
         Page<GameDto.Response> pageGames = gameService.getAllGames(pageable, filter);
         List<GameDto.Response> games = pageGames.getContent();
@@ -66,8 +68,8 @@ public class GameController {
     }
 
     @GetMapping("/{game_id}/follower")
-    public ResponseEntity<SingleResponse<List<MemberDto.MemberSimpleInfoResponse>>> getGameFollowers(@PathVariable("game_id") Long gameId) {
+    public ResponseEntity<SingleResponse<List<MemberDto.SimpleInfoResponse>>> getGameFollowers(@PathVariable("game_id") Long gameId) {
         List<Member> followers = followGameService.getAllFollowerByMemberId(gameId);
-        return ResponseEntity.ok(new SingleResponse<>(MemberDto.getMemberSimpleInfoResponses(followers)));
+        return ResponseEntity.ok(new SingleResponse<>(memberMapper.getMemberSimpleInfoResponses(followers)));
     }
 }

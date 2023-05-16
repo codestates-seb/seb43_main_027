@@ -42,13 +42,13 @@ public class CommentDto {
     public static class Response {
 
         private final Long commentId;
-        private final MemberDto.MemberSimpleInfoResponse member;
+        private final MemberDto.SimpleInfoResponse member;
         private final String content;
         private final LocalDateTime createdAt;
         private final LocalDateTime updatedAt;
 
         @Builder
-        public Response(Long commentId, MemberDto.MemberSimpleInfoResponse member, String content, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        public Response(Long commentId, MemberDto.SimpleInfoResponse member, String content, LocalDateTime createdAt, LocalDateTime updatedAt) {
             this.commentId = commentId;
             this.member = member;
             this.content = content;

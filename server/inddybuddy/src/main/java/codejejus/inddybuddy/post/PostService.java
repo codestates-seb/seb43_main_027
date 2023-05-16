@@ -1,5 +1,6 @@
 package codejejus.inddybuddy.post;
 
+import codejejus.inddybuddy.file.File;
 import codejejus.inddybuddy.file.FileService;
 import codejejus.inddybuddy.game.GameService;
 import codejejus.inddybuddy.global.constant.Filter;
@@ -34,7 +35,10 @@ public class PostService {
         post.setPostTag(requestDto.getPostTag());
         post.setGame(gameService.findGame(requestDto.getGameId()));
         post.setMember(memberPrincipal.getMember());
-        if (multipartFiles != null) fileService.createFiles(multipartFiles, post);
+        if (multipartFiles != null) {
+            List<File> files = fileService.createFiles(multipartFiles, post);
+            post.setFiles(files);
+        }
         Post save = postRepository.save(post);
         return postMapper.entityToResponse(save);
     }
@@ -54,7 +58,7 @@ public class PostService {
     }
 
     public Page<PostDto.Response> getAllPosts(Pageable pageable, Post.PostTag postTag, String filter) {
-        Page<Post> posts = getPosts(postTag, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Filter.getMatchedSort(filter)));
+        Page<Post> posts = getPosts(postTag, PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize(), Filter.getMatchedSort(filter)));
         return postMapper.entityPageToResponsePage(posts);
     }
 

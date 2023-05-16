@@ -34,10 +34,6 @@ public class FollowGameService {
         return followGameRepository.findAllByGame(memberId);
     }
 
-    public Long getFollowerCount(Game game) {
-        return followGameRepository.countByGame(game);
-    }
-
     private FollowGame findVerifyFollow(Game game, Member follow) {
         return followGameRepository.findByGameAndFollower(game, follow)
                 .orElseThrow(() -> new CustomException(ExceptionCode.FOLLOW_NOT_FOUND));

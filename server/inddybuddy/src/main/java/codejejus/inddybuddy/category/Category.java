@@ -37,7 +37,7 @@ public class Category {
         STORY("스토리"), HEALING("힐링"), HORROR("공포"),
         COMEDY("개그"), HACK_AND_SLASH("핵앤슬"), TURN_BASED("턴제"),
         SURVIVAL("생존"), MULTIPLAYER("멀티"), ROGUELIKE("로그라이크"),
-        PLATFORMER("플랫포머"), TWO_D_PLATFORMER("2D 플랫폼"), THREE_D_PLATFORMER("3D 플랫폼"),
+        PLATFORMER("플랫포머"), TWO_D_GAME("2D 게임"), THREE_D_GAME("3D 게임"),
         MOBA("MOBA"), MOBILE("모바일"), OTHER("기타");
 
         @Getter
