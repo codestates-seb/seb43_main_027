@@ -6,6 +6,7 @@ import CategoryGames from './pages/CategoryGames';
 import Home from './pages/Home';
 import SignUp from './pages/SignUp/SignUp';
 import GameChannel from './pages/GameChannel';
+import Posting from './pages/Posting';
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
           <Route path='/category/:id' element={<CategoryGames />} />
           <Route path='/games/:id' element={<GameChannel />} />
           <Route path='/signup' element={<SignUp />} />
+          <Route path='/post' element={<Posting />} />
         </Route>
       </Routes>
     </>
