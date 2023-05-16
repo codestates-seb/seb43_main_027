@@ -22,6 +22,9 @@ export default ImagePreview;
 const StyledContainer = styled.div`
   width: fit-content;
   position: relative;
+  @media screen and (min-width: 650px) {
+    width: 20%;
+  }
 `;
 
 const StyledImg = styled.img`

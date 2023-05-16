@@ -62,6 +62,7 @@ const StyledContainer = styled.div`
   flex-wrap: wrap;
   padding: 1rem;
   border-bottom: 1px solid #ddd;
+  gap: 3rem 5%;
 `;
 
 const StyledUploadLabel = styled.label`
