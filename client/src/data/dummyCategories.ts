@@ -159,6 +159,14 @@ export const dummyGamesData = {
         {
             'categoryId': 2,
             'categoryName': 'RPG'
+        },
+        {
+          categoryId: 16,
+          categoryName: 'TURN_BASED'
+        },
+        {
+          categoryId: 21,
+          categoryName: 'TWO_D_PLATFORMER'
         }
     ],
     followerCount: 30,
