@@ -6,24 +6,27 @@ import { RootState } from '../../store/store';
 import Pagination from 'react-js-pagination';
 import styled from 'styled-components';
 import PostItem from './PostItem';
-import { dummyPostList, dummyBookmarkList, dummyMyList } from '../../data/dummyPostList';
+import {
+  dummyPostList,
+  dummyBookmarkList,
+  dummyMyList
+} from '../../data/dummyPostList';
 
 interface Props {
   isSelectTab: string;
   isSelectTag: string;
-};
+}
 
 // todo: 게임아이디에 맞게 게시글 데이터 패칭
 
-const PostList: React.FC<Props> = ({ isSelectTag ,isSelectTab }) => {
-  
+const PostList: React.FC<Props> = ({ isSelectTag, isSelectTab }) => {
   const { gameId } = useParams();
   const memberId = useSelector((state: RootState) => state.user.memberId);
 
   const [filteredPosts, setFilteredPosts] = useState(dummyPostList.post);
   const [page, setPage] = useState(1);
-  const [userMessage, setUserMessage ] = useState('작성된 게시글이 없습니다.');
- 
+  const [userMessage, setUserMessage] = useState('작성된 게시글이 없습니다.');
+
   const handlePageChange = (page: number) => {
     setPage(page);
   };
@@ -34,13 +37,20 @@ const PostList: React.FC<Props> = ({ isSelectTag ,isSelectTab }) => {
     const postData = dummyPostList.post;
     const bookmarkData = dummyBookmarkList.post;
     const myPostData = dummyMyList.post;
-  
+
     switch (isSelectTab) {
       case '최신순':
-        setFilteredPosts([...postData].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()));
+        setFilteredPosts(
+          [...postData].sort(
+            (a, b) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          )
+        );
         break;
       case '인기순':
-        setFilteredPosts([...postData].sort((a, b) => b.likeCount - a.likeCount));
+        setFilteredPosts(
+          [...postData].sort((a, b) => b.likeCount - a.likeCount)
+        );
         break;
       case '조회순':
         setFilteredPosts([...postData].sort((a, b) => b.view - a.view));
@@ -60,7 +70,13 @@ const PostList: React.FC<Props> = ({ isSelectTag ,isSelectTab }) => {
               console.error(error);
             });
           */
-          setFilteredPosts([...bookmarkData].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()));
+          setFilteredPosts(
+            [...bookmarkData].sort(
+              (a, b) =>
+                new Date(b.createdAt).getTime() -
+                new Date(a.createdAt).getTime()
+            )
+          );
         }
         break;
       case '내가 쓴 글':
@@ -78,7 +94,13 @@ const PostList: React.FC<Props> = ({ isSelectTag ,isSelectTab }) => {
               console.error(error);
             });
           */
-          setFilteredPosts([...myPostData].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()));
+          setFilteredPosts(
+            [...myPostData].sort(
+              (a, b) =>
+                new Date(b.createdAt).getTime() -
+                new Date(a.createdAt).getTime()
+            )
+          );
         }
         break;
       default:
@@ -87,7 +109,9 @@ const PostList: React.FC<Props> = ({ isSelectTag ,isSelectTab }) => {
     }
 
     if (isSelectTag !== '전체') {
-      setFilteredPosts((prev) => prev.filter((post) => post.tag === isSelectTag));
+      setFilteredPosts((prev) =>
+        prev.filter((post) => post.tag === isSelectTag)
+      );
     }
   }, [isSelectTab, isSelectTag, memberId]);
 
@@ -98,8 +122,7 @@ const PostList: React.FC<Props> = ({ isSelectTag ,isSelectTab }) => {
 
   return (
     <PostListWrapper>
-      {
-        currentPagePosts.length > 0 ? 
+      {currentPagePosts.length > 0 ? (
         currentPagePosts.map((post, index) => (
           <PostItem
             key={index}
@@ -114,22 +137,21 @@ const PostList: React.FC<Props> = ({ isSelectTag ,isSelectTab }) => {
             likeCount={post.likeCount}
             commentCount={post.commentCount}
           />
-        )) :
-        <StyledEmptyItem>
-          {userMessage}
-        </StyledEmptyItem>
-      }
+        ))
+      ) : (
+        <StyledEmptyItem>{userMessage}</StyledEmptyItem>
+      )}
       <StyledPagination>
-      <Pagination
-        activePage={page}
-        itemsCountPerPage={10}
-        totalItemsCount={filteredPosts.length}
-        pageRangeDisplayed={5}
-        prevPageText={'‹'}
-        nextPageText={'›'}
-        onChange={handlePageChange}
-    />
-    </StyledPagination>
+        <Pagination
+          activePage={page}
+          itemsCountPerPage={10}
+          totalItemsCount={filteredPosts.length}
+          pageRangeDisplayed={5}
+          prevPageText={'‹'}
+          nextPageText={'›'}
+          onChange={handlePageChange}
+        />
+      </StyledPagination>
     </PostListWrapper>
   );
 };
@@ -162,12 +184,12 @@ const StyledPagination = styled.div`
     justify-content: center;
     margin-top: 15px;
   }
-  
+
   ul {
     list-style: none;
     padding: 0;
   }
-  
+
   ul.pagination li {
     display: inline-block;
     width: 30px;
@@ -179,20 +201,20 @@ const StyledPagination = styled.div`
     font-size: 1rem;
   }
 
-  ul.pagination li:first-child{
+  ul.pagination li:first-child {
     border-radius: 5px 0 0 5px;
   }
 
-  ul.pagination li:last-child{
+  ul.pagination li:last-child {
     border-radius: 0 5px 5px 0;
   }
-  
+
   ul.pagination li a {
     text-decoration: none;
     color: var(--cyan-light-600);
     font-size: 1rem;
   }
-  
+
   ul.pagination li.active a {
     color: white;
   }
@@ -200,12 +222,12 @@ const StyledPagination = styled.div`
   ul.pagination li.active {
     background-color: var(--cyan-light-800);
   }
-  
+
   ul.pagination li a:hover,
   ul.pagination li a.active {
     color: var(--cyan-light-300);
   }
-  
+
   .page-selection {
     width: 48px;
     height: 30px;
