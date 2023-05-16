@@ -3,13 +3,7 @@ import SelectTag from '../common/SelectTag';
 import ButtonEl from '../elements/Button';
 import ImageSection from './ImageSection';
 import { useState } from 'react';
-
-const optionsTag = [
-  { value: '전체', label: '전체' },
-  { value: '모집', label: '모집' },
-  { value: '공략', label: '공략' },
-  { value: '완료', label: '완료' }
-];
+import postOptionTags from '../../data/postOptionTags';
 
 const InputSection = () => {
   const [post, setPost] = useState({});
@@ -37,7 +31,7 @@ const InputSection = () => {
   return (
     <form onSubmit={onSubmitHandler}>
       <StyledContainer>
-        <SelectTag options={optionsTag} onChange={onTagChangeHandler} />
+        <SelectTag options={postOptionTags} onChange={onTagChangeHandler} />
         <StyledTitleInput
           placeholder='제목을 입력하세요.'
           onChange={onInputChangeHandler('title')}
