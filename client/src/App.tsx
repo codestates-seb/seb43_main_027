@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import SignUp from './pages/SignUp/SignUp';
 import LogIn from './pages/LogIn/LogIn';
 import GameChannel from './pages/GameChannel';
+import PATH_URL from './constants/pathUrl';
 
 const App = () => {
   return (
@@ -15,8 +16,8 @@ const App = () => {
       <Routes>
         <Route path='/' element={<Template />}>
           <Route path='/' element={<Home />} />
-          <Route path='/category/:categoryId' element={<CategoryGames />} />
-          <Route path='/games/:gameId' element={<GameChannel />} />
+          <Route path={`${PATH_URL.CATEGORY}:categoryId`} element={<CategoryGames />} />
+          <Route path={`${PATH_URL.GAME}:gameId`} element={<GameChannel />} />
           <Route path='/signup' element={<SignUp />} />
           <Route path='/login' element={<LogIn />} />
         </Route>
