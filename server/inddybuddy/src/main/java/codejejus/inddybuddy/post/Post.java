@@ -1,7 +1,7 @@
 package codejejus.inddybuddy.post;
 
-import codejejus.inddybuddy.file.File;
 import codejejus.inddybuddy.comment.Comment;
+import codejejus.inddybuddy.file.File;
 import codejejus.inddybuddy.game.Game;
 import codejejus.inddybuddy.global.audit.Timestamped;
 import codejejus.inddybuddy.member.entity.Member;
@@ -42,7 +42,7 @@ public class Post extends Timestamped {
     @Column(nullable = false, length = 30)
     private PostTag postTag = PostTag.RECRUITMENT;
     @OneToMany(mappedBy = "post")
-    private List<File> files;
+    private List<File> files = new ArrayList<>();
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
