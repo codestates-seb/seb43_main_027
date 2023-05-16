@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { gameTags } from '../../data/gameTags';
 
-import TagButton from './TagButton';
+import TagButton, { StyledButton } from './TagButton';
 
 const GameTagsContainer = () => {
   const [tagStates, setTagStates] = useState<boolean[]>([]);
@@ -17,7 +17,9 @@ const GameTagsContainer = () => {
   // 컴포넌트 렌더링
   return (
     <StyledButtonContainer>
-      <button onClick={initializeTags}>태그 초기화</button>
+      <StyledResetButton onClick={initializeTags}>
+        태그 초기화
+      </StyledResetButton>
       {gameTags.map((tag, index) => (
         <TagButton
           key={index}
@@ -39,3 +41,5 @@ const StyledButtonContainer = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
 `;
+
+const StyledResetButton = styled(StyledButton)``;
