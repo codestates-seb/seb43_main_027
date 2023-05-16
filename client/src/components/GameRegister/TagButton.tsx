@@ -27,7 +27,6 @@ const TagButton = ({
   return (
     <StyledButton onClick={handleClick} className={isActive ? 'active' : ''}>
       {children}
-      {gameTags[tagIndex]}
     </StyledButton>
   );
 };
@@ -36,5 +35,6 @@ export default TagButton;
 
 const StyledButton = styled.button`
   display: flex;
-  flex: 1;
+
+  margin: 0.5rem 0.3rem;
 `;
