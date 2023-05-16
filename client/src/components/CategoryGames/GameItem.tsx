@@ -1,21 +1,9 @@
 import React from 'react';
-import styled from 'styled-components';
-import CategoryTag from '../../components/common/CategoryTag';
-import { dummyCategoriesGames } from '../../data/dummyCategories';
 import { Link } from 'react-router-dom';
-
-type CategoryType = {
-  categoryId: number;
-  categoryName: string;
-};
-
-type Props = {
-  gameId: number;
-  gameName: string;
-  followerCount: number;
-  categories: CategoryType[];
-  mainImgUrl: string;
-};
+import styled from 'styled-components';
+import CategoryTag from '../common/CategoryTag';
+import { dummyGamesData } from '../../data/dummyCategories';
+import { GameItemPropsType } from '../../types/propsTypes';
 
 const GameItem = ({
   gameId,
@@ -23,10 +11,7 @@ const GameItem = ({
   followerCount,
   categories,
   mainImgUrl
-}: Props) => {
-  // todo: 팔로우 기능추가 (버튼클릭시 텍스트변경)
-  // 태그 색깔 통일 필요할듯
-
+}: GameItemPropsType) => {
   const handleClick = () => {
     window.scrollTo(0, 0);
   };
@@ -40,11 +25,11 @@ const GameItem = ({
             .map((item, index) => (
               <CategoryTag
                 key={index}
-                index={index}
+                categoryId={item.categoryId}
                 categoryName={item.categoryName}
               />
             ))
-            .slice(0, 5)}
+            .slice(0, 3)}
         </StyledTagContain>
         <StyledTitle>{gameName}</StyledTitle>
         <StyledFollow>팔로워: {followerCount}</StyledFollow>
