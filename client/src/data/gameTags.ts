@@ -1,7 +1,7 @@
 export const gameTags:string[] = [
-'ACTION','ADVENTURE','CARD_AND_BOARD','COMEDY','FPS',
-'HACK_AND_SLASH','HEALING','HORROR', 'MOBA', 'MOBILE', 
-'MULTIPLAYER', 'PLATFORMER', 'PUZZLE', 'ROGUELIKE', 'RPG', 
-'SHOOTING', 'SIMULATION', 'SPORTS', 'STORY', 'STRATEGY',
-'SURVIVOR', 'THREE_D_PLATFORMER', 'TWO_D_PLATFORMER', 'TURN_BASED'
+'액션','어드벤쳐','카드/보드게임','코미디','FPS',
+'핵앤슬래쉬','힐링','호러', 'MOBA', '모바일', 
+'멀티플레이', '플랫포머', '퍼즐', '로그라이크', 'RPG', 
+'슈팅', '시뮬레이션', '스포츠', '스토리', '전략',
+'생존', '3D 게임', '2D 게임', '턴제'
 ]
