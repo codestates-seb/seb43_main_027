@@ -33,7 +33,7 @@ const TagButton = ({
 
 export default TagButton;
 
-const StyledButton = styled.button`
+export const StyledButton = styled.button`
   display: flex;
 
   margin: 0.5rem 0.3rem;
