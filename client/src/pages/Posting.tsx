@@ -16,4 +16,5 @@ export default Posting;
 const StyledContainer = styled.div`
   min-height: calc(100vh - 50px);
   padding: 2rem;
+  width: 100%;
 `;
