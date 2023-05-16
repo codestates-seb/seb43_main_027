@@ -1,15 +1,31 @@
 import React from 'react';
 import styled from 'styled-components';
 import CategoryTag from '../../components/common/CategoryTag';
-import { dummyGameData, Game } from '../../data/dummyCategories';
+import { dummyCategoriesGames } from '../../data/dummyCategories';
 import { Link } from 'react-router-dom';
 
-const GameItem = ({ gameId }: { gameId: number }) => {
-  const game: Game | undefined = dummyGameData.find(
-    (item) => item.gameId.toString() === gameId.toString()
-  );
-  const currentGameData = game?.categories ?? [];
-  const followNumber = 10; // 데이터패칭 해야됨 + 팔로우 기능추가 (버튼클릭시 텍스트변경)
+type CategoryType = {
+  categoryId: number;
+  categoryName: string;
+};
+
+type Props = {
+  gameId: number;
+  gameName: string;
+  followerCount: number;
+  categories: CategoryType[];
+  mainImgUrl: string;
+};
+
+const GameItem = ({
+  gameId,
+  gameName,
+  followerCount,
+  categories,
+  mainImgUrl
+}: Props) => {
+  // todo: 팔로우 기능추가 (버튼클릭시 텍스트변경)
+  // 태그 색깔 통일 필요할듯
 
   const handleClick = () => {
     window.scrollTo(0, 0);
@@ -18,18 +34,20 @@ const GameItem = ({ gameId }: { gameId: number }) => {
   return (
     <Link to={`/games/${gameId}`} onClick={handleClick}>
       <StyledItemWrapper>
-        <StyledImg src={game?.mainImgUrl} alt='game-image' />
+        <StyledImg src={mainImgUrl} alt='game-image' />
         <StyledTagContain>
-          {currentGameData.map((item, index) => (
-            <CategoryTag
-              key={index}
-              index={index}
-              categoryName={item.categoryName}
-            />
-          ))}
+          {categories
+            .map((item, index) => (
+              <CategoryTag
+                key={index}
+                index={index}
+                categoryName={item.categoryName}
+              />
+            ))
+            .slice(0, 5)}
         </StyledTagContain>
-        <StyledTitle>{game?.gameName}</StyledTitle>
-        <StyledFollow>팔로워: {followNumber}</StyledFollow>
+        <StyledTitle>{gameName}</StyledTitle>
+        <StyledFollow>팔로워: {followerCount}</StyledFollow>
       </StyledItemWrapper>
     </Link>
   );

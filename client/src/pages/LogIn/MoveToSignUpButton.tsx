@@ -2,27 +2,27 @@ import styled from 'styled-components';
 import ButtonEl from '../../components/elements/Button';
 import { Link } from 'react-router-dom';
 
-const MoveToLogInBtn = () => {
+const MoveToSignUpButton = () => {
   return (
-    <StyledLogInBtnContainer>
-      <StyledLogInBtn>
-        <Link to='/login'>
-          <p>로그인</p>
+    <StyledSignUpButtonContainer>
+      <StyledSignUpButton>
+        <Link to='/signup'>
+          <p>회원가입</p>
         </Link>
-      </StyledLogInBtn>
-    </StyledLogInBtnContainer>
+      </StyledSignUpButton>
+    </StyledSignUpButtonContainer>
   );
 };
 
-export default MoveToLogInBtn;
+export default MoveToSignUpButton;
 
-const StyledLogInBtnContainer = styled.div`
+const StyledSignUpButtonContainer = styled.div`
   display: flex;
   width: 100%;
   margin-bottom: 1rem;
 `;
 
-const StyledLogInBtn = ButtonEl({
+const StyledSignUpButton = ButtonEl({
   flex: '1',
   fontSize: '1.6rem',
   bg: 'var(--button-inactive-color)',

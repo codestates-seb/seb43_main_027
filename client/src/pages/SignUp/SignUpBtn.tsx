@@ -24,5 +24,6 @@ const StyledSignUpBtnContainer = styled.div`
 `;
 
 const StyledSignUpBtn = ButtonEl({
+  flex: '1',
   fontSize: '1.6rem'
 });
