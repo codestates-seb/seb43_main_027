@@ -19,6 +19,7 @@ public enum ExceptionCode {
     FOLLOW_NOT_FOUND(404, "팔로워 관계가 아닙니다."),
     CANT_FOLLOW_SELF(403, "자기 자신은 팔로우할 수 없습니다."),
     CATEGORY_NOT_FOUND(404, "카테고리를 찾을 수 없습니다."),
+    NEED_DIFFERENT_MEMBER(403, "다른 유저여야 합니다."),
     EMPTY_FILE(400, "빈 파일입니다."),
     FILTER_NOT_FOUND(400, "없는 필터입니다.");
 
