@@ -40,6 +40,10 @@ const StyledButtonContainer = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+
+  .active {
+    background-color: red;
+  }
 `;
 
 const StyledResetButton = styled(StyledButton)``;
