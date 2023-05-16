@@ -58,7 +58,7 @@ public class PostService {
     }
 
     public Page<PostDto.Response> getAllPosts(Pageable pageable, Post.PostTag postTag, String filter) {
-        Page<Post> posts = getPosts(postTag, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Filter.getMatchedSort(filter)));
+        Page<Post> posts = getPosts(postTag, PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize(), Filter.getMatchedSort(filter)));
         return postMapper.entityPageToResponsePage(posts);
     }
 
