@@ -55,29 +55,33 @@ const GameRegister = () => {
     const postData: PostDataType = {
       gameName: title,
       downloadUrl: url,
-      categoryNames: ['tags']
+      categoryNames: ['FPS']
     };
+    console.log(postData);
 
     const formData = new FormData();
-    formData.append('file', values.gametitleimg);
+    // console.log(values.gametitleimg[0]);
+    // formData.append('file', values.gametitleimg[0]);
 
-    const blob = new Blob([JSON.stringify(postData)], {
-      type: 'application/json'
-    });
-
-    formData.append('post', blob);
-    console.log(formData);
+    // const blob = new Blob([JSON.stringify(postData)], {
+    //   type: 'application/json'
+    // });
+    // console.log(blob);
+    formData.append('post', JSON.stringify(postData));
+    console.log(typeof formData);
+    const value = formData.values().next();
+    console.log(value);
 
     // headers 를 변수로 담아줍니다.
     const headers = {
-      'Content-Type': 'application/json',
+      'Content-Type': 'multipart/form-data',
       Authorization: `${token}` // 토큰을 헤더에 추가
     };
 
     // formData를 axios를 사용하여 POST합니다.
     axios
       .post(
-        'ec2-13-209-70-188.ap-northeast-2.compute.amazonaws.com:8080/api/games',
+        'http://ec2-13-209-70-188.ap-northeast-2.compute.amazonaws.com:8080/api/games',
         formData,
         { headers }
       )
