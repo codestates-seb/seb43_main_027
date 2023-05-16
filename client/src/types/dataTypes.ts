@@ -16,6 +16,12 @@ export type User = {
   updatedAt: string;
 };
 
+export type Signup = {
+  username: string;
+  email: string;
+  password: string;
+}
+
 export type CategoryType = {
   categoryId: number;
   categoryName: string;
