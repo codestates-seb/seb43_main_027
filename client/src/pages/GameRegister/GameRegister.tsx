@@ -7,21 +7,24 @@ import axios from 'axios';
 
 import styled from 'styled-components';
 
+import GameTagsContainer from '../../components/GameRegister/GameTagsContainer';
+
 const { TextArea } = Input;
 
 const GameRegister = () => {
+  const navigation = useNavigate();
   const [title, setTitle] = useState('');
   const [detail, setDetail] = useState('');
   const [url, setUrl] = useState('');
 
-  const titleOnChange = (e) => {
+  const titleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
     console.log(title);
   };
-  const detailOnChange = (e) => {
+  const detailOnChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setDetail(e.target.value);
   };
-  const urlOnChange = (e) => {
+  const urlOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUrl(e.target.value);
   };
 
@@ -46,6 +49,9 @@ const GameRegister = () => {
 
   const onFinish = (values: any) => {
     console.log('Received values of form: ', values);
+
+    const token = localStorage.getItem('access_token');
+
     const postData: PostDataType = {
       gameName: title,
       downloadUrl: url,
@@ -61,15 +67,24 @@ const GameRegister = () => {
 
     formData.append('post', blob);
     console.log(formData);
+
+    // headers 를 변수로 담아줍니다.
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `${token}` // 토큰을 헤더에 추가
+    };
+
     // formData를 axios를 사용하여 POST합니다.
     axios
       .post(
         'ec2-13-209-70-188.ap-northeast-2.compute.amazonaws.com:8080/api/games',
-        formData
+        formData,
+        { headers }
       )
       .then((response) => {
         // 성공적으로 요청을 처리한 후에 수행할 작업을 여기에 추가합니다.
         console.log('등록에 성공하였습니다');
+        navigation(-1);
         // message.success('요청이 성공적으로 전송되었습니다.');
       })
       .catch((error) => {
@@ -103,7 +118,7 @@ const GameRegister = () => {
           />
         </StyledGameNameContainer>
         {/* 태그 선택 */}
-        <GameTagsContainer></GameTagsContainer>
+        <GameTagsContainer />
         {/* 게임 설명 */}
         <StyledGameDetailContainer>
           <Label htmlFor='channeltitle'>게임 설명</Label>
