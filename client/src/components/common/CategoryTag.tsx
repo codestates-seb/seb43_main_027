@@ -1,18 +1,13 @@
 import styled, { css } from 'styled-components';
+import { type CategoryType } from '../../types/dataTypes';
+import { type StyledTagPropsType } from '../../types/propsTypes';
 
-type CategoryTagType = {
-  index: number;
-  // 카테고리 아이디 링크추가하기 (이동기능)
-  categoryName: string;
-}
+const CategoryTag = ({ categoryId, categoryName }: CategoryType)  => {
+  
+  const mainColor = Math.round((categoryId - 1) % 4);
 
-type StyledTagProps = {
-  styleId: number;
-}
-
-const CategoryTag = ({ index, categoryName }: CategoryTagType)  => {
   return (
-    <StyledTag styleId={index}>
+    <StyledTag styleId={mainColor} >
       {categoryName}
     </StyledTag>
   );
@@ -20,7 +15,7 @@ const CategoryTag = ({ index, categoryName }: CategoryTagType)  => {
 
 export default CategoryTag;
 
-const StyledTag = styled.span<StyledTagProps>`
+const StyledTag = styled.span<StyledTagPropsType>`
   font-size: 12px;
   font-weight: bold;
   padding: 5px 10px;
