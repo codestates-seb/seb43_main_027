@@ -46,7 +46,7 @@ const PostItem = ({
             {title}
           </StyledTitle>
         </Link>
-          <CategoryTag index={0} categoryName={tag} />
+          <CategoryTag categoryId={0} categoryName={tag} />
         </StyledFlexRow>
         <StyledFlexRow>
           <StyledInfo>

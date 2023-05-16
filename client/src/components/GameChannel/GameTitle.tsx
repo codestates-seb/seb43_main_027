@@ -47,7 +47,7 @@ const GameTitle = ()  => {
         currentGameData.map((item, index) => (
           <CategoryTag 
             key={index}
-            index={index}
+            categoryId={index}
             categoryName={item.categoryName}
           />
         ))
