@@ -5,7 +5,7 @@ import axios from 'axios';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, FreeMode, Pagination, EffectCoverflow } from 'swiper';
 import PATH_URL from '../../constants/pathUrl';
-import { BANNER_MESSAGE } from '../../constants/stringMessage ';
+import { BANNER_MESSAGE } from '../../constants/stringMessage';
 import { dummyGamesData } from '../../data/dummyCategories';
 import { type CategoryGameType } from '../../types/dataTypes';
 import { type SwiperBgType, type SwiperInfoType } from '../../types/propsTypes';
