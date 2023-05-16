@@ -28,27 +28,47 @@ const InputSection = () => {
       setPost((prev) => ({ ...prev, [type]: e.target.value }));
     };
 
+  const onSubmitHandler = (
+    e: React.FormEvent<HTMLFormElement> | React.MouseEvent
+  ) => {
+    e.preventDefault();
+    console.log(post);
+  };
   return (
-    <StyledContainer>
-      <SelectTag options={optionsTag} onChange={onTagChangeHandler} />
-      <StyledTitleInput
-        placeholder='제목을 입력하세요.'
-        onChange={onInputChangeHandler('title')}
-      />
-      <StyledTextarea
-        placeholder='내용을 입력하세요.'
-        onChange={onInputChangeHandler('content')}
-      />
-      <ImageSection files={files} setFiles={setFiles} />
-      <SubmitButton>작성하기</SubmitButton>
-    </StyledContainer>
+    <form onSubmit={onSubmitHandler}>
+      <StyledContainer>
+        <SelectTag options={optionsTag} onChange={onTagChangeHandler} />
+        <StyledTitleInput
+          placeholder='제목을 입력하세요.'
+          onChange={onInputChangeHandler('title')}
+        />
+        <StyledTextarea
+          placeholder='내용을 입력하세요.'
+          onChange={onInputChangeHandler('content')}
+        />
+        <ImageSection files={files} setFiles={setFiles} />
+        <StyledButtonContainer>
+          <SubmitButton onClick={onSubmitHandler}>작성하기</SubmitButton>
+        </StyledButtonContainer>
+      </StyledContainer>
+    </form>
   );
 };
 
 export default InputSection;
 
+const StyledButtonContainer = styled.div`
+  width: 100%;
+  display: flex;
+  @media screen and (min-width: 650px) {
+    display: block;
+    text-align: end;
+  }
+`;
+
 const SubmitButton = ButtonEl({
-  flex: '1'
+  flex: '1',
+  padding: '1rem'
 });
 
 const StyledContainer = styled.div`
