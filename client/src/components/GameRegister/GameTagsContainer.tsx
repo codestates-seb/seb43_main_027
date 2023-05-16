@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import styled from 'styled-components';
 
 import { gameTags } from '../../data/gameTags';
 
@@ -15,7 +16,7 @@ const GameTagsContainer = () => {
 
   // 컴포넌트 렌더링
   return (
-    <div>
+    <StyledButtonContainer>
       <button onClick={initializeTags}>태그 초기화</button>
       {gameTags.map((tag, index) => (
         <TagButton
@@ -27,8 +28,14 @@ const GameTagsContainer = () => {
           {tag}
         </TagButton>
       ))}
-    </div>
+    </StyledButtonContainer>
   );
 };
 
 export default GameTagsContainer;
+
+const StyledButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+`;
