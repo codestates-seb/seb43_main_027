@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import Title from '../layouts/Posting/Title';
-import InputSection from '../layouts/Posting/InputSection';
+import Title from '../components/Posting/Title';
+import InputSection from '../components/Posting/InputSection';
 
 const Posting = () => {
   return (

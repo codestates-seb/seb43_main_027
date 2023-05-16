@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import SelectTag from '../../components/common/SelectTag';
-import ButtonEl from '../../components/elements/Button';
+import SelectTag from '../common/SelectTag';
+import ButtonEl from '../elements/Button';
 import ImageSection from './ImageSection';
 import { useState } from 'react';
 
