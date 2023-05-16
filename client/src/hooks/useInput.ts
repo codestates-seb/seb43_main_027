@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-import useValidity from './useValidity';
-import { useValidityType } from '../types/customHooksTypes';
+import useValidation from './useValidation';
+import { useValidationType } from '../types/costomHooksTypes';
 
 /**
  * input 상태를 관리하는 커스텀 훅입니다.
@@ -10,18 +10,19 @@ import { useValidityType } from '../types/customHooksTypes';
  * @returns {Array} - input 상태, input 값 변경 시 핸들러, input 상태 변경함수, input 창의 유효성
  */
 let data;
-let validity = false;
 
-function useInput(init = '',inputtype:useValidityType) {
+function useInput(init = '',inputtype:useValidationType) {
   const [value, setValue] = useState(init);
+  const [validity, setValidity] = useState(false);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.stopPropagation();
     setValue(e.target.value);
-    validity = useValidity(inputtype,e.target.value);
+    setValidity(useValidation(inputtype,e.target.value)); 
     console.log(validity);
   };
   data = { value, onChange , setValue, validity}
-  return [data];
+  return data;
 }
 
 export default useInput;

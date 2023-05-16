@@ -11,15 +11,13 @@ const SignUpFieldsInputContainer = ({
   validmessage
 }: InputContainerType) => {
   return (
-    <>
-      <StyledInputContainer
-        placeholder={placeholder}
-        title={title}
-        useInput={useInput}
-        validmessage={validmessage}
-        validity={useInput !== undefined ? useInput.validity : undefined}
-      ></StyledInputContainer>
-    </>
+    <StyledInputContainer
+      placeholder={placeholder}
+      title={title}
+      useInput={useInput}
+      validmessage={validmessage}
+      validity={useInput !== undefined ? useInput.validity : false}
+    ></StyledInputContainer>
   );
 };
 

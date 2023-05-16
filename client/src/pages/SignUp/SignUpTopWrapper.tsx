@@ -18,5 +18,5 @@ export default SignUpTopWrapper;
 const StyledSignUpTopWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  margin: 4rem 0;
+  margin: 4rem 5rem;
 `;

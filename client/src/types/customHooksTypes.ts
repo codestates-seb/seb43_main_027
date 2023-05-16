@@ -11,4 +11,4 @@ export interface useInputReturn {
   validity: boolean;
 };
 
-export type useValidityType = 'username' | 'email' | 'password';
+export type useValidationType = 'username' | 'email' | 'password';
