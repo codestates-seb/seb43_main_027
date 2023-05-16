@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import useInput from '../../hooks/useInput';
@@ -13,13 +12,9 @@ import SignUpButtonsContainer from './SignUpButtonsContainer';
 const SignUp = () => {
   const navigator = useNavigate();
 
-  const [userNameProps, setUserName] = useInput('', 'username');
-  const [emailProps, setEmail] = useInput('', 'email');
-  const [passWordProps, setPassWord] = useInput('', 'password');
-
-  const [usernameValid, setUserNameValid] = useState(true);
-  const [emailValid, setEmailValid] = useState(true);
-  const [passWordValid, setPassWordValid] = useState(true);
+  const userNameProps = useInput('', 'username');
+  const emailProps = useInput('', 'email');
+  const passWordProps = useInput('', 'password');
 
   const oauthSignUp: React.MouseEventHandler = async (e: React.MouseEvent) => {
     e.preventDefault();
