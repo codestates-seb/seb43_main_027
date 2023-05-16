@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import SelectTag from '../../components/common/SelectTag';
 import ButtonEl from '../../components/elements/Button';
 import ImageSection from './ImageSection';
+import { useState } from 'react';
 
 const optionsTag = [
   { value: '전체', label: '전체' },
@@ -11,15 +12,34 @@ const optionsTag = [
 ];
 
 const InputSection = () => {
-  const onChangeHandler = () => {
-    console.log('test');
+  const [post, setPost] = useState({});
+  const [files, setFiles] = useState<File[]>([]);
+
+  const onTagChangeHandler = (postTag: string) => {
+    setPost((prev) => ({ ...prev, postTag }));
   };
+  const onInputChangeHandler =
+    (type: string) =>
+    (
+      e:
+        | React.ChangeEvent<HTMLInputElement>
+        | React.ChangeEvent<HTMLTextAreaElement>
+    ) => {
+      setPost((prev) => ({ ...prev, [type]: e.target.value }));
+    };
+
   return (
     <StyledContainer>
-      <SelectTag options={optionsTag} onChange={onChangeHandler} />
-      <StyledTitleInput placeholder='제목을 입력하세요.' />
-      <StyledTextarea placeholder='내용을 입력하세요.' />
-      <ImageSection />
+      <SelectTag options={optionsTag} onChange={onTagChangeHandler} />
+      <StyledTitleInput
+        placeholder='제목을 입력하세요.'
+        onChange={onInputChangeHandler('title')}
+      />
+      <StyledTextarea
+        placeholder='내용을 입력하세요.'
+        onChange={onInputChangeHandler('content')}
+      />
+      <ImageSection files={files} setFiles={setFiles} />
       <SubmitButton>작성하기</SubmitButton>
     </StyledContainer>
   );
