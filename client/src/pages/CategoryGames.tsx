@@ -1,21 +1,31 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import GameList from '../layouts/CategoryGames/GameList';
 import FilterTap from '../components/common/FilterTap';
 import RecommendGames from '../layouts/CategoryGames/RecommendGames';
 import TitleCategory from '../layouts/CategoryGames/TitleCategory';
+import { categoryFilterTab } from '../data/filterTapList';
 
 const CategoryGames = () => {
 
-  const filterList = ['전체 게임', '인기 게임', '신규 게임', '팔로우 게임'];
+  const [ isSelectTab, setIsSelectTab ] = useState<string>(categoryFilterTab[0]);
+
+  const handleClick = (item: string) => {
+    setIsSelectTab(item);
+  };
 
   return (
     <StyledCategoryGamesWrapper>
       <StyleContain>
         <TitleCategory />
         <RecommendGames />
-        <FilterTap filterList={filterList} />
-        <GameList />
+        <FilterTap
+          onClickFilter={handleClick}
+          filterList={categoryFilterTab} 
+        />
+        <GameList 
+          isSelectTab={isSelectTab}
+        />
       </StyleContain>
     </StyledCategoryGamesWrapper>
   );

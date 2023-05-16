@@ -2,18 +2,21 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import useInput from '../../hooks/useInput';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../slice/userSlice';
 
 import styled from 'styled-components';
 
-import SignUpFieldsContainer from './SignUpFieldsContainer';
-import SignUpTopWrapper from './SignUpTopWrapper';
-import SignUpOauthContainer from './SignUpOauthContainer';
-import SignUpButtonsContainer from './SignUpButtonsContainer';
+import LogInFieldsContainer from './LogInFieldsContainer';
+import LogInTopWrapper from './LogInTopWrapper';
+import LogInOauthContainer from './LogInOauthContainer';
+import LogInButtonsContainer from './LogInButtonsContainer';
 
-const SignUp = () => {
+const LogIn = () => {
   const navigator = useNavigate();
 
-  const [userNameProps, setUserName] = useInput('', 'username');
+  const dispatch = useDispatch();
+
   const [emailProps, setEmail] = useInput('', 'email');
   const [passWordProps, setPassWord] = useInput('', 'password');
 
@@ -21,63 +24,65 @@ const SignUp = () => {
   const [emailValid, setEmailValid] = useState(true);
   const [passWordValid, setPassWordValid] = useState(true);
 
-  const oauthSignUp: React.MouseEventHandler = async (e: React.MouseEvent) => {
+  const oauthLogIn: React.MouseEventHandler = async (e: React.MouseEvent) => {
     e.preventDefault();
     // 유효성 검사 들어갈 자리
-    const googleAuthUrl = `${process.env.REACT_APP_SERVER}/oauth2/authorization/google?redirect_uri=http://localhost:3000/signup`;
+    const googleAuthUrl = `${process.env.REACT_APP_SERVER}/oauth2/authorization/google?redirect_uri=http://localhost:3000/login`;
     window.location.href = googleAuthUrl;
   };
 
-  const emailSignUp: React.MouseEventHandler = async (e: React.MouseEvent) => {
+  const emailLogIn: React.MouseEventHandler = async (e: React.MouseEvent) => {
     e.preventDefault();
     // 유효성 검사 들어갈 자리
     try {
       await axios
         .post(
-          'http://ec2-13-209-70-188.ap-northeast-2.compute.amazonaws.com:8080/api/members/signup',
+          'http://ec2-13-209-70-188.ap-northeast-2.compute.amazonaws.com:8080/api/auth/login',
           {
-            username: userNameProps.value,
             email: emailProps.value,
             password: passWordProps.value
           }
         )
         .then((response) => {
-          alert('you successfully signed up!');
-          navigator('/login');
+          localStorage.setItem('access_token', response.headers.authorization);
+          localStorage.setItem('refresh_token', response.headers.refresh);
+          const userdata = response.data;
+          dispatch(setUser({ payload: userdata }));
+          alert('you successfully logged in!');
+          navigator('/');
         });
     } catch (error) {
       console.log(error);
-      alert('you failed to signup!');
+      alert('you failed to login!');
       navigator('/error');
     }
   };
 
   return (
-    <StyledSignUpContainer>
-      <StyledSignUpFormWrapper>
+    <StyledLogInContainer>
+      <StyledLogInFormWrapper>
         {/* top - component */}
-        <SignUpTopWrapper />
+        <LogInTopWrapper />
         {/* Form - component */}
-        <StyledSignUpFormContainer>
+        <StyledLogInFormContainer>
           {/* Oauth - component */}
-          <SignUpOauthContainer onClick={oauthSignUp} />
+          <LogInOauthContainer onClick={oauthLogIn} />
           {/* Input - components */}
-          <SignUpFieldsContainer
-            inputUserName={userNameProps}
+          <LogInFieldsContainer
             inputEmail={emailProps}
             inputPassWord={passWordProps}
           />
           {/* Button - components */}
-          <SignUpButtonsContainer onClick={emailSignUp} />
-        </StyledSignUpFormContainer>
-      </StyledSignUpFormWrapper>
-    </StyledSignUpContainer>
+          <LogInButtonsContainer onClick={emailLogIn} />
+        </StyledLogInFormContainer>
+      </StyledLogInFormWrapper>
+    </StyledLogInContainer>
   );
 };
 
-export default SignUp;
+export default LogIn;
 
-const StyledSignUpContainer = styled.div`
+const StyledLogInContainer = styled.div`
   flex: 1 1;
   display: flex;
   flex-direction: row;
@@ -86,7 +91,7 @@ const StyledSignUpContainer = styled.div`
   background-color: #ffffff;
 `;
 
-const StyledSignUpFormWrapper = styled.div`
+const StyledLogInFormWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -105,7 +110,7 @@ const StyledSignUpFormWrapper = styled.div`
   }
 `;
 
-const StyledSignUpFormContainer = styled.form`
+const StyledLogInFormContainer = styled.form`
   display: flex;
   flex-direction: column;
   width: 100%;

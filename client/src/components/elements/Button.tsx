@@ -2,7 +2,7 @@ import React, { PropsWithChildren } from 'react';
 import styled from 'styled-components';
 import { ButtonType } from '../../types/componentsTypes';
 
-interface ButtonElType extends ButtonType {
+export interface ButtonElType extends ButtonType {
   //  누르면 바로 이동하는 버튼도 있어서 ? 이용하여 선택적으로 채용.
   onClick?: React.MouseEventHandler;
 }
