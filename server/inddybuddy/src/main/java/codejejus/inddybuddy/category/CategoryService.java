@@ -7,6 +7,7 @@ import codejejus.inddybuddy.global.exception.CustomException;
 import codejejus.inddybuddy.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +35,7 @@ public class CategoryService {
     }
 
     public Page<GameDto.Response> findGamesByCategory(long categoryId, Pageable pageable) {
-        Page<Game> gamePage = categoryRepository.findAllByCategoryId(categoryId, pageable);
+        Page<Game> gamePage = categoryRepository.findAllByCategoryId(categoryId, PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize()));
         return gameMapper.entityPageToResponsePage(gamePage);
     }
 

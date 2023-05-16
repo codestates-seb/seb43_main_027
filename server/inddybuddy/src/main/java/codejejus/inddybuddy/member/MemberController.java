@@ -71,15 +71,15 @@ public class MemberController {
     }
 
     @GetMapping("/{member-id}/following")
-    public ResponseEntity<SingleResponse<List<MemberDto.MemberSimpleInfoResponse>>> getFollowingMember(@PathVariable("member-id") Long memberId) {
+    public ResponseEntity<SingleResponse<List<MemberDto.SimpleInfoResponse>>> getFollowingMember(@PathVariable("member-id") Long memberId) {
         List<Member> followings = followMemberService.getAllFollowingByMemberId(memberId);
-        return ResponseEntity.ok(new SingleResponse<>(MemberDto.getMemberSimpleInfoResponses(followings)));
+        return ResponseEntity.ok(new SingleResponse<>(memberMapper.getMemberSimpleInfoResponses(followings)));
     }
 
     @GetMapping("/{member-id}/follower")
-    public ResponseEntity<SingleResponse<List<MemberDto.MemberSimpleInfoResponse>>> getFollowerMember(@PathVariable("member-id") Long memberId) {
+    public ResponseEntity<SingleResponse<List<MemberDto.SimpleInfoResponse>>> getFollowerMember(@PathVariable("member-id") Long memberId) {
         List<Member> followers = followMemberService.getAllFollowerByMemberId(memberId);
-        return ResponseEntity.ok(new SingleResponse<>(MemberDto.getMemberSimpleInfoResponses(followers)));
+        return ResponseEntity.ok(new SingleResponse<>(memberMapper.getMemberSimpleInfoResponses(followers)));
     }
 
     @DeleteMapping("/{member-id}")

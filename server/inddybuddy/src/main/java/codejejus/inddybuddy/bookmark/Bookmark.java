@@ -24,10 +24,11 @@ public class Bookmark {
     @JoinColumn(name = "post_id")
     private Post post;
 
+    @Getter
     public enum BookmarkStatus {
 
         ACTIVE("활성화"), DISABLE("비활성화");
-        private String description;
+        private final String description;
 
         BookmarkStatus(String description) {
             this.description = description;

@@ -44,12 +44,12 @@ public class PostController {
     }
 
     @GetMapping("/{post-id}")
-    public ResponseEntity<PostDto.Response> findPost(@PathVariable("post-id") Long postId) {
-        return ResponseEntity.ok(postService.findPost(postId));
+    public ResponseEntity<SingleResponse<PostDto.Response>> findPost(@PathVariable("post-id") Long postId) {
+        return ResponseEntity.ok(new SingleResponse<>(postService.findPost(postId)));
     }
 
     @GetMapping
-    public ResponseEntity<MultiResponse<PostDto.Response>> getAllPosts(@PageableDefault(page = 0, size = 20) Pageable pageable,
+    public ResponseEntity<MultiResponse<PostDto.Response>> getAllPosts(@PageableDefault(page = 1, size = 30) Pageable pageable,
                                                                        @RequestParam(required = false) Post.PostTag postTag,
                                                                        @RequestParam(required = false) String filter) {
         Page<PostDto.Response> pagePosts = postService.getAllPosts(pageable, postTag, filter);

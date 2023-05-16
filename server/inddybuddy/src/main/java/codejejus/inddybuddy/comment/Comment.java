@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ public class Comment extends Timestamped {
     @OneToMany(mappedBy = "parentComment", fetch = FetchType.LAZY,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     private List<Comment> childComments = new ArrayList<>();
-//    @Column()
+    //    @Column()
 //    private Long parentCommentId;
     @Column(nullable = false, length = 1000)
     private String content;
@@ -40,6 +41,23 @@ public class Comment extends Timestamped {
     @JoinColumn(name = "post_id")
     private Post post;
 
+    @Builder
+    public Comment(String content, Member member) {
+
+        this.content = content;
+        this.member = member;
+    }
+
+    public void updateCommentStatus(CommentStatus commentStatus) {
+        this.commentStatus = commentStatus;
+    }
+
+    public void updateComment(String content) {
+        if (content != null) {
+            this.content = content;
+        }
+    }
+
     public enum CommentStatus {
 
         COMMENT_REGISTRATION("댓글 등록"),
@@ -49,21 +67,6 @@ public class Comment extends Timestamped {
 
         CommentStatus(String status) {
             this.status = status;
-        }
-    }
-
-    public void updateCommentStatus(CommentStatus commentStatus) {this.commentStatus = commentStatus;}
-
-    @Builder
-    public Comment(String content, Member member){
-
-        this.content = content;
-        this.member = member;
-    }
-
-    public void updateComment(String content) {
-        if(content != null) {
-            this.content = content;
         }
     }
 }
