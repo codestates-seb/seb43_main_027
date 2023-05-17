@@ -29,7 +29,9 @@ export type GameType = {
   mainImgUrl: string;
   followerCount: number;
   categories: CategoryType[];
+  createdAt?: string;
 };
+
 export type PageInfoType = {
   page: number;
   size: number;
@@ -37,18 +39,6 @@ export type PageInfoType = {
   totalPage: number;
 };
 
-export type CategoryGameType = {
-  gameId: number;
-  gameName: string;
-  downloadUrl: string;
-  mainImgUrl: string;
-  categories: {
-    categoryId: number;
-    categoryName: string;
-  }[];
-  followerCount: number;
-  createdAt: string;
-};
 export type PostType = {
   postTag: string;
   title: string;
@@ -60,4 +50,13 @@ export type PathUrlType = {
   CATEGORY: string;
   GAME: string;
   POSTING: string;
+};
+
+export type PostOptinType = {
+  value: string;
+  label: string;
+};
+
+export type OptionMapping = {
+  [key: string]: string;
 };
