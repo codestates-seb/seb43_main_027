@@ -54,8 +54,7 @@ public class MemberService {
         Optional.ofNullable(member.getAboutMe())
                 .ifPresent(findMember::setAboutMe);
         if (multipartFile != null) {
-            // TODO : 미리 등록한 이미지 S3에서 삭제
-            // fileService.deleteMemberImg(findMember);
+            fileService.deleteMemberImg(findMember);
             File memberImg = fileService.createFile(multipartFile, findMember);
             findMember.setImageUrl(memberImg.getFileUrl());
         }

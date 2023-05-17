@@ -11,4 +11,6 @@ public interface GameRepository extends JpaRepository<Game, Long> {
 
     @EntityGraph(attributePaths = "categories", type = EntityGraph.EntityGraphType.FETCH)
     Page<Game> findByGameNameContaining(String keyword, Pageable pageable);
+
+    boolean existsByGameName(String gameName);
 }
