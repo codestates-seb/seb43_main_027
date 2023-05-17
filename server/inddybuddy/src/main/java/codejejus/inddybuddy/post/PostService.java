@@ -52,19 +52,26 @@ public class PostService {
         return postMapper.entityToResponse(findPost);
     }
 
+    @Transactional(readOnly = true)
     public PostDto.Response findPost(Long postId) {
         Post post = findVerifidPost(postId);
         return postMapper.entityToResponse(post);
     }
 
-    public Page<PostDto.Response> getAllPosts(Pageable pageable, Post.PostTag postTag, String filter) {
-        Page<Post> posts = getPosts(postTag, PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize(), Filter.getMatchedSort(filter)));
-        return postMapper.entityPageToResponsePage(posts);
+    @Transactional(readOnly = true)
+    public Page<PostDto.SimpleResponse> getAllPosts(Pageable pageable, Post.PostTag postTag, String filter) {
+        PageRequest pageRequest = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize(), Filter.getMatchedSort(filter));
+        Page<Post> postPage = postTag == null ?
+                postRepository.findAll(pageRequest) :
+                postRepository.findAllByPostTag(postTag, pageRequest);
+        return postMapper.entityPageToSimpleResponsePage(postPage);
     }
 
-    private Page<Post> getPosts(Post.PostTag postTag, Pageable pageable) {
-        if (postTag == null) return postRepository.findAll(pageable);
-        return postRepository.findAllByPostTag(postTag, pageable);
+    @Transactional(readOnly = true)
+    public Page<PostDto.SimpleResponse> getPostsByKeyword(String keyword, Pageable pageable) {
+        PageRequest pageRequest = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize());
+        Page<Post> allByContainingKeyword = postRepository.findAllByContentContainingOrTitleContaining(keyword, keyword, pageRequest);
+        return postMapper.entityPageToSimpleResponsePage(allByContainingKeyword);
     }
 
     public void deletePost(Long postId, MemberPrincipal memberPrincipal) {

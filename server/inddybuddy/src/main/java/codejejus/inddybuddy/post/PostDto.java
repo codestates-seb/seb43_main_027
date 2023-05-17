@@ -6,9 +6,11 @@ import codejejus.inddybuddy.post.Post.PostTag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 public class PostDto {
 
     @Getter
@@ -52,6 +54,30 @@ public class PostDto {
             this.likeCount = likeCount;
             this.fileUrlList = fileUrlList;
             this.comments = comments;
+        }
+    }
+
+    @Getter
+    public static class SimpleResponse {
+
+        private final Long postId;
+        private final MemberDto.SimpleInfoResponse member;
+        private final String title;
+        private final String content;
+        private final Long views;
+        private final PostTag postTag;
+        private final Long commentCount;
+        private final Long likeCount;
+
+        public SimpleResponse(Post post) {
+            this.postId = post.getPostId();
+            this.member = new MemberDto.SimpleInfoResponse(post.getMember());
+            this.title = post.getTitle();
+            this.content = post.getContent();
+            this.views = post.getViews();
+            this.postTag = post.getPostTag();
+            this.commentCount = post.getCommentCount();
+            this.likeCount = post.getLikeCount();
         }
     }
 }

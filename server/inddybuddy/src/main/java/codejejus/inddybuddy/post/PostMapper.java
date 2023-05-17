@@ -38,8 +38,12 @@ public class PostMapper {
                 .build();
     }
 
-    public Page<PostDto.Response> entityPageToResponsePage(Page<Post> postPage) {
-        return postPage.map(this::entityToResponse);
+    public PostDto.SimpleResponse entityToSimpleResponse(Post post) {
+        return new PostDto.SimpleResponse(post);
+    }
+
+    public Page<PostDto.SimpleResponse> entityPageToSimpleResponsePage(Page<Post> postPage) {
+        return postPage.map(this::entityToSimpleResponse);
     }
 }
 
