@@ -61,6 +61,11 @@ public class GameService {
         return gameMapper.entityToResponse(findGame);
     }
 
+    public GameDto.Response getGame(Long gameId) {
+        Game game = findVerifidGame(gameId);
+        return gameMapper.entityToResponse(game);
+    }
+
     public void followGame(Long gameId, MemberPrincipal memberPrincipal) {
         Game game = findVerifidGame(gameId);
         Member follower = memberPrincipal.getMember();

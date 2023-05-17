@@ -36,15 +36,6 @@ public class PostController {
         return ResponseEntity.ok(new SingleResponse<>(postService.findPost(postId)));
     }
 
-    @GetMapping
-    public ResponseEntity<MultiResponse<PostDto.SimpleResponse>> getAllPosts(@PageableDefault(page = 1, size = 30) Pageable pageable,
-                                                                             @RequestParam(required = false) Post.PostTag postTag,
-                                                                             @RequestParam(required = false) String filter) {
-        Page<PostDto.SimpleResponse> pagePosts = postService.getAllPosts(pageable, postTag, filter);
-        List<PostDto.SimpleResponse> posts = pagePosts.getContent();
-        return ResponseEntity.ok(new MultiResponse<>(posts, pagePosts));
-    }
-
     @GetMapping("/search")
     public ResponseEntity<MultiResponse<PostDto.SimpleResponse>> searchPostsByKeyword(@RequestParam(value = "q", required = false) String keyword,
                                                                                       @PageableDefault(page = 1, size = 30) Pageable pageable) {
