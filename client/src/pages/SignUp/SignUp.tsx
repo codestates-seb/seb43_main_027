@@ -1,14 +1,43 @@
 import styled from 'styled-components';
 
+import { useNavigate } from 'react-router-dom';
 import SignUpFieldsContainer from './SignUpFieldsContainer';
 import SignUpTopWrapper from './SignUpTopWrapper';
 import SignUpOauthContainer from './SignUpOauthContainer';
 import SignUpButtonsContainer from './SignUpButtonsContainer';
 
 import oauthSignUp from '../../utils/OauthSignUpFunction';
-import emailSignUp from '../../utils/EmailSignUpFunction';
+
+import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 
 const SignUp = () => {
+  const navigation = useNavigate();
+
+  const signupinfo = useSelector((state: RootState) => state.signup);
+
+  const emailSignUp: React.MouseEventHandler = async (e: React.MouseEvent) => {
+    e.preventDefault();
+
+    try {
+      await axios
+        .post(`${process.env.REACT_APP_API_URL}/api/members/signup`, {
+          username: signupinfo.username,
+          email: signupinfo.email,
+          password: signupinfo.password
+        })
+        .then((response) => {
+          alert('you successfully signed up!');
+          navigation('/login');
+        });
+    } catch (error) {
+      console.log(error);
+      alert('you failed to signup!');
+      navigation('/error');
+    }
+  };
+
   return (
     <StyledSignUpContainer>
       <StyledSignUpFormWrapper>
