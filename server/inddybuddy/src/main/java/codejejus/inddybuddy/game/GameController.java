@@ -9,6 +9,7 @@ import codejejus.inddybuddy.member.MemberMapper;
 import codejejus.inddybuddy.member.dto.MemberDto;
 import codejejus.inddybuddy.member.entity.Member;
 import codejejus.inddybuddy.member.entity.MemberPrincipal;
+import codejejus.inddybuddy.post.Post;
 import codejejus.inddybuddy.post.PostDto;
 import codejejus.inddybuddy.post.PostService;
 import lombok.RequiredArgsConstructor;
@@ -49,6 +50,11 @@ public class GameController {
         return ResponseEntity.ok(new SingleResponse<>(gameService.modifyGame(gameId, memberPrincipal, patch, multipartFile)));
     }
 
+    @GetMapping("/{game-id}")
+    public ResponseEntity<SingleResponse<GameDto.Response>> getGame(@PathVariable("game-id") Long gameId) {
+        return ResponseEntity.ok(new SingleResponse<>(gameService.getGame(gameId)));
+    }
+
     @GetMapping("/search")
     public ResponseEntity<MultiResponse<GameDto.Response>> searchGamesByKeyword(@PageableDefault(page = 1, size = 30) Pageable pageable,
                                                                                 @RequestParam(value = "q", required = false) String keyword) {
@@ -85,14 +91,24 @@ public class GameController {
         return ResponseEntity.ok(new SingleResponse<>(memberMapper.getMemberSimpleInfoResponses(followers)));
     }
 
-    @PostMapping("{game-id}/posts")
-    public ResponseEntity<PostDto.Response> createPost(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
+    @PostMapping("/{game-id}/posts")
+    public ResponseEntity<PostDto.Response> createPost(@PathVariable("game-id") Long gameId,
+                                                       @AuthenticationPrincipal MemberPrincipal memberPrincipal,
                                                        @RequestPart PostDto.PostRequest post,
-                                                       @PathVariable("game-id") Long gameId,
                                                        @RequestPart(value = "files", required = false) List<MultipartFile> multipartFiles) {
         PostDto.Response PostResponse = postService.createPost(gameId, memberPrincipal, post, multipartFiles);
         URI uri = UriCreator.createURI(PostResponse.getPostId());
 
         return ResponseEntity.created(uri).build();
+    }
+
+    @GetMapping("/{game-id}/posts")
+    public ResponseEntity<MultiResponse<PostDto.SimpleResponse>> getAllPosts(@PathVariable("game-id") Long gameId,
+                                                                             @PageableDefault(page = 1, size = 30) Pageable pageable,
+                                                                             @RequestParam(required = false) Post.PostTag postTag,
+                                                                             @RequestParam(required = false) String filter) {
+        Page<PostDto.SimpleResponse> pagePosts = postService.getAllPosts(gameId, pageable, postTag, filter);
+        List<PostDto.SimpleResponse> posts = pagePosts.getContent();
+        return ResponseEntity.ok(new MultiResponse<>(posts, pagePosts));
     }
 }

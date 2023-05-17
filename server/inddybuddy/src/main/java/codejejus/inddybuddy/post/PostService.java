@@ -2,6 +2,7 @@ package codejejus.inddybuddy.post;
 
 import codejejus.inddybuddy.file.File;
 import codejejus.inddybuddy.file.FileService;
+import codejejus.inddybuddy.game.Game;
 import codejejus.inddybuddy.game.GameService;
 import codejejus.inddybuddy.global.constant.Filter;
 import codejejus.inddybuddy.global.exception.CustomException;
@@ -61,11 +62,12 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public Page<PostDto.SimpleResponse> getAllPosts(Pageable pageable, Post.PostTag postTag, String filter) {
+    public Page<PostDto.SimpleResponse> getAllPosts(Long gameId, Pageable pageable, Post.PostTag postTag, String filter) {
+        Game findGame = gameService.findGame(gameId);
         PageRequest pageRequest = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize(), Filter.getMatchedSort(filter));
         Page<Post> postPage = postTag == null ?
-                postRepository.findAll(pageRequest) :
-                postRepository.findAllByPostTag(postTag, pageRequest);
+                postRepository.findAllByGame(findGame, pageRequest) :
+                postRepository.findAllByGameAndPostTag(findGame, postTag, pageRequest);
         return postMapper.entityPageToSimpleResponsePage(postPage);
     }
 
