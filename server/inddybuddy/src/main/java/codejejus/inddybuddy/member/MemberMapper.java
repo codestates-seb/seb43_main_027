@@ -3,6 +3,7 @@ package codejejus.inddybuddy.member;
 import codejejus.inddybuddy.member.dto.MemberDto;
 import codejejus.inddybuddy.member.entity.Member;
 import org.mapstruct.Mapper;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,10 +26,10 @@ public interface MemberMapper {
     }
 
     default MemberDto.SimpleInfoResponse getMemberSimpleInfoResponse(Member member) {
-        return new MemberDto.SimpleInfoResponse(
-                member.getMemberId(),
-                member.getEmail(),
-                member.getUsername(),
-                member.getImageUrl());
+        return new MemberDto.SimpleInfoResponse(member);
+    }
+
+    default Page<MemberDto.SimpleInfoResponse> pageMemberToSimpleInfoResponses(Page<Member> page) {
+        return page.map(this::getMemberSimpleInfoResponse);
     }
 }

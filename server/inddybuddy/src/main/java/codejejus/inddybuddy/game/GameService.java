@@ -74,13 +74,29 @@ public class GameService {
         followGameService.unfollowing(game, follower);
     }
 
+    @Transactional(readOnly = true)
     public Game findGame(Long gameId) {
         return findVerifidGame(gameId);
     }
 
+    @Transactional(readOnly = true)
     public Page<GameDto.Response> getAllGames(Pageable pageable, String filter) {
-        Page<Game> games = gameRepository.findAll(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Filter.getMatchedSort(filter)));
+        Page<Game> games = getGames(pageable, filter);
         return gameMapper.entityPageToResponsePage(games);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<GameDto.Response> getGamesByKeyword(Pageable pageable, String keyword) {
+        Page<Game> allByContainingKeyword = getByGameNameContaining(pageable, keyword);
+        return gameMapper.entityPageToResponsePage(allByContainingKeyword);
+    }
+
+    private Page<Game> getByGameNameContaining(Pageable pageable, String keyword) {
+        return gameRepository.findByGameNameContaining(keyword, PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize()));
+    }
+
+    private Page<Game> getGames(Pageable pageable, String filter) {
+        return gameRepository.findAll(PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize(), Filter.getMatchedSort(filter)));
     }
 
     private Game findVerifidGame(Long gameId) {

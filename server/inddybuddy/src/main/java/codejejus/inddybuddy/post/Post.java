@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
@@ -32,11 +33,15 @@ public class Post extends Timestamped {
     private Long views = 0L;
     @Formula("(select count(*) from likes l where l.post_id=post_id)")
     private Long likeCount = 0L;
-    @ManyToOne
+    @Formula("(select count(*) from comment c where c.post_id=post_id)")
+    private Long commentCount = 0L;
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
+    @BatchSize(size = 10)
     private Member member;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "game_id")
+    @BatchSize(size = 10)
     private Game game;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
