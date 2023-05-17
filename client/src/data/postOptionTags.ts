@@ -1,4 +1,4 @@
-import { type PostOptinType, type OptionMapping } from '../types/dataTypes';
+import { type PostOptionType, type OptionMapping } from '../types/dataTypes';
 
 /*
 RECRUITMENT("모집"),
@@ -13,7 +13,7 @@ REVIEW("리뷰"),
 ETC("기타");
 */
 
-export const postOptionTags: PostOptinType[] = [
+export const postOptionTags: PostOptionType[] = [
   { value: '전체', label: '전체' },
   { value: '모집', label: '모집' },
   { value: '버그', label: '버그' },
