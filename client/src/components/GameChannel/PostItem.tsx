@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import CategoryTag from '../common/CategoryTag';
 import { Post } from '../../data/dummyPostList';
 import { StarTwoTone } from '@ant-design/icons';
+import PATH_URL from '../../constants/pathUrl';
 
 const PostItem = ({
   postId,
@@ -41,7 +42,7 @@ const PostItem = ({
     <StyledWrapper>
       <StyledContent>
         <StyledFlexRow>
-        <Link to={`/games/${gameId}/posts/${postId}`}>
+        <Link to={`${PATH_URL.GAME}${gameId}/posts/${postId}`}>
           <StyledTitle>
             {title}
           </StyledTitle>
