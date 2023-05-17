@@ -79,12 +79,16 @@ public class MemberDto {
         private final String email;
         private final String username;
         private final String imageUrl;
+        private final Long followerCount;
+        private final Long followingCount;
 
         public SimpleInfoResponse(Member member) {
             this.memberId = member.getMemberId();
             this.email = member.getEmail();
             this.username = member.getUsername();
             this.imageUrl = member.getImageUrl();
+            this.followerCount = member.getFollowerCount();
+            this.followingCount = member.getFollowingCount();
         }
     }
 
