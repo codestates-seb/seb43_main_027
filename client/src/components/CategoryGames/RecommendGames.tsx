@@ -6,7 +6,6 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, FreeMode, Pagination, EffectCoverflow } from 'swiper';
 import PATH_URL from '../../constants/pathUrl';
 import { BANNER_MESSAGE } from '../../constants/stringMessage';
-import { dummyGamesData } from '../../data/dummyCategories';
 import { type CategoryGameType } from '../../types/dataTypes';
 import { type SwiperBgType, type SwiperInfoType } from '../../types/propsTypes';
 import 'swiper/css';
@@ -28,44 +27,40 @@ const RecommedGames = () => {
   useEffect(() => {
     const fetchGamesData = async () => {
       try {
-        const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/categories/${categoryId}/games`);
+        const res = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/categories/${categoryId}/games?page=${1}&filter=POPULAR`
+        );
         const gamesData = res.data.data;
-        // 더미데이터 테스트 코드
-        // const gamesData = dummyGamesData.data;
-        if (gamesData) {
-          const filteredGames = gamesData
-            .filter((game: { followerCount: number }) => game.followerCount >= 5)
-            .sort((a: { followerCount: number }, b: { followerCount: number }) => b.followerCount - a.followerCount)
-            .slice(0, 5);
-
-          isCurrentSlide(filteredGames[currentSlideIndex]);
-          setGamesList(filteredGames);
-          
-          if (currentSlideIndex === 0) {
-            setIntroduceMode(true);
-            setIsLastCurrent(false);
-            setCurrentText(BANNER_MESSAGE.FRONT);
-            return;
-          }
-          if (currentSlideIndex === filteredGames.length - 1) {
-            setIntroduceMode(true);
-            setIsLastCurrent(true);
-            setCurrentText(BANNER_MESSAGE.LAST);
-            return;
-          }
-          setIntroduceMode(false);
-          setIsLastCurrent(false);
-        } else {
-          // todo: 404페이지 경로로 이동 시키기
-          // return navigate('/');
-        }
+        setGamesList(gamesData);
       } catch (error) {
-        console.error(error);
-      }
+        console.log(error);
+      };
     };
-
     fetchGamesData();
-  }, [categoryId, currentSlide, currentSlideIndex]);
+  }, [categoryId]);
+
+  useEffect(() => {
+    const filteredGames = gamesList
+      .sort((a: { followerCount: number }, b: { followerCount: number }) => b.followerCount - a.followerCount)
+      .slice(0, 5);
+  
+    isCurrentSlide(filteredGames[currentSlideIndex]);
+  
+    if (currentSlideIndex === 0) {
+      setIntroduceMode(true);
+      setIsLastCurrent(false);
+      setCurrentText(BANNER_MESSAGE.FRONT);
+      return;
+    }
+    if (currentSlideIndex === filteredGames.length - 1) {
+      setIntroduceMode(true);
+      setIsLastCurrent(true);
+      setCurrentText(BANNER_MESSAGE.LAST);
+      return;
+    }
+    setIntroduceMode(false);
+    setIsLastCurrent(false);
+  }, [currentSlideIndex, gamesList]);
 
   const handleSlideChange = (swiper: any) => {
     setCurrentSlideIndex(swiper.activeIndex);
