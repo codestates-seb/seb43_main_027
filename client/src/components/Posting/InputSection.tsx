@@ -7,10 +7,18 @@ import postOptionTags from '../../data/postOptionTags';
 import axios from 'axios';
 import convertTag from '../../utils/convertTag';
 import { PostType } from '../../types/dataTypes';
+import { validatePost } from '../../utils/validatePost';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const InputSection = () => {
-  const [post, setPost] = useState<PostType>({});
+  const [post, setPost] = useState<PostType>({
+    postTag: '',
+    title: '',
+    content: ''
+  });
   const [files, setFiles] = useState<File[]>([]);
+  const { gameId } = useParams();
+  const navigation = useNavigate();
 
   const onTagChangeHandler = (postTag: string) => {
     const convertedTag = convertTag.asEN(postTag);
@@ -30,6 +38,12 @@ const InputSection = () => {
     e: React.FormEvent<HTMLFormElement> | React.MouseEvent
   ) => {
     e.preventDefault();
+
+    if (!validatePost(post)) {
+      alert('입력값을 정확히 입력해주세요');
+      return;
+    }
+
     (async () => {
       const formData = new FormData();
       formData.append(
@@ -38,21 +52,26 @@ const InputSection = () => {
           type: 'application/json'
         })
       );
+      if (files.length !== 0) {
+        files.forEach((file) => {
+          formData.append('files', file);
+        });
+      }
+
       try {
-        const res = axios.post(
-          `${process.env.REACT_APP_API_URL}/api/games/1/posts`,
+        await axios.post(
+          `${process.env.REACT_APP_API_URL}/api/games/${gameId}/posts`,
           formData,
           {
             headers: {
               'Content-Type': 'multipart/form-data',
-              Authorization:
-                'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MUBuYXZlci5jb20iLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiZXhwIjoxNjk3MjQ4Mzk2fQ.a-wJ69y5hGHaKcqEQ7QTMGbJO0RxdCt3FaC_L19f4Jo'
+              Authorization: localStorage.getItem('access_token')
             }
           }
         );
-        console.log(res);
+        navigation(`/game/${gameId}`);
       } catch (err) {
-        console.error(err);
+        alert('게시글 작성에서 오류가 발생하였습니다.');
       }
     })();
 

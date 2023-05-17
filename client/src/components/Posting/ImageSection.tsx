@@ -43,6 +43,7 @@ const ImageSection = ({
       <StyledFileInput
         type='file'
         id='file-upload'
+        accept='image/*'
         multiple
         onChange={onUploadHandler}
       />
