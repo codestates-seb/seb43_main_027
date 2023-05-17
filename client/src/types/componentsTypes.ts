@@ -25,16 +25,18 @@ export interface InputType {
   hoverBg?: string,
   boxShadow?: string,
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void | undefined,
-  useInput?: useInputReturn
+  useInput?: useInputReturn,
+  validationFunction?: ()=>boolean
 }
 
 export interface InputContainerType {
   placeholder?: string;
   title?: string;
   onChange?: React.ChangeEvent;
-  useInput?: useInputReturn;
-  validmessage?: string;
-  validity?: boolean;
+  validationMessage?: string;
+  validationType?: 'username' | 'email' | 'password' | 'custom' | 'none';
+  validationFunction?: () => boolean;
+  type?: string; 
 }
 
 export interface LabelType {
