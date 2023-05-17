@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import CategoryTag from '../common/CategoryTag';
 import { dummyGamesData } from '../../data/dummyCategories';
 import { GameItemPropsType } from '../../types/propsTypes';
+import PATH_URL from '../../constants/pathUrl';
 
 const GameItem = ({ 
   gameId, 
@@ -18,7 +19,7 @@ const GameItem = ({
   };
 
   return (
-    <Link to={`/games/${gameId}`} onClick={handleClick}>
+    <Link to={`${PATH_URL.GAME}${gameId}`} onClick={handleClick}>
     <StyledItemWrapper >
       <StyledImg src={mainImgUrl} alt='game-image' />
       <StyledTagContain>
@@ -33,7 +34,7 @@ const GameItem = ({
       }
       </StyledTagContain>
       <StyledTitle>{gameName}</StyledTitle>
-      <StyledFollow>팔로워: {followerCount}</StyledFollow>
+      <StyledFollow>게임 팔로워: {followerCount}</StyledFollow>
     </StyledItemWrapper>
     </Link>
   );

@@ -48,4 +48,10 @@ export type CategoryGameType = {
   }[];
   followerCount: number;
   createdAt: string;
-}
+};
+
+export type PathUrlType = {
+  HOME: string;
+  CATEGORY: string;
+  GAME: string;
+};
