@@ -6,20 +6,14 @@ import { RootState } from '../../store/store';
 import Pagination from 'react-js-pagination';
 import styled from 'styled-components';
 import PostItem from './PostItem';
+import { type PostListProps } from '../../types/propsTypes';
 import {
   dummyPostList,
   dummyBookmarkList,
   dummyMyList
 } from '../../data/dummyPostList';
 
-interface Props {
-  isSelectTab: string;
-  isSelectTag: string;
-}
-
-// todo: 게임아이디에 맞게 게시글 데이터 패칭
-
-const PostList: React.FC<Props> = ({ isSelectTag, isSelectTab }) => {
+const PostList: React.FC<PostListProps> = ({ isSelectTag, isSelectTab, isMappingTag }) => {
   const { gameId } = useParams();
   const memberId = useSelector((state: RootState) => state.user.memberId);
 
@@ -119,6 +113,8 @@ const PostList: React.FC<Props> = ({ isSelectTag, isSelectTab }) => {
   const lastIndex = page * ITEMS_PER_PAGE;
   const firstIndex = lastIndex - ITEMS_PER_PAGE;
   const currentPagePosts = filteredPosts.slice(firstIndex, lastIndex);
+
+  console.log(isMappingTag);
 
   return (
     <PostListWrapper>
