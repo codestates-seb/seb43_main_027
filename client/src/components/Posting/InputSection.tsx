@@ -6,9 +6,10 @@ import { useState } from 'react';
 import postOptionTags from '../../data/postOptionTags';
 import axios from 'axios';
 import convertTag from '../../utils/convertTag';
+import { PostType } from '../../types/dataTypes';
 
 const InputSection = () => {
-  const [post, setPost] = useState({});
+  const [post, setPost] = useState<PostType>({});
   const [files, setFiles] = useState<File[]>([]);
 
   const onTagChangeHandler = (postTag: string) => {

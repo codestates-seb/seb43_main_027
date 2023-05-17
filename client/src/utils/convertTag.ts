@@ -23,7 +23,7 @@ const convertTag = {
     for (const [k, v] of Object.entries(tagMap)) {
       if (v === tag) return k;
     }
-    return false;
+    return '';
   }
 };
 

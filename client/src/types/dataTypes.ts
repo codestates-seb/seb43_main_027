@@ -48,4 +48,9 @@ export type CategoryGameType = {
   }[];
   followerCount: number;
   createdAt: string;
-}
+};
+export type PostType = {
+  postTag?: string;
+  title?: string;
+  content?: string;
+};
