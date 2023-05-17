@@ -20,7 +20,7 @@ const App = () => {
           <Route path='/games/:gameId' element={<GameChannel />} />
           <Route path='/signup' element={<SignUp />} />
           <Route path='/login' element={<LogIn />} />
-          <Route path='/games' element={<GameRegister />} />
+          <Route path='/game' element={<GameRegister />} />
         </Route>
       </Routes>
     </>
