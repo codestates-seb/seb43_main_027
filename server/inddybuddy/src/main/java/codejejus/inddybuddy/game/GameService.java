@@ -35,6 +35,7 @@ public class GameService {
     private final FileService fileService;
 
     public GameDto.Response createGame(MemberPrincipal memberPrincipal, GameDto.Request requestDto, MultipartFile multipartFile) {
+        verifyExistGameName(requestDto.getGameName());
         Game game = gameMapper.requestToEntity(requestDto);
         List<Category> categories = categoryService.getCategoriesByName(requestDto.getCategoryNames());
         game.setCategories(categories);
@@ -43,7 +44,6 @@ public class GameService {
             File memberImg = fileService.createFile(multipartFile, game);
             game.setMainImageUrl(memberImg.getFileUrl());
         }
-        // TODO : 중복된 이름 게임 예외 처리
         Game save = gameRepository.save(game);
         return gameMapper.entityToResponse(save);
     }
@@ -53,10 +53,9 @@ public class GameService {
         memberService.verifySameMember(findGame.getMember(), memberPrincipal.getMember());
         List<Category> patchCategories = categoryService.getCategoriesByName(requestDto.getCategoryNames());
         if (multipartFile != null) {
-            // TODO : 미리 등록한 이미지 S3에서 삭제
-            // fileService.deleteMemberImg(findMember);
-            File memberImg = fileService.createFile(multipartFile, findGame);
-            findGame.setMainImageUrl(memberImg.getFileUrl());
+            fileService.deleteGameImg(findGame);
+            File file = fileService.createFile(multipartFile, findGame);
+            findGame.setMainImageUrl(file.getFileUrl());
         }
         findGame.updateGame(requestDto.getGameName(), requestDto.getDownloadUrl(), patchCategories);
         return gameMapper.entityToResponse(findGame);
@@ -102,5 +101,12 @@ public class GameService {
     private Game findVerifidGame(Long gameId) {
         Optional<Game> optionalGame = gameRepository.findById(gameId);
         return optionalGame.orElseThrow(() -> new CustomException(ExceptionCode.GAME_NOT_FOUND));
+    }
+
+    private void verifyExistGameName(String gameName) {
+        boolean isExist = gameRepository.existsByGameName(gameName);
+        if (isExist) {
+            throw new CustomException(ExceptionCode.GAME_NAME_EXIST);
+        }
     }
 }

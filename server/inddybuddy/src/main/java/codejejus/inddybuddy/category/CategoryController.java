@@ -31,8 +31,9 @@ public class CategoryController {
 
     @GetMapping("/{category-id}/games")
     public ResponseEntity<MultiResponse<GameDto.Response>> findGamesByCategory(@PathVariable("category-id") long categoryId,
-                                                                               @PageableDefault(page = 1, size = 10) Pageable pageable) {
-        Page<GameDto.Response> pageGames = categoryService.findGamesByCategory(categoryId, pageable);
+                                                                               @PageableDefault(page = 1, size = 30) Pageable pageable,
+                                                                               @RequestParam(required = false) String filter) {
+        Page<GameDto.Response> pageGames = categoryService.findGamesByCategory(categoryId, pageable, filter);
         List<GameDto.Response> games = pageGames.getContent();
         return ResponseEntity.ok(new MultiResponse<>(games, pageGames));
     }

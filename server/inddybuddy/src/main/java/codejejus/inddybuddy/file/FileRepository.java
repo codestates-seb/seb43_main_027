@@ -14,4 +14,6 @@ public interface FileRepository extends JpaRepository<File, Long> {
     File findByGame(Game game);
 
     List<File> findByPost(Post post);
+
+    File findByFileUrl(String fileUrl);
 }
