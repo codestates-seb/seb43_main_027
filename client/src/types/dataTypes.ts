@@ -54,3 +54,9 @@ export type PostType = {
   title?: string;
   content?: string;
 };
+
+export type PathUrlType = {
+  HOME: string;
+  CATEGORY: string;
+  GAME: string;
+};
