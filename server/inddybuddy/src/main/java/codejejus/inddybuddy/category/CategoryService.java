@@ -3,6 +3,7 @@ package codejejus.inddybuddy.category;
 import codejejus.inddybuddy.game.Game;
 import codejejus.inddybuddy.game.GameDto;
 import codejejus.inddybuddy.game.GameMapper;
+import codejejus.inddybuddy.global.constant.Filter;
 import codejejus.inddybuddy.global.exception.CustomException;
 import codejejus.inddybuddy.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
@@ -34,8 +35,8 @@ public class CategoryService {
         return categoryMapper.entityListToResponseList(allCategories);
     }
 
-    public Page<GameDto.Response> findGamesByCategory(long categoryId, Pageable pageable) {
-        Page<Game> gamePage = categoryRepository.findAllByCategoryId(categoryId, PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize()));
+    public Page<GameDto.Response> findGamesByCategory(Long categoryId, Pageable pageable, String filter) {
+        Page<Game> gamePage = categoryRepository.findAllByCategoryId(categoryId, PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize(), Filter.getMatchedSort(filter)));
         return gameMapper.entityPageToResponsePage(gamePage);
     }
 
