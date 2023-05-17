@@ -8,7 +8,7 @@ import axios from 'axios';
 import convertTag from '../../utils/convertTag';
 import { PostType } from '../../types/dataTypes';
 import { validatePost } from '../../utils/validatePost';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const InputSection = () => {
   const [post, setPost] = useState<PostType>({
@@ -18,6 +18,7 @@ const InputSection = () => {
   });
   const [files, setFiles] = useState<File[]>([]);
   const { gameId } = useParams();
+  const navigation = useNavigate();
 
   const onTagChangeHandler = (postTag: string) => {
     const convertedTag = convertTag.asEN(postTag);
@@ -58,7 +59,7 @@ const InputSection = () => {
       }
 
       try {
-        const res = axios.post(
+        await axios.post(
           `${process.env.REACT_APP_API_URL}/api/games/${gameId}/posts`,
           formData,
           {
@@ -68,6 +69,7 @@ const InputSection = () => {
             }
           }
         );
+        navigation(`/game/${gameId}`);
       } catch (err) {
         alert('게시글 작성에서 오류가 발생하였습니다.');
       }
