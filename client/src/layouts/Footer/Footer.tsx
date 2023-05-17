@@ -74,7 +74,6 @@ const StyledDescription = styled.p`
 `;
 const StyledFlexBox = styled.div`
   display: flex;
-  max-width: 50rem;
   gap: 2rem;
   justify-content: space-around;
   flex-wrap: wrap;

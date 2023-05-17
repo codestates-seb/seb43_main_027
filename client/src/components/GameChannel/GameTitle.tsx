@@ -3,9 +3,9 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import styled from 'styled-components';
-import { dummyCategoriesGames } from '../../data/dummyCategories';
-import CategoryTag from '../../components/common/CategoryTag';
-import CreateChannelButton from '../../components/ui/CreateChannelButton';
+import { dummyGamesData } from '../../data/dummyCategories';
+import CategoryTag from '../common/CategoryTag';
+import CreateChannelButton from '../ui/CreateChannelButton';
 
 // todo: 게임 팔로우 기능 추가, 게임아이디에 맞게 게임 데이터 패칭, 경로 쿼리 재설정
 
@@ -15,7 +15,7 @@ const GameTitle = ()  => {
   const memberId = useSelector((state: RootState) => state.user.memberId);
 
   const navigate = useNavigate();
-  const filteredGames = dummyCategoriesGames.data.find((item) => item.gameId.toString() === gameId);
+  const filteredGames = dummyGamesData.data.find((item) => item.gameId.toString() === gameId);
   const followNumber = filteredGames?.followerCount; // 팔로우 기능추가 (버튼클릭시 텍스트변경)
 
   if (!filteredGames) {
@@ -47,7 +47,7 @@ const GameTitle = ()  => {
         currentGameData.map((item, index) => (
           <CategoryTag 
             key={index}
-            index={index}
+            categoryId={index}
             categoryName={item.categoryName}
           />
         ))

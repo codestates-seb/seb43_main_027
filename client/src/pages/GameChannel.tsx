@@ -3,11 +3,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import styled from 'styled-components';
-import GameTitle from '../layouts/GameChannel/GameTitle';
+import GameTitle from '../components/GameChannel/GameTitle';
 import FilterTap from '../components/common/FilterTap';
 import CreateChannelButton from '../components/ui/CreateChannelButton';
 import SelectTag from '../components/common/SelectTag';
-import PostList from '../layouts/GameChannel/PostList';
+import PostList from '../components/GameChannel/PostList';
 import postOptionTags from '../data/postOptionTags';
 import { gameChannelFilterTab } from '../data/filterTapList';
 

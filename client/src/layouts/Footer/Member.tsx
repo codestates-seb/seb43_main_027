@@ -24,6 +24,10 @@ const StyledContainer = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
+  width: 30%;
+  @media screen and (min-width: 650px) {
+    width: fit-content;
+  }
 `;
 
 const StyledSpan = styled.span`

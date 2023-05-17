@@ -15,8 +15,8 @@ const FilterBar = ({
   const user = useSelector((s: RootState) => s.user);
   const [tabInd, setTabInd] = useState<number>(0);
   const apiRef = useRef([
-    '/api/games?filter=POPULAR',
-    '/api/games?filter=NEW',
+    '/api/games/?filter=POPULAR&page=0',
+    '/api/games/?filter=NEW&page=0',
     `/api/members/${user.memberId}/mygame`
   ]);
   const onClickHandler = (i: number) => () => {
