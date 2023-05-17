@@ -6,7 +6,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, FreeMode, Pagination, EffectCoverflow } from 'swiper';
 import PATH_URL from '../../constants/pathUrl';
 import { BANNER_MESSAGE } from '../../constants/stringMessage';
-import { type CategoryGameType } from '../../types/dataTypes';
+import { type GameType } from '../../types/dataTypes';
 import { type SwiperBgType, type SwiperInfoType } from '../../types/propsTypes';
 import 'swiper/css';
 import 'swiper/css/free-mode';
@@ -21,8 +21,8 @@ const RecommedGames = () => {
   const [ currentText, setCurrentText ] = useState('');
   const [ introduceMode, setIntroduceMode ] = useState(false);
   const [ isLastCurrent, setIsLastCurrent ] = useState(false);
-  const [ gamesList, setGamesList ] = useState<CategoryGameType[]>([]);
-  const [ currentSlide, isCurrentSlide ] = useState<CategoryGameType | undefined>(undefined);
+  const [ gamesList, setGamesList ] = useState<GameType[]>([]);
+  const [ currentSlide, isCurrentSlide ] = useState<GameType | undefined>(undefined);
 
   useEffect(() => {
     const fetchGamesData = async () => {
