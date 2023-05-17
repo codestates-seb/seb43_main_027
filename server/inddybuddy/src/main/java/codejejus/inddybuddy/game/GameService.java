@@ -80,13 +80,19 @@ public class GameService {
     }
 
     @Transactional(readOnly = true)
-    public Page<GameDto.Response> getAllGames(Pageable pageable, String filter, String keyword) {
-        Page<Game> games = keyword == null ? getGames(pageable, filter) : getByGameNameContaining(pageable, filter, keyword);
+    public Page<GameDto.Response> getAllGames(Pageable pageable, String filter) {
+        Page<Game> games = getGames(pageable, filter);
         return gameMapper.entityPageToResponsePage(games);
     }
 
-    private Page<Game> getByGameNameContaining(Pageable pageable, String filter, String keyword) {
-        return gameRepository.findByGameNameContaining(keyword, PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize(), Filter.getMatchedSort(filter)));
+    @Transactional(readOnly = true)
+    public Page<GameDto.Response> getGamesByKeyword(Pageable pageable, String keyword) {
+        Page<Game> allByContainingKeyword = getByGameNameContaining(pageable, keyword);
+        return gameMapper.entityPageToResponsePage(allByContainingKeyword);
+    }
+
+    private Page<Game> getByGameNameContaining(Pageable pageable, String keyword) {
+        return gameRepository.findByGameNameContaining(keyword, PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize()));
     }
 
     private Page<Game> getGames(Pageable pageable, String filter) {

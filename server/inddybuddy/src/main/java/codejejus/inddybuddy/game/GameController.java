@@ -50,10 +50,17 @@ public class GameController {
     }
 
     @GetMapping("/search")
+    public ResponseEntity<MultiResponse<GameDto.Response>> searchGamesByKeyword(@PageableDefault(page = 1, size = 30) Pageable pageable,
+                                                                                @RequestParam(value = "q", required = false) String keyword) {
+        Page<GameDto.Response> pageGames = gameService.getGamesByKeyword(pageable, keyword);
+        List<GameDto.Response> games = pageGames.getContent();
+        return ResponseEntity.ok(new MultiResponse<>(games, pageGames));
+    }
+
+    @GetMapping("/search")
     public ResponseEntity<MultiResponse<GameDto.Response>> getAllGames(@PageableDefault(page = 1, size = 30) Pageable pageable,
-                                                                       @RequestParam(required = false) String filter,
-                                                                       @RequestParam(required = false) String keyword) {
-        Page<GameDto.Response> pageGames = gameService.getAllGames(pageable, filter, keyword);
+                                                                       @RequestParam(required = false) String filter) {
+        Page<GameDto.Response> pageGames = gameService.getAllGames(pageable, filter);
         List<GameDto.Response> games = pageGames.getContent();
         return ResponseEntity.ok(new MultiResponse<>(games, pageGames));
     }
