@@ -1,33 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import axios from 'axios';
 import styled from 'styled-components';
 import CategoryTag from '../common/CategoryTag';
-import { Post } from '../../data/dummyPostList';
+import { type GamePagePostType } from '../../types/dataTypes';
 import { StarTwoTone } from '@ant-design/icons';
 import PATH_URL from '../../constants/pathUrl';
+import { postOptionTags } from '../../data/postOptionTags';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 
 const PostItem = ({
   postId,
   title,
-  tag,
+  postTag,
   createdAt,
-  updatedAt,
-  view,
-  userName,
-  memberStatus,
+  views,
+  username,
   likeCount,
   commentCount
-}: Post)  => {
+}: GamePagePostType)  => {
+
+  // todo: 게시글 팔로우 조회기능추가- 해당 게시글을 북마크했는지 판단해서 불리언으로 별표시하기
+  // todo: 날짜 분, 시, 일, 년전, 제목 글자수 제한 ... 으로 바꾸기
 
   const { gameId } = useParams();
+  const memberId = useSelector((state: RootState) => state.user.memberId);
   const [ isMarked, setMarked ] = useState(false);
 
-  const handleMark = () => {
-    setMarked((prev) => !prev)
-  }
-
-  // todo: 게시글 팔로우 기능 추가, 날짜 분, 시, 일, 년전, 제목 글자수 제한 ... 으로 바꾸기, 경로 쿼리 재설정
-
+  /*
   const dateStr = createdAt;
   const date = new Date(dateStr);
   const year = date.getFullYear();
@@ -35,30 +36,32 @@ const PostItem = ({
   const day = date.getDate();
   const hour = date.getHours();
   const minute = date.getMinutes();
-
   const formattedDate = `${year}년 ${month}월 ${day}일 ${hour}시 ${minute}분`;
+  */
+  const tagId = postOptionTags.findIndex((option) => option.value === postTag);
 
   return (
-    <StyledWrapper>
-      <StyledContent>
-        <StyledFlexRow>
-        <Link to={`${PATH_URL.GAME}${gameId}/posts/${postId}`}>
-          <StyledTitle>
-            {title}
-          </StyledTitle>
-        </Link>
-          <CategoryTag categoryId={0} categoryName={tag} />
+    <Link to={`${PATH_URL.GAME}${gameId}/posts/${postId}`}>
+      <StyledWrapper>
+        <StyledContent>
+          <StyledFlexRow>
+            <StyledTitle>
+              {title}
+            </StyledTitle>
+            <CategoryTag categoryId={tagId} categoryName={postTag} />
         </StyledFlexRow>
         <StyledFlexRow>
           <StyledInfo>
             <StyledSpan>작성자:</StyledSpan>
-            {userName}
+            {username}
             <StyledSpan>작성일:</StyledSpan>
-            {formattedDate}
+            {/*
+              formattedDate
+            */}
             <StyledSpan>추천 수:</StyledSpan>
             {likeCount}
             <StyledSpan>조회 수:</StyledSpan>
-            {view}
+            {views}
           </StyledInfo>
         </StyledFlexRow>
       </StyledContent>
@@ -67,13 +70,13 @@ const PostItem = ({
         <StyledSpan>댓글:</StyledSpan>
         {commentCount}
         <StarTwoTone
-          onClick={handleMark}
           twoToneColor={ isMarked ? '#13A8A8'  : '#b4b4b4' }
-          style={{ fontSize: '20px' }}
+          style={{ fontSize: '15px' }}
         />
       </StyledInfo>
       </StyledFlexRow>
     </StyledWrapper>
+    </Link>
   );
 };
 
