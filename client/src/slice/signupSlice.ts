@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { Signup } from '../types/dataTypes';
 
 const initialStateSignup:Signup = {
@@ -11,8 +11,9 @@ const signupSlice = createSlice({
   name: 'signup',
   initialState: { ...initialStateSignup },
   reducers: {
-    setSignupInfo(state, action) {
-      state = action.payload;
+    setSignupInfo(state, action: PayloadAction<{ key: keyof typeof initialStateSignup; value: string }>) {
+      const { key, value } = action.payload;
+      state[key] = value;
     },
     clearSignupInfo() {
       return initialStateSignup;
