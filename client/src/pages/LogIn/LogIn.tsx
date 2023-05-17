@@ -27,7 +27,7 @@ const LogIn = () => {
   const oauthLogIn: React.MouseEventHandler = async (e: React.MouseEvent) => {
     e.preventDefault();
     // 유효성 검사 들어갈 자리
-    const googleAuthUrl = `${process.env.REACT_APP_SERVER}/oauth2/authorization/google?redirect_uri=http://localhost:3000/login`;
+    const googleAuthUrl = `${process.env.REACT_APP_API_URL}/oauth2/authorization/google?redirect_uri=http://localhost:3000/login`;
     window.location.href = googleAuthUrl;
   };
 
@@ -36,18 +36,17 @@ const LogIn = () => {
     // 유효성 검사 들어갈 자리
     try {
       await axios
-        .post(
-          'http://ec2-13-209-70-188.ap-northeast-2.compute.amazonaws.com:8080/api/auth/login',
-          {
-            email: emailProps.value,
-            password: passWordProps.value
-          }
-        )
+        .post(`${process.env.REACT_APP_API_URL}/api/auth/login`, {
+          email: emailProps.value,
+          password: passWordProps.value
+        })
         .then((response) => {
           localStorage.setItem('access_token', response.headers.authorization);
           localStorage.setItem('refresh_token', response.headers.refresh);
           const userdata = response.data;
           dispatch(setUser({ payload: userdata }));
+          localStorage.setItem('user', JSON.stringify(userdata));
+          console.log(JSON.parse(localStorage.getItem('user')!));
           alert('you successfully logged in!');
           navigator('/');
         });
