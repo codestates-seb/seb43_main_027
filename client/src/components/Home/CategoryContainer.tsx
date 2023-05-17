@@ -9,6 +9,7 @@ import CreateChannelButton from '../ui/CreateChannelButton';
 import iconData from '../../data/categoryIcons';
 import { CategoryType } from '../../types/dataTypes';
 import { useNavigate } from 'react-router-dom';
+import categoryData from '../../data/categoryData';
 
 const CategoryContainer = () => {
   const [categories, setCategories] = useState<CategoryType[]>([]);
@@ -27,7 +28,8 @@ const CategoryContainer = () => {
         setCategories(
           data.map((category) => ({
             ...category,
-            categoryIcon: iconData[category.categoryName]
+            categoryName: categoryData[category.categoryName].text,
+            categoryIcon: categoryData[category.categoryName].icon
           }))
         );
       } catch (err) {
