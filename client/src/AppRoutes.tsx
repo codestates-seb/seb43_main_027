@@ -19,7 +19,7 @@ const AppRoutes = () => {
         />
         <Route path={`${PATH_URL.GAME}:gameId`} element={<GameChannel />} />
         <Route path='/signup' element={<SignUp />} />
-        <Route path='/post' element={<Posting />} />
+        <Route path={PATH_URL.POSTING} element={<Posting />} />
         <Route path='/login' element={<LogIn />} />
       </Route>
     </Routes>

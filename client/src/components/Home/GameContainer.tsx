@@ -49,7 +49,7 @@ const StyledContainer = styled.div`
 const StyledCardContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  padding: 5rem;
   align-items: center;
   gap: 3rem 5%;
   @media screen and (min-width: 1200px) {

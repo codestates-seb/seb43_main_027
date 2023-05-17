@@ -50,13 +50,14 @@ export type CategoryGameType = {
   createdAt: string;
 };
 export type PostType = {
-  postTag?: string;
-  title?: string;
-  content?: string;
+  postTag: string;
+  title: string;
+  content: string;
 };
 
 export type PathUrlType = {
   HOME: string;
   CATEGORY: string;
   GAME: string;
+  POSTING: string;
 };

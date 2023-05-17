@@ -36,13 +36,10 @@ const LogIn = () => {
     // 유효성 검사 들어갈 자리
     try {
       await axios
-        .post(
-          'http://ec2-13-209-70-188.ap-northeast-2.compute.amazonaws.com:8080/api/auth/login',
-          {
-            email: emailProps.value,
-            password: passWordProps.value
-          }
-        )
+        .post(`${process.env.REACT_APP_API_URL}/api/auth/login`, {
+          email: emailProps.value,
+          password: passWordProps.value
+        })
         .then((response) => {
           localStorage.setItem('access_token', response.headers.authorization);
           localStorage.setItem('refresh_token', response.headers.refresh);
