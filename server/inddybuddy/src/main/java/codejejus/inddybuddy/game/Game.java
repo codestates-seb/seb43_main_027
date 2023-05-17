@@ -25,7 +25,7 @@ public class Game extends Timestamped {
     private String gameName;
     private String downloadUrl;
     private String mainImageUrl = Constants.GAME_DEFAULT_IMG;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
     @Formula("(select count(*) from follow_game fg where fg.game_id = game_id)")

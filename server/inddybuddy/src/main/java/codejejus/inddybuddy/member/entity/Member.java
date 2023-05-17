@@ -6,6 +6,7 @@ import codejejus.inddybuddy.global.constant.Constants;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
@@ -27,7 +28,7 @@ public class Member extends Timestamped {
     private String password;
     @Column(nullable = false, length = 45, unique = true)
     private String username;
-    @OneToOne(mappedBy = "member")
+    @OneToOne(mappedBy = "member", fetch = FetchType.LAZY)
     private File file;
     @Column(nullable = false)
     private String imageUrl = Constants.MEMBER_DEFAULT_IMG;
@@ -37,6 +38,7 @@ public class Member extends Timestamped {
     @Column(nullable = false)
     private MemberStatus memberStatus = MemberStatus.ACTIVE;
     @ElementCollection(fetch = FetchType.EAGER)
+    @BatchSize(size = 10)
     private List<String> roles = new ArrayList<>();
     private String provider;
     private String providerId;
