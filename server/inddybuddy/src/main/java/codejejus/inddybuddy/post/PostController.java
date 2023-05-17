@@ -2,6 +2,7 @@ package codejejus.inddybuddy.post;
 
 import codejejus.inddybuddy.global.dto.MultiResponse;
 import codejejus.inddybuddy.global.dto.SingleResponse;
+import codejejus.inddybuddy.global.utils.UriCreator;
 import codejejus.inddybuddy.member.entity.MemberPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -12,6 +13,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -21,10 +23,21 @@ public class PostController {
 
     private final PostService postService;
 
+    @PostMapping
+    public ResponseEntity<PostDto.Response> createPost(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
+                                                       @RequestPart PostDto.Post post,
+                                                       @PathVariable("game-id") Long gameId,
+                                                       @RequestPart(value = "files", required = false) List<MultipartFile> multipartFiles) {
+        PostDto.Response PostResponse = postService.createPost(gameId, memberPrincipal, post, multipartFiles);
+        URI uri = UriCreator.createURI(PostResponse.getPostId());
+
+        return ResponseEntity.created(uri).build();
+    }
+
     @PatchMapping("/{post-id}")
     public ResponseEntity<SingleResponse<PostDto.Response>> modifyPost(@PathVariable("post-id") Long postId,
                                                                        @AuthenticationPrincipal MemberPrincipal memberPrincipal,
-                                                                       @RequestPart PostDto.Request patch,
+                                                                       @RequestPart PostDto.Patch patch,
                                                                        @RequestPart(value = "files", required = false) List<MultipartFile> multipartFiles) {
         return ResponseEntity.ok(new SingleResponse<>(postService.modifyPost(postId, memberPrincipal, patch, multipartFiles)));
     }

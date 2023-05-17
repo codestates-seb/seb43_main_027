@@ -14,16 +14,19 @@ import java.util.List;
 public class PostDto {
 
     @Getter
-    public static class Request {
-
+    public static class Post {
         private String title;
-        private Long gameId;
         private String content;
         private PostTag postTag;
+    }
 
-        public void addGameId(Long gameId) {
-            this.gameId = gameId;
-        }
+    @Getter
+    public static class Patch {
+
+        private String title;
+        private String content;
+        private PostTag postTag;
+        private List<String> fileUrlList;
     }
 
     @Getter
@@ -38,11 +41,12 @@ public class PostDto {
         private long views;
         private PostTag postTag;
         private Long likeCount;
+        private Long commentCount;
         private List<String> fileUrlList;
         private List<CommentDto.Response> comments;
 
         @Builder
-        public Response(Long postId, Long gameId, MemberDto.SimpleInfoResponse member, String title, String content, Long views, PostTag postTag, Long likeCount, List<String> fileUrlList, List<CommentDto.Response> comments) {
+        public Response(Long postId, Long gameId, MemberDto.SimpleInfoResponse member, String title, String content, Long views, PostTag postTag, Long likeCount, Long commentCount, List<String> fileUrlList, List<CommentDto.Response> comments) {
 
             this.postId = postId;
             this.gameId = gameId;
@@ -52,6 +56,7 @@ public class PostDto {
             this.postTag = postTag;
             this.views = views;
             this.likeCount = likeCount;
+            this.commentCount = commentCount;
             this.fileUrlList = fileUrlList;
             this.comments = comments;
         }

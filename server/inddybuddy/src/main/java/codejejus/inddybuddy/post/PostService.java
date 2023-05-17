@@ -30,25 +30,27 @@ public class PostService {
     private final PostMapper postMapper;
     private final FileService fileService;
 
-    public PostDto.Response createPost(MemberPrincipal memberPrincipal, PostDto.Request requestDto, List<MultipartFile> multipartFiles) {  // 단순한 생성 방식
-        Post post = postMapper.requestToEntity(requestDto);
-        post.setPostTag(requestDto.getPostTag());
-        post.setGame(gameService.findGame(requestDto.getGameId()));
+    public PostDto.Response createPost(Long gameId, MemberPrincipal memberPrincipal, PostDto.Post postDto, List<MultipartFile> multipartFiles) {
+        Post post = postMapper.postToEntity(postDto);
+        post.setGame(gameService.findGame(gameId));
         post.setMember(memberPrincipal.getMember());
         if (multipartFiles != null) {
             List<File> files = fileService.createFiles(multipartFiles, post);
-            post.setFiles(files);
+            files.forEach(post::addFile);
         }
         Post save = postRepository.save(post);
         return postMapper.entityToResponse(save);
     }
 
-    public PostDto.Response modifyPost(Long postId, MemberPrincipal memberPrincipal, PostDto.Request requestDto, List<MultipartFile> multipartFiles) {
+    public PostDto.Response modifyPost(Long postId, MemberPrincipal memberPrincipal, PostDto.Patch patchDto, List<MultipartFile> multipartFiles) {
         Post findPost = findVerifidPost(postId);
-        memberService.verifySameMember(findPost.getMember(), memberPrincipal.getMember()); // 회원 검증
-        // Todo : 미리 등록한 이미지 S3에서 삭제
-        if (multipartFiles != null) fileService.createFiles(multipartFiles, findPost);
-        findPost.updatePost(requestDto.getTitle(), requestDto.getContent(), requestDto.getPostTag());
+        memberService.verifySameMember(findPost.getMember(), memberPrincipal.getMember());
+        if (multipartFiles != null) {
+            fileService.deletePostFilesByPatchFileUrl(findPost.getFiles(), patchDto.getFileUrlList());
+            List<File> files = fileService.createFiles(multipartFiles, findPost);
+            files.forEach(findPost::addFile);
+        }
+        findPost.updatePost(patchDto.getTitle(), patchDto.getContent(), patchDto.getPostTag());
         return postMapper.entityToResponse(findPost);
     }
 

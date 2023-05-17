@@ -8,7 +8,6 @@ import codejejus.inddybuddy.member.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Formula;
 
@@ -19,7 +18,6 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Getter
-@Setter
 public class Post extends Timestamped {
 
     @Id
@@ -52,11 +50,27 @@ public class Post extends Timestamped {
     private List<Comment> comments = new ArrayList<>();
 
     @Builder
-    public Post(String title, String content, Member member) {
+    public Post(String title, String content, PostTag postTag) {
 
         this.title = title;
         this.content = content;
+        this.postTag = postTag;
+    }
+
+    public void setMember(Member member) {
         this.member = member;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    public void addFile(File file) {
+        this.files.add(file);
+    }
+
+    public void deleteFile(File file) {
+        this.files.remove(file);
     }
 
     public void updatePost(String title, String content, PostTag postTag) {

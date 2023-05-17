@@ -16,10 +16,11 @@ public class PostMapper {
     private final CommentMapper commentMapper;
     private final MemberMapper memberMapper;
 
-    public Post requestToEntity(PostDto.Request requestDto) {
+    public Post postToEntity(PostDto.Post postDto) {
         return Post.builder()
-                .title(requestDto.getTitle())
-                .content(requestDto.getContent())
+                .title(postDto.getTitle())
+                .content(postDto.getContent())
+                .postTag(postDto.getPostTag())
                 .build();
     }
 
@@ -33,6 +34,7 @@ public class PostMapper {
                 .postTag(post.getPostTag())
                 .views(post.getViews())
                 .likeCount(post.getLikeCount())
+                .commentCount(post.getCommentCount())
                 .fileUrlList(post.getFiles().stream().map(File::getFileUrl).collect(Collectors.toList()))
                 .comments(post.getComments().stream().map(commentMapper::entityToResponse).collect(Collectors.toList()))
                 .build();
