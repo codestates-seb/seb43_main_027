@@ -87,11 +87,10 @@ public class GameController {
 
     @PostMapping("{game-id}/posts")
     public ResponseEntity<PostDto.Response> createPost(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
-                                                       @RequestPart PostDto.Request post,
+                                                       @RequestPart PostDto.PostRequest post,
                                                        @PathVariable("game-id") Long gameId,
                                                        @RequestPart(value = "files", required = false) List<MultipartFile> multipartFiles) {
-        post.addGameId(gameId);
-        PostDto.Response PostResponse = postService.createPost(memberPrincipal, post, multipartFiles);
+        PostDto.Response PostResponse = postService.createPost(gameId, memberPrincipal, post, multipartFiles);
         URI uri = UriCreator.createURI(PostResponse.getPostId());
 
         return ResponseEntity.created(uri).build();

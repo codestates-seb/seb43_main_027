@@ -23,17 +23,6 @@ public class PostController {
 
     private final PostService postService;
 
-    @PostMapping
-    public ResponseEntity<PostDto.Response> createPost(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
-                                                       @RequestPart PostDto.Post post,
-                                                       @PathVariable("game-id") Long gameId,
-                                                       @RequestPart(value = "files", required = false) List<MultipartFile> multipartFiles) {
-        PostDto.Response PostResponse = postService.createPost(gameId, memberPrincipal, post, multipartFiles);
-        URI uri = UriCreator.createURI(PostResponse.getPostId());
-
-        return ResponseEntity.created(uri).build();
-    }
-
     @PatchMapping("/{post-id}")
     public ResponseEntity<SingleResponse<PostDto.Response>> modifyPost(@PathVariable("post-id") Long postId,
                                                                        @AuthenticationPrincipal MemberPrincipal memberPrincipal,

@@ -30,7 +30,7 @@ public class PostService {
     private final PostMapper postMapper;
     private final FileService fileService;
 
-    public PostDto.Response createPost(Long gameId, MemberPrincipal memberPrincipal, PostDto.Post postDto, List<MultipartFile> multipartFiles) {
+    public PostDto.Response createPost(Long gameId, MemberPrincipal memberPrincipal, PostDto.PostRequest postDto, List<MultipartFile> multipartFiles) {
         Post post = postMapper.postToEntity(postDto);
         post.setGame(gameService.findGame(gameId));
         post.setMember(memberPrincipal.getMember());
@@ -46,7 +46,7 @@ public class PostService {
         Post findPost = findVerifidPost(postId);
         memberService.verifySameMember(findPost.getMember(), memberPrincipal.getMember());
         if (multipartFiles != null) {
-            fileService.deletePostFilesByPatchFileUrl(findPost.getFiles(), patchDto.getFileUrlList());
+            fileService.deletePostFilesByPatchFileUrl(findPost, findPost.getFiles(), patchDto.getFileUrlList());
             List<File> files = fileService.createFiles(multipartFiles, findPost);
             files.forEach(findPost::addFile);
         }

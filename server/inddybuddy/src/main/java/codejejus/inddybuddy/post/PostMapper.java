@@ -16,7 +16,7 @@ public class PostMapper {
     private final CommentMapper commentMapper;
     private final MemberMapper memberMapper;
 
-    public Post postToEntity(PostDto.Post postDto) {
+    public Post postToEntity(PostDto.PostRequest postDto) {
         return Post.builder()
                 .title(postDto.getTitle())
                 .content(postDto.getContent())

@@ -14,7 +14,7 @@ import java.util.List;
 public class PostDto {
 
     @Getter
-    public static class Post {
+    public static class PostRequest {
         private String title;
         private String content;
         private PostTag postTag;
@@ -33,21 +33,20 @@ public class PostDto {
     @AllArgsConstructor
     public static class Response {
 
-        private Long postId;
-        private Long gameId;
-        private MemberDto.SimpleInfoResponse member;
-        private String title;
-        private String content;
-        private long views;
-        private PostTag postTag;
-        private Long likeCount;
-        private Long commentCount;
-        private List<String> fileUrlList;
-        private List<CommentDto.Response> comments;
+        private final Long postId;
+        private final Long gameId;
+        private final MemberDto.SimpleInfoResponse member;
+        private final String title;
+        private final String content;
+        private final long views;
+        private final PostTag postTag;
+        private final Long likeCount;
+        private final Long commentCount;
+        private final List<String> fileUrlList;
+        private final List<CommentDto.Response> comments;
 
         @Builder
         public Response(Long postId, Long gameId, MemberDto.SimpleInfoResponse member, String title, String content, Long views, PostTag postTag, Long likeCount, Long commentCount, List<String> fileUrlList, List<CommentDto.Response> comments) {
-
             this.postId = postId;
             this.gameId = gameId;
             this.member = member;
