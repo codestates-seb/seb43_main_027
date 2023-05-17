@@ -57,7 +57,7 @@ public class GameController {
         return ResponseEntity.ok(new MultiResponse<>(games, pageGames));
     }
 
-    @GetMapping("/search")
+    @GetMapping
     public ResponseEntity<MultiResponse<GameDto.Response>> getAllGames(@PageableDefault(page = 1, size = 30) Pageable pageable,
                                                                        @RequestParam(required = false) String filter) {
         Page<GameDto.Response> pageGames = gameService.getAllGames(pageable, filter);
