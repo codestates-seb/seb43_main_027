@@ -5,13 +5,19 @@ import { StyledLabel } from '../elements/Label';
 
 import { InputContainerType } from '../../types/componentsTypes';
 
+import useInput from '../../hooks/useInput';
+
 const InputContainer = ({
   placeholder = 'ex)',
   title = '입력창',
-  useInput,
-  validmessage,
-  validity
+  validationMessage,
+  validationType = 'none',
+  validationFunction,
+  type
 }: InputContainerType) => {
+  const useInputResult = useInput('', validationType, validationFunction);
+  // 현재 유효성검사 useInput에 포함되어서 처리 중인데,
+  // 관심사 분리에 따라 useValidation으로 분리해서 하는 것도 좋아보임.
   return (
     <InputContainerWrapper>
       <StyledLabelContainer>
@@ -20,22 +26,25 @@ const InputContainer = ({
       <Field>
         <InputEl
           placeholder={placeholder}
-          value={useInput ? useInput.value : ''}
+          value={useInputResult ? useInputResult.value : ''}
+          type={type ? type : ''}
+          validationFunction={validationFunction}
           onChange={
-            useInput
-              ? useInput.onChange
+            useInputResult
+              ? useInputResult.onChange
               : () => {
                   console.log('error');
                 }
           }
         />
-        {!validity ? (
-          useInput?.value === '' ? (
+
+        {!useInputResult.validity ? (
+          useInputResult?.value === '' ? (
             <ValidMessageInvisible className='invisible'>
               Invisible
             </ValidMessageInvisible>
           ) : (
-            <ValidMessage className='msg'>{validmessage}</ValidMessage>
+            <ValidMessage className='msg'>{validationMessage}</ValidMessage>
           )
         ) : (
           <ValidMessageInvisible>Invisible</ValidMessageInvisible>
