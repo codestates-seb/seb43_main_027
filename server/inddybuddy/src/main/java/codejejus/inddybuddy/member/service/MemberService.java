@@ -75,7 +75,6 @@ public class MemberService {
         verifySameMember(findMember, memberPrincipal.getMember());
         findMember.updateMemberStatus(Member.MemberStatus.DELETE);
         memberRepository.save(findMember);
-        fileService.deleteMemberImg(findMember);
     }
 
     public void followMember(Long memberId, MemberPrincipal memberPrincipal) {
