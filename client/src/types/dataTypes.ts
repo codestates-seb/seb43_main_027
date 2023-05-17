@@ -59,4 +59,5 @@ export type PathUrlType = {
   HOME: string;
   CATEGORY: string;
   GAME: string;
+  POSTING: string;
 };
