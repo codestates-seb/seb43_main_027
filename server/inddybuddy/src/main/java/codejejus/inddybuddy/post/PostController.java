@@ -44,7 +44,7 @@ public class PostController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<MultiResponse<PostDto.SimpleResponse>> searchPostsByKeyword(@RequestParam(required = false) String keyword,
+    public ResponseEntity<MultiResponse<PostDto.SimpleResponse>> searchPostsByKeyword(@RequestParam(value = "q", required = false) String keyword,
                                                                                       @PageableDefault(page = 1, size = 30) Pageable pageable) {
         Page<PostDto.SimpleResponse> responsePage = postService.getPostsByKeyword(keyword, pageable);
         List<PostDto.SimpleResponse> responses = responsePage.getContent();
