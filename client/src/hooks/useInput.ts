@@ -1,7 +1,10 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 
-import useValidation from './useValidation';
-import { useValidationType } from '../types/costomHooksTypes';
+import validation from './validation';
+import { validationType } from '../types/utilTypes';
+
+import { setSignupInfo } from '../slice/signupSlice';
 
 /**
  * input 상태를 관리하는 커스텀 훅입니다.
@@ -11,14 +14,21 @@ import { useValidationType } from '../types/costomHooksTypes';
  */
 let data;
 
-function useInput(init = '',inputtype:useValidationType) {
+function useInput(init = '',validationType:validationType,customValidationFunction?:(value:string) => boolean) {
   const [value, setValue] = useState(init);
   const [validity, setValidity] = useState(false);
+
+  const dispatch = useDispatch();
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.stopPropagation();
     setValue(e.target.value);
-    setValidity(useValidation(inputtype,e.target.value)); 
+    setValidity(validation(validationType,e.target.value,customValidationFunction));
+
+    //  Signup 관련 store 업데이트
+    if(validationType === 'username') dispatch(setSignupInfo({key:'username', value:e.target.value}))
+    if(validationType === 'email') dispatch(setSignupInfo({key:'email', value:e.target.value}))
+    if(validationType === 'password') dispatch(setSignupInfo({key:'password', value:e.target.value}))
     console.log(validity);
   };
   data = { value, onChange , setValue, validity}
