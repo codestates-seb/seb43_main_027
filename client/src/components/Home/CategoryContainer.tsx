@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 
-import CategoryCard from '../../components/common/CategoryCard';
+import CategoryCard from '../common/CategoryCard';
 import Title from './Title';
-import CreateChannelButton from '../../components/ui/CreateChannelButton';
+import CreateChannelButton from '../ui/CreateChannelButton';
 
 import iconData from '../../data/categoryIcons';
 import { CategoryType } from '../../types/dataTypes';
 import { useNavigate } from 'react-router-dom';
+import categoryData from '../../data/categoryData';
 
 const CategoryContainer = () => {
   const [categories, setCategories] = useState<CategoryType[]>([]);
@@ -27,7 +28,8 @@ const CategoryContainer = () => {
         setCategories(
           data.map((category) => ({
             ...category,
-            categoryIcon: iconData[category.categoryName]
+            categoryName: categoryData[category.categoryName].text,
+            categoryIcon: categoryData[category.categoryName].icon
           }))
         );
       } catch (err) {

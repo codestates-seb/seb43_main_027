@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 
-import GameCard from '../../components/common/GameCard';
+// import GameCard from '../common/GameCard';
 import { GameType } from '../../types/dataTypes';
+import GameItem from '../CategoryGames/GameItem';
 
 const HomeGameCard = (props: GameType) => {
   return (
     <StyledContainer>
-      <GameCard {...props} />
+      <GameItem {...props} />
     </StyledContainer>
   );
 };

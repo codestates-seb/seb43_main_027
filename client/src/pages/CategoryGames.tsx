@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import GameList from '../layouts/CategoryGames/GameList';
+import GameList from '../components/CategoryGames/GameList';
 import FilterTap from '../components/common/FilterTap';
-import RecommendGames from '../layouts/CategoryGames/RecommendGames';
-import TitleCategory from '../layouts/CategoryGames/TitleCategory';
+import RecommendGames from '../components/CategoryGames/RecommendGames';
+import TitleCategory from '../components/CategoryGames/TitleCategory';
 import { categoryFilterTab } from '../data/filterTapList';
 
 const CategoryGames = () => {
-
-  const [ isSelectTab, setIsSelectTab ] = useState<string>(categoryFilterTab[0]);
+  const [isSelectTab, setIsSelectTab] = useState<string>(categoryFilterTab[0]);
 
   const handleClick = (item: string) => {
     setIsSelectTab(item);
@@ -19,13 +18,8 @@ const CategoryGames = () => {
       <StyleContain>
         <TitleCategory />
         <RecommendGames />
-        <FilterTap
-          onClickFilter={handleClick}
-          filterList={categoryFilterTab} 
-        />
-        <GameList 
-          isSelectTab={isSelectTab}
-        />
+        <FilterTap onClickFilter={handleClick} filterList={categoryFilterTab} />
+        <GameList isSelectTab={isSelectTab} />
       </StyleContain>
     </StyledCategoryGamesWrapper>
   );

@@ -7,22 +7,12 @@ import Home from './pages/Home';
 import SignUp from './pages/SignUp/SignUp';
 import LogIn from './pages/LogIn/LogIn';
 import GameChannel from './pages/GameChannel';
-import GameRegister from './pages/GameRegister/GameRegister';
 
 const App = () => {
   return (
     <>
       <GlobalStyle />
-      <Routes>
-        <Route path='/' element={<Template />}>
-          <Route path='/' element={<Home />} />
-          <Route path='/categories/:categoryId' element={<CategoryGames />} />
-          <Route path='/games/:gameId' element={<GameChannel />} />
-          <Route path='/signup' element={<SignUp />} />
-          <Route path='/login' element={<LogIn />} />
-          <Route path='/game' element={<GameRegister />} />
-        </Route>
-      </Routes>
+      <AppRoutes />
     </>
   );
 };
