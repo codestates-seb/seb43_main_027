@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import GameCard from '../../components/common/GameCard';
+import GameCard from '../common/GameCard';
 import { GameType } from '../../types/dataTypes';
 
 const HomeGameCard = (props: GameType) => {

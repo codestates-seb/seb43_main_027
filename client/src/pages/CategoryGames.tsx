@@ -7,8 +7,7 @@ import TitleCategory from '../components/CategoryGames/TitleCategory';
 import { categoryFilterTab } from '../data/filterTapList';
 
 const CategoryGames = () => {
-
-  const [ isSelectTab, setIsSelectTab ] = useState<string>(categoryFilterTab[0]);
+  const [isSelectTab, setIsSelectTab] = useState<string>(categoryFilterTab[0]);
 
   const handleClick = (item: string) => {
     setIsSelectTab(item);
@@ -19,13 +18,8 @@ const CategoryGames = () => {
       <StyleContain>
         <TitleCategory />
         <RecommendGames />
-        <FilterTap
-          onClickFilter={handleClick}
-          filterList={categoryFilterTab} 
-        />
-        <GameList 
-          isSelectTab={isSelectTab}
-        />
+        <FilterTap onClickFilter={handleClick} filterList={categoryFilterTab} />
+        <GameList isSelectTab={isSelectTab} />
       </StyleContain>
     </StyledCategoryGamesWrapper>
   );

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-import CategoryContainer from '../layouts/Home/CategoryContainer';
-import GameContainer from '../layouts/Home/GameContainer';
+import CategoryContainer from '../components/Home/CategoryContainer';
+import GameContainer from '../components/Home/GameContainer';
 
 const Home = () => {
   return (

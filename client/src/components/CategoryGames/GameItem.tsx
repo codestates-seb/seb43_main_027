@@ -6,36 +6,35 @@ import { dummyGamesData } from '../../data/dummyCategories';
 import { GameItemPropsType } from '../../types/propsTypes';
 import PATH_URL from '../../constants/pathUrl';
 
-const GameItem = ({ 
-  gameId, 
-  gameName, 
-  followerCount, 
+const GameItem = ({
+  gameId,
+  gameName,
+  followerCount,
   categories,
-  mainImgUrl 
-}: GameItemPropsType)  => {
-
+  mainImgUrl
+}: GameItemPropsType) => {
   const handleClick = () => {
     window.scrollTo(0, 0);
   };
 
   return (
     <Link to={`${PATH_URL.GAME}${gameId}`} onClick={handleClick}>
-    <StyledItemWrapper >
-      <StyledImg src={mainImgUrl} alt='game-image' />
-      <StyledTagContain>
-      {
-        categories.map((item, index) => (
-          <CategoryTag
-            key={index}
-            categoryId={item.categoryId}
-            categoryName={item.categoryName}
-          />
-        )).slice(0, 3)
-      }
-      </StyledTagContain>
-      <StyledTitle>{gameName}</StyledTitle>
-      <StyledFollow>게임 팔로워: {followerCount}</StyledFollow>
-    </StyledItemWrapper>
+      <StyledItemWrapper>
+        <StyledImg src={mainImgUrl} alt='game-image' />
+        <StyledTagContain>
+          {categories
+            .map((item, index) => (
+              <CategoryTag
+                key={index}
+                categoryId={item.categoryId}
+                categoryName={item.categoryName}
+              />
+            ))
+            .slice(0, 3)}
+        </StyledTagContain>
+        <StyledTitle>{gameName}</StyledTitle>
+        <StyledFollow>게임 팔로워: {followerCount}</StyledFollow>
+      </StyledItemWrapper>
     </Link>
   );
 };
@@ -50,7 +49,7 @@ const StyledItemWrapper = styled.div`
   gap: 10px;
   cursor: pointer;
   width: 200px;
-  &:hover{
+  &:hover {
     color: var(--cyan-dark-600);
   }
 `;
