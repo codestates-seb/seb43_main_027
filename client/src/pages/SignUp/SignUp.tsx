@@ -33,14 +33,11 @@ const SignUp = () => {
     // 유효성 검사 들어갈 자리
     try {
       await axios
-        .post(
-          'http://ec2-13-209-70-188.ap-northeast-2.compute.amazonaws.com:8080/api/members/signup',
-          {
-            username: userNameProps.value,
-            email: emailProps.value,
-            password: passWordProps.value
-          }
-        )
+        .post(`${process.env.REACT_APP_API_URL}/api/members/signup`, {
+          username: userNameProps.value,
+          email: emailProps.value,
+          password: passWordProps.value
+        })
         .then((response) => {
           alert('you successfully signed up!');
           navigator('/login');
