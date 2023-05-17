@@ -1,10 +1,8 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import useInput from '../../hooks/useInput';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { setUser } from '../../slice/userSlice';
-
+import { RootState } from '../../store/store';
 import styled from 'styled-components';
 
 import LogInFieldsContainer from './LogInFieldsContainer';
@@ -16,13 +14,7 @@ const LogIn = () => {
   const navigator = useNavigate();
 
   const dispatch = useDispatch();
-
-  const [emailProps, setEmail] = useInput('', 'email');
-  const [passWordProps, setPassWord] = useInput('', 'password');
-
-  const [usernameValid, setUserNameValid] = useState(true);
-  const [emailValid, setEmailValid] = useState(true);
-  const [passWordValid, setPassWordValid] = useState(true);
+  const logininfo = useSelector((state: RootState) => state.signup);
 
   const oauthLogIn: React.MouseEventHandler = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -36,18 +28,15 @@ const LogIn = () => {
     // 유효성 검사 들어갈 자리
     try {
       await axios
-        .post(
-          'http://ec2-13-209-70-188.ap-northeast-2.compute.amazonaws.com:8080/api/auth/login',
-          {
-            email: emailProps.value,
-            password: passWordProps.value
-          }
-        )
+        .post(`${process.env.REACT_APP_API_URL}/api/auth/login`, {
+          email: logininfo.email,
+          password: logininfo.password
+        })
         .then((response) => {
           localStorage.setItem('access_token', response.headers.authorization);
           localStorage.setItem('refresh_token', response.headers.refresh);
           const userdata = response.data;
-          dispatch(setUser({ payload: userdata }));
+          dispatch(setUser({ userdata }));
           alert('you successfully logged in!');
           navigator('/');
         });
@@ -68,10 +57,7 @@ const LogIn = () => {
           {/* Oauth - component */}
           <LogInOauthContainer onClick={oauthLogIn} />
           {/* Input - components */}
-          <LogInFieldsContainer
-            inputEmail={emailProps}
-            inputPassWord={passWordProps}
-          />
+          <LogInFieldsContainer />
           {/* Button - components */}
           <LogInButtonsContainer onClick={emailLogIn} />
         </StyledLogInFormContainer>
