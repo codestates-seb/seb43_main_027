@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, FreeMode, Pagination, EffectCoverflow } from 'swiper';
+import PATH_URL from '../../constants/pathUrl';
+import { BANNER_MESSAGE } from '../../constants/stringMessage';
 import { dummyGamesData } from '../../data/dummyCategories';
 import { type CategoryGameType } from '../../types/dataTypes';
 import { type SwiperBgType, type SwiperInfoType } from '../../types/propsTypes';
@@ -23,11 +25,6 @@ const RecommedGames = () => {
   const [ gamesList, setGamesList ] = useState<CategoryGameType[]>([]);
   const [ currentSlide, isCurrentSlide ] = useState<CategoryGameType | undefined>(undefined);
 
-  // 리팩토링 고민: 상수 분리
-  const firstMessage = '인디벗에서 다양한 커뮤니티를 함께 즐겨보세요!';
-  const lastMessage = '원하는 게임이 없다면 지금 바로 게임채널을 만들어보세요!';
-
-  // 특정 카테고리의 모든 게임 조회 api 사용해서 현재 카테고리의 모든 게임정보 가져옴
   useEffect(() => {
     const fetchGamesData = async () => {
       try {
@@ -47,13 +44,13 @@ const RecommedGames = () => {
           if (currentSlideIndex === 0) {
             setIntroduceMode(true);
             setIsLastCurrent(false);
-            setCurrentText(firstMessage);
+            setCurrentText(BANNER_MESSAGE.FRONT);
             return;
           }
           if (currentSlideIndex === filteredGames.length - 1) {
             setIntroduceMode(true);
             setIsLastCurrent(true);
-            setCurrentText(lastMessage);
+            setCurrentText(BANNER_MESSAGE.LAST);
             return;
           }
           setIntroduceMode(false);
@@ -77,7 +74,7 @@ const RecommedGames = () => {
   const renderGameSlides = () => {
     return gamesList.map((item, index) => (
       <StyledSwiperSlide key={index}>
-        <Link to={`/games/${item.gameId}`}>
+        <Link to={`${PATH_URL.GAME}${item.gameId}`}>
           <StyledBadge>TOP:{item.gameName}</StyledBadge>
           <StyledSwiperSlideImg src={item.mainImgUrl} alt='slide_image' />
         </Link>
