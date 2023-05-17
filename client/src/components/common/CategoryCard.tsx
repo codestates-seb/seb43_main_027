@@ -2,14 +2,21 @@ import { IoGameControllerOutline } from 'react-icons/io5';
 import styled from 'styled-components';
 import { CategoryType } from '../../types/dataTypes';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setCategory } from '../../slice/categorySlice';
 
 const CategoryCard = ({
   categoryId,
   categoryName,
   categoryIcon
 }: CategoryType) => {
+  const dispatch = useDispatch();
+
+  const onClickHandler = () => {
+    dispatch(setCategory({ categoryId, categoryName }));
+  };
   return (
-    <Link to={`/category/${categoryId}`}>
+    <Link to={`/category/${categoryId}`} onClick={onClickHandler}>
       <StyledContainer>
         {categoryIcon || <IoGameControllerOutline />}
         <StyledText>{categoryName}</StyledText>
