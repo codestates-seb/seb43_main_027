@@ -4,10 +4,11 @@ import Badge from '../ui/Badge';
 
 import { GameType } from '../../types/dataTypes';
 import { Link } from 'react-router-dom';
+import PATH_URL from '../../constants/pathUrl';
 
 const GameCard = ({ mainImgUrl, categories, gameName, gameId }: GameType) => {
   return (
-    <Link to={`/games/${gameId}`}>
+    <Link to={`${PATH_URL.GAME}${gameId}`}>
       <StyledContainer>
         <StyledImg src={mainImgUrl} />
         <StyledBadgeContainer>
