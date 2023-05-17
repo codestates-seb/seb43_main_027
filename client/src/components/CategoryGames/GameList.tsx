@@ -6,14 +6,15 @@ import Pagination from 'react-js-pagination';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import GameItem from './GameItem';
-import { type CategoryGameType } from '../../types/dataTypes';
+import { type GameType } from '../../types/dataTypes';
 import { type TabSelectType } from '../../types/propsTypes';
+import { dummyGamesData } from '../../data/dummyCategories';
 
 const GameList: React.FC<TabSelectType> = ({ isSelectTab })  => {
 
   const { categoryId } = useParams<{ categoryId: string}>();
   const memberId = useSelector((state: RootState) => state.user.memberId);
-  const [ isFilteredGames, setIsFilteredGames ] = useState<CategoryGameType[]>([]);
+  const [ isFilteredGames, setIsFilteredGames ] = useState<GameType[]>([]);
   const [ userMessage, setUserMessage ] = useState('등록된 게임채널이 없습니다.');
   const [ isPage, setPage ] = useState<number>(1);
   const [ isSize, setSize ] = useState<number>(0);
@@ -28,6 +29,7 @@ const GameList: React.FC<TabSelectType> = ({ isSelectTab })  => {
         switch (isSelectTab) {
           case '전체 게임': {
             const res = await axios.get(apiUrl);
+            
             const gamesData = res.data.data.sort((a: { createdAt: string }, b: { createdAt: string }) => 
               new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());  
             const pageInfo = res.data.pageInfo;
@@ -100,6 +102,7 @@ const GameList: React.FC<TabSelectType> = ({ isSelectTab })  => {
     };
 
     fetchGamesData();
+
   }, [isSelectTab, memberId, isPage]);
 
   const handlePageChange = (pageNumber: number) => {
