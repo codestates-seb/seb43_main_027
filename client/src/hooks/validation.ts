@@ -1,4 +1,4 @@
-import { useValidationType } from '../types/costomHooksTypes';
+import { validationType } from '../types/utilTypes';
 
 /**
  * 유효성 검사를하는 커스텀 훅입니다.
@@ -22,24 +22,33 @@ const passwordValidityTest = (value:string) => {
 }
 
 
-function useValidation(inputtype:useValidationType,value:string):boolean {
-  if(inputtype === 'username') {
+function validation(validationType:validationType,value:string,customValidationFunction?:(value:string)=> boolean):boolean {
+  if(validationType === 'username') {
     if(usernameValidityTest(value)) {
       return true;
     }
   }
-  if(inputtype === 'email') {
+  if(validationType === 'email') {
     if(emailValidityTest(value)) {
       return true;
     }
   }
-  if(inputtype === 'password') {
+  if(validationType === 'password') {
     if(passwordValidityTest(value)) {
       return true;
     }
+  }
+  if(validationType === 'custom') {
+    if(customValidationFunction === undefined) return false;
+    if(customValidationFunction(value)) {
+      return true;
+    }
+  }
+  if(validationType === 'none') {
+    console.log('유효성검사가 없습니다')
   }
 
   return false;
 }
 
-export default useValidation;
+export default validation;
