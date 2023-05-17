@@ -80,5 +80,6 @@ public class FileService {
                     fileRepository.delete(file);
                     post.deleteFile(file);
                 });
+        log.info("[AWS S3] Delete to file S3 complete");
     }
 }
