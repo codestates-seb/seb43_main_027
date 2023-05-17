@@ -6,6 +6,7 @@ import codejejus.inddybuddy.follow.FollowMemberService;
 import codejejus.inddybuddy.game.Game;
 import codejejus.inddybuddy.game.GameDto;
 import codejejus.inddybuddy.game.GameMapper;
+import codejejus.inddybuddy.global.dto.MultiResponse;
 import codejejus.inddybuddy.global.dto.SingleResponse;
 import codejejus.inddybuddy.global.utils.UriCreator;
 import codejejus.inddybuddy.member.dto.MemberDto;
@@ -13,6 +14,9 @@ import codejejus.inddybuddy.member.entity.Member;
 import codejejus.inddybuddy.member.entity.MemberPrincipal;
 import codejejus.inddybuddy.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -80,6 +84,14 @@ public class MemberController {
     public ResponseEntity<SingleResponse<List<MemberDto.SimpleInfoResponse>>> getFollowerMember(@PathVariable("member-id") Long memberId) {
         List<Member> followers = followMemberService.getAllFollowerByMemberId(memberId);
         return ResponseEntity.ok(new SingleResponse<>(memberMapper.getMemberSimpleInfoResponses(followers)));
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<MultiResponse<MemberDto.SimpleInfoResponse>> searchMemberByKeyword(@RequestParam(value = "keyword") String keyword,
+                                                                                             @PageableDefault(page = 1, size = 30) Pageable pageable) {
+        Page<Member> page = memberService.findByUsernameContaining(keyword, pageable);
+        Page<MemberDto.SimpleInfoResponse> memberPage = memberMapper.pageMemberToSimpleInfoResponses(page);
+        return ResponseEntity.ok(new MultiResponse<>(memberPage.getContent(), memberPage));
     }
 
     @DeleteMapping("/{member-id}")

@@ -46,40 +46,46 @@ public class MemberDto {
     @Getter
     public static class Response {
 
-        private Long memberId;
-        private String email;
-        private String username;
-        private Member.MemberStatus memberStatus;
-        private String imageUrl;
-        private String aboutMe;
-        private LocalDateTime createdAt;
-        private LocalDateTime updatedAt;
+        private final Long memberId;
+        private final String email;
+        private final String username;
+        private final Member.MemberStatus memberStatus;
+        private final String imageUrl;
+        private final String aboutMe;
+        private final LocalDateTime createdAt;
+        private final LocalDateTime updatedAt;
     }
 
     @AllArgsConstructor
     @Getter
     public static class ProfileResponse {
 
-        private Long memberId;
-        private String email;
-        private String username;
-        private Member.MemberStatus memberStatus;
-        private String imageUrl;
-        private String aboutMe;
-        private LocalDateTime createdAt;
-        private LocalDateTime updatedAt;
-        private Long followerCount;
-        private Long followingCount;
+        private final Long memberId;
+        private final String email;
+        private final String username;
+        private final Member.MemberStatus memberStatus;
+        private final String imageUrl;
+        private final String aboutMe;
+        private final LocalDateTime createdAt;
+        private final LocalDateTime updatedAt;
+        private final Long followerCount;
+        private final Long followingCount;
     }
 
-    @AllArgsConstructor
     @Getter
     public static class SimpleInfoResponse {
 
-        private Long memberId;
-        private String email;
-        private String username;
-        private String imageUrl;
+        private final Long memberId;
+        private final String email;
+        private final String username;
+        private final String imageUrl;
+
+        public SimpleInfoResponse(Member member) {
+            this.memberId = member.getMemberId();
+            this.email = member.getEmail();
+            this.username = member.getUsername();
+            this.imageUrl = member.getImageUrl();
+        }
     }
 
     @AllArgsConstructor
