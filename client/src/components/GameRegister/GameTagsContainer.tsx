@@ -1,17 +1,21 @@
-import { useState } from 'react';
 import styled from 'styled-components';
 
 import { gameTags } from '../../data/gameTags';
 
 import TagButton, { StyledButton } from './TagButton';
 
-const GameTagsContainer = () => {
-  const [tagStates, setTagStates] = useState<boolean[]>([]);
+interface TagsContainer {
+  tagStates: boolean[];
+  setTagStates: React.Dispatch<React.SetStateAction<boolean[]>>;
+}
 
+const GameTagsContainer = ({ tagStates, setTagStates }: TagsContainer) => {
   // 태그 초기화
-  const initializeTags = () => {
+  const initializeTags = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     const tagsInitialStates: boolean[] = new Array(gameTags.length).fill(false);
     setTagStates(tagsInitialStates);
+    console.log(tagStates);
   };
 
   // 컴포넌트 렌더링
