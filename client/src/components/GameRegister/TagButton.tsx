@@ -1,9 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { gameTags } from '../../data/gameTags';
-
-interface TagButtonPropType {
+export interface TagButtonPropType {
   tagIndex: number;
   tagStates: boolean[];
   setTagStates: React.Dispatch<React.SetStateAction<boolean[]>>;
@@ -18,14 +16,29 @@ const TagButton = ({
 }: TagButtonPropType) => {
   const isActive = tagStates[tagIndex];
 
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     const newTagStates = [...tagStates];
-    newTagStates[tagIndex] = !isActive;
+    const seletedNum = newTagStates.filter((a) => a === true).length;
+    //  선택된 태그가 5개인경우
+    if (seletedNum === 5) {
+      //  TRUE 취소는 가능
+      if (newTagStates[tagIndex] === true) {
+        newTagStates[tagIndex] = !isActive;
+        //  FALSE 를 바꾸는 것은 불가능
+      } else {
+        console.log('태그는 최대 5개까지만 선택이 가능합니다.');
+      }
+    } else newTagStates[tagIndex] = !isActive;
     setTagStates(newTagStates);
   };
 
   return (
-    <StyledButton onClick={handleClick} className={isActive ? 'active' : ''}>
+    <StyledButton
+      type='button'
+      onClick={handleClick}
+      className={isActive ? 'active' : ''}
+    >
       {children}
     </StyledButton>
   );
