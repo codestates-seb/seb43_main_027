@@ -6,7 +6,6 @@ import Pagination from 'react-js-pagination';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import GameItem from './GameItem';
-import { dummyGamesData } from '../../data/dummyCategories';
 import { type CategoryGameType } from '../../types/dataTypes';
 import { type TabSelectType } from '../../types/propsTypes';
 
@@ -25,85 +24,81 @@ const GameList: React.FC<TabSelectType> = ({ isSelectTab })  => {
     const fetchGamesData = async () => {
       try {
         let apiUrl = `${process.env.REACT_APP_API_URL}/api/categories/${categoryId}/games?page=${isPage}`;
-        if (isSelectTab === '인기 게임') {
-          apiUrl += '&filter=POPULAR';
-        };
-        if (isSelectTab === '신규 게임') {
-          apiUrl += '&filter=NEW';
-        };
-        const res = await axios.get(apiUrl);
+  
+        switch (isSelectTab) {
+          case '전체 게임': {
+            const res = await axios.get(apiUrl);
+            const gamesData = res.data.data.sort((a: { createdAt: string }, b: { createdAt: string }) => 
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());  
+            const pageInfo = res.data.pageInfo;
 
-        const gamesData = res.data.data;
-        const pageInfo = res.data.pageInfo;
-        // 더미데이터 테스트 코드
-        // const gamesData = dummyGamesData.data;
-        // const pageInfo = dummyGamesData.pageInfo;
+            setIsFilteredGames([...gamesData]);
+            setSize(pageInfo.size);
+            setTotalSize(pageInfo.totalSize);
+            if (isFilteredGames.length === 0) setUserMessage('등록된 게임채널이 없습니다.');
+            break;
+          };
+          case '인기 게임': {
+            apiUrl += '&filter=POPULAR';
+            const res = await axios.get(apiUrl);
+            const popularGames = res.data.data.sort((a: {followerCount: number}, b: {followerCount: number}) => 
+              b.followerCount - a.followerCount);
+            const popularPageInfo = res.data.pageInfo;
 
-        setSize(pageInfo.size);
-        setTotalSize(pageInfo.totalSize);
+            setIsFilteredGames([...popularGames]);
+            setSize(popularPageInfo.size);
+            setTotalSize(popularPageInfo.totalSize);
+            if (isFilteredGames.length === 0) setUserMessage('등록된 게임채널이 없습니다.');
+            break;
+          };
+          case '신규 게임': {
+            apiUrl += '&filter=NEW';
+            const res = await axios.get(apiUrl);
+            const newGames = res.data.data.sort((a: { createdAt: string }, b: { createdAt: string }) => 
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+            const newGamesPageInfo = res.data.pageInfo;
 
-      if (gamesData.length > 0) {
-        const filteredGames = gamesData
-          .sort((a: { createdAt: string }, b: { createdAt: string }) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+            setIsFilteredGames([...newGames]);
+            setSize(newGamesPageInfo.size);
+            setTotalSize(newGamesPageInfo.totalSize);
+            if (isFilteredGames.length === 0) setUserMessage('등록된 게임채널이 없습니다.');
+            break;
+          };
+          case '팔로우 게임': {
+            if (memberId === -1) {
+              setIsFilteredGames([]);
+              setUserMessage('로그인이 필요한 기능입니다.');
+            } else {
+              try {
+                const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/members/${memberId}/mygame`);
+                const data = res.data.data;
+                const followedGames = data.filter((game:any) =>
+                  game.categories.some((category:any) => category.categoryId?.toString() === categoryId)
+                );
 
-          switch (isSelectTab) {
-            case '전체 게임':
-              setIsFilteredGames([...filteredGames]);
-              break;
-            case '인기 게임': {
-              const popularGames = filteredGames.filter((game: any) => game.followerCount > 0);
-              popularGames.sort((a: { followerCount: number }, b: { followerCount: number }) => b.followerCount - a.followerCount);
-              setIsFilteredGames([...popularGames]);
-              setTotalSize(popularGames.length);
-              if (isFilteredGames.length === 0) setUserMessage('등록된 게임채널이 없습니다.');
-              break;
-            }
-            case '신규 게임': {
-              const currentDate = new Date();
-              const oneMonthAgo = new Date();
-              oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
-
-              const newGames = filteredGames.filter((game: any) => {
-                const createdAt = new Date(game.createdAt);
-                return createdAt >= oneMonthAgo && createdAt <= currentDate;
-              });
-              setIsFilteredGames([...newGames]);
-              setTotalSize(newGames.length);
-              break;
-            }
-            case '팔로우 게임':
-              if (memberId === -1) {
-                setIsFilteredGames([]);
-                setUserMessage('로그인이 필요한 기능입니다.');
-              } else {
-                try {
-                  const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/members/${memberId}/mygame`);
-                  const data = res.data.data;
-                  const followedGames = data.filter((game:any) => game.categories.some((category: { categoryId: string | undefined; }) => category.categoryId?.toString() === categoryId));
-
-                  if (followedGames.length > 0) {
-                    setIsFilteredGames([...followedGames]);
-                  } else {
-                    setIsFilteredGames([]);
-                    setUserMessage('팔로우한 게임채널이 없습니다.');
-                  }
-                } catch (error) {
-                  console.error(error);
+                if (followedGames.length > 0) {
+                  setIsFilteredGames([...followedGames]);
+                } else {
+                  setIsFilteredGames([]);
+                  setUserMessage('팔로우한 게임채널이 없습니다.');
                 }
+              } catch (error) {
+                console.error(error);
               }
-              break;
-            default:
-              setIsFilteredGames(filteredGames);
-              break;
+            }
+            break;
           }
-      } else {
-        // todo: 404페이지 경로로 이동 시키기
+          default:
+            setIsFilteredGames([]);
+            break;
+        }
+      } catch (error) {
+        // TODO: 404페이지 경로로 이동 시키기
         // return navigate('/');
+        console.error(error);
       }
-    } catch (error) {
-      console.error(error);
-    }
-  }
+    };
+
     fetchGamesData();
   }, [isSelectTab, memberId, isPage]);
 
