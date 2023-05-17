@@ -57,7 +57,7 @@ const iconData: IconType = {
   TURN_BASED: <GiEmptyChessboard />
 };
 
-const categoryText = {
+export const categoryText = {
   FPS: 'FPS',
   RPG: 'RPG',
   ADVENTURE: '어드벤쳐',

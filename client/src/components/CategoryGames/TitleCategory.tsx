@@ -5,16 +5,15 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import CreateChannelButton from '../ui/CreateChannelButton';
+import categoryData from '../../data/categoryData';
 
 const TitleCategory: React.FC = ()  => {
 
-  // 리팩토링 고민: 홈에서 카테고리 클릭시 카테고리정보 리덕스에 저장 후 사용하는 방식으로 구현
-  const [ isCurrentCategory, setIsCurrentCategory ] = useState();
+  const [ isCurrentCategory, setIsCurrentCategory ] = useState<string>();
   const { categoryId } = useParams<{ categoryId: string }>();
   const memberId = useSelector((state: RootState) => state.user.memberId);
   const navigate = useNavigate();
 
-  // 모든 카테고리 api 사용해서 현재 카테고리의 정보 가져옴
   useEffect(() => {
     (async () => {
       try {
@@ -23,7 +22,8 @@ const TitleCategory: React.FC = ()  => {
         const currentCategory = catrgoriesData.find((item: any) => item.categoryId.toString() === categoryId)?.categoryName;
 
         if (currentCategory) {
-          setIsCurrentCategory(currentCategory);
+          const mappingCategoryName = categoryData[currentCategory];
+          setIsCurrentCategory(mappingCategoryName.text);
         } else {
           // todo: 404페이지 경로로 이동 시키기
           // return navigate('/');
@@ -33,9 +33,6 @@ const TitleCategory: React.FC = ()  => {
       }
     })();
   }, [categoryId]);
-
-  // 더미데이터 테스트 코드
-  // const isCurrentCategory = dummyCategories.find(item => item.categoryId.toString() === categoryId)?.categoryName;
 
   // 리팩토링 고민: 페이지별 중복사용하는 핸들러 함수 모듈화 리팩토링하기
   const handleCreate = () => {
