@@ -9,6 +9,8 @@ import codejejus.inddybuddy.global.exception.CustomException;
 import codejejus.inddybuddy.global.exception.ExceptionCode;
 import codejejus.inddybuddy.member.entity.MemberPrincipal;
 import codejejus.inddybuddy.member.service.MemberService;
+import codejejus.inddybuddy.reaction.ReactionDto;
+import codejejus.inddybuddy.reaction.ReactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,6 +32,7 @@ public class PostService {
     private final GameService gameService;
     private final PostMapper postMapper;
     private final FileService fileService;
+    private final ReactionService reactionService;
 
     public PostDto.Response createPost(Long gameId, MemberPrincipal memberPrincipal, PostDto.PostRequest postDto, List<MultipartFile> multipartFiles) {
         Post post = postMapper.postToEntity(postDto);
@@ -56,9 +59,18 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public PostDto.Response findPost(Long postId) {
+    public PostDto.Response findPost(Long postId, MemberPrincipal memberPrincipal) {
         Post post = findVerifidPost(postId);
-        return postMapper.entityToResponse(post);
+        PostDto.Response response = postMapper.entityToResponse(post);
+
+        if (memberPrincipal != null) {
+            ReactionDto.Response reaction = reactionService.findReaction(memberPrincipal.getMember(), post);
+            if (reaction == null) {
+                return response;
+            }
+            response.updateReaction(reaction);
+        }
+        return response;
     }
 
     @Transactional(readOnly = true)

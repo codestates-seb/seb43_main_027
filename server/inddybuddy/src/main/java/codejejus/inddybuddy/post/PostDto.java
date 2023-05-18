@@ -3,6 +3,7 @@ package codejejus.inddybuddy.post;
 import codejejus.inddybuddy.comment.CommentDto;
 import codejejus.inddybuddy.member.dto.MemberDto;
 import codejejus.inddybuddy.post.Post.PostTag;
+import codejejus.inddybuddy.reaction.ReactionDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +46,7 @@ public class PostDto {
         private final List<CommentDto.Response> comments;
         private final LocalDateTime createdAt;
         private final LocalDateTime updatedAt;
+        private ReactionDto.Response reaction;
 
         @Builder
         public Response(Long postId, Long gameId, MemberDto.SimpleInfoResponse member, String title, String content, Long views, PostTag postTag, Long likeCount, Long commentCount, List<String> fileUrlList, List<CommentDto.Response> comments, LocalDateTime createdAt, LocalDateTime updatedAt) {
@@ -61,6 +63,10 @@ public class PostDto {
             this.comments = comments;
             this.createdAt = createdAt;
             this.updatedAt = updatedAt;
+        }
+
+        public void updateReaction(ReactionDto.Response reaction) {
+            this.reaction = reaction;
         }
     }
 
