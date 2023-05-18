@@ -7,7 +7,8 @@ const PATH_URL: PathUrlType = {
   REGISTER: '/register',
   CATEGORY: '/categories/',
   GAME: '/games/',
-  POSTING: '/posts'
+  POSTING: '/posts',
+  EDIT: '/edit'
 };
 
 export default PATH_URL;
