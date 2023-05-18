@@ -72,7 +72,6 @@ const StyledLoadingWrapper = styled.div`
   height: 100vh;
   display: grid;
   place-items: center;
-  background-color: var(--loding-bg);
   z-index: 9999;
 `;
 

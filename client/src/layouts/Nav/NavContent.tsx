@@ -25,7 +25,12 @@ const NavContent = ({
     (async () => {
       try {
         const res = await axios(
-          `${process.env.REACT_APP_API_URL}${apiRef.current[type]}`
+          `${process.env.REACT_APP_API_URL}${apiRef.current[type]}`,
+          {
+            headers: {
+              Authorization: localStorage.getItem('access_token')
+            }
+          }
         );
         setData(res.data.data);
       } catch (err) {
@@ -38,7 +43,7 @@ const NavContent = ({
     <StyledContainer>
       <StyledRelativeBox>
         <StyledItemContainer>
-          {user.memberId === -1 ? (
+          {user.memberId !== -1 ? (
             data.map((a) => <Content key={a} />)
           ) : (
             <StyledNotiMsgContainer>

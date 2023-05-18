@@ -1,4 +1,4 @@
-import SwiperInstance from 'swiper';
+import { type CategoryType } from './dataTypes';
 
 export type NavStateType = {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
@@ -19,3 +19,25 @@ export type SwiperInfoType = {
   isLastCurrent: boolean;
   currentSlideIndex: number;
 };
+
+export type TabSelectType = {
+  isSelectTab: string;
+};
+
+export type GameItemPropsType = {
+  gameId: number;
+  gameName: string;
+  followerCount: number;
+  categories: CategoryType[];
+  mainImgUrl: string;
+}
+
+export type StyledTagPropsType = {
+  styleId: number;
+};
+
+export type PostListProps = {
+  isSelectTab: string;
+  isSelectTag: string;
+  isMappingTag: string;
+}
