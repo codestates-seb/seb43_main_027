@@ -10,22 +10,23 @@ import CategoryTag from '../common/CategoryTag';
 import CreateChannelButton from '../ui/CreateChannelButton';
 import PATH_URL from '../../constants/pathUrl';
 
-const GameTitle = ()  => {
-  
+const GameTitle = () => {
   const { gameId } = useParams();
   const navigate = useNavigate();
   const memberId = useSelector((state: RootState) => state.user.memberId);
 
-  const [ isGameData, setIsGameData ] = useState<GameType | null>(null);
-  const [ loading, setLoading ] = useState(true);
-  const [ isFollowed, setIsFollowed ] = useState(false);
+  const [isGameData, setIsGameData] = useState<GameType | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [isFollowed, setIsFollowed] = useState(false);
 
   useEffect(() => {
     const fetchGameData = async () => {
       try {
-      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/games/${gameId}`);
-      const gameData = res.data.data;
-      setIsGameData(gameData);
+        const res = await axios.get(
+          `${process.env.REACT_APP_API_URL}/api/games/${gameId}`
+        );
+        const gameData = res.data.data;
+        setIsGameData(gameData);
       } catch (error) {
         console.log(error);
       } finally {
@@ -39,9 +40,13 @@ const GameTitle = ()  => {
     const fetchFollowerData = async () => {
       console.log(memberId);
       try {
-        const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/members/${memberId}/mygame`);
+        const res = await axios.get(
+          `${process.env.REACT_APP_API_URL}/api/members/${memberId}/mygame`
+        );
         const followedData = res.data.data;
-        setIsFollowed(followedData.some((game: any) => game.gameId.toString() === gameId));
+        setIsFollowed(
+          followedData.some((game: any) => game.gameId.toString() === gameId)
+        );
       } catch (error) {
         console.log(error);
       }
@@ -50,13 +55,13 @@ const GameTitle = ()  => {
   }, [memberId]);
 
   if (loading) {
-    return <Loading />
-  };
+    return <Loading />;
+  }
 
   if (!isGameData) {
     // 404페이지로 이동하기
-    return <div>게임을 찾을 수 없습니다.</div>
-  };
+    return <div>게임을 찾을 수 없습니다.</div>;
+  }
 
   const handleFollow = () => {
     if (memberId === -1) {
@@ -66,19 +71,22 @@ const GameTitle = ()  => {
       console.log(token);
 
       if (isFollowed) {
-        axios.delete(`${process.env.REACT_APP_API_URL}/api/games/${gameId}/unfollow`,
-        {
-          headers: {
-            Authorization: `${token}`
-          }
-        })
-          .then(response => {
+        axios
+          .delete(
+            `${process.env.REACT_APP_API_URL}/api/games/${gameId}/unfollow`,
+            {
+              headers: {
+                Authorization: `${token}`
+              }
+            }
+          )
+          .then((response) => {
             console.log('언팔로우 요청 성공');
             setIsFollowed(false);
           })
-          .catch(error => {
+          .catch((error) => {
             console.error('언팔로우 요청 실패:', error);
-          })
+          });
       }
       if (!isFollowed) {
         axios.post(`${process.env.REACT_APP_API_URL}/api/games/${gameId}/follow`, {}, {
@@ -94,38 +102,31 @@ const GameTitle = ()  => {
           console.error('팔로우 요청 실패:', error);
         });
       }
-    };
+    }
   };
 
   return (
     <StyledTitleWrapper>
-      <StlyedGameImg 
-        src={isGameData?.mainImgUrl}
-        alt='game-image'
-      />
-      <StyledGameName>
-        {isGameData?.gameName}
-      </StyledGameName>
+      <StlyedGameImg src={isGameData?.mainImgUrl} alt='game-image' />
+      <StyledGameName>{isGameData?.gameName}</StyledGameName>
       <StyledTagContain>
-      {
-        isGameData?.categories?.map((item, index) => (
+        {isGameData?.categories?.map((item, index) => (
           <Link to={`${PATH_URL.CATEGORY}${item.categoryId}`} key={index}>
             <CategoryTag
               categoryId={item.categoryId}
               categoryName={item.categoryName}
             />
           </Link>
-        ))
-      }
+        ))}
       </StyledTagContain>
       <StyledFollowContain>
-        <Link to={`${PATH_URL.GAME}${gameId}/follower`} >
+        <Link to={`${PATH_URL.GAME}${gameId}/follower`}>
           <StyledFollowNumber>
             게임 팔로워: {isGameData?.followerCount}
           </StyledFollowNumber>
         </Link>
-        <CreateChannelButton 
-          text={isFollowed ? '팔로우 취소' : '게임 팔로우'} 
+        <CreateChannelButton
+          text={isFollowed ? '팔로우 취소' : '게임 팔로우'}
           onClick={handleFollow}
         />
       </StyledFollowContain>
@@ -156,7 +157,7 @@ const StlyedGameImg = styled.img`
   @media screen and (max-width: 650px) {
     margin-top: 30px;
   }
-`
+`;
 
 const StyledGameName = styled.h3`
   margin-top: 10px;
@@ -176,7 +177,7 @@ const StyledTagContain = styled.div`
   flex-wrap: wrap;
   & > a {
     margin-bottom: 20px;
-  };
+  }
 `;
 
 const StyledFollowContain = styled.div`
@@ -202,4 +203,4 @@ const StyledFollowNumber = styled.p`
   &:hover {
     color: var(--cyan-dark-700);
   }
-`
+`;
