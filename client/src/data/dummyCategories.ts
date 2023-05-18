@@ -1,112 +1,3 @@
-type CategoryType = {
-  categoryId: number;
-  categoryName: string;
-};
-
-// 모든 카테고리 조회 api 대체 api/categories
-export const dummyCategories : CategoryType[] = [
-  {
-    categoryId: 6,
-    categoryName: 'ACTION'
-  },
-  {
-    categoryId: 3,
-    categoryName: 'ADVENTURE'
-  },
-  {
-    categoryId: 9,
-    categoryName: 'CARD_AND_BOARD'
-  },
-  {
-    categoryId: 14,
-    categoryName: 'COMEDY'
-  },
-  {
-    categoryId: 1,
-    categoryName: 'FPS'
-  },
-  {
-    categoryId: 15,
-    categoryName: 'HACK_AND_SLASH'
-  },
-  {
-    categoryId: 12,
-    categoryName: 'HEALING'
-  },
-  {
-    categoryId: 13,
-    categoryName: 'HORROR'
-  },
-  {
-    categoryId: 23,
-    categoryName: 'MOBA'
-  },
-  {
-    categoryId: 24,
-    categoryName: 'MOBILE'
-  },
-  {
-    categoryId: 18,
-    categoryName: 'MULTIPLAYER'
-  },
-  {
-    categoryId: 25,
-    categoryName: 'OTHER'
-  },
-  {
-    categoryId: 20,
-    categoryName: 'PLATFORMER'
-  },
-  {
-    categoryId: 10,
-    categoryName: 'PUZZLE'
-  },
-  {
-    categoryId: 19,
-    categoryName: 'ROGUELIKE'
-  },
-  {
-    categoryId: 2,
-    categoryName: 'RPG'
-  },
-  {
-    categoryId: 4,
-    categoryName: 'SHOOTING'
-  },
-  {
-    categoryId: 5,
-    categoryName: 'SIMULATION'
-  },
-  {
-    categoryId: 7,
-    categoryName: 'SPORTS'
-  },
-  {
-    categoryId: 11,
-    categoryName: 'STORY'
-  },
-  {
-    categoryId: 8,
-    categoryName: 'STRATEGY'
-  },
-  {
-    categoryId: 17,
-    categoryName: 'SURVIVAL'
-  },
-  {
-    categoryId: 22,
-    categoryName: 'THREE_D_PLATFORMER'
-  },
-  {
-    categoryId: 16,
-    categoryName: 'TURN_BASED'
-  },
-  {
-    categoryId: 21,
-    categoryName: 'TWO_D_PLATFORMER'
-  }
-];
-
 // 특정 카테고리의 모든 게임 조회 더미- api/categories/{ctegory_id}/games
 export const dummyGamesData = {
   data: [
@@ -180,3 +71,87 @@ pageInfo: {
     totalPage: 1
   }
 }
+
+// 특정 게임 조회 더미- api/games/{game_id}
+export const dummyGameData = {
+  data: {
+    gameId: 1,
+    gameName: '한달전게임',
+    downloadUrl: 'download',
+    mainImgUrl: 'https://m.gjcdn.net/game-thumbnail/1000/415163-pm6dqtkg-v4.webp',
+    categories: [
+      {
+          categoryId: 1,
+          categoryName: 'FPS'
+      },
+      {
+          'categoryId': 2,
+          'categoryName': 'RPG'
+      },
+      {
+        categoryId: 16,
+        categoryName: 'TURN_BASED'
+      },
+      {
+        categoryId: 21,
+        categoryName: 'TWO_D_PLATFORMER'
+      },
+    ],
+    followerCount: 30,
+    createdAt: '2023-03-01T18:38:39'
+  }
+};
+
+export const dummyFollowedGames = {
+  data: [
+    {
+      gameId: 3,
+      gameName: '한달전게임',
+      downloadUrl: 'download',
+      mainImgUrl: 'https://m.gjcdn.net/game-thumbnail/1000/415163-pm6dqtkg-v4.webp',
+      categories: [
+        {
+            categoryId: 1,
+            categoryName: 'FPS'
+        },
+        {
+            'categoryId': 2,
+            'categoryName': 'RPG'
+        },
+        {
+          categoryId: 16,
+          categoryName: 'TURN_BASED'
+        },
+        {
+          categoryId: 21,
+          categoryName: 'TWO_D_PLATFORMER'
+        },
+      ],
+      followerCount: 30,
+      createdAt: '2023-03-01T18:38:39'
+    },
+    {
+      gameId: 1,
+      gameName: '두달전게임',
+      downloadUrl: 'download',
+      mainImgUrl: 'https://m.gjcdn.net/game-thumbnail/1000/415163-pm6dqtkg-v4.webp',
+      categories: [
+        {
+            categoryId: 1,
+            categoryName: 'FPS'
+        },
+        {
+          categoryId: 2,
+          categoryName: 'RPG'
+        },
+        {
+          categoryId: 16,
+          categoryName: 'TURN_BASED'
+        },
+      ],
+      followerCount: 30,
+      createdAt: '2023-03-01T18:38:39'
+    }
+  ]
+};
+

@@ -4,6 +4,7 @@ import { CategoryType } from '../../types/dataTypes';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setCategory } from '../../slice/categorySlice';
+import PATH_URL from '../../constants/pathUrl';
 
 const CategoryCard = ({
   categoryId,
@@ -16,7 +17,7 @@ const CategoryCard = ({
     dispatch(setCategory({ categoryId, categoryName }));
   };
   return (
-    <Link to={`/category/${categoryId}`} onClick={onClickHandler}>
+    <Link to={`${PATH_URL.CATEGORY}${categoryId}`} onClick={onClickHandler}>
       <StyledContainer>
         {categoryIcon || <IoGameControllerOutline />}
         <StyledText>{categoryName}</StyledText>
