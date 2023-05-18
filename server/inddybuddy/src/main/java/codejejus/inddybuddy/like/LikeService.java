@@ -26,26 +26,28 @@ public class LikeService {
         Post post = postService.findVerifidPost(postId);
         Like like = likeMapper.dtoToEntity(request);
         like.update(member, post);
-        verifyLike(member, post);
+        verifyExistLike(member, post);
         Like save = likeRepository.save(like);
         return likeMapper.entityToResponse(save);
     }
 
-    public void deleteLike(MemberPrincipal memberPrincipal, Long likeId) {
-        Like findLike = findVerifiedLike(likeId);
+    public void deleteLike(MemberPrincipal memberPrincipal, Long postId) {
+        Member member = memberService.findMember(memberPrincipal.getMember().getMemberId());
+        Post post = postService.findVerifidPost(postId);
+        Like findLike = findVerifiedLike(member, post);
         memberService.verifySameMember(memberPrincipal.getMember(), findLike.getMember());
-        likeRepository.deleteById(likeId);
+        likeRepository.delete(findLike);
     }
 
-
-    private void verifyLike(Member member, Post post) {
-        boolean isExist = likeRepository.existsByMemberAndPost(member, post);
-        if (isExist) throw new CustomException(ExceptionCode.ALREADY_EXIST_LIKE);
+    private void verifyExistLike(Member member, Post post) {
+        Optional<Like> optionalLike = likeRepository.findByMemberAndPost(member, post);
+        if (optionalLike.isPresent()) {
+            throw new CustomException(ExceptionCode.ALREADY_EXIST_LIKE);
+        }
     }
 
-    private Like findVerifiedLike(Long likeId) {
-        Optional<Like> optionalLike = likeRepository.findById(likeId);
-        Like findLike = optionalLike.orElseThrow(() -> new CustomException(ExceptionCode.LIKE_NOT_FOUND));
-        return findLike;
+    private Like findVerifiedLike(Member member, Post post) {
+        return likeRepository.findByMemberAndPost(member, post)
+                .orElseThrow(() -> new CustomException(ExceptionCode.LIKE_NOT_FOUND));
     }
 }

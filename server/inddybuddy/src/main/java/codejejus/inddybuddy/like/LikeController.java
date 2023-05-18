@@ -21,10 +21,10 @@ public class LikeController {
         return ResponseEntity.ok(new SingleResponse<>(likeService.createLike(memberPrincipal, request, postId)));
     }
 
-    @DeleteMapping("/like/{like-id}")
+    @DeleteMapping("/unlike")
     public ResponseEntity<Like> deleteLike(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
-                                           @PathVariable("like-id") Long likeId) {
-        likeService.deleteLike(memberPrincipal, likeId);
+                                           @PathVariable("post-id") Long postId) {
+        likeService.deleteLike(memberPrincipal, postId);
         return ResponseEntity.noContent().build();
     }
 }
