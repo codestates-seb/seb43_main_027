@@ -1,29 +1,33 @@
+import { memo } from 'react';
 import { AiOutlineUpload } from 'react-icons/ai';
 import styled from 'styled-components';
 import ImagePreview from './ImagePreview';
 
 const ImageSection = ({
   files,
-  setFiles
+  onUploadHandler,
+  onDeleteFileClickHandler,
+  onDeleteUrlClickHandler,
+  urls
 }: {
   files: File[];
-  setFiles: React.Dispatch<React.SetStateAction<File[]>>;
+  onUploadHandler: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onDeleteFileClickHandler: (i: number) => () => void;
+  onDeleteUrlClickHandler: (i: number) => () => void;
+  urls: string[] | undefined;
 }) => {
-  const onUploadHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) return;
-
-    if (e.target.files !== null) {
-      setFiles((prev) => [...prev, ...Array.from(e.target.files as FileList)]);
-    }
-  };
-
-  const onDeleteClickHandler = (index: number) => () => {
-    setFiles(files.filter((_, i) => i !== index));
-  };
   return (
     <>
       <StyledTitle>이미지 미리보기</StyledTitle>
       <StyledContainer>
+        {urls?.map((url, i) => (
+          <ImagePreview
+            url={url}
+            key={url}
+            index={i}
+            onClick={onDeleteUrlClickHandler}
+          />
+        ))}
         {files.map((file, i) => {
           const url = URL.createObjectURL(file);
           return (
@@ -31,7 +35,7 @@ const ImageSection = ({
               url={url}
               key={url}
               index={i}
-              onClick={onDeleteClickHandler}
+              onClick={onDeleteFileClickHandler}
             />
           );
         })}
@@ -51,7 +55,7 @@ const ImageSection = ({
   );
 };
 
-export default ImageSection;
+export default memo(ImageSection);
 
 const StyledTitle = styled.h4`
   font-weight: 500;

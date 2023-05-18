@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import SelectTag from '../common/SelectTag';
 import ButtonEl from '../elements/Button';
 import ImageSection from './ImageSection';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import postOptionTags from '../../data/postOptionTags';
 import axios from 'axios';
 import convertTag from '../../utils/convertTag';
@@ -10,6 +10,8 @@ import { PostType } from '../../types/dataTypes';
 import { validatePost } from '../../utils/validatePost';
 import { useNavigate, useParams } from 'react-router-dom';
 import PATH_URL from '../../constants/pathUrl';
+import { InputChangeType, SubmitType } from '../../types/parameterTypes';
+import { patchData, postData } from '../../api/apiCollection';
 
 const InputSection = () => {
   const [post, setPost] = useState<PostType>({
@@ -17,80 +19,142 @@ const InputSection = () => {
     title: '',
     content: ''
   });
+  const [url, setUrl] = useState<string[]>([]);
   const [files, setFiles] = useState<File[]>([]);
-  const { gameId } = useParams();
+  const { gameId, postId } = useParams();
   const navigation = useNavigate();
 
   const onTagChangeHandler = (postTag: string) => {
     const convertedTag = convertTag.asEN(postTag);
     setPost((prev) => ({ ...prev, postTag: convertedTag }));
   };
-  const onInputChangeHandler =
-    (type: string) =>
-    (
-      e:
-        | React.ChangeEvent<HTMLInputElement>
-        | React.ChangeEvent<HTMLTextAreaElement>
-    ) => {
-      setPost((prev) => ({ ...prev, [type]: e.target.value }));
-    };
 
-  const onSubmitHandler = (
-    e: React.FormEvent<HTMLFormElement> | React.MouseEvent
-  ) => {
+  const onInputChangeHandler = (type: string) => (e: InputChangeType) => {
+    setPost((prev) => ({ ...prev, [type]: e.target.value }));
+  };
+
+  const onDeleteFileClickHandler = useCallback(
+    (index: number) => () => {
+      setFiles((prev) => prev.filter((_, i) => i !== index));
+    },
+    []
+  );
+
+  const onDeleteUrlClickHandler = useCallback(
+    (index: number) => () => {
+      setUrl((prev) => prev.filter((_, i) => i !== index));
+    },
+    []
+  );
+
+  const onUploadHandler = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (!e.target.files) return;
+
+      if (e.target.files !== null) {
+        setFiles((prev) => [
+          ...prev,
+          ...Array.from(e.target.files as FileList)
+        ]);
+      }
+    },
+    []
+  );
+
+  const onSubmitHandler = (e: SubmitType) => {
     e.preventDefault();
 
     if (!validatePost(post)) {
       alert('입력값을 정확히 입력해주세요');
       return;
     }
+    const formData = new FormData();
+    if (files.length !== 0) {
+      files.forEach((file) => {
+        formData.append('files', file);
+      });
+    }
 
-    (async () => {
-      const formData = new FormData();
+    if (!postId) {
       formData.append(
         'post',
         new Blob([JSON.stringify(post)], {
           type: 'application/json'
         })
       );
-      if (files.length !== 0) {
-        files.forEach((file) => {
-          formData.append('files', file);
-        });
-      }
-
-      try {
-        await axios.post(
-          `${process.env.REACT_APP_API_URL}/api/games/${gameId}/posts`,
-          formData,
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-              Authorization: localStorage.getItem('access_token')
-            }
+      postData(
+        `${process.env.REACT_APP_API_URL}/api/games/${gameId}/posts`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: localStorage.getItem('access_token')
           }
-        );
-        navigation(`${PATH_URL.GAME}${gameId}`);
-      } catch (err) {
-        alert('게시글 작성에서 오류가 발생하였습니다.');
-      }
-    })();
-
-    console.log(post);
+        },
+        () => navigation(`${PATH_URL.GAME}${gameId}`),
+        () => alert('게시글 작성에서 오류가 발생하였습니다.')
+      );
+    } else {
+      formData.append(
+        'patch',
+        new Blob([JSON.stringify(post)], {
+          type: 'application/json'
+        })
+      );
+      formData.append(
+        'url',
+        new Blob([JSON.stringify(url)], {
+          type: 'application/json'
+        })
+      );
+      patchData(
+        `${process.env.REACT_APP_API_URL}/api/posts/${postId}`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: localStorage.getItem('access_token')
+          }
+        },
+        () => navigation(`${PATH_URL.GAME}${gameId}`),
+        () => alert('게시글 작성에서 오류가 발생하였습니다.')
+      );
+    }
   };
+
+  useEffect(() => {
+    if (!postId) return;
+    (async () => {
+      const res = await axios(
+        `${process.env.REACT_APP_API_URL}/api/posts/${postId}`
+      );
+      const { content, title, fileUrlList } = res.data.data;
+      setPost((prev) => ({ ...prev, content, title }));
+      setUrl(fileUrlList);
+    })();
+  }, [postId]);
+
   return (
     <form onSubmit={onSubmitHandler} encType='multipart/form-data'>
       <StyledContainer>
         <SelectTag options={postOptionTags} onChange={onTagChangeHandler} />
         <StyledTitleInput
+          value={post.title}
           placeholder='제목을 입력하세요.'
           onChange={onInputChangeHandler('title')}
         />
         <StyledTextarea
+          value={post.content}
           placeholder='내용을 입력하세요.'
           onChange={onInputChangeHandler('content')}
         />
-        <ImageSection files={files} setFiles={setFiles} />
+        <ImageSection
+          files={files}
+          onUploadHandler={onUploadHandler}
+          onDeleteFileClickHandler={onDeleteFileClickHandler}
+          onDeleteUrlClickHandler={onDeleteUrlClickHandler}
+          urls={url}
+        />
         <StyledButtonContainer>
           <StyledSubmitButton onClick={onSubmitHandler}>
             작성하기
