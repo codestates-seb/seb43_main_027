@@ -37,6 +37,8 @@ public class PostMapper {
                 .commentCount(post.getCommentCount())
                 .fileUrlList(post.getFiles().stream().map(File::getFileUrl).collect(Collectors.toList()))
                 .comments(post.getComments().stream().map(commentMapper::entityToResponse).collect(Collectors.toList()))
+                .createdAt(post.getCreatedAt())
+                .updatedAt(post.getUpdatedAt())
                 .build();
     }
 

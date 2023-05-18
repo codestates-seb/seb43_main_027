@@ -32,8 +32,9 @@ public class PostController {
     }
 
     @GetMapping("/{post-id}")
-    public ResponseEntity<SingleResponse<PostDto.Response>> findPost(@PathVariable("post-id") Long postId) {
-        return ResponseEntity.ok(new SingleResponse<>(postService.findPost(postId)));
+    public ResponseEntity<SingleResponse<PostDto.Response>> findPost(@PathVariable("post-id") Long postId,
+                                                                     @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
+        return ResponseEntity.ok(new SingleResponse<>(postService.findPost(postId, memberPrincipal)));
     }
 
     @GetMapping("/search")
