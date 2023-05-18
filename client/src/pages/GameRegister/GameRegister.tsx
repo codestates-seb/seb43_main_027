@@ -7,7 +7,8 @@ import axios from 'axios';
 import styled from 'styled-components';
 
 import GameTagsContainer from '../../components/GameRegister/GameTagsContainer';
-import { gameTags } from '../../data/gameTags';
+import { gameTagInfo } from '../../data/gameTags';
+const { gameTags, textTranslate } = gameTagInfo;
 
 const GameRegister = () => {
   const navigation = useNavigate();
@@ -51,10 +52,13 @@ const GameRegister = () => {
     };
     const selectedTagsIndex = tagStates.reduce(reducer, []);
     const selectedTags = selectedTagsIndex.map((i) => gameTags[i]);
+    console.log(selectedTags);
+    const translatedTags = selectedTags.map((i) => textTranslate[i]);
+    console.log(translatedTags);
     const postData: PostDataType = {
       gameName: title,
       downloadUrl: url,
-      categoryNames: selectedTags
+      categoryNames: translatedTags
     };
     console.log(postData);
 
@@ -66,10 +70,6 @@ const GameRegister = () => {
     }
 
     let value = formData.values().next();
-    console.log(value);
-    value = formData.values().next();
-    console.log(value);
-    value = formData.values().next();
     console.log(value);
     value = formData.values().next();
     console.log(value);

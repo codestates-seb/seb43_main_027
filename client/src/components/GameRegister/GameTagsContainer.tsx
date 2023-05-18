@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
-import categoryText from '../../data/categoryData';
+import { gameTagInfo } from '../../data/gameTags';
+const { gameTags } = gameTagInfo;
 
 import TagButton, { StyledButton } from './TagButton';
 
