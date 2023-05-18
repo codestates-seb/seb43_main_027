@@ -44,7 +44,7 @@ const LogIn = () => {
           localStorage.setItem('access_token', response.headers.authorization);
           localStorage.setItem('refresh_token', response.headers.refresh);
           const userdata = response.data;
-          dispatch(setUser({ payload: userdata }));
+          dispatch(setUser({ ...userdata }));
           alert('you successfully logged in!');
           navigator('/');
         });
