@@ -2,7 +2,6 @@ import { type PathUrlType } from '../types/dataTypes';
 
 const PATH_URL: PathUrlType = {
   HOME: '/',
-  GAME: '/game/',
   SIGNUP: '/signup',
   LOGIN: '/login',
   REGISTER: '/register',
