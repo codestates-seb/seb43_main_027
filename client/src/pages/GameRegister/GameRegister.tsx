@@ -76,6 +76,7 @@ const GameRegister = () => {
 
     // headers를 변수로 담아줍니다.
     const token = localStorage.getItem('access_token');
+    console.log(token);
     const headers = {
       'Content-Type': 'multipart/form-data',
       Authorization: `${token}` // 토큰을 헤더에 추가
@@ -85,7 +86,7 @@ const GameRegister = () => {
     axios
       .post(`${process.env.REACT_APP_API_URL}/api/games`, formData, { headers })
       .then((response) => {
-        console.log('등록에 성공하였습니다');
+        alert('등록에 성공하였습니다');
         navigation(-1);
       })
       .catch((error) => {
