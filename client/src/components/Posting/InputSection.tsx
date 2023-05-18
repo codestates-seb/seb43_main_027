@@ -9,6 +9,7 @@ import convertTag from '../../utils/convertTag';
 import { PostType } from '../../types/dataTypes';
 import { validatePost } from '../../utils/validatePost';
 import { useNavigate, useParams } from 'react-router-dom';
+import PATH_URL from '../../constants/pathUrl';
 
 const InputSection = () => {
   const [post, setPost] = useState<PostType>({
@@ -69,7 +70,7 @@ const InputSection = () => {
             }
           }
         );
-        navigation(`/games/${gameId}`);
+        navigation(`${PATH_URL.GAME}${gameId}`);
       } catch (err) {
         alert('게시글 작성에서 오류가 발생하였습니다.');
       }
