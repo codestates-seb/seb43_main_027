@@ -1,4 +1,4 @@
-package codejejus.inddybuddy.like;
+package codejejus.inddybuddy.reaction;
 
 import codejejus.inddybuddy.member.entity.Member;
 import codejejus.inddybuddy.post.Post;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface LikeRepository extends JpaRepository<Like, Long> {
+public interface ReactionRepository extends JpaRepository<Reaction, Long> {
 
-    Optional<Like> findByMemberAndPost(Member member, Post post);
+    Optional<Reaction> findByMemberAndPost(Member member, Post post);
 }

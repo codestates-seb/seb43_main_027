@@ -1,4 +1,4 @@
-package codejejus.inddybuddy.like;
+package codejejus.inddybuddy.reaction;
 
 import codejejus.inddybuddy.global.audit.Timestamped;
 import codejejus.inddybuddy.member.entity.Member;
@@ -10,17 +10,16 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "likes")
 @Getter
 @NoArgsConstructor
-public class Like extends Timestamped {
+public class Reaction extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long likeId;
+    private Long reactionId;
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
-    private LikeStatus likeStatus;
+    private ReactionStatus reactionStatus;
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
@@ -28,20 +27,21 @@ public class Like extends Timestamped {
     @JoinColumn(name = "post_id")
     private Post post;
 
-    public enum LikeStatus {
+    public enum ReactionStatus {
 
-        LIKE("좋아요"), DISLIKE("싫어요");
+        HAPPY("좋아요"),
+        UNHAPPY("싫어요");
         private String description;
 
-        LikeStatus(String description) {
+        ReactionStatus(String description) {
             this.description = description;
         }
     }
 
     @Builder
-    public Like(Long likeId, LikeStatus likeStatus) {
-        this.likeId = likeId;
-        this.likeStatus = likeStatus;
+    public Reaction(Long reactionId, ReactionStatus reactionStatus) {
+        this.reactionId = reactionId;
+        this.reactionStatus = reactionStatus;
     }
 
     public void update(Member member, Post post) {
