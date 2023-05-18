@@ -16,7 +16,7 @@ const CategoryContainer = () => {
   const navigation = useNavigate();
 
   const onClickCreateButtonHandler = () => {
-    navigation('/game');
+    navigation('/register');
   };
 
   useEffect(() => {
