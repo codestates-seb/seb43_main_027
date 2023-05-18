@@ -6,6 +6,7 @@ export const StyledInput = styled.input<InputType>`
   margin: 0.5rem 0.7rem;
   padding: 0.5rem 0.7rem;
   border-radius: 4px;
+  width: 100%;
 
   &:focus {
     background-color: var(--cyan-light-200);

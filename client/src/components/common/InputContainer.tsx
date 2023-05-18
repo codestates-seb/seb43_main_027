@@ -64,21 +64,19 @@ export const InputContainerWrapper = styled.div`
   width: 100%;
 `;
 export const StyledLabelContainer = styled.div`
-  padding: 0 0 8px;
   display: flex;
   align-items: center;
   align-self: stretch;
 `;
 const StyledLabel = styled(Label)`
-  font-family: 'Roboto';
   font-size: 1.4rem;
-  line-height: 2.2rem;
   color: rgba(0, 0, 0, 0.85);
   flex: 1;
   text-align: center;
 `;
 export const Field = styled.div`
   background-color: rgba(255, 255, 255, 1);
+  margin: 0.5rem;
   overflow: hidden;
   border-radius: 2px;
   display: flex;
