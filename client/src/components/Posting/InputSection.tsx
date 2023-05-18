@@ -69,7 +69,7 @@ const InputSection = () => {
             }
           }
         );
-        navigation(`/game/${gameId}`);
+        navigation(`/games/${gameId}`);
       } catch (err) {
         alert('게시글 작성에서 오류가 발생하였습니다.');
       }
