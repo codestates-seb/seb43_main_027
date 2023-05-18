@@ -11,6 +11,7 @@ public enum ExceptionCode {
     MEMBER_USERNAME_EXIST(409, "이미 사용중인 닉네임 입니다."),
     GAME_NAME_EXIST(409, "이미 존재하는 게임 입니다."),
     ALREADY_EXIST_FOLLOW(409, "이미 팔로우 관계입니다."),
+    ALREADY_EXIST_LIKE(409, "이미 좋아요/싫어요 를 누른 게시글입니다."),
     MEMBER_NOT_FOUND(404, "회원을 찾을 수 없습니다."),
     GAME_NOT_FOUND(404, "게임을 찾을 수 없습니다."),
     POST_NOT_FOUND(404, "게시글을 찾을 수 없습니다."),

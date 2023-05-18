@@ -3,6 +3,7 @@ package codejejus.inddybuddy.like;
 import codejejus.inddybuddy.global.audit.Timestamped;
 import codejejus.inddybuddy.member.entity.Member;
 import codejejus.inddybuddy.post.Post;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -35,5 +36,16 @@ public class Like extends Timestamped {
         LikeStatus(String description) {
             this.description = description;
         }
+    }
+
+    @Builder
+    public Like(Long likeId, LikeStatus likeStatus) {
+        this.likeId = likeId;
+        this.likeStatus = likeStatus;
+    }
+
+    public void update(Member member, Post post) {
+        this.member = member;
+        this.post = post;
     }
 }
