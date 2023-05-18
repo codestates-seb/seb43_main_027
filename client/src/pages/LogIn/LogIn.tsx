@@ -5,10 +5,10 @@ import { setUser } from '../../slice/userSlice';
 import { RootState } from '../../store/store';
 import styled from 'styled-components';
 
-import LogInFieldsContainer from './LogInFieldsContainer';
-import LogInTopWrapper from './LogInTopWrapper';
-import LogInOauthContainer from './LogInOauthContainer';
-import LogInButtonsContainer from './LogInButtonsContainer';
+import LogInFieldsContainer from '../../components/Login/LogInFieldsContainer';
+import LogInTopWrapper from '../../components/Login/LogInTopWrapper';
+import LogInOauthContainer from '../../components/Login/LogInOauthContainer';
+import LogInButtonsContainer from '../../components/Login/LogInButtonsContainer';
 
 const LogIn = () => {
   const navigator = useNavigate();

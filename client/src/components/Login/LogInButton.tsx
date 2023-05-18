@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import ButtonEl from '../../components/elements/Button';
+import ButtonEl from '../elements/Button';
 
 export interface LogInButtonType {
   onClick: React.MouseEventHandler;
