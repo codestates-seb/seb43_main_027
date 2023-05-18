@@ -25,13 +25,19 @@ export type TabSelectType = {
 };
 
 export type GameItemPropsType = {
-  gameId: number, 
-  gameName: string,
-  followerCount: number,
-  categories: CategoryType[],
-  mainImgUrl: string,
+  gameId: number;
+  gameName: string;
+  followerCount: number;
+  categories: CategoryType[];
+  mainImgUrl: string;
 }
 
 export type StyledTagPropsType = {
   styleId: number;
 };
+
+export type PostListProps = {
+  isSelectTab: string;
+  isSelectTag: string;
+  isMappingTag: string;
+}
