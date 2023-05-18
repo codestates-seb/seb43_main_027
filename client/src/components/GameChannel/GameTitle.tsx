@@ -37,6 +37,7 @@ const GameTitle = ()  => {
 
   useEffect(() => {
     const fetchFollowerData = async () => {
+      console.log(memberId);
       try {
         const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/members/${memberId}/mygame`);
         const followedData = res.data.data;
@@ -65,7 +66,8 @@ const GameTitle = ()  => {
       console.log(token);
 
       if (isFollowed) {
-        axios.delete(`${process.env.REACT_APP_API_URL}/api/games/${gameId}/unfollow`, {
+        axios.delete(`${process.env.REACT_APP_API_URL}/api/games/${gameId}/unfollow`,
+        {
           headers: {
             Authorization: `${token}`
           }
@@ -79,7 +81,7 @@ const GameTitle = ()  => {
           })
       }
       if (!isFollowed) {
-        axios.post(`${process.env.REACT_APP_API_URL}/api/games/${gameId}/follow`, {
+        axios.post(`${process.env.REACT_APP_API_URL}/api/games/${gameId}/follow`, {}, {
           headers: {
             Authorization: `${token}`
           }
