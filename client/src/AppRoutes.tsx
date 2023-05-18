@@ -24,6 +24,10 @@ const AppRoutes = () => {
           path={`${PATH_URL.GAME}:gameId${PATH_URL.POSTING}`}
           element={<Posting />}
         />
+        <Route
+          path={`${PATH_URL.GAME}:gameId${PATH_URL.POSTING}/:postId${PATH_URL.EDIT}`}
+          element={<Posting />}
+        />
         <Route path={PATH_URL.LOGIN} element={<LogIn />} />
         <Route path={PATH_URL.REGISTER} element={<GameRegister />} />
       </Route>
