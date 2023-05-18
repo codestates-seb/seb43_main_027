@@ -1,4 +1,3 @@
-import { UploadOutlined } from '@ant-design/icons';
 import Label from '../../components/elements/Label';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -7,6 +6,8 @@ import axios from 'axios';
 import styled from 'styled-components';
 
 import GameTagsContainer from '../../components/GameRegister/GameTagsContainer';
+import GameRegisterImageSection from '../../components/GameRegister/GameRegisterImageSection';
+
 import { gameTagInfo } from '../../data/gameTags';
 const { gameTags, textTranslate } = gameTagInfo;
 
@@ -29,15 +30,6 @@ const GameRegister = () => {
     setUrl(e.target.value);
   };
 
-  const handlefile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null;
-
-    console.log(file);
-    if (file) {
-      setFiles([...files, file]);
-    }
-  };
-
   const cancelHandler = () => {
     navigation(-1);
   };
@@ -56,15 +48,12 @@ const GameRegister = () => {
     };
     const selectedTagsIndex = tagStates.reduce(reducer, []);
     const selectedTags = selectedTagsIndex.map((i) => gameTags[i]);
-    console.log(selectedTags);
     const translatedTags = selectedTags.map((i) => textTranslate[i]);
-    console.log(translatedTags);
     const postData: PostDataType = {
       gameName: title,
       downloadUrl: url,
       categoryNames: translatedTags
     };
-    console.log(postData);
 
     const formData = new FormData();
     formData.append(
@@ -78,12 +67,8 @@ const GameRegister = () => {
       formData.append('file', afile);
     }
 
-    const value = formData.values().next();
-    console.log(value);
-
-    // headers를 변수로 담아줍니다.
     const token = localStorage.getItem('access_token');
-    console.log(token);
+
     const headers = {
       'Content-Type': 'multipart/form-data',
       Authorization: `${token}` // 토큰을 헤더에 추가
@@ -143,15 +128,8 @@ const GameRegister = () => {
           />
         </StyledGameNameContainer>
         {/* 게임 대표이미지 */}
-        <StyledImageContainer>
-          <Label htmlFor='gametitleimg'>게임대표사진</Label>
-          <input
-            name='gametitleimg'
-            type='file'
-            accept='image/*'
-            onChange={handlefile}
-          />
-        </StyledImageContainer>
+        <GameRegisterImageSection files={files} setFiles={setFiles} />
+
         {/* 확인/취소 버튼 */}
         <StyledButtonsContainer>
           <button type='submit' className='enroll'>
@@ -245,34 +223,6 @@ const StyledGameDetailContainer = styled(StyledGameNameContainer)`
     }
     textarea {
       min-height: 30rem;
-    }
-  }
-`;
-
-const StyledImageContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  > label {
-    display: flex;
-    margin: 0.5rem 1rem;
-  }
-
-  > form {
-    display: flex;
-  }
-
-  button {
-    &:hover {
-      color: var(--cyan-dark-400) !important;
-      border-color: var(--cyan-dark-400) !important;
-    }
-  }
-
-  > svg {
-    &:hover {
-      background-color: var(--cyan-dark-400);
     }
   }
 `;
