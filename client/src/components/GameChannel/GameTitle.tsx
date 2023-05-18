@@ -38,6 +38,7 @@ const GameTitle = () => {
 
   useEffect(() => {
     const fetchFollowerData = async () => {
+      console.log(memberId);
       try {
         const res = await axios.get(
           `${process.env.REACT_APP_API_URL}/api/members/${memberId}/mygame`
@@ -88,23 +89,18 @@ const GameTitle = () => {
           });
       }
       if (!isFollowed) {
-        axios
-          .post(
-            `${process.env.REACT_APP_API_URL}/api/games/${gameId}/follow`,
-            {},
-            {
-              headers: {
-                Authorization: `${token}`
-              }
-            }
-          )
-          .then((response) => {
-            console.log('팔로우 요청 성공');
-            setIsFollowed(true);
-          })
-          .catch((error) => {
-            console.error('팔로우 요청 실패:', error);
-          });
+        axios.post(`${process.env.REACT_APP_API_URL}/api/games/${gameId}/follow`, {}, {
+          headers: {
+            Authorization: `${token}`
+          }
+        })
+        .then(response => {
+          console.log('팔로우 요청 성공');
+          setIsFollowed(true);
+        })
+        .catch(error => {
+          console.error('팔로우 요청 실패:', error);
+        });
       }
     }
   };

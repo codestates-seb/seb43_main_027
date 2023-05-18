@@ -10,6 +10,7 @@ import SelectTag from '../components/common/SelectTag';
 import PostList from '../components/GameChannel/PostList';
 import { postOptionTags, optionMapping } from '../data/postOptionTags';
 import { gameChannelFilterTab } from '../data/filterTapList';
+import PATH_URL from '../constants/pathUrl';
 
 // todo: 버튼 클릭시 경로 설정
 
@@ -35,9 +36,7 @@ const GameChannel = ()  => {
     if (memberId === -1) {
       navigate('/login');
     } else {
-      // 게시글 작성페이지로 경로이동
-      // navigate('/');
-      console.log('게시글 작성페이지로 이동');
+      navigate(`${PATH_URL.POSTING}`);
     }
   };
 
