@@ -38,6 +38,10 @@ const GameRegister = () => {
     }
   };
 
+  const cancelHandler = () => {
+    navigation(-1);
+  };
+
   interface PostDataType {
     gameName: string;
     downloadUrl: string;
@@ -63,15 +67,18 @@ const GameRegister = () => {
     console.log(postData);
 
     const formData = new FormData();
-    formData.append('post', JSON.stringify(postData));
+    formData.append(
+      'post',
+      new Blob([JSON.stringify(postData)], {
+        type: 'application/json'
+      })
+    );
 
     for (const afile of files) {
       formData.append('file', afile);
     }
 
-    let value = formData.values().next();
-    console.log(value);
-    value = formData.values().next();
+    const value = formData.values().next();
     console.log(value);
 
     // headers를 변수로 담아줍니다.
@@ -138,15 +145,19 @@ const GameRegister = () => {
         {/* 게임 대표이미지 */}
         <StyledImageContainer>
           <Label htmlFor='gametitleimg'>게임대표사진</Label>
-          <input name='gametitleimg' type='file' onChange={handlefile} />
-          <button>파일 업로드</button>
+          <input
+            name='gametitleimg'
+            type='file'
+            accept='image/*'
+            onChange={handlefile}
+          />
         </StyledImageContainer>
         {/* 확인/취소 버튼 */}
         <StyledButtonsContainer>
           <button type='submit' className='enroll'>
             등록
           </button>
-          <button type='button' className='cancel'>
+          <button type='button' className='cancel' onClick={cancelHandler}>
             취소
           </button>
         </StyledButtonsContainer>
