@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import { StyledInput } from '../elements/Input';
-import { StyledLabel } from '../elements/Label';
+import { Label } from '../elements/Label';
 
 import { InputContainerType } from '../../types/componentsTypes';
 
@@ -15,7 +15,7 @@ const InputContainer = ({
   return (
     <InputContainerWrapper>
       <StyledLabelContainer>
-        <Label>{title}</Label>
+        <StyledLabel>{title}</StyledLabel>
       </StyledLabelContainer>
       <Field>
         <InputEl
@@ -54,7 +54,7 @@ export const StyledLabelContainer = styled.div`
   align-items: center;
   align-self: stretch;
 `;
-const Label = styled(StyledLabel)`
+const StyledLabel = styled(Label)`
   font-family: 'Roboto';
   font-size: 1.4rem;
   line-height: 2.2rem;

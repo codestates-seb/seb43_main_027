@@ -7,6 +7,7 @@ import SignUp from './pages/SignUp/SignUp';
 import Posting from './pages/Posting';
 import LogIn from './pages/LogIn/LogIn';
 import PATH_URL from './constants/pathUrl';
+import GameRegister from './pages/GameRegister/GameRegister';
 
 const AppRoutes = () => {
   return (
@@ -18,9 +19,10 @@ const AppRoutes = () => {
           element={<CategoryGames />}
         />
         <Route path={`${PATH_URL.GAME}:gameId`} element={<GameChannel />} />
-        <Route path='/signup' element={<SignUp />} />
+        <Route path={PATH_URL.SIGNUP} element={<SignUp />} />
         <Route path={PATH_URL.POSTING} element={<Posting />} />
-        <Route path='/login' element={<LogIn />} />
+        <Route path={PATH_URL.LOGIN} element={<LogIn />} />
+        <Route path={PATH_URL.REGISTER} element={<GameRegister />} />
       </Route>
     </Routes>
   );

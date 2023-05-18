@@ -50,6 +50,9 @@ export type PathUrlType = {
   CATEGORY: string;
   GAME: string;
   POSTING: string;
+  LOGIN: string;
+  SIGNUP: string;
+  REGISTER: string;
 };
 
 export type PostOptionType = {
