@@ -10,6 +10,8 @@ import codejejus.inddybuddy.post.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class LikeService {
@@ -29,8 +31,21 @@ public class LikeService {
         return likeMapper.entityToResponse(save);
     }
 
+    public void deleteLike(MemberPrincipal memberPrincipal, Long likeId) {
+        Like findLike = findVerifiedLike(likeId);
+        memberService.verifySameMember(memberPrincipal.getMember(), findLike.getMember());
+        likeRepository.deleteById(likeId);
+    }
+
+
     private void verifyLike(Member member, Post post) {
         boolean isExist = likeRepository.existsByMemberAndPost(member, post);
         if (isExist) throw new CustomException(ExceptionCode.ALREADY_EXIST_LIKE);
+    }
+
+    private Like findVerifiedLike(Long likeId) {
+        Optional<Like> optionalLike = likeRepository.findById(likeId);
+        Like findLike = optionalLike.orElseThrow(() -> new CustomException(ExceptionCode.LIKE_NOT_FOUND));
+        return findLike;
     }
 }

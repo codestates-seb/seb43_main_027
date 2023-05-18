@@ -20,4 +20,11 @@ public class LikeController {
                                                                        @PathVariable("post-id") Long postId) {
         return ResponseEntity.ok(new SingleResponse<>(likeService.createLike(memberPrincipal, request, postId)));
     }
+
+    @DeleteMapping("/like/{like-id}")
+    public ResponseEntity<Like> deleteLike(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
+                                           @PathVariable("like-id") Long likeId) {
+        likeService.deleteLike(memberPrincipal, likeId);
+        return ResponseEntity.noContent().build();
+    }
 }
