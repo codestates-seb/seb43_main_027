@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 
-import { Empty } from 'antd';
 import FilterBar from './FilterBar';
 import HomeGameCard from './HomeGameCard';
 
@@ -15,13 +14,7 @@ const GameContainer = () => {
         <FilterBar setGames={setGames} />
         <StyledCardContainer>
           {games.length === 0 && (
-            <Empty
-              description={
-                <StyledNotFoundText>
-                  게임을 찾을 수 없습니다.
-                </StyledNotFoundText>
-              }
-            />
+            <StyledEmptyItem>등록된 게임 채널이 없습니다.</StyledEmptyItem>
           )}
           {games.map((game) => (
             <HomeGameCard key={game.gameId} {...game} />
@@ -59,4 +52,15 @@ const StyledCardContainer = styled.div`
 
 const StyledNotFoundText = styled.div`
   margin-top: 3rem;
+`;
+
+const StyledEmptyItem = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 50px 0px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--default-text-color);
 `;
