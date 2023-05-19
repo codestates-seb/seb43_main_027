@@ -1,15 +1,12 @@
 package codejejus.inddybuddy.global.jwt.filter;
 
-import codejejus.inddybuddy.global.jwt.JwtTokenProvider;
 import codejejus.inddybuddy.member.dto.LoginDto;
-import codejejus.inddybuddy.member.entity.Member;
-import codejejus.inddybuddy.member.entity.MemberPrincipal;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -22,18 +19,18 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
-    private final JwtTokenProvider jwtTokenProvider;
 
-    @SneakyThrows
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         ObjectMapper objectMapper = new ObjectMapper();
-        LoginDto loginDto = objectMapper.readValue(request.getInputStream(), LoginDto.class);
-
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
-
-        return authenticationManager.authenticate(authenticationToken);
+        try {
+            LoginDto loginDto = objectMapper.readValue(request.getInputStream(), LoginDto.class);
+            UsernamePasswordAuthenticationToken authenticationToken =
+                    new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
+            return authenticationManager.authenticate(authenticationToken);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -41,13 +38,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                             HttpServletResponse response,
                                             FilterChain filterChain,
                                             Authentication authentication) throws IOException, ServletException {
-        MemberPrincipal memberPrincipal = (MemberPrincipal) authentication.getPrincipal();
-        Member member = memberPrincipal.getMember();
-
-        String accessToken = jwtTokenProvider.generateAccessToken(member.getEmail(), member.getRoles());
-        String refreshToken = jwtTokenProvider.generateRefreshToken();
-
-        jwtTokenProvider.sendAccessAndRefreshToken(response, accessToken, refreshToken);
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authentication);
     }
 }

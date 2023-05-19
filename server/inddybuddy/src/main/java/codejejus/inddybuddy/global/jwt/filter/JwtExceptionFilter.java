@@ -1,8 +1,8 @@
 package codejejus.inddybuddy.global.jwt.filter;
 
+import codejejus.inddybuddy.global.utils.ResponseUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.JwtException;
-import org.springframework.http.MediaType;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -26,11 +26,9 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
         }
     }
 
-    private void setErrorResponse(HttpServletRequest request, HttpServletResponse response, JwtException exception) throws IOException {
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+    private void setErrorResponse(HttpServletRequest request, HttpServletResponse response, RuntimeException exception) throws IOException {
+        ResponseUtils.setStatus(response, HttpServletResponse.SC_UNAUTHORIZED);
         Map<String, Object> body = new HashMap<>();
-        body.put("status", HttpServletResponse.SC_UNAUTHORIZED);
         body.put("error", "Unauthorized");
         body.put("message", exception.getMessage());
         body.put("path", request.getServletPath());
