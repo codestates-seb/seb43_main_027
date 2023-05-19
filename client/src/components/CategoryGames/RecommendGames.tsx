@@ -205,12 +205,14 @@ const StyledBadge = styled.div`
   color: var(--cyan-dark-500);
   font-size: 16px;
   top: 50px;
-  left: -30px;
+  left: -10px;
   border-top-right-radius: 15px;
   border-bottom-right-radius: 15px;
   text-align: center;
   font-weight: 700;
   opacity: 0.8;
+  max-width: 200px;
+  overflow-wrap: break-word;
   @media screen and (max-width: 650px) {
     position: absolute;
     top: 70px;
