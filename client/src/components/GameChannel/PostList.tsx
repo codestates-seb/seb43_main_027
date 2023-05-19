@@ -45,6 +45,7 @@ const PostList: React.FC<PostListProps> = ({ isSelectTag, isSelectTab, isMapping
               setIsFilteredPosts([]);
               return setIsUserMessage('로그인이 필요한 기능입니다.');
             } else {
+              apiUrl =  `${process.env.REACT_APP_API_URL}/api/members/${memberId}/bookmark`;
               setIsUserMessage('북마크한 게시글이 없습니다.');
             }
             break;
@@ -54,6 +55,7 @@ const PostList: React.FC<PostListProps> = ({ isSelectTag, isSelectTab, isMapping
               setIsFilteredPosts([]);
               return setIsUserMessage('로그인이 필요한 기능입니다.');
             } else {
+              apiUrl = `${process.env.REACT_APP_API_URL}/api/members/${memberId}/mypost`;
               setIsUserMessage('작성된 게시글이 없습니다.');
             }
             break;
@@ -64,15 +66,9 @@ const PostList: React.FC<PostListProps> = ({ isSelectTag, isSelectTab, isMapping
         };
 
         if (isSelectTag !== '전체') {
-          apiUrl += `&postTag=${isMappingTag}`;
-        };
-
-        if (isSelectTab === '북마크 글') {
-          apiUrl =  `${process.env.REACT_APP_API_URL}/api/members/${memberId}/bookmark`;
-        };
-
-        if (isSelectTab === '내가 쓴 글') {
-          apiUrl = `${process.env.REACT_APP_API_URL}/api/members/${memberId}/mypost`;
+          apiUrl += isSelectTab === '북마크 글' || isSelectTab === '내가 쓴 글' ?
+            `?postTag=${isMappingTag}` :
+            `&postTag=${isMappingTag}`;
         };
 
         const res = await axios.get(apiUrl);
@@ -87,7 +83,7 @@ const PostList: React.FC<PostListProps> = ({ isSelectTag, isSelectTab, isMapping
       } catch (error) {
         setIsFilteredPosts([]);
         console.log(error);
-      }
+      };
     };
 
     fetchPostsData();
