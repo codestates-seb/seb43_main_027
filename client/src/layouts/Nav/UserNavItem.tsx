@@ -2,8 +2,9 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { AiOutlineMail, AiOutlineUser } from 'react-icons/ai';
+import { User } from '../../types/dataTypes';
 
-const UserNavItem = () => {
+const UserNavItem = ({ data: user }: { data: User }) => {
   const navigation = useNavigate();
 
   const onUserClickHandler = () => {
@@ -15,7 +16,7 @@ const UserNavItem = () => {
   return (
     <StyledContainer onClick={onUserClickHandler}>
       <AiOutlineUser color={'var(--cyan-dark-500)'} size={'3rem'} />
-      <StyledUserName>User Name</StyledUserName>
+      <StyledUserName>{user.username}</StyledUserName>
       <div>
         <AiOutlineMail
           color={'#999'}
