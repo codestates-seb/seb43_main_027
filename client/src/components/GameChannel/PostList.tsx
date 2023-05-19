@@ -43,52 +43,36 @@ const PostList: React.FC<PostListProps> = ({ isSelectTag, isSelectTab, isMapping
           case '북마크 글': {
             if (memberId === -1) {
               setIsFilteredPosts([]);
-              setIsUserMessage('로그인이 필요한 기능입니다.');
+              return setIsUserMessage('로그인이 필요한 기능입니다.');
             } else {
-              try {
-                const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/members/${memberId}/bookmark`);
-                const getLikePosts = res.data.data;
-
-                if (getLikePosts.length > 0) {
-                  setIsFilteredPosts([...getLikePosts]);
-                } else {
-                  setIsFilteredPosts([]);
-                  setIsUserMessage('북마크한 게시글이 없습니다.');
-                };
-              } catch (error) {
-                console.log(error);  
-              }
+              setIsUserMessage('북마크한 게시글이 없습니다.');
             }
             break;
           };
           case '내가 쓴 글': {
             if (memberId === -1) {
               setIsFilteredPosts([]);
-              setIsUserMessage('로그인이 필요한 기능입니다.');
+              return setIsUserMessage('로그인이 필요한 기능입니다.');
             } else {
-              try {
-                const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/members/${memberId}/mypost`);
-                const myPosts = res.data.data;
-
-                if (myPosts.length > 0) {
-                  setIsFilteredPosts([...myPosts]);
-                } else {
-                  setIsFilteredPosts([]);
-                  setIsUserMessage('북마크한 게시글이 없습니다.');
-                };
-              } catch (error) {
-                console.log(error);  
-              }
+              setIsUserMessage('작성된 게시글이 없습니다.');
             }
             break;
-          }
+          };
           default:
             setIsFilteredPosts(isFilteredPosts);
             break;
-          };
+        };
 
         if (isSelectTag !== '전체') {
           apiUrl += `&postTag=${isMappingTag}`;
+        };
+
+        if (isSelectTab === '북마크 글') {
+          apiUrl =  `${process.env.REACT_APP_API_URL}/api/members/${memberId}/bookmark`;
+        };
+
+        if (isSelectTab === '내가 쓴 글') {
+          apiUrl = `${process.env.REACT_APP_API_URL}/api/members/${memberId}/mypost`;
         };
 
         const res = await axios.get(apiUrl);
@@ -99,8 +83,9 @@ const PostList: React.FC<PostListProps> = ({ isSelectTag, isSelectTab, isMapping
         setIsSize(pageInfo.size);
         setIsTotalSize(pageInfo.totalSize);
         if (isFilteredPosts.length === 0) setIsUserMessage('작성된 게시글이 없습니다.');
-
+      
       } catch (error) {
+        setIsFilteredPosts([]);
         console.log(error);
       }
     };
