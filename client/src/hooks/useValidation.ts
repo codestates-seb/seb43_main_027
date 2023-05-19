@@ -7,10 +7,12 @@
 
 import { ValidationFunction } from '../types/customHooksTypes';
 
-  function useValidation(value: string | File, validationFunction: ValidationFunction) {
-    if (validationFunction) return validationFunction(value);
-    return false;
-  }
-
+function useValidation(
+  value: string | File,
+  validationFunction: ValidationFunction
+) {
+  if (validationFunction) return validationFunction(value);
+  return false;
+}
 
 export default useValidation;
