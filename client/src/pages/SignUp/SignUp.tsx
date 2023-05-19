@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import styled from 'styled-components';
 
 import { useNavigate } from 'react-router-dom';
@@ -15,6 +16,7 @@ import { RootState } from '../../store/store';
 const SignUp = () => {
   const navigation = useNavigate();
 
+  const userinfo = useSelector((state: RootState) => state.user);
   const signupinfo = useSelector((state: RootState) => state.signup);
 
   const emailSignUp: React.MouseEventHandler = async (e: React.MouseEvent) => {
@@ -37,6 +39,14 @@ const SignUp = () => {
       navigation('/error');
     }
   };
+
+  useEffect(() => {
+    if (userinfo.memberId !== -1) {
+      navigation('/');
+      console.log('working?');
+    }
+    console.log('working');
+  }, [userinfo]);
 
   return (
     <StyledSignUpContainer>

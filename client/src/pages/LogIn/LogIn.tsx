@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
@@ -11,9 +12,10 @@ import LogInOauthContainer from '../../components/Login/LogInOauthContainer';
 import LogInButtonsContainer from '../../components/Login/LogInButtonsContainer';
 
 const LogIn = () => {
-  const navigator = useNavigate();
+  const navigation = useNavigate();
 
   const dispatch = useDispatch();
+  const userinfo = useSelector((state: RootState) => state.user);
   const logininfo = useSelector((state: RootState) => state.signup);
 
   const oauthLogIn: React.MouseEventHandler = async (e: React.MouseEvent) => {
@@ -40,14 +42,22 @@ const LogIn = () => {
           localStorage.setItem('user', JSON.stringify(userdata));
           console.log(JSON.parse(localStorage.getItem('user')!));
           alert('you successfully logged in!');
-          navigator('/');
+          navigation('/');
         });
     } catch (error) {
       console.log(error);
       alert('you failed to login!');
-      navigator('/error');
+      navigation('/error');
     }
   };
+
+  useEffect(() => {
+    if (userinfo.memberId !== -1) {
+      navigation('/');
+      console.log('working?');
+    }
+    console.log('working');
+  }, [userinfo]);
 
   return (
     <StyledLogInContainer>
