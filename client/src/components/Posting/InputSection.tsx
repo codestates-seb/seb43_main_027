@@ -137,7 +137,10 @@ const InputSection = () => {
   return (
     <form onSubmit={onSubmitHandler} encType='multipart/form-data'>
       <StyledContainer>
-        <SelectTag options={postOptionTags} onChange={onTagChangeHandler} />
+        <SelectTag
+          options={postOptionTags.slice(1)}
+          onChange={onTagChangeHandler}
+        />
         <StyledTitleInput
           value={post.title}
           placeholder='제목을 입력하세요.'
