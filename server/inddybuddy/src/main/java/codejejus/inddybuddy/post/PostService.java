@@ -49,8 +49,8 @@ public class PostService {
     public PostDto.Response modifyPost(Long postId, MemberPrincipal memberPrincipal, PostDto.Patch patchDto, List<MultipartFile> multipartFiles) {
         Post findPost = findVerifidPost(postId);
         memberService.verifySameMember(findPost.getMember(), memberPrincipal.getMember());
+        fileService.deletePostFilesByPatchFileUrl(findPost, findPost.getFiles(), patchDto.getFileUrlList());
         if (multipartFiles != null) {
-            fileService.deletePostFilesByPatchFileUrl(findPost, findPost.getFiles(), patchDto.getFileUrlList());
             List<File> files = fileService.createFiles(multipartFiles, findPost);
             files.forEach(findPost::addFile);
         }
@@ -61,6 +61,7 @@ public class PostService {
     @Transactional(readOnly = true)
     public PostDto.Response findPost(Long postId, MemberPrincipal memberPrincipal) {
         Post post = findVerifidPost(postId);
+        post.addView();
         PostDto.Response response = postMapper.entityToResponse(post);
 
         if (memberPrincipal != null) {
@@ -95,11 +96,6 @@ public class PostService {
         memberService.verifySameMember(findPost.getMember(), memberPrincipal.getMember());
         postRepository.delete(findPost);
         fileService.deletePostFiles(findPost);
-    }
-
-    private void verifyPost(Post post) {
-        Long memberId = post.getMember().getMemberId();
-        memberService.findMember(memberId);
     }
 
     public Post findVerifidPost(Long postId) {
