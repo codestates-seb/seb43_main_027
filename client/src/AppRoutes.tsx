@@ -8,6 +8,7 @@ import Posting from './pages/Posting';
 import LogIn from './pages/Login';
 import PATH_URL from './constants/pathUrl';
 import GameRegister from './pages/GameRegister';
+import Posts from './pages/Posts';
 
 const AppRoutes = () => {
   return (
@@ -27,6 +28,10 @@ const AppRoutes = () => {
         <Route
           path={`${PATH_URL.GAME}:gameId${PATH_URL.POSTING}/:postId${PATH_URL.EDIT}`}
           element={<Posting />}
+        />
+        <Route
+          path={`${PATH_URL.GAME}:gameId${PATH_URL.POSTING}/:postId`}
+          element={<Posts />}
         />
         <Route path={PATH_URL.LOGIN} element={<LogIn />} />
         <Route path={PATH_URL.REGISTER} element={<GameRegister />} />
