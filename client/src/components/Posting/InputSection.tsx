@@ -97,15 +97,17 @@ const InputSection = () => {
     } else {
       formData.append(
         'patch',
-        new Blob([JSON.stringify(post)], {
-          type: 'application/json'
-        })
-      );
-      formData.append(
-        'url',
-        new Blob([JSON.stringify(url)], {
-          type: 'application/json'
-        })
+        new Blob(
+          [
+            JSON.stringify({
+              ...post,
+              fileUrlList: [...url]
+            })
+          ],
+          {
+            type: 'application/json'
+          }
+        )
       );
       patchData(
         `${process.env.REACT_APP_API_URL}/api/posts/${postId}`,
