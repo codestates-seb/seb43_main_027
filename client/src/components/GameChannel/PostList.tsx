@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import PostItem from './PostItem';
 import { type PostListProps } from '../../types/propsTypes';
 import { type GamePagePostType } from '../../types/dataTypes';
-import { dummyBookmarkList } from '../../data/dummyPostList';
 
 const PostList: React.FC<PostListProps> = ({ isSelectTag, isSelectTab, isMappingTag }) => {
   const { gameId } = useParams();
@@ -22,8 +21,6 @@ const PostList: React.FC<PostListProps> = ({ isSelectTag, isSelectTab, isMapping
   const [ isTotalSize, setIsTotalSize ] = useState<number>(0);
 
   // todo: 내가 북마크한 게시글, 내가쓴 게시글 아직 필터링안됨
-
-  console.log(isMappingTag);
 
   useEffect(() => {
     const fetchPostsData = async () => {
