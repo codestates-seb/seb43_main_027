@@ -1,6 +1,5 @@
 package codejejus.inddybuddy.member.entity;
 
-import codejejus.inddybuddy.file.File;
 import codejejus.inddybuddy.global.audit.Timestamped;
 import codejejus.inddybuddy.global.constant.Constants;
 import lombok.Getter;
@@ -28,8 +27,6 @@ public class Member extends Timestamped {
     private String password;
     @Column(nullable = false, length = 45, unique = true)
     private String username;
-    @OneToOne(mappedBy = "member", fetch = FetchType.LAZY)
-    private File file;
     @Column(nullable = false)
     private String imageUrl = Constants.MEMBER_DEFAULT_IMG;
     @Column(columnDefinition = "TEXT")
