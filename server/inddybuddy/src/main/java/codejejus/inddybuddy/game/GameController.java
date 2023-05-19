@@ -78,17 +78,17 @@ public class GameController {
         return ResponseEntity.created(UriCreator.createURI(gameId)).build();
     }
 
+    @GetMapping("/{game_id}/follower")
+    public ResponseEntity<SingleResponse<List<MemberDto.SimpleInfoResponse>>> getGameFollowers(@PathVariable("game_id") Long gameId) {
+        List<Member> followers = followGameService.getAllFollowerByMemberId(gameId);
+        return ResponseEntity.ok(new SingleResponse<>(memberMapper.getMemberSimpleInfoResponses(followers)));
+    }
+
     @DeleteMapping("/{game_id}/unfollow")
     public ResponseEntity<FollowMember> unfollowMember(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
                                                        @PathVariable("game_id") Long gameId) {
         gameService.unfollowGame(gameId, memberPrincipal);
         return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping("/{game_id}/follower")
-    public ResponseEntity<SingleResponse<List<MemberDto.SimpleInfoResponse>>> getGameFollowers(@PathVariable("game_id") Long gameId) {
-        List<Member> followers = followGameService.getAllFollowerByMemberId(gameId);
-        return ResponseEntity.ok(new SingleResponse<>(memberMapper.getMemberSimpleInfoResponses(followers)));
     }
 
     @PostMapping("/{game-id}/posts")

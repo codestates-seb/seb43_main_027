@@ -77,6 +77,13 @@ public class MemberController {
         return ResponseEntity.ok(new SingleResponse<>(responses));
     }
 
+    @GetMapping("/{member-id}/mypost")
+    public ResponseEntity<MultiResponse<PostDto.MyPageResponse>> getMemberPosts(@PathVariable("member-id") Long memberId,
+                                                                                @PageableDefault(page = 1, size = 30) Pageable pageable) {
+        Page<PostDto.MyPageResponse> pageResponses = postService.getPostsByMember(memberId, pageable);
+        return ResponseEntity.ok(new MultiResponse<>(pageResponses.getContent(), pageResponses));
+    }
+
     @GetMapping("/{member-id}/following")
     public ResponseEntity<SingleResponse<List<MemberDto.SimpleInfoResponse>>> getFollowingMember(@PathVariable("member-id") Long memberId) {
         List<Member> followings = followMemberService.getAllFollowingByMemberId(memberId);
@@ -94,13 +101,6 @@ public class MemberController {
         List<Member> members = memberService.findByUsernameContaining(keyword);
         List<MemberDto.SimpleInfoResponse> responses = memberMapper.pageMemberToSimpleInfoResponses(members);
         return ResponseEntity.ok(new SingleResponse<>(responses));
-    }
-
-    @GetMapping("/{member-id}/mypost")
-    public ResponseEntity<MultiResponse<PostDto.MyPageResponse>> getMemberPosts(@PathVariable("member-id") Long memberId,
-                                                                                @PageableDefault(page = 1, size = 30) Pageable pageable) {
-        Page<PostDto.MyPageResponse> pageResponses = postService.getPostsByMember(memberId, pageable);
-        return ResponseEntity.ok(new MultiResponse<>(pageResponses.getContent(), pageResponses));
     }
 
     @DeleteMapping("/{member-id}")
