@@ -1,4 +1,4 @@
-package codejejus.inddybuddy.follow;
+package codejejus.inddybuddy.relation.followmember;
 
 import codejejus.inddybuddy.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;

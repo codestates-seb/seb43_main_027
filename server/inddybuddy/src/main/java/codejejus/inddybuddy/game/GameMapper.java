@@ -1,6 +1,5 @@
 package codejejus.inddybuddy.game;
 
-import codejejus.inddybuddy.follow.FollowGameService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;

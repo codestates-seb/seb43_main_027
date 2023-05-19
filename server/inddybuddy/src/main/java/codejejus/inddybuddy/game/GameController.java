@@ -1,7 +1,7 @@
 package codejejus.inddybuddy.game;
 
-import codejejus.inddybuddy.follow.FollowGameService;
-import codejejus.inddybuddy.follow.FollowMember;
+import codejejus.inddybuddy.relation.followgame.FollowGameService;
+import codejejus.inddybuddy.relation.followmember.FollowMember;
 import codejejus.inddybuddy.global.dto.MultiResponse;
 import codejejus.inddybuddy.global.dto.SingleResponse;
 import codejejus.inddybuddy.global.utils.UriCreator;

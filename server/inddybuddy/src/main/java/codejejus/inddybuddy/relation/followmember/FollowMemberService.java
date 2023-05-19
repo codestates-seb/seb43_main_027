@@ -1,4 +1,4 @@
-package codejejus.inddybuddy.follow;
+package codejejus.inddybuddy.relation.followmember;
 
 import codejejus.inddybuddy.global.exception.CustomException;
 import codejejus.inddybuddy.global.exception.ExceptionCode;

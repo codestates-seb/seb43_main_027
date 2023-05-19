@@ -4,7 +4,7 @@ import codejejus.inddybuddy.category.Category;
 import codejejus.inddybuddy.category.CategoryService;
 import codejejus.inddybuddy.file.File;
 import codejejus.inddybuddy.file.FileService;
-import codejejus.inddybuddy.follow.FollowGameService;
+import codejejus.inddybuddy.relation.followgame.FollowGameService;
 import codejejus.inddybuddy.global.constant.Filter;
 import codejejus.inddybuddy.global.exception.CustomException;
 import codejejus.inddybuddy.global.exception.ExceptionCode;
