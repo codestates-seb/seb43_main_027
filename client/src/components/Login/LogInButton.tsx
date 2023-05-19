@@ -1,29 +1,29 @@
 import styled from 'styled-components';
 import ButtonEl from '../elements/Button';
 
-export interface LogInButtonType {
+export interface LoginButtonType {
   onClick: React.MouseEventHandler;
 }
 
-const LogInButton = ({ onClick }: LogInButtonType) => {
+const LoginButton = ({ onClick }: LoginButtonType) => {
   return (
-    <StyledLogInBtnContainer>
-      <StyledLogInBtn onClick={onClick}>
+    <StyledLoginBtnContainer>
+      <StyledLoginBtn onClick={onClick}>
         <p>로그인</p>
-      </StyledLogInBtn>
-    </StyledLogInBtnContainer>
+      </StyledLoginBtn>
+    </StyledLoginBtnContainer>
   );
 };
 
-export default LogInButton;
+export default LoginButton;
 
-const StyledLogInBtnContainer = styled.div`
+const StyledLoginBtnContainer = styled.div`
   display: flex;
   width: 100%;
   margin-bottom: 1rem;
 `;
 
-const StyledLogInBtn = ButtonEl({
+const StyledLoginBtn = ButtonEl({
   flex: '1',
   fontSize: '1.6rem'
 });

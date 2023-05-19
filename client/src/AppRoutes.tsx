@@ -3,11 +3,11 @@ import Template from './pages/Template';
 import Home from './pages/Home';
 import CategoryGames from './pages/CategoryGames';
 import GameChannel from './pages/GameChannel';
-import SignUp from './pages/SignUp/SignUp';
+import SignUp from './pages/Signup';
 import Posting from './pages/Posting';
-import LogIn from './pages/LogIn/LogIn';
+import LogIn from './pages/Login';
 import PATH_URL from './constants/pathUrl';
-import GameRegister from './pages/GameRegister/GameRegister';
+import GameRegister from './pages/GameRegister';
 
 const AppRoutes = () => {
   return (

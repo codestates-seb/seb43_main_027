@@ -1,17 +1,17 @@
-import ButtonEl from '../../components/elements/Button';
-import { OauthButton } from './LogInOauthContainer';
+import ButtonEl from '../elements/Button';
+import { OauthButton } from './LoginOauthContainer';
 
-const LogInOauthBtn = ({ onClick }: OauthButton) => {
+const LoginOauthBtn = ({ onClick }: OauthButton) => {
   return (
-    <StyledLogInOauthButton onClick={onClick}>
+    <StyledLoginOauthButton onClick={onClick}>
       <p>Google 로그인</p>
-    </StyledLogInOauthButton>
+    </StyledLoginOauthButton>
   );
 };
 
-export default LogInOauthBtn;
+export default LoginOauthBtn;
 
-const StyledLogInOauthButton = ButtonEl({
+const StyledLoginOauthButton = ButtonEl({
   fontSize: '2rem',
   fontWeight: '600'
 });

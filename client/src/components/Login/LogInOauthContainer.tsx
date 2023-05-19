@@ -1,22 +1,22 @@
 import styled from 'styled-components';
 
-import LogInOauthBtn from './LogInOauthBtn';
+import LoginOauthBtn from './LoginOauthBtn';
 
 export interface OauthButton {
   onClick: React.MouseEventHandler;
 }
 
-const LogInOauthContainer = ({ onClick }: OauthButton) => {
+const LoginOauthContainer = ({ onClick }: OauthButton) => {
   return (
-    <StyledLogInOauthContainer>
-      <LogInOauthBtn onClick={onClick} />
-    </StyledLogInOauthContainer>
+    <StyledLoginOauthContainer>
+      <LoginOauthBtn onClick={onClick} />
+    </StyledLoginOauthContainer>
   );
 };
 
-export default LogInOauthContainer;
+export default LoginOauthContainer;
 
-const StyledLogInOauthContainer = styled.div`
+const StyledLoginOauthContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 24px;
