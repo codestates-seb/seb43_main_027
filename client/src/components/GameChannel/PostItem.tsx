@@ -1,44 +1,39 @@
 import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
-import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+import convertTag from '../../utils/convertTag';
+import { elapsedText } from '../../utils/elapsedText';
 import CategoryTag from '../common/CategoryTag';
 import { type GamePagePostType } from '../../types/dataTypes';
 import { StarTwoTone } from '@ant-design/icons';
 import PATH_URL from '../../constants/pathUrl';
 import { postOptionTags } from '../../data/postOptionTags';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
 
 const PostItem = ({
   postId,
+  userName,
   title,
   postTag,
-  createdAt,
   views,
-  username,
+  commentCount,
   likeCount,
-  commentCount
+  createdAt
 }: GamePagePostType)  => {
 
   // todo: 게시글 팔로우 조회기능추가- 해당 게시글을 북마크했는지 판단해서 불리언으로 별표시하기
-  // todo: 날짜 분, 시, 일, 년전, 제목 글자수 제한 ... 으로 바꾸기
 
   const { gameId } = useParams();
-  const memberId = useSelector((state: RootState) => state.user.memberId);
+  const getMemberData = localStorage.getItem('user');
+  const memberData = getMemberData ? JSON.parse(getMemberData) : { memberId: -1 };
+  const memberId = memberData.memberId;
   const [ isMarked, setMarked ] = useState(false);
 
-  /*
-  const dateStr = createdAt;
-  const date = new Date(dateStr);
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-  const hour = date.getHours();
-  const minute = date.getMinutes();
-  const formattedDate = `${year}년 ${month}월 ${day}일 ${hour}시 ${minute}분`;
-  */
-  const tagId = postOptionTags.findIndex((option) => option.value === postTag);
+  const tagName = convertTag.asKR(postTag);
+  const tagId = postOptionTags.findIndex((option) => option.value === tagName);
+  const formattedDate = elapsedText(new Date(createdAt));
 
   return (
     <Link to={`${PATH_URL.GAME}${gameId}/posts/${postId}`}>
@@ -48,16 +43,16 @@ const PostItem = ({
             <StyledTitle>
               {title}
             </StyledTitle>
-            <CategoryTag categoryId={tagId} categoryName={postTag} />
+            <CategoryTag categoryId={tagId} categoryName={tagName} />
         </StyledFlexRow>
         <StyledFlexRow>
           <StyledInfo>
             <StyledSpan>작성자:</StyledSpan>
-            {username}
+            {userName}
             <StyledSpan>작성일:</StyledSpan>
-            {/*
+            {
               formattedDate
-            */}
+            }
             <StyledSpan>추천 수:</StyledSpan>
             {likeCount}
             <StyledSpan>조회 수:</StyledSpan>
