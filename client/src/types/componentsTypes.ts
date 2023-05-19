@@ -34,7 +34,7 @@ export interface InputContainerType {
   onChange?: React.ChangeEvent;
   validationMessage?: string;
   extraAction?: (value:string) => void;
-   validationFunction?:
+  validationFunction?:
     | ((value: string) => boolean)
     | ((value: File) => boolean);
   type?: string; 

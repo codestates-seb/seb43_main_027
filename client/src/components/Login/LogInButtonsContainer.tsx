@@ -1,14 +1,14 @@
 import styled from 'styled-components';
 
 import LoginButton, { LoginButtonType } from './LoginButton';
-import MoveToSignUpBtn from './MoveToSignupButton';
+import MoveToSignupBtn from './MoveToSignupButton';
 
 const LoginButtonsContainer = ({ onClick }: LoginButtonType) => {
   return (
     <StyledLoginButtonsContainer>
       <LoginButton onClick={onClick} />
       <p className='mobile-hidden'>아직 회원이 아니신가요?</p>
-      <MoveToSignUpBtn />
+      <MoveToSignupBtn />
     </StyledLoginButtonsContainer>
   );
 };
