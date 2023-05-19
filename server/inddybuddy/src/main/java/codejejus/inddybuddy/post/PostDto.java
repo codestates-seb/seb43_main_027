@@ -2,6 +2,7 @@ package codejejus.inddybuddy.post;
 
 import codejejus.inddybuddy.comment.CommentDto;
 import codejejus.inddybuddy.member.dto.MemberDto;
+import codejejus.inddybuddy.member.entity.Member;
 import codejejus.inddybuddy.post.Post.PostTag;
 import codejejus.inddybuddy.reaction.ReactionDto;
 import lombok.Builder;
@@ -95,6 +96,28 @@ public class PostDto {
             this.commentCount = post.getCommentCount();
             this.likeCount = post.getLikeCount();
             this.createdAt = post.getCreatedAt();
+        }
+    }
+
+    @Getter
+    public static class MyPageResponse {
+
+        private final Long postId;
+        private final String username;
+        private final Member.MemberStatus memberStatus;
+        private final String title;
+        private final PostTag postTag;
+        private final LocalDateTime createdAt;
+        private final LocalDateTime updatedAt;
+
+        public MyPageResponse(Post post) {
+            this.postId = post.getPostId();
+            this.username = post.getMember().getUsername();
+            this.memberStatus = post.getMember().getMemberStatus();
+            this.title = post.getTitle();
+            this.postTag = post.getPostTag();
+            this.createdAt = post.getCreatedAt();
+            this.updatedAt = post.getUpdatedAt();
         }
     }
 }

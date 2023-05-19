@@ -49,5 +49,9 @@ public class PostMapper {
     public Page<PostDto.SimpleResponse> entityPageToSimpleResponsePage(Page<Post> postPage) {
         return postPage.map(this::entityToSimpleResponse);
     }
+
+    public Page<PostDto.MyPageResponse> entityToMyPageResponse(Page<Post> postPage) {
+        return postPage.map(PostDto.MyPageResponse::new);
+    }
 }
 

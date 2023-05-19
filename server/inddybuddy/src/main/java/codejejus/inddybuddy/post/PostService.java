@@ -7,6 +7,7 @@ import codejejus.inddybuddy.game.GameService;
 import codejejus.inddybuddy.global.constant.Filter;
 import codejejus.inddybuddy.global.exception.CustomException;
 import codejejus.inddybuddy.global.exception.ExceptionCode;
+import codejejus.inddybuddy.member.entity.Member;
 import codejejus.inddybuddy.member.entity.MemberPrincipal;
 import codejejus.inddybuddy.member.service.MemberService;
 import codejejus.inddybuddy.reaction.ReactionDto;
@@ -87,8 +88,16 @@ public class PostService {
     @Transactional(readOnly = true)
     public Page<PostDto.SimpleResponse> getPostsByKeyword(String keyword, Pageable pageable) {
         PageRequest pageRequest = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize());
-        Page<Post> allByContainingKeyword = postRepository.findAllByContentContainingOrTitleContaining(keyword, keyword, pageRequest);
+        Page<Post> allByContainingKeyword =
+                postRepository.findAllByContentContainingOrTitleContaining(keyword, keyword, pageRequest);
         return postMapper.entityPageToSimpleResponsePage(allByContainingKeyword);
+    }
+
+    public Page<PostDto.MyPageResponse> getPostsByMember(Long memberId, Pageable pageable) {
+        Member member = memberService.findMember(memberId);
+        PageRequest pageRequest = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize());
+        Page<Post> postPage = postRepository.findAllByMember(member, pageRequest);
+        return postMapper.entityToMyPageResponse(postPage);
     }
 
     public void deletePost(Long postId, MemberPrincipal memberPrincipal) {

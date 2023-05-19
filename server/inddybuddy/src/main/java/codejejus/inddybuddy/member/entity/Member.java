@@ -1,6 +1,5 @@
 package codejejus.inddybuddy.member.entity;
 
-import codejejus.inddybuddy.file.File;
 import codejejus.inddybuddy.global.audit.Timestamped;
 import codejejus.inddybuddy.global.constant.Constants;
 import lombok.Getter;
@@ -12,6 +11,7 @@ import org.hibernate.annotations.Formula;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -28,8 +28,6 @@ public class Member extends Timestamped {
     private String password;
     @Column(nullable = false, length = 45, unique = true)
     private String username;
-    @OneToOne(mappedBy = "member", fetch = FetchType.LAZY)
-    private File file;
     @Column(nullable = false)
     private String imageUrl = Constants.MEMBER_DEFAULT_IMG;
     @Column(columnDefinition = "TEXT")
@@ -57,8 +55,11 @@ public class Member extends Timestamped {
         this.providerId = providerId;
     }
 
-    public void updateMemberStatus(MemberStatus memberStatus) {
-        this.memberStatus = memberStatus;
+    public void deleteMember() {
+        this.memberStatus = MemberStatus.DELETE;
+        String deletedId = "DEL" + UUID.randomUUID();
+        this.username = deletedId;
+        this.email = deletedId;
     }
 
     public enum MemberStatus {

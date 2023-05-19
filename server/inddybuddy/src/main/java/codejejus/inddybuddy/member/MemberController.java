@@ -13,6 +13,8 @@ import codejejus.inddybuddy.member.dto.MemberDto;
 import codejejus.inddybuddy.member.entity.Member;
 import codejejus.inddybuddy.member.entity.MemberPrincipal;
 import codejejus.inddybuddy.member.service.MemberService;
+import codejejus.inddybuddy.post.PostDto;
+import codejejus.inddybuddy.post.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,6 +39,7 @@ public class MemberController {
     private final MemberService memberService;
     private final FollowMemberService followMemberService;
     private final FollowGameService followGameService;
+    private final PostService postService;
 
     @PostMapping("/signup")
     public ResponseEntity<URI> postMember(@RequestBody MemberDto.Post post) {
@@ -67,11 +70,24 @@ public class MemberController {
         return ResponseEntity.ok(new SingleResponse<>(response));
     }
 
+    @GetMapping("/profile")
+    public ResponseEntity<SingleResponse<MemberDto.ProfileResponse>> getMemberProfile(@AuthenticationPrincipal MemberPrincipal memberPrincipal) {
+        MemberDto.ProfileResponse response = memberMapper.memberToMemberProfileDtoResponse(memberPrincipal.getMember());
+        return ResponseEntity.ok(new SingleResponse<>(response));
+    }
+
     @GetMapping("/{member-id}/mygame")
     public ResponseEntity<SingleResponse<List<GameDto.Response>>> getFollowingGame(@PathVariable("member-id") Long memberId) {
         List<Game> games = followGameService.getAllFollowGame(memberId);
         List<GameDto.Response> responses = games.stream().map(gameMapper::entityToResponse).collect(Collectors.toList());
         return ResponseEntity.ok(new SingleResponse<>(responses));
+    }
+
+    @GetMapping("/{member-id}/mypost")
+    public ResponseEntity<MultiResponse<PostDto.MyPageResponse>> getMemberPosts(@PathVariable("member-id") Long memberId,
+                                                                                @PageableDefault(page = 1, size = 30) Pageable pageable) {
+        Page<PostDto.MyPageResponse> pageResponses = postService.getPostsByMember(memberId, pageable);
+        return ResponseEntity.ok(new MultiResponse<>(pageResponses.getContent(), pageResponses));
     }
 
     @GetMapping("/{member-id}/following")
@@ -87,11 +103,10 @@ public class MemberController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<MultiResponse<MemberDto.SimpleInfoResponse>> searchMemberByKeyword(@RequestParam(value = "q") String keyword,
-                                                                                             @PageableDefault(page = 1, size = 30) Pageable pageable) {
-        Page<Member> page = memberService.findByUsernameContaining(keyword, pageable);
-        Page<MemberDto.SimpleInfoResponse> memberPage = memberMapper.pageMemberToSimpleInfoResponses(page);
-        return ResponseEntity.ok(new MultiResponse<>(memberPage.getContent(), memberPage));
+    public ResponseEntity<SingleResponse<List<MemberDto.SimpleInfoResponse>>> searchMemberByKeyword(@RequestParam(value = "q") String keyword) {
+        List<Member> members = memberService.findByUsernameContaining(keyword);
+        List<MemberDto.SimpleInfoResponse> responses = memberMapper.pageMemberToSimpleInfoResponses(members);
+        return ResponseEntity.ok(new SingleResponse<>(responses));
     }
 
     @DeleteMapping("/{member-id}")
