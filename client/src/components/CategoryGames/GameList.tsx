@@ -13,7 +13,11 @@ import { dummyGamesData } from '../../data/dummyCategories';
 const GameList: React.FC<TabSelectType> = ({ isSelectTab })  => {
 
   const { categoryId } = useParams<{ categoryId: string}>();
-  const memberId = useSelector((state: RootState) => state.user.memberId);
+  // const memberId = useSelector((state: RootState) => state.user.memberId);
+  const getMemberData = localStorage.getItem('user');
+  const memberData = getMemberData ? JSON.parse(getMemberData) : { memberId: -1 };
+  const memberId = memberData.memberId;
+
   const [ isFilteredGames, setIsFilteredGames ] = useState<GameType[]>([]);
   const [ userMessage, setUserMessage ] = useState('등록된 게임채널이 없습니다.');
   const [ isPage, setPage ] = useState<number>(1);

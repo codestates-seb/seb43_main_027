@@ -6,12 +6,17 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import CreateChannelButton from '../ui/CreateChannelButton';
 import categoryData from '../../data/categoryData';
+import PATH_URL from '../../constants/pathUrl';
 
 const TitleCategory: React.FC = ()  => {
 
   const [ isCurrentCategory, setIsCurrentCategory ] = useState<string>();
   const { categoryId } = useParams<{ categoryId: string }>();
-  const memberId = useSelector((state: RootState) => state.user.memberId);
+  // const memberId = useSelector((state: RootState) => state.user.memberId);
+  const getMemberData = localStorage.getItem('user');
+  const memberData = getMemberData ? JSON.parse(getMemberData) : { memberId: -1 };
+  const memberId = memberData.memberId;
+  
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,13 +39,11 @@ const TitleCategory: React.FC = ()  => {
     })();
   }, [categoryId]);
 
-  // 리팩토링 고민: 페이지별 중복사용하는 핸들러 함수 모듈화 리팩토링하기
   const handleCreate = () => {
     if (memberId === -1) {
-      navigate('/login');
+      navigate(`${PATH_URL.LOGIN}`);
     } else {
-      // todo: 게시글 작성페이지로 경로이동
-      // return navigate('/');
+      navigate(`${PATH_URL.REGISTER}`);
     };
   };
 

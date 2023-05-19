@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
 import Pagination from 'react-js-pagination';
 import styled from 'styled-components';
 import PostItem from './PostItem';
 import { type PostListProps } from '../../types/propsTypes';
 import { type GamePagePostType } from '../../types/dataTypes';
+import { dummyBookmarkList } from '../../data/dummyPostList';
 
 const PostList: React.FC<PostListProps> = ({ isSelectTag, isSelectTab, isMappingTag }) => {
   const { gameId } = useParams();
-  const memberId = useSelector((state: RootState) => state.user.memberId);
+  const getMemberData = localStorage.getItem('user');
+  const memberData = getMemberData ? JSON.parse(getMemberData) : { memberId: -1 };
+  const memberId = memberData.memberId;
 
   const [ isFilteredPosts, setIsFilteredPosts ] = useState<GamePagePostType[]>([]);
   const [ isUserMessage, setIsUserMessage ] = useState('작성된 게시글이 없습니다.');
@@ -138,13 +139,13 @@ const PostList: React.FC<PostListProps> = ({ isSelectTag, isSelectTab, isMapping
             <PostItem
               key={index}
               postId={post.postId}
-              username={post?.member?.username}
+              username={post.username}
               title={post.title}
               views={post.views}
               postTag={post.postTag}
               commentCount={post.commentCount}
               likeCount={post.likeCount}
-              createdAt={post?.createdAt}
+              createdAt={post.createdAt}
             />
           ))
         ) : (
