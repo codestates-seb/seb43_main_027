@@ -25,8 +25,7 @@ export interface InputType {
   hoverBg?: string,
   boxShadow?: string,
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void | undefined,
-  useInput?: useInputReturn,
-  validationFunction?: ()=>boolean
+  useInput?: useInputReturn
 }
 
 export interface InputContainerType {
@@ -34,8 +33,10 @@ export interface InputContainerType {
   title?: string;
   onChange?: React.ChangeEvent;
   validationMessage?: string;
-  validationType?: 'username' | 'email' | 'password' | 'custom' | 'none';
-  validationFunction?: () => boolean;
+  extraAction?: (value:string) => void;
+   validationFunction?:
+    | ((value: string) => boolean)
+    | ((value: File) => boolean);
   type?: string; 
 }
 
