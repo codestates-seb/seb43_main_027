@@ -23,15 +23,15 @@ const Page404: React.FunctionComponent<Prop404> = ({
 
   return (
     <Styled404Wrapper>
-      <StyledBackground src={Img404} />
+      <StyledBackgroudContainer>
+        <StyledBackground src={Img404} />
+      </StyledBackgroudContainer>
       <StyledContainer>
         <StyledMessageContainer>
           <StyledMessage>{message404}</StyledMessage>
         </StyledMessageContainer>
         <ButtonContainer>
-          <StyledButton onClick={() => moveSomewhere(where)}>
-            {buttonMessage}
-          </StyledButton>
+          <Button onClick={() => moveSomewhere(where)}>{buttonMessage}</Button>
         </ButtonContainer>
       </StyledContainer>
     </Styled404Wrapper>
@@ -41,31 +41,44 @@ const Page404: React.FunctionComponent<Prop404> = ({
 export default Page404;
 
 const Styled404Wrapper = styled.div`
+  position: fixed;
+  z-index: 2;
   display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
   align-items: center;
-  background-color: transparent;
+  justify-content: flex-start;
+  background-color: white;
 `;
 
+const StyledBackgroudContainer = styled.div`
+  display: flex;
+  padding-top: 10rem;
+`;
 const StyledBackground = styled.img`
-  margin: 20rem 0rem 1rem -5rem;
-  position: fixed;
-  width: 100%;
-  height: 90%;
-  z-index: 2;
+  width: 63.4rem;
+  height: 42.3rem;
+  @media screen and (max-width: 650px) {
+    width: 50.72rem;
+    height: 33.84rem;
+  }
 `;
 
 const StyledMessage = styled.div`
   margin-bottom: 2rem;
   font-size: 3.2rem;
+  @media screen and (max-width: 650px) {
+    font-size: 2.56rem;
+  }
 `;
 const Button = ButtonEl({
-  fontColor: 'black',
-  fontSize: '2.0rem'
+  fontColor: 'white',
+  fontSize: '2rem'
 });
 const ButtonContainer = styled.div`
   background-color: transparent;
 `;
-const StyledButton = styled(Button)``;
 
 const StyledMessageContainer = styled.div`
   display: flex;
@@ -73,8 +86,6 @@ const StyledMessageContainer = styled.div`
 `;
 
 const StyledContainer = styled.div`
-  margin-left: 32rem;
-  margin-top: 55rem;
   display: flex;
   flex-direction: column;
   align-items: center;
