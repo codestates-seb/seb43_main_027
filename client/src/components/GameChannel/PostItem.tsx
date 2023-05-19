@@ -14,13 +14,13 @@ import { postOptionTags } from '../../data/postOptionTags';
 
 const PostItem = ({
   postId,
+  userName,
   title,
   postTag,
-  createdAt,
   views,
-  username,
+  commentCount,
   likeCount,
-  commentCount
+  createdAt
 }: GamePagePostType)  => {
 
   // todo: 게시글 팔로우 조회기능추가- 해당 게시글을 북마크했는지 판단해서 불리언으로 별표시하기
@@ -48,7 +48,7 @@ const PostItem = ({
         <StyledFlexRow>
           <StyledInfo>
             <StyledSpan>작성자:</StyledSpan>
-            {username}
+            {userName}
             <StyledSpan>작성일:</StyledSpan>
             {
               formattedDate

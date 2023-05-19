@@ -215,7 +215,7 @@ export const dummyBookmarkList: GamePagePostType[] = [
       'postTag': 'RECRUITMENT',
       'createdAt': '2023-05-09T09:25:00Z',
       'views': 100,
-      'username': 'user1',
+      'userName': 'user1',
       'likeCount': 20,
       'commentCount': 10,
     },
@@ -225,7 +225,7 @@ export const dummyBookmarkList: GamePagePostType[] = [
       'postTag': 'BUG',
       'createdAt': '2023-05-10T12:30:00Z',
       'views': 200,
-      'username': 'user2',
+      'userName': 'user2',
       'likeCount': 10,
       'commentCount': 5
     },
@@ -235,7 +235,7 @@ export const dummyBookmarkList: GamePagePostType[] = [
       'postTag': 'WALKTHROUGH',
       'createdAt': '2023-05-11T18:45:00Z',
       'views': 50,
-      'username': 'user3',
+      'userName': 'user3',
       'likeCount': 5,
       'commentCount': 2
     },
@@ -245,7 +245,7 @@ export const dummyBookmarkList: GamePagePostType[] = [
       'postTag': 'WALKTHROUGH',
       'createdAt': '2023-05-19T00:34:27.616Z',
       'views': 53,
-      'username': 'user4',
+      'userName': 'user4',
       'likeCount': 15,
       'commentCount': 12
     },

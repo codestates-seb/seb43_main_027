@@ -139,7 +139,7 @@ const PostList: React.FC<PostListProps> = ({ isSelectTag, isSelectTab, isMapping
             <PostItem
               key={index}
               postId={post.postId}
-              username={post.username}
+              userName={post.userName}
               title={post.title}
               views={post.views}
               postTag={post.postTag}
