@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
 import styled from 'styled-components';
 import Loading from '../common/Loading';
 import { type GameType } from '../../types/dataTypes';
 import CategoryTag from '../common/CategoryTag';
 import CreateChannelButton from '../ui/CreateChannelButton';
 import PATH_URL from '../../constants/pathUrl';
+import categoryData from '../../data/categoryData';
 
 const GameTitle = () => {
   const { gameId } = useParams();
   const navigate = useNavigate();
-  const memberId = useSelector((state: RootState) => state.user.memberId);
+  const getMemberData = localStorage.getItem('user');
+  const memberData = getMemberData ? JSON.parse(getMemberData) : { memberId: -1 };
+  const memberId = memberData.memberId;
 
   const [isGameData, setIsGameData] = useState<GameType | null>(null);
   const [loading, setLoading] = useState(true);
@@ -38,7 +39,6 @@ const GameTitle = () => {
 
   useEffect(() => {
     const fetchFollowerData = async () => {
-      console.log(memberId);
       try {
         const res = await axios.get(
           `${process.env.REACT_APP_API_URL}/api/members/${memberId}/mygame`
@@ -68,8 +68,6 @@ const GameTitle = () => {
       navigate('/login');
     } else {
       const token = localStorage.getItem('access_token');
-      console.log(token);
-
       if (isFollowed) {
         axios
           .delete(
@@ -81,7 +79,6 @@ const GameTitle = () => {
             }
           )
           .then((response) => {
-            console.log('언팔로우 요청 성공');
             setIsFollowed(false);
           })
           .catch((error) => {
@@ -95,7 +92,6 @@ const GameTitle = () => {
           }
         })
         .then(response => {
-          console.log('팔로우 요청 성공');
           setIsFollowed(true);
         })
         .catch(error => {
@@ -114,7 +110,7 @@ const GameTitle = () => {
           <Link to={`${PATH_URL.CATEGORY}${item.categoryId}`} key={index}>
             <CategoryTag
               categoryId={item.categoryId}
-              categoryName={item.categoryName}
+              categoryName={categoryData[item.categoryName].text}
             />
           </Link>
         ))}
