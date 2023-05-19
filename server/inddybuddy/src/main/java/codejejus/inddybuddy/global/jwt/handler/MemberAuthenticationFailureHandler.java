@@ -2,7 +2,6 @@ package codejejus.inddybuddy.global.jwt.handler;
 
 import codejejus.inddybuddy.global.dto.ErrorResponse;
 import codejejus.inddybuddy.global.utils.ResponseUtils;
-import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -35,9 +34,7 @@ public class MemberAuthenticationFailureHandler implements AuthenticationFailure
     }
 
     private void sendErrorResponse(HttpServletResponse response, String errorMessage) throws IOException {
-        Gson gson = new Gson();
         ErrorResponse errorResponse = ErrorResponse.of(HttpStatus.UNAUTHORIZED, errorMessage);
-        ResponseUtils.setStatus(response, HttpServletResponse.SC_UNAUTHORIZED);
-        response.getWriter().write(gson.toJson(errorResponse, ErrorResponse.class));
+        ResponseUtils.setResponseStatus(response, HttpServletResponse.SC_UNAUTHORIZED, errorResponse);
     }
 }
