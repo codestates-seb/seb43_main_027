@@ -42,7 +42,6 @@ public class MemberDto {
         }
     }
 
-    @AllArgsConstructor
     @Getter
     public static class Response {
 
@@ -54,6 +53,17 @@ public class MemberDto {
         private final String aboutMe;
         private final LocalDateTime createdAt;
         private final LocalDateTime updatedAt;
+
+        public Response(Member member) {
+            this.memberId = member.getMemberId();
+            this.email = member.getEmail();
+            this.username = member.getUsername();
+            this.memberStatus = member.getMemberStatus();
+            this.imageUrl = member.getImageUrl();
+            this.aboutMe = member.getAboutMe();
+            this.createdAt = member.getCreatedAt();
+            this.updatedAt = member.getUpdatedAt();
+        }
     }
 
     @AllArgsConstructor

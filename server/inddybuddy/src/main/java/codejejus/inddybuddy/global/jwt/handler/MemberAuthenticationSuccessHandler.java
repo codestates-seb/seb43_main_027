@@ -1,13 +1,16 @@
 package codejejus.inddybuddy.global.jwt.handler;
 
+import codejejus.inddybuddy.global.dto.ErrorResponse;
 import codejejus.inddybuddy.global.jwt.JwtTokenProvider;
 import codejejus.inddybuddy.global.utils.GsonUtils;
 import codejejus.inddybuddy.global.utils.ResponseUtils;
 import codejejus.inddybuddy.member.dto.MemberDto;
 import codejejus.inddybuddy.member.entity.Member;
 import codejejus.inddybuddy.member.entity.MemberPrincipal;
+import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
@@ -36,7 +39,10 @@ public class MemberAuthenticationSuccessHandler implements AuthenticationSuccess
             jwtTokenProvider.sendAccessAndRefreshToken(response, accessToken, refreshToken);
             setMemberResponse(response, member);
         } else {
-            response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+            Gson gson = new Gson();
+            ErrorResponse errorResponse = ErrorResponse.of(HttpStatus.NOT_ACCEPTABLE, "탈퇴한 회원입니다.");
+            ResponseUtils.setStatus(response, HttpServletResponse.SC_NOT_ACCEPTABLE);
+            response.getWriter().write(gson.toJson(errorResponse, ErrorResponse.class));
         }
     }
 
@@ -47,17 +53,6 @@ public class MemberAuthenticationSuccessHandler implements AuthenticationSuccess
     }
 
     private MemberDto.Response memberToMemberDtoResponse(Member member) {
-        if (member == null) {
-            return null;
-        }
-        return new MemberDto.Response(
-                member.getMemberId(),
-                member.getEmail(),
-                member.getUsername(),
-                member.getMemberStatus(),
-                member.getImageUrl(),
-                member.getAboutMe(),
-                member.getCreatedAt(),
-                member.getUpdatedAt());
+        return new MemberDto.Response(member);
     }
 }
