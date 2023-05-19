@@ -66,21 +66,13 @@ export type OptionMapping = {
 
 export type GamePagePostType = {
   postId: number;
-  member?: {
-    memberId?: number;
-    email?: string;
-    username: string;
-    imageUrl?: string;
-    followerCount?: number;
-    followingCount?: number;
-  };
+  gameId?: number;
+  userName: string;
   title: string;
   content?: string;
-  views: number;
   postTag: string;
+  views: number;
   commentCount: number;
   likeCount: number;
-  gameId?: number;
   createdAt: string;
-  username?: string;
 };
