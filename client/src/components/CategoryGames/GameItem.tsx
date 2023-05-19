@@ -5,6 +5,7 @@ import CategoryTag from '../common/CategoryTag';
 import { dummyGamesData } from '../../data/dummyCategories';
 import { GameItemPropsType } from '../../types/propsTypes';
 import PATH_URL from '../../constants/pathUrl';
+import categoryData from '../../data/categoryData';
 
 const GameItem = ({
   gameId,
@@ -27,7 +28,7 @@ const GameItem = ({
               <CategoryTag
                 key={index}
                 categoryId={item.categoryId}
-                categoryName={item.categoryName}
+                categoryName={categoryData[item.categoryName].text}
               />
             ))
             .slice(0, 3)}
