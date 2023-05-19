@@ -1,21 +1,21 @@
 import styled from 'styled-components';
-import LogInLogo from './LogInLogo';
+import LoginLogo from './LoginLogo';
 
-const LogInTopWrapper = () => {
+const LoginTopWrapper = () => {
   return (
-    <StyledLogInTopWrapper>
-      <LogInLogo />
+    <StyledLoginTopWrapper>
+      <LoginLogo />
       <div className='cover'>
         <p>인디벗에서 취향이 맞는 벗과</p>
         <p>다양한 인디게임을 즐겨보세요!</p>
       </div>
-    </StyledLogInTopWrapper>
+    </StyledLoginTopWrapper>
   );
 };
 
-export default LogInTopWrapper;
+export default LoginTopWrapper;
 
-const StyledLogInTopWrapper = styled.div`
+const StyledLoginTopWrapper = styled.div`
   display: flex;
   flex-direction: row;
   margin: 4rem 0;

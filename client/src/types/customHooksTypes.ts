@@ -1,9 +1,3 @@
-export interface useInputType {
-  inputUserName?: useInputReturn;
-  inputEmail: useInputReturn;
-  inputPassWord: useInputReturn;
-}
-
 export interface useInputReturn {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -11,4 +5,7 @@ export interface useInputReturn {
   validity: boolean;
 };
 
-export type useValidityType = 'username' | 'email' | 'password';
+export type ValidationFunction =
+  | ((value: string) => boolean)
+  | ((value: File) => boolean);
+

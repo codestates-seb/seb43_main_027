@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 import logo from '../../asset/logo.png';
 
-const SULogo = () => {
+const SignupLogo = () => {
   return (
     <Link to='/'>
       <img src={logo} width={'100rem'} />
@@ -10,4 +10,4 @@ const SULogo = () => {
   );
 };
 
-export default SULogo;
+export default SignupLogo;

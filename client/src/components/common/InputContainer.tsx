@@ -5,13 +5,18 @@ import { Label } from '../elements/Label';
 
 import { InputContainerType } from '../../types/componentsTypes';
 
+import useInput from '../../hooks/useInput';
+
 const InputContainer = ({
   placeholder = 'ex)',
   title = '입력창',
-  useInput,
-  validmessage,
-  validity
+  extraAction,
+  validationMessage,
+  validationFunction,
+  type
 }: InputContainerType) => {
+  const useInputResult = useInput('', extraAction, validationFunction);
+
   return (
     <InputContainerWrapper>
       <StyledLabelContainer>
@@ -20,19 +25,27 @@ const InputContainer = ({
       <Field>
         <InputEl
           placeholder={placeholder}
-          value={useInput ? useInput.value : ''}
+          value={useInputResult ? useInputResult.value : ''}
+          type={type ? type : ''}
           onChange={
-            useInput
-              ? useInput.onChange
+            useInputResult
+              ? useInputResult.onChange
               : () => {
                   console.log('error');
                 }
           }
         />
-        {validity || validity === undefined ? (
-          <ValidMessageInvisible>Invisible</ValidMessageInvisible>
+
+        {!useInputResult.validity ? (
+          useInputResult?.value === '' ? (
+            <ValidMessageInvisible className='invisible'>
+              Invisible
+            </ValidMessageInvisible>
+          ) : (
+            <ValidMessage className='msg'>{validationMessage}</ValidMessage>
+          )
         ) : (
-          <ValidMessage>{validmessage}</ValidMessage>
+          <ValidMessageInvisible>Invisible</ValidMessageInvisible>
         )}
       </Field>
     </InputContainerWrapper>
@@ -49,21 +62,19 @@ export const InputContainerWrapper = styled.div`
   width: 100%;
 `;
 export const StyledLabelContainer = styled.div`
-  padding: 0 0 8px;
   display: flex;
   align-items: center;
   align-self: stretch;
 `;
 const StyledLabel = styled(Label)`
-  font-family: 'Roboto';
   font-size: 1.4rem;
-  line-height: 2.2rem;
   color: rgba(0, 0, 0, 0.85);
   flex: 1;
   text-align: center;
 `;
 export const Field = styled.div`
   background-color: rgba(255, 255, 255, 1);
+  margin: 0.5rem;
   overflow: hidden;
   border-radius: 2px;
   display: flex;
@@ -71,10 +82,10 @@ export const Field = styled.div`
   flex: 1;
   flex-direction: column;
   align-items: center;
-
-  p {
-    display: flex;
-    justify-content: center;
+  align-self: stretch;
+  .msg {
+    font-size: 1.2rem;
+    margin-top: 0.7rem;
   }
 `;
 export const InputEl = styled(StyledInput)`
@@ -87,6 +98,9 @@ export const InputEl = styled(StyledInput)`
 // 나중에 p 태그 따로 element로 빼고 싶어서 Styled 안붙임.
 const ValidMessage = styled.p`
   color: red;
+  .msg {
+    font-size: 1.2rem;
+  }
 `;
 const ValidMessageInvisible = styled.p`
   color: transparent;

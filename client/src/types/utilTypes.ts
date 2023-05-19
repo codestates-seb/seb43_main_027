@@ -1,0 +1,1 @@
+export type validationType = 'username' | 'email' | 'password' | 'custom' | 'none';
