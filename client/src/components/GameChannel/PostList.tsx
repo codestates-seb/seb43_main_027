@@ -21,8 +21,9 @@ const PostList: React.FC<PostListProps> = ({ isSelectTag, isSelectTab, isMapping
   const [ isSize, setIsSize ] = useState<number>(0);
   const [ isTotalSize, setIsTotalSize ] = useState<number>(0);
 
-  // todo: 내가 북마크한 게시글, 내가쓴 게시글 아직 필터링안됨, 태그선택시 요청 api처리 아직 안됨,
-  // 내가 북마크한 게시글 페이지네이션없이 받아지면 북마크상태값 조회도 처리가능
+  // todo: 내가 북마크한 게시글, 내가쓴 게시글 아직 필터링안됨
+
+  console.log(isMappingTag);
 
   useEffect(() => {
     const fetchPostsData = async () => {
@@ -32,38 +33,14 @@ const PostList: React.FC<PostListProps> = ({ isSelectTag, isSelectTab, isMapping
         switch (isSelectTab) {
           case '최신순': {
             apiUrl += '&filter=NEW';
-            const res = await axios.get(apiUrl);
-            const currentPosts = res.data.data;
-            const pageInfo = res.data.pageInfo;
-
-            setIsFilteredPosts([...currentPosts]);
-            setIsSize(pageInfo.size);
-            setIsTotalSize(pageInfo.totalSize);
-            if (isFilteredPosts.length === 0) setIsUserMessage('작성된 게시글이 없습니다.');
             break;
           };
           case '인기순': {
             apiUrl += '&filter=LIKE';
-            const res = await axios.get(apiUrl);
-            const likePosts = res.data.data;
-            const pageInfo = res.data.pageInfo;
-
-            setIsFilteredPosts([...likePosts]);
-            setIsSize(pageInfo.size);
-            setIsTotalSize(pageInfo.totalSize);
-            if (isFilteredPosts.length === 0) setIsUserMessage('작성된 게시글이 없습니다.');
             break;
           };
           case '조회순': {
             apiUrl += '&filter=MOST_VIEWS';
-            const res = await axios.get(apiUrl);
-            const mostViewPosts = res.data.data;
-            const pageInfo = res.data.pageInfo;
-
-            setIsFilteredPosts([...mostViewPosts]);
-            setIsSize(pageInfo.size);
-            setIsTotalSize(pageInfo.totalSize);
-            if (isFilteredPosts.length === 0) setIsUserMessage('작성된 게시글이 없습니다.');
             break;
           };
           case '북마크 글': {
@@ -111,13 +88,21 @@ const PostList: React.FC<PostListProps> = ({ isSelectTag, isSelectTab, isMapping
           default:
             setIsFilteredPosts(isFilteredPosts);
             break;
-          }
+          };
 
-          if (isSelectTag !== '전체') {
-            setIsFilteredPosts((prev) =>
-            prev.filter((post) => post.postTag === isSelectTag)
-          );
-        }
+        if (isSelectTag !== '전체') {
+          apiUrl += `&postTag=${isMappingTag}`;
+        };
+
+        const res = await axios.get(apiUrl);
+        const currentPosts = res.data.data;
+        const pageInfo = res.data.pageInfo;
+
+        setIsFilteredPosts([...currentPosts]);
+        setIsSize(pageInfo.size);
+        setIsTotalSize(pageInfo.totalSize);
+        if (isFilteredPosts.length === 0) setIsUserMessage('작성된 게시글이 없습니다.');
+
       } catch (error) {
         console.log(error);
       }
