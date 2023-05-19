@@ -10,14 +10,13 @@ import useInput from '../../hooks/useInput';
 const InputContainer = ({
   placeholder = 'ex)',
   title = '입력창',
+  extraAction,
   validationMessage,
-  validationType = 'none',
   validationFunction,
   type
 }: InputContainerType) => {
-  const useInputResult = useInput('', validationType, validationFunction);
-  // 현재 유효성검사 useInput에 포함되어서 처리 중인데,
-  // 관심사 분리에 따라 useValidation으로 분리해서 하는 것도 좋아보임.
+  const useInputResult = useInput('', extraAction, validationFunction);
+
   return (
     <InputContainerWrapper>
       <StyledLabelContainer>
@@ -28,7 +27,6 @@ const InputContainer = ({
           placeholder={placeholder}
           value={useInputResult ? useInputResult.value : ''}
           type={type ? type : ''}
-          validationFunction={validationFunction}
           onChange={
             useInputResult
               ? useInputResult.onChange
