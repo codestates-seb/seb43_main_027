@@ -11,6 +11,7 @@ import org.hibernate.annotations.Formula;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -54,8 +55,11 @@ public class Member extends Timestamped {
         this.providerId = providerId;
     }
 
-    public void updateMemberStatus(MemberStatus memberStatus) {
-        this.memberStatus = memberStatus;
+    public void deleteMember() {
+        this.memberStatus = MemberStatus.DELETE;
+        String deletedId = "DEL" + UUID.randomUUID();
+        this.username = deletedId;
+        this.email = deletedId;
     }
 
     public enum MemberStatus {

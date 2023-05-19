@@ -8,7 +8,6 @@ import codejejus.inddybuddy.member.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
@@ -35,11 +34,9 @@ public class Post extends Timestamped {
     private Long commentCount = 0L;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    @BatchSize(size = 10)
     private Member member;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "game_id")
-    @BatchSize(size = 10)
     private Game game;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
@@ -51,7 +48,6 @@ public class Post extends Timestamped {
 
     @Builder
     public Post(String title, String content, PostTag postTag) {
-
         this.title = title;
         this.content = content;
         this.postTag = postTag;

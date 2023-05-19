@@ -71,7 +71,7 @@ public class MemberService {
     public void deleteMember(Long memberId, MemberPrincipal memberPrincipal) {
         Member findMember = findVerifyMember(memberId);
         verifySameMember(findMember, memberPrincipal.getMember());
-        findMember.updateMemberStatus(Member.MemberStatus.DELETE);
+        findMember.deleteMember();
         memberRepository.save(findMember);
     }
 
