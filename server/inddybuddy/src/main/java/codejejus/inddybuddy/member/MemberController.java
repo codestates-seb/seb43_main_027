@@ -70,6 +70,12 @@ public class MemberController {
         return ResponseEntity.ok(new SingleResponse<>(response));
     }
 
+    @GetMapping("/profile")
+    public ResponseEntity<SingleResponse<MemberDto.ProfileResponse>> getMemberProfile(@AuthenticationPrincipal MemberPrincipal memberPrincipal) {
+        MemberDto.ProfileResponse response = memberMapper.memberToMemberProfileDtoResponse(memberPrincipal.getMember());
+        return ResponseEntity.ok(new SingleResponse<>(response));
+    }
+
     @GetMapping("/{member-id}/mygame")
     public ResponseEntity<SingleResponse<List<GameDto.Response>>> getFollowingGame(@PathVariable("member-id") Long memberId) {
         List<Game> games = followGameService.getAllFollowGame(memberId);
