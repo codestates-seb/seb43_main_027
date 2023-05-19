@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import styled from 'styled-components';
@@ -16,8 +16,11 @@ import PATH_URL from '../constants/pathUrl';
 
 const GameChannel = ()  => {
 
+  const { gameId } = useParams();
   const navigate = useNavigate();
-  const memberId = useSelector((state: RootState) => state.user.memberId);
+  const getMemberData = localStorage.getItem('user');
+  const memberData = getMemberData ? JSON.parse(getMemberData) : { memberId: -1 };
+  const memberId = memberData.memberId;
 
   const [ isSelectTag, setIsSelectTag ] = useState<string>('전체');
   const [ isSelectTab, setIsSelectTab ] = useState<string>(gameChannelFilterTab[0]);
@@ -36,7 +39,7 @@ const GameChannel = ()  => {
     if (memberId === -1) {
       navigate('/login');
     } else {
-      navigate(`${PATH_URL.POSTING}`);
+      navigate(`${PATH_URL.GAME}${gameId}${PATH_URL.POSTING}`);
     }
   };
 
