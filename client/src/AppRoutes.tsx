@@ -8,6 +8,7 @@ import Posting from './pages/Posting';
 import LogIn from './pages/Login';
 import PATH_URL from './constants/pathUrl';
 import GameRegister from './pages/GameRegister';
+import Page404 from './components/common/404';
 
 const AppRoutes = () => {
   return (
@@ -30,6 +31,8 @@ const AppRoutes = () => {
         />
         <Route path={PATH_URL.LOGIN} element={<LogIn />} />
         <Route path={PATH_URL.REGISTER} element={<GameRegister />} />
+        <Route path={PATH_URL.ERROR} element={<Page404 />} />
+        <Route path={PATH_URL.NOTFOUND} element={<Page404 />} />
       </Route>
     </Routes>
   );
