@@ -59,6 +59,7 @@ export type PathUrlType = {
   LOGIN: string;
   SIGNUP: string;
   REGISTER: string;
+  EDIT: string;
 };
 
 export type PostOptionType = {
