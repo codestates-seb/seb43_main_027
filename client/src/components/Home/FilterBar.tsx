@@ -4,37 +4,18 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import axios from 'axios';
 
-import { GameType } from '../../types/dataTypes';
+import { GameType, PageInfoType } from '../../types/dataTypes';
 import { RootState } from '../../store/store';
 
 const FilterBar = ({
-  setGames
+  onClickHandler,
+  tabInd
 }: {
-  setGames: React.Dispatch<React.SetStateAction<GameType[]>>;
+  onClickHandler: (i: number) => () => void;
+  tabInd: number;
 }) => {
   const user = useSelector((s: RootState) => s.user);
-  const [tabInd, setTabInd] = useState<number>(0);
-  const apiRef = useRef([
-    '/api/games/?filter=POPULAR',
-    '/api/games/?filter=NEW',
-    `/api/members/${user.memberId}/mygame`
-  ]);
-  const onClickHandler = (i: number) => () => {
-    setTabInd(i);
-  };
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const res = await axios.get(
-          `${process.env.REACT_APP_API_URL}${apiRef.current[tabInd]}`
-        );
-        setGames(res.data.data);
-      } catch (err) {
-        console.error(err);
-      }
-    })();
-  }, [tabInd]);
   return (
     <StyledContainer>
       <StyledFilterTabContainer>
@@ -57,10 +38,6 @@ const FilterBar = ({
 export default FilterBar;
 
 const StyledContainer = styled.div`
-  /* display: flex;
-  border-bottom: 2px solid #8f8f8f;
-  gap: 1rem;
-  padding-left: 2rem; */
   margin: 0px;
   border-bottom: 2px solid #e5e5e5;
   display: flex;
