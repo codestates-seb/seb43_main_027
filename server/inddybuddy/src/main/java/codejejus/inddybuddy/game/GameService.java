@@ -4,13 +4,14 @@ import codejejus.inddybuddy.category.Category;
 import codejejus.inddybuddy.category.CategoryService;
 import codejejus.inddybuddy.file.File;
 import codejejus.inddybuddy.file.FileService;
-import codejejus.inddybuddy.follow.FollowGameService;
+import codejejus.inddybuddy.relation.followgame.FollowGameService;
 import codejejus.inddybuddy.global.constant.Filter;
 import codejejus.inddybuddy.global.exception.CustomException;
 import codejejus.inddybuddy.global.exception.ExceptionCode;
 import codejejus.inddybuddy.member.entity.Member;
 import codejejus.inddybuddy.member.entity.MemberPrincipal;
 import codejejus.inddybuddy.member.service.MemberService;
+import codejejus.inddybuddy.relation.gamecategory.GameCategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,32 +33,36 @@ public class GameService {
     private final CategoryService categoryService;
     private final MemberService memberService;
     private final FollowGameService followGameService;
+    private final GameCategoryService gameCategoryService;
     private final FileService fileService;
 
     public GameDto.Response createGame(MemberPrincipal memberPrincipal, GameDto.Request requestDto, MultipartFile multipartFile) {
         verifyExistGameName(requestDto.getGameName());
         Game game = gameMapper.requestToEntity(requestDto);
-        List<Category> categories = categoryService.getCategoriesByName(requestDto.getCategoryNames());
-        game.setCategories(categories);
         game.setMember(memberPrincipal.getMember());
         if (multipartFile != null) {
             File memberImg = fileService.createFile(multipartFile, game);
             game.setMainImageUrl(memberImg.getFileUrl());
         }
         Game save = gameRepository.save(game);
+        List<Category> categories = categoryService.getCategoriesByName(requestDto.getCategoryNames());
+        gameCategoryService.createGameInCategory(game, categories);
         return gameMapper.entityToResponse(save);
     }
 
     public GameDto.Response modifyGame(Long gameId, MemberPrincipal memberPrincipal, GameDto.Request requestDto, MultipartFile multipartFile) {
         Game findGame = findVerifidGame(gameId);
         memberService.verifySameMember(findGame.getMember(), memberPrincipal.getMember());
-        List<Category> patchCategories = categoryService.getCategoriesByName(requestDto.getCategoryNames());
+        if (requestDto.getCategoryNames() != null) {
+            List<Category> patchCategories = categoryService.getCategoriesByName(requestDto.getCategoryNames());
+            gameCategoryService.modifyGameAndCategory(findGame, patchCategories);
+        }
         if (multipartFile != null) {
             fileService.deleteGameImg(findGame);
             File file = fileService.createFile(multipartFile, findGame);
             findGame.setMainImageUrl(file.getFileUrl());
         }
-        findGame.updateGame(requestDto.getGameName(), requestDto.getDownloadUrl(), patchCategories);
+        findGame.updateGame(requestDto.getGameName(), requestDto.getDownloadUrl());
         return gameMapper.entityToResponse(findGame);
     }
 

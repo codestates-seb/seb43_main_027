@@ -6,6 +6,7 @@ import codejejus.inddybuddy.game.GameMapper;
 import codejejus.inddybuddy.global.constant.Filter;
 import codejejus.inddybuddy.global.exception.CustomException;
 import codejejus.inddybuddy.global.exception.ExceptionCode;
+import codejejus.inddybuddy.relation.gamecategory.GameCategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,12 +24,7 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
     private final GameMapper gameMapper;
-
-    public CategoryDto.Response createCategory(CategoryDto.Post postDto) {
-        Category category = categoryMapper.postToEntity(postDto);
-        Category save = categoryRepository.save(category);
-        return categoryMapper.entityToResponse(save);
-    }
+    private final GameCategoryService gameCategoryService;
 
     public List<CategoryDto.Response> getAllCategories() {
         List<Category> allCategories = categoryRepository.findAll();
@@ -36,7 +32,8 @@ public class CategoryService {
     }
 
     public Page<GameDto.Response> findGamesByCategory(Long categoryId, Pageable pageable, String filter) {
-        Page<Game> gamePage = categoryRepository.findAllByCategoryId(categoryId, PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize(), Filter.getMatchedSort(filter)));
+        Category category = findVerifiedCategory(categoryId);
+        Page<Game> gamePage = gameCategoryService.findGamesByCategory(category, PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize(), Filter.getMatchedSort(filter)));
         return gameMapper.entityPageToResponsePage(gamePage);
     }
 
@@ -49,5 +46,10 @@ public class CategoryService {
         return categoryNames.stream()
                 .map(this::findVerifiedCategory)
                 .collect(Collectors.toList());
+    }
+
+    public Category findVerifiedCategory(Long categoryId) {
+        Optional<Category> optionalCategory = categoryRepository.findById(categoryId);
+        return optionalCategory.orElseThrow(() -> new CustomException(ExceptionCode.CATEGORY_NOT_FOUND));
     }
 }

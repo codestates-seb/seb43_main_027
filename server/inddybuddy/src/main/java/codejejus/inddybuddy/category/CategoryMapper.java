@@ -8,12 +8,6 @@ import java.util.stream.Collectors;
 @Component
 public class CategoryMapper {
 
-    public Category postToEntity(CategoryDto.Post postDto) {
-        return Category.builder()
-                .categoryName(postDto.getCategoryName())
-                .build();
-    }
-
     public CategoryDto.Response entityToResponse(Category category) {
         return CategoryDto.Response.builder()
                 .categoryId(category.getCategoryId())
