@@ -114,3 +114,35 @@ export type PostDataType = {
     reactionStatus: string;
   } | null;
 };
+
+export type PostMemberType = {
+  email: string;
+  followerCount: number;
+  followingCount: number;
+  imageUrl: string;
+  memberId: number;
+  username: string;
+};
+export type ReactionType = {
+  reactionId: number;
+  postId: number;
+  memberId: number;
+  reactionStatus: string;
+};
+
+export type PostDataType = {
+  commentCount: number;
+  comments: [];
+  content: string;
+  createdAt: string;
+  fileUrlList: [];
+  gameId: number;
+  likeCount: number;
+  member: PostMemberType;
+  postId: number;
+  postTag: string;
+  reaction: ReactionType | null;
+  title: string;
+  updatedAt: string;
+  views: number;
+};
