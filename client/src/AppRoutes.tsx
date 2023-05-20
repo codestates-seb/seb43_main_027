@@ -9,6 +9,7 @@ import LogIn from './pages/Login';
 import PATH_URL from './constants/pathUrl';
 import GameRegister from './pages/GameRegister';
 import Page404 from './components/common/404';
+import UserInfoPage from './pages/UserInfoPage';
 
 const AppRoutes = () => {
   return (
@@ -33,6 +34,7 @@ const AppRoutes = () => {
         <Route path={PATH_URL.REGISTER} element={<GameRegister />} />
         <Route path={PATH_URL.ERROR} element={<Page404 />} />
         <Route path={PATH_URL.NOTFOUND} element={<Page404 />} />
+        <Route path={`${PATH_URL.USER_INFO}:memberId`} element={<UserInfoPage />} />
       </Route>
     </Routes>
   );
