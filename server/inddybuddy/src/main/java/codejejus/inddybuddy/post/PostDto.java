@@ -109,6 +109,11 @@ public class PostDto {
         private final PostTag postTag;
         private final LocalDateTime createdAt;
         private final LocalDateTime updatedAt;
+        private final Long gameId;
+        private final Long likeCount;
+        private final Long views;
+        private final Long commentCount;
+
 
         public MyPageResponse(Post post) {
             this.postId = post.getPostId();
@@ -118,6 +123,10 @@ public class PostDto {
             this.postTag = post.getPostTag();
             this.createdAt = post.getCreatedAt();
             this.updatedAt = post.getUpdatedAt();
+            this.gameId = post.getGame().getGameId();
+            this.likeCount = post.getLikeCount();
+            this.views = post.getViews();
+            this.commentCount = post.getCommentCount();
         }
     }
 }
