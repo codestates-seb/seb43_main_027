@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { RootState } from '../../store/store';
 import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
+import Loading from '../../components/common/Loading';
 
 const NavContent = ({
   type,
@@ -13,6 +14,7 @@ const NavContent = ({
   Content: (props: any) => JSX.Element;
 }) => {
   const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const user = useSelector((s: RootState) => s.user);
   const apiRef = useRef<{ [key: string]: string }>({
     user: `/api/members/${user.memberId}/following`,
@@ -22,6 +24,7 @@ const NavContent = ({
   // TODO: type에 따라서 데이터 패칭을 다르게 하고 보여준다.
 
   useEffect(() => {
+    setIsLoading(true);
     (async () => {
       try {
         const res = await axios(
@@ -32,8 +35,10 @@ const NavContent = ({
             }
           }
         );
+        setIsLoading(false);
         setData(res.data.data);
       } catch (err: any) {
+        setIsLoading(false);
         if (err.response.status === 404) {
           alert('해당 경로가 존재하지 않습니다.');
         }
@@ -61,15 +66,21 @@ const NavContent = ({
       );
     }
 
-    return data.map((a) => <Content key={a} />);
+    return data.map((a) => <Content key={a} data={a} />);
   };
 
   return (
-    <StyledContainer>
-      <StyledRelativeBox>
-        <StyledItemContainer>{getContent()}</StyledItemContainer>
-      </StyledRelativeBox>
-    </StyledContainer>
+    <>
+      <StyledContainer>
+        <StyledRelativeBox>
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <StyledItemContainer>{getContent()}</StyledItemContainer>
+          )}
+        </StyledRelativeBox>
+      </StyledContainer>
+    </>
   );
 };
 
