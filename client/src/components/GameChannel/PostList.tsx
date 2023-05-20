@@ -26,6 +26,7 @@ const PostList: React.FC<PostListProps> = ({ isSelectTag, isSelectTab, isMapping
     const fetchPostsData = async () => {
       try {
         let apiUrl = `${process.env.REACT_APP_API_URL}/api/games/${gameId}/posts?page=${isPage}`;
+        let headers = {};
 
         switch (isSelectTab) {
           case '최신순': {
@@ -45,8 +46,12 @@ const PostList: React.FC<PostListProps> = ({ isSelectTag, isSelectTab, isMapping
               setIsFilteredPosts([]);
               return setIsUserMessage('로그인이 필요한 기능입니다.');
             } else {
+              apiUrl =  `${process.env.REACT_APP_API_URL}/api/members/${memberId}/bookmark?page=${isPage}`;
+              headers = {
+                Authorization: `${localStorage.getItem('access_token')}`,
+              };
               setIsUserMessage('북마크한 게시글이 없습니다.');
-            }
+            };
             break;
           };
           case '내가 쓴 글': {
@@ -54,6 +59,7 @@ const PostList: React.FC<PostListProps> = ({ isSelectTag, isSelectTab, isMapping
               setIsFilteredPosts([]);
               return setIsUserMessage('로그인이 필요한 기능입니다.');
             } else {
+              apiUrl = `${process.env.REACT_APP_API_URL}/api/members/${memberId}/mypost?page=${isPage}`;
               setIsUserMessage('작성된 게시글이 없습니다.');
             }
             break;
@@ -66,28 +72,23 @@ const PostList: React.FC<PostListProps> = ({ isSelectTag, isSelectTab, isMapping
         if (isSelectTag !== '전체') {
           apiUrl += `&postTag=${isMappingTag}`;
         };
-
-        if (isSelectTab === '북마크 글') {
-          apiUrl =  `${process.env.REACT_APP_API_URL}/api/members/${memberId}/bookmark`;
-        };
-
-        if (isSelectTab === '내가 쓴 글') {
-          apiUrl = `${process.env.REACT_APP_API_URL}/api/members/${memberId}/mypost`;
-        };
-
-        const res = await axios.get(apiUrl);
+        
+        const res = await axios.get(apiUrl, { headers });
         const currentPosts = res.data.data;
         const pageInfo = res.data.pageInfo;
+    
+        const filteredPosts = currentPosts.filter((post:any) => post.gameId.toString() === gameId);
 
-        setIsFilteredPosts([...currentPosts]);
+        setIsFilteredPosts([...filteredPosts]);
         setIsSize(pageInfo.size);
         setIsTotalSize(pageInfo.totalSize);
+
         if (isFilteredPosts.length === 0) setIsUserMessage('작성된 게시글이 없습니다.');
       
       } catch (error) {
         setIsFilteredPosts([]);
         console.log(error);
-      }
+      };
     };
 
     fetchPostsData();
