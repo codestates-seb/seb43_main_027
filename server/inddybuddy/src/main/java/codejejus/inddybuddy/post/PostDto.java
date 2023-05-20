@@ -103,7 +103,7 @@ public class PostDto {
     public static class MyPageResponse {
 
         private final Long postId;
-        private final String username;
+        private final String userName;
         private final Member.MemberStatus memberStatus;
         private final String title;
         private final PostTag postTag;
@@ -112,7 +112,7 @@ public class PostDto {
 
         public MyPageResponse(Post post) {
             this.postId = post.getPostId();
-            this.username = post.getMember().getUsername();
+            this.userName = post.getMember().getUsername();
             this.memberStatus = post.getMember().getMemberStatus();
             this.title = post.getTitle();
             this.postTag = post.getPostTag();

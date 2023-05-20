@@ -47,7 +47,7 @@ public class MemberDto {
 
         private final Long memberId;
         private final String email;
-        private final String username;
+        private final String userName;
         private final Member.MemberStatus memberStatus;
         private final String imageUrl;
         private final String aboutMe;
@@ -57,7 +57,7 @@ public class MemberDto {
         public Response(Member member) {
             this.memberId = member.getMemberId();
             this.email = member.getEmail();
-            this.username = member.getUsername();
+            this.userName = member.getUsername();
             this.memberStatus = member.getMemberStatus();
             this.imageUrl = member.getImageUrl();
             this.aboutMe = member.getAboutMe();
@@ -72,7 +72,7 @@ public class MemberDto {
 
         private final Long memberId;
         private final String email;
-        private final String username;
+        private final String userName;
         private final Member.MemberStatus memberStatus;
         private final String imageUrl;
         private final String aboutMe;
@@ -87,7 +87,7 @@ public class MemberDto {
 
         private final Long memberId;
         private final String email;
-        private final String username;
+        private final String userName;
         private final String imageUrl;
         private final Long followerCount;
         private final Long followingCount;
@@ -95,7 +95,7 @@ public class MemberDto {
         public SimpleInfoResponse(Member member) {
             this.memberId = member.getMemberId();
             this.email = member.getEmail();
-            this.username = member.getUsername();
+            this.userName = member.getUsername();
             this.imageUrl = member.getImageUrl();
             this.followerCount = member.getFollowerCount();
             this.followingCount = member.getFollowingCount();
