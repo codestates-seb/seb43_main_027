@@ -66,7 +66,7 @@ const NavContent = ({
       );
     }
 
-    return data.map((a) => <Content key={a} data={a} />);
+    return data.map((a, i) => <Content key={i} data={a} />);
   };
 
   return (
