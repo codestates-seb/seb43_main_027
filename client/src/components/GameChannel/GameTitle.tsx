@@ -65,7 +65,7 @@ const GameTitle = () => {
 
   const handleFollow = () => {
     if (memberId === -1) {
-      navigate('/login');
+      navigate(`${PATH_URL.LOGIN}`);
     } else {
       const token = localStorage.getItem('access_token');
       if (isFollowed) {
@@ -159,6 +159,7 @@ const StyledGameName = styled.h3`
   margin-top: 10px;
   font-size: 28px;
   font-weight: 700;
+  width: 300px;
   word-break: keep-all;
   overflow-wrap: break-word;
 `;

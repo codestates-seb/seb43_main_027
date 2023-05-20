@@ -61,6 +61,8 @@ export type PathUrlType = {
   REGISTER: string;
   POST: string;
   EDIT: string;
+  ERROR: string;
+  NOTFOUND: string;
 };
 
 export type PostOptionType = {

@@ -1,19 +1,23 @@
 import styled from 'styled-components';
 
-import Badge from '../ui/Badge';
-
 import { GameType } from '../../types/dataTypes';
 import { Link } from 'react-router-dom';
 import PATH_URL from '../../constants/pathUrl';
+import CategoryTag from './CategoryTag';
+import convertCategory from '../../utils/convertCategory';
 
 const GameCard = ({ mainImgUrl, categories, gameName, gameId }: GameType) => {
   return (
     <Link to={`${PATH_URL.GAME}${gameId}`}>
       <StyledContainer>
-        <StyledImg src={mainImgUrl} />
+        {mainImgUrl && <StyledImg src={mainImgUrl} />}
         <StyledBadgeContainer>
-          {categories.map((category) => (
-            <Badge text={category.categoryName} key={category.categoryId} />
+          {categories?.slice(0, 2).map((category) => (
+            <CategoryTag
+              categoryName={convertCategory.asKR(category.categoryName)}
+              key={category.categoryId}
+              categoryId={category.categoryId}
+            />
           ))}
         </StyledBadgeContainer>
         <StyledTitle>{gameName}</StyledTitle>
@@ -38,6 +42,7 @@ const StyledImg = styled.img`
 `;
 const StyledBadgeContainer = styled.div`
   display: flex;
+  flex-wrap: wrap;
   gap: 0.3rem;
 `;
 const StyledTitle = styled.h3`

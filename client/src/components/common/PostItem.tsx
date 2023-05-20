@@ -1,44 +1,37 @@
-import { useState } from 'react';
 import styled from 'styled-components';
 
-import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
-import Badge from '../ui/Badge';
+import { AiFillStar } from 'react-icons/ai';
+import CategoryTag from './CategoryTag';
 
-const PostItem = () => {
-  const [marked, setMarked] = useState(false);
+import convertTag from '../../utils/convertTag';
+import postOptionTags from '../../data/postOptionTags';
+import { elapsedText } from '../../utils/elapsedText';
 
-  const invertMarked = () => {
-    setMarked((prev) => !prev);
-  };
+import { GamePagePostType } from '../../types/dataTypes';
+
+const PostItem = ({ data: bookmarked }: { data: GamePagePostType }) => {
   return (
     <StyledContainer>
       <div>
         <StyledTitleContainer>
-          <StyledTitle>title</StyledTitle>
-          <Badge text='모집 중' />
+          <StyledTitle>{bookmarked.title}</StyledTitle>
+          <CategoryTag
+            categoryName={convertTag.asKR(bookmarked.postTag)}
+            categoryId={postOptionTags.findIndex(
+              (option) => option.value === convertTag.asKR(bookmarked.postTag)
+            )}
+          />
         </StyledTitleContainer>
         <StyledPostInfoContainer>
-          <span>작성자: username</span>
-          <span>작성일: 1분 전</span>
-          <span>추천 수: 0</span>
+          <span>작성자: {bookmarked.userName}</span>
+          <span>작성일: {elapsedText(new Date(bookmarked.createdAt))}</span>
+          <span>추천 수: {bookmarked.likeCount}</span>
         </StyledPostInfoContainer>
       </div>
       <StyledSubContent>
         <StyledPostSubContentContainer>
-          <span>댓글 : 0</span>
-          {marked ? (
-            <AiFillStar
-              color={'var(--cyan-dark-500)'}
-              size={20}
-              onClick={invertMarked}
-            />
-          ) : (
-            <AiOutlineStar
-              color={'var(--cyan-dark-500)'}
-              size={20}
-              onClick={invertMarked}
-            />
-          )}
+          <span>댓글 : {bookmarked.commentCount}</span>
+          <AiFillStar color={'var(--cyan-dark-500)'} size={20} />
         </StyledPostSubContentContainer>
       </StyledSubContent>
     </StyledContainer>
