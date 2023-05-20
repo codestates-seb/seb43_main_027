@@ -1,10 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-
 import styled from 'styled-components';
-import axios from 'axios';
 
-import { GameType, PageInfoType } from '../../types/dataTypes';
 import { RootState } from '../../store/store';
 
 const FilterBar = ({
