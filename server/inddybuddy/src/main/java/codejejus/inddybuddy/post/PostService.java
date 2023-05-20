@@ -93,6 +93,7 @@ public class PostService {
         return postMapper.entityPageToSimpleResponsePage(allByContainingKeyword);
     }
 
+    @Transactional(readOnly = true)
     public Page<PostDto.MyPageResponse> getPostsByMember(Long memberId, Pageable pageable) {
         Member member = memberService.findMember(memberId);
         PageRequest pageRequest = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize());

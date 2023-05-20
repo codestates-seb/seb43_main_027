@@ -105,21 +105,30 @@ public class PostDto {
     public static class MyPageResponse {
 
         private final Long postId;
-        private final String username;
+        private final String userName;
         private final Member.MemberStatus memberStatus;
         private final String title;
         private final PostTag postTag;
         private final LocalDateTime createdAt;
         private final LocalDateTime updatedAt;
+        private final Long gameId;
+        private final Long likeCount;
+        private final Long views;
+        private final Long commentCount;
+
 
         public MyPageResponse(Post post) {
             this.postId = post.getPostId();
-            this.username = post.getMember().getUsername();
+            this.userName = post.getMember().getUsername();
             this.memberStatus = post.getMember().getMemberStatus();
             this.title = post.getTitle();
             this.postTag = post.getPostTag();
             this.createdAt = post.getCreatedAt();
             this.updatedAt = post.getUpdatedAt();
+            this.gameId = post.getGame().getGameId();
+            this.likeCount = post.getLikeCount();
+            this.views = post.getViews();
+            this.commentCount = post.getCommentCount();
         }
     }
 }
