@@ -57,9 +57,9 @@ public class MemberController {
         return ResponseEntity.ok(new SingleResponse<>(memberMapper.memberToMemberDtoResponse(member)));
     }
 
-    @GetMapping("/{member-id}")
-    public ResponseEntity<SingleResponse<MemberDto.Response>> getMember(@PathVariable("member-id") Long memberId) {
-        Member member = memberService.findMember(memberId);
+    @GetMapping
+    public ResponseEntity<SingleResponse<MemberDto.Response>> getMember(@AuthenticationPrincipal MemberPrincipal memberPrincipal) {
+        Member member = memberService.findMember(memberPrincipal.getMember().getMemberId());
         return ResponseEntity.ok(new SingleResponse<>(memberMapper.memberToMemberDtoResponse(member)));
     }
 

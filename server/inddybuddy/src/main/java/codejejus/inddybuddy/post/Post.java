@@ -81,6 +81,10 @@ public class Post extends Timestamped {
         }
     }
 
+    public void addView() {
+        this.views += 1;
+    }
+
     public enum PostTag {
 
         RECRUITMENT("모집"),
