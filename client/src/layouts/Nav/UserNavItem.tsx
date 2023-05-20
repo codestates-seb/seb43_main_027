@@ -37,6 +37,7 @@ const StyledContainer = styled.div`
   padding: 1rem 2rem;
   gap: 1rem;
   width: 100%;
+  height: fit-content;
   cursor: pointer;
 
   border-bottom: 1px solid var(--cyan-dark-500);
