@@ -1,33 +1,25 @@
-import { memo } from 'react';
 import { AiOutlineUpload } from 'react-icons/ai';
 import styled from 'styled-components';
 import ImagePreview from './ImagePreview';
 
 const ImageSection = ({
   files,
-  onUploadHandler,
-  onDeleteFileClickHandler,
-  onDeleteUrlClickHandler,
-  urls
+  setFiles
 }: {
   files: File[];
-  onUploadHandler: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onDeleteFileClickHandler: (i: number) => () => void;
-  onDeleteUrlClickHandler: (i: number) => () => void;
-  urls: string[] | undefined;
+  setFiles: React.Dispatch<React.SetStateAction<File[]>>;
 }) => {
+  const onUploadHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    if (file) setFiles([file]);
+  };
+
+  const onDeleteClickHandler = (index: number) => () => {
+    setFiles(files.filter((_, i) => i !== index));
+  };
   return (
     <>
-      <StyledTitle>이미지 미리보기</StyledTitle>
       <StyledContainer>
-        {urls?.map((url, i) => (
-          <ImagePreview
-            url={url}
-            key={url}
-            index={i}
-            onClick={onDeleteUrlClickHandler}
-          />
-        ))}
         {files.map((file, i) => {
           const url = URL.createObjectURL(file);
           return (
@@ -35,7 +27,7 @@ const ImageSection = ({
               url={url}
               key={url}
               index={i}
-              onClick={onDeleteFileClickHandler}
+              onClick={onDeleteClickHandler}
             />
           );
         })}
@@ -48,23 +40,18 @@ const ImageSection = ({
         type='file'
         id='file-upload'
         accept='image/*'
-        multiple
         onChange={onUploadHandler}
       />
     </>
   );
 };
 
-export default memo(ImageSection);
+export default ImageSection;
 
-const StyledTitle = styled.h4`
-  font-weight: 500;
-  font-size: 1.6rem;
-  margin-top: 1rem;
-`;
 const StyledContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   padding: 1rem;
   border-bottom: 1px solid #ddd;
   gap: 3rem 5%;

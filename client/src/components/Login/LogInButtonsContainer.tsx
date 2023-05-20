@@ -1,21 +1,21 @@
 import styled from 'styled-components';
 
-import LogInButton, { LogInButtonType } from './LogInButton';
-import MoveToSignUpBtn from './MoveToSignUpButton';
+import LoginButton, { LoginButtonType } from './LoginButton';
+import MoveToSignupBtn from './MoveToSignupButton';
 
-const LogInButtonsContainer = ({ onClick }: LogInButtonType) => {
+const LoginButtonsContainer = ({ onClick }: LoginButtonType) => {
   return (
-    <StyledLogInButtonsContainer>
-      <LogInButton onClick={onClick} />
+    <StyledLoginButtonsContainer>
+      <LoginButton onClick={onClick} />
       <p className='mobile-hidden'>아직 회원이 아니신가요?</p>
-      <MoveToSignUpBtn />
-    </StyledLogInButtonsContainer>
+      <MoveToSignupBtn />
+    </StyledLoginButtonsContainer>
   );
 };
 
-export default LogInButtonsContainer;
+export default LoginButtonsContainer;
 
-const StyledLogInButtonsContainer = styled.div`
+const StyledLoginButtonsContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;

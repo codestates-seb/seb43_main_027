@@ -1,21 +1,21 @@
 import styled from 'styled-components';
 
-import SignUpBtn, { SignUpButton } from './SignUpBtn';
-import MoveToLogInBtn from './MoveToLogInBtn';
+import SignupBtn, { SignupButton } from './SignupBtn';
+import MoveToLoginBtn from './MoveToLoginBtn';
 
-const SignUpButtonsContainer = ({ onClick }: SignUpButton) => {
+const SignupButtonsContainer = ({ onClick }: SignupButton) => {
   return (
-    <StyledSignUpButtonsContainer>
-      <SignUpBtn onClick={onClick} />
+    <StyledSignupButtonsContainer>
+      <SignupBtn onClick={onClick} />
       <p className='mobile-hidden'>이미 회원이신가요?</p>
-      <MoveToLogInBtn />
-    </StyledSignUpButtonsContainer>
+      <MoveToLoginBtn />
+    </StyledSignupButtonsContainer>
   );
 };
 
-export default SignUpButtonsContainer;
+export default SignupButtonsContainer;
 
-const StyledSignUpButtonsContainer = styled.div`
+const StyledSignupButtonsContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;

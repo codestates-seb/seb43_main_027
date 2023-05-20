@@ -1,11 +1,13 @@
 import styled from 'styled-components';
 import Title from '../components/Posting/Title';
 import InputSection from '../components/Posting/InputSection';
+import { useParams } from 'react-router-dom';
 
 const Posting = () => {
+  const { postId } = useParams();
   return (
     <StyledContainer>
-      <Title text='게시글 작성하기' />
+      <Title text={postId ? '게시글 수정하기' : '게시글 작성하기'} />
       <InputSection />
     </StyledContainer>
   );

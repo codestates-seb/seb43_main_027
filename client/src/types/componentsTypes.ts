@@ -32,9 +32,12 @@ export interface InputContainerType {
   placeholder?: string;
   title?: string;
   onChange?: React.ChangeEvent;
-  useInput?: useInputReturn;
-  validmessage?: string;
-  validity?: boolean;
+  validationMessage?: string;
+  extraAction?: (value:string) => void;
+  validationFunction?:
+    | ((value: string) => boolean)
+    | ((value: File) => boolean);
+  type?: string; 
 }
 
 export interface LabelType {

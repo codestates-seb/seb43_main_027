@@ -1,20 +1,20 @@
 import styled from 'styled-components';
 
-import SignUpOauthBtn from './SignUpOauthBtn';
+import SignupOauthBtn from './SignupOauthBtn';
 
 export interface OauthButton {
   onClick: React.MouseEventHandler;
 }
 
-const SignUpOauthContainer = ({ onClick }: OauthButton) => {
+const SignupOauthContainer = ({ onClick }: OauthButton) => {
   return (
     <StyledSignUpOauthContainer>
-      <SignUpOauthBtn onClick={onClick} />
+      <SignupOauthBtn onClick={onClick} />
     </StyledSignUpOauthContainer>
   );
 };
 
-export default SignUpOauthContainer;
+export default SignupOauthContainer;
 
 const StyledSignUpOauthContainer = styled.div`
   display: flex;

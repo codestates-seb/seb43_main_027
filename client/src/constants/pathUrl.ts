@@ -8,7 +8,8 @@ const PATH_URL: PathUrlType = {
   CATEGORY: '/categories/',
   GAME: '/games/',
   POSTING: '/posts',
-  POST: '/posts/'
+  POST: '/posts/',
+  EDIT: '/edit'
 };
 
 export default PATH_URL;
