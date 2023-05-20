@@ -24,7 +24,11 @@ const PostItem = ({ data: bookmarked }: { data: GamePagePostType }) => {
         </StyledTitleContainer>
         <StyledPostInfoContainer>
           <span>작성자: {bookmarked.userName}</span>
-          <span>작성일: {elapsedText(new Date(bookmarked.createdAt))}</span>
+          <span>
+            작성일:{' '}
+            {typeof bookmarked.createdAt === 'string' &&
+              elapsedText(new Date(bookmarked.createdAt))}
+          </span>
           <span>추천 수: {bookmarked.likeCount}</span>
         </StyledPostInfoContainer>
       </div>

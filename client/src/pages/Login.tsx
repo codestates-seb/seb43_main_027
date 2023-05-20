@@ -9,7 +9,7 @@ import styled from 'styled-components';
 import LoginFieldsContainer from '../components/Login/LoginFieldsContainer';
 import LoginTopWrapper from '../components/Login/LoginTopWrapper';
 import LoginOauthContainer from '../components/Login/LoginOauthContainer';
-import LoginButtonsContainer from '../components/Login/LogInButtonsContainer';
+import LoginButtonsContainer from '../components/Login/LoginButtonsContainer';
 
 const LogIn = () => {
   const navigation = useNavigate();
