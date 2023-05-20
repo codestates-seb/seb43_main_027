@@ -6,10 +6,10 @@ import { setUser } from '../slice/userSlice';
 import { RootState } from '../store/store';
 import styled from 'styled-components';
 
-import LogInFieldsContainer from '../components/Login/LoginFieldsContainer';
-import LogInTopWrapper from '../components/Login/LoginTopWrapper';
-import LogInOauthContainer from '../components/Login/LoginOauthContainer';
-import LogInButtonsContainer from '../components/Login/LoginButtonsContainer';
+import LoginFieldsContainer from '../components/Login/LoginFieldsContainer';
+import LoginTopWrapper from '../components/Login/LoginTopWrapper';
+import LoginOauthContainer from '../components/Login/LoginOauthContainer';
+import LoginButtonsContainer from '../components/Login/LogInButtonsContainer';
 
 const LogIn = () => {
   const navigation = useNavigate();
@@ -61,15 +61,15 @@ const LogIn = () => {
     <StyledLogInContainer>
       <StyledLogInFormWrapper>
         {/* top - component */}
-        <LogInTopWrapper />
+        <LoginTopWrapper />
         {/* Form - component */}
         <StyledLogInFormContainer>
           {/* Oauth - component */}
-          <LogInOauthContainer onClick={oauthLogIn} />
+          <LoginOauthContainer onClick={oauthLogIn} />
           {/* Input - components */}
-          <LogInFieldsContainer />
+          <LoginFieldsContainer />
           {/* Button - components */}
-          <LogInButtonsContainer onClick={emailLogIn} />
+          <LoginButtonsContainer onClick={emailLogIn} />
         </StyledLogInFormContainer>
       </StyledLogInFormWrapper>
     </StyledLogInContainer>
