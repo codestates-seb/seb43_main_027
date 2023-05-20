@@ -34,6 +34,7 @@ public class PostMapper {
                 .postTag(post.getPostTag())
                 .views(post.getViews())
                 .likeCount(post.getLikeCount())
+                .unlikeCount(post.getUnlikeCount())
                 .commentCount(post.getCommentCount())
                 .fileUrlList(post.getFiles().stream().map(File::getFileUrl).collect(Collectors.toList()))
                 .comments(post.getComments().stream().map(commentMapper::entityToResponse).collect(Collectors.toList()))

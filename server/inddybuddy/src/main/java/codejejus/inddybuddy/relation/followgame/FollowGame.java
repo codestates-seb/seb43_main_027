@@ -1,5 +1,7 @@
-package codejejus.inddybuddy.follow;
+package codejejus.inddybuddy.relation.followgame;
 
+import codejejus.inddybuddy.game.Game;
+import codejejus.inddybuddy.global.audit.Timestamped;
 import codejejus.inddybuddy.member.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,20 +11,20 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor
-public class FollowMember {
+public class FollowGame extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long followId;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "follower_id", nullable = false)
+    @JoinColumn(name = "follower_id")
     private Member follower;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "following_id", nullable = false)
-    private Member following;
+    @JoinColumn(name = "game_id")
+    private Game game;
 
-    public FollowMember(Member follower, Member following) {
+    public FollowGame(Member follower, Game game) {
         this.follower = follower;
-        this.following = following;
+        this.game = game;
     }
 }

@@ -1,8 +1,8 @@
 package codejejus.inddybuddy.member;
 
-import codejejus.inddybuddy.follow.FollowGameService;
-import codejejus.inddybuddy.follow.FollowMember;
-import codejejus.inddybuddy.follow.FollowMemberService;
+import codejejus.inddybuddy.relation.followgame.FollowGameService;
+import codejejus.inddybuddy.relation.followmember.FollowMember;
+import codejejus.inddybuddy.relation.followmember.FollowMemberService;
 import codejejus.inddybuddy.game.Game;
 import codejejus.inddybuddy.game.GameDto;
 import codejejus.inddybuddy.game.GameMapper;

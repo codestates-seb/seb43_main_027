@@ -42,6 +42,7 @@ public class PostDto {
         private final PostTag postTag;
         private final Long views;
         private final Long likeCount;
+        private final Long unlikeCount;
         private final Long commentCount;
         private final List<String> fileUrlList;
         private final List<CommentDto.Response> comments;
@@ -50,7 +51,7 @@ public class PostDto {
         private ReactionDto.Response reaction;
 
         @Builder
-        public Response(Long postId, Long gameId, MemberDto.SimpleInfoResponse member, String title, String content, Long views, PostTag postTag, Long likeCount, Long commentCount, List<String> fileUrlList, List<CommentDto.Response> comments, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        public Response(Long postId, Long gameId, MemberDto.SimpleInfoResponse member, String title, String content, Long views, PostTag postTag, Long likeCount, Long unlikeCount, Long commentCount, List<String> fileUrlList, List<CommentDto.Response> comments, LocalDateTime createdAt, LocalDateTime updatedAt) {
             this.postId = postId;
             this.gameId = gameId;
             this.member = member;
@@ -59,6 +60,7 @@ public class PostDto {
             this.postTag = postTag;
             this.views = views;
             this.likeCount = likeCount;
+            this.unlikeCount = unlikeCount;
             this.commentCount = commentCount;
             this.fileUrlList = fileUrlList;
             this.comments = comments;

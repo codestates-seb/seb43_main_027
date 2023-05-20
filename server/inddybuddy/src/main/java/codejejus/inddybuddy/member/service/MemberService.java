@@ -2,7 +2,7 @@ package codejejus.inddybuddy.member.service;
 
 import codejejus.inddybuddy.file.File;
 import codejejus.inddybuddy.file.FileService;
-import codejejus.inddybuddy.follow.FollowMemberService;
+import codejejus.inddybuddy.relation.followmember.FollowMemberService;
 import codejejus.inddybuddy.global.exception.CustomException;
 import codejejus.inddybuddy.global.exception.ExceptionCode;
 import codejejus.inddybuddy.global.utils.AuthorityUtils;

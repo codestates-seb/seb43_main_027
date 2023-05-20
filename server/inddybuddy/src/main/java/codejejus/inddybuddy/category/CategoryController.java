@@ -19,11 +19,6 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-    @PostMapping
-    public ResponseEntity<SingleResponse<CategoryDto.Response>> createCategory(@RequestBody CategoryDto.Post postDto) {
-        return ResponseEntity.ok(new SingleResponse<>(categoryService.createCategory(postDto)));
-    }
-
     @GetMapping
     public ResponseEntity<List<CategoryDto.Response>> getAllCategories() {
         return ResponseEntity.ok(categoryService.getAllCategories());
