@@ -74,10 +74,13 @@ const PostList: React.FC<PostListProps> = ({ isSelectTag, isSelectTab, isMapping
         const res = await axios.get(apiUrl);
         const currentPosts = res.data.data;
         const pageInfo = res.data.pageInfo;
+    
+        const filteredPosts = currentPosts.filter((post:any) => post.gameId.toString() === gameId);
 
-        setIsFilteredPosts([...currentPosts]);
+        setIsFilteredPosts([...filteredPosts]);
         setIsSize(pageInfo.size);
         setIsTotalSize(pageInfo.totalSize);
+
         if (isFilteredPosts.length === 0) setIsUserMessage('작성된 게시글이 없습니다.');
       
       } catch (error) {
