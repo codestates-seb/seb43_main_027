@@ -35,18 +35,21 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         String refreshToken = jwtTokenProvider.generateRefreshToken();
         response.setHeader("Authorization", "Bearer " + accessToken);
         response.setHeader("Refresh", refreshToken);
+        log.info("oauth email : {} login success", oAuth2User.getEmail());
         log.info("accessToken : {}", accessToken);
         log.info("refreshToken : {}", refreshToken);
 
         jwtTokenProvider.sendAccessAndRefreshToken(response, accessToken, refreshToken);
-        response.sendRedirect(createURI());
+        response.sendRedirect(createURI(accessToken));
     }
 
-    private String createURI() {
+    private String createURI(String accessToken) {
         return UriComponentsBuilder.newInstance()
                 .scheme("http")
                 .host("localhost")
                 .port(3000)
+                .path("googleLogin")
+                .queryParam("token", accessToken)
                 .encode(StandardCharsets.UTF_8)
                 .build()
                 .toUriString();

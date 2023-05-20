@@ -4,6 +4,7 @@ import codejejus.inddybuddy.global.dto.ErrorResponse;
 import codejejus.inddybuddy.global.utils.ResponseUtils;
 import io.jsonwebtoken.JwtException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -20,7 +21,7 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
         try {
             filterChain.doFilter(request, response);
-        } catch (JwtException exception) {
+        } catch (JwtException | UsernameNotFoundException exception) {
             setErrorResponse(response, exception);
         }
     }
