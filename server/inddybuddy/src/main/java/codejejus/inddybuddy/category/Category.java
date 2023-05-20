@@ -20,9 +20,6 @@ public class Category {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30, unique = true)
     private CategoryName categoryName;
-    @JsonIgnore
-    @ManyToMany(mappedBy = "categories")
-    private List<Game> games;
 
     @Builder
     public Category(CategoryName categoryName) {
