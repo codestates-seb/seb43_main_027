@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import SelectTag from '../common/SelectTag';
 import ButtonEl from '../elements/Button';
 import ImageSection from './ImageSection';
 import { useCallback, useEffect, useState } from 'react';
@@ -12,6 +11,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import PATH_URL from '../../constants/pathUrl';
 import { InputChangeType, SubmitType } from '../../types/parameterTypes';
 import { patchData, postData } from '../../api/apiCollection';
+import { Select, Space } from 'antd';
 
 const InputSection = () => {
   const [post, setPost] = useState<PostType>({
@@ -127,22 +127,34 @@ const InputSection = () => {
   useEffect(() => {
     if (!postId) return;
     (async () => {
-      const res = await axios(
-        `${process.env.REACT_APP_API_URL}/api/posts/${postId}`
-      );
-      const { content, title, fileUrlList } = res.data.data;
-      setPost((prev) => ({ ...prev, content, title }));
-      setUrl(fileUrlList);
+      try {
+        const res = await axios(
+          `${process.env.REACT_APP_API_URL}/api/posts/${postId}`
+        );
+        const { content, title, fileUrlList } = res.data.data;
+        setPost((prev) => ({ ...prev, content, title }));
+        setUrl(fileUrlList);
+      } catch (err: any) {
+        if (err.response.status === 404) {
+          alert('존재하지 않는 게시글입니다.');
+          navigation(PATH_URL.ERROR);
+        }
+      }
     })();
   }, [postId]);
 
   return (
     <form onSubmit={onSubmitHandler} encType='multipart/form-data'>
       <StyledContainer>
-        <SelectTag
-          options={postOptionTags.slice(1)}
-          onChange={onTagChangeHandler}
-        />
+        <Space wrap>
+          <Select
+            defaultValue={post.postTag || '태그 선택'}
+            style={{ width: 120 }}
+            onChange={onTagChangeHandler}
+            options={postOptionTags.slice(1)}
+          />
+        </Space>
+
         <StyledTitleInput
           value={post.title}
           placeholder='제목을 입력하세요.'
