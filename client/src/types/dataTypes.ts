@@ -20,7 +20,7 @@ export type Signup = {
   username: string;
   email: string;
   password: string;
-}
+};
 
 export type CategoryType = {
   categoryId: number;
@@ -59,6 +59,7 @@ export type PathUrlType = {
   LOGIN: string;
   SIGNUP: string;
   REGISTER: string;
+  POST: string;
   EDIT: string;
   ERROR: string;
   NOTFOUND: string;
@@ -83,5 +84,38 @@ export type GamePagePostType = {
   views: number;
   commentCount: number;
   likeCount: number;
+  createdAt?: string;
+  username?: string;
+};
+
+export type PostMemberType = {
+  email: string;
+  followerCount: number;
+  followingCount: number;
+  imageUrl: string;
+  memberId: number;
+  username: string;
+};
+export type ReactionType = {
+  reactionId: number;
+  postId: number;
+  memberId: number;
+  reactionStatus: string;
+};
+
+export type PostDataType = {
+  commentCount: number;
+  comments: [];
+  content: string;
   createdAt: string;
+  fileUrlList: [];
+  gameId: number;
+  likeCount: number;
+  member: PostMemberType;
+  postId: number;
+  postTag: string;
+  reaction: ReactionType | null;
+  title: string;
+  updatedAt: string;
+  views: number;
 };
