@@ -7,7 +7,6 @@ import SignUp from './pages/Signup';
 import Posting from './pages/Posting';
 import LogIn from './pages/Login';
 import PATH_URL from './constants/pathUrl';
-import Posts from './pages/Posts';
 import GameRegister from './pages/GameRegister';
 import Posts from './pages/Posts';
 

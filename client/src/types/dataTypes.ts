@@ -86,35 +86,6 @@ export type GamePagePostType = {
   username?: string;
 };
 
-export type PostDataType = {
-  postId: number;
-  gameId: number;
-  member: {
-    memberId: number;
-    email: string;
-    username: string;
-    imageUrl: string;
-    followerCount: number;
-    followingCount: number;
-  };
-  title: string;
-  content: string;
-  postTag: string;
-  views: number;
-  likeCount: number;
-  commentCount: number;
-  fileUrlList: string[];
-  comments: [];
-  createdAt: string;
-  updatedAt: string;
-  reaction: {
-    reactionId: number;
-    postId: number;
-    memberId: number;
-    reactionStatus: string;
-  } | null;
-};
-
 export type PostMemberType = {
   email: string;
   followerCount: number;
