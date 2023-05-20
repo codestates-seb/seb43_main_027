@@ -137,7 +137,7 @@ const InputSection = () => {
       } catch (err: any) {
         if (err.response.status === 404) {
           alert('존재하지 않는 게시글입니다.');
-          navigation('/');
+          navigation(PATH_URL.ERROR);
         }
       }
     })();
