@@ -19,7 +19,7 @@ const Header = ({ setShow, show }: NavStateType) => {
         <Logo />
         <SearchBar />
       </StyledResponsiveContainer>
-      {user.memberId !== -1 ? <UserBtn /> : <HeaderBtnContainer />}
+      {user.memberId !== -1 ? <UserBtn memberId={user.memberId} /> : <HeaderBtnContainer />}
     </StyledContainer>
   );
 };
