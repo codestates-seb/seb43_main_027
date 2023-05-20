@@ -65,7 +65,7 @@ const GameContainer = () => {
           const startInd = (newPageInfo.page - 1) * newPageInfo.size;
           const endInd = startInd + newPageInfo.size;
           setGames(res.data.data.slice(startInd, endInd));
-          setPageInfo(res.data.pageInfo);
+          setPageInfo(newPageInfo);
         } catch (err) {
           console.error(err);
         }
