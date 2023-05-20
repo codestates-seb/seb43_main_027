@@ -40,4 +40,8 @@ export type PostListProps = {
   isSelectTab: string;
   isSelectTag: string;
   isMappingTag: string;
-}
+};
+
+export type StyledUserImgType = {
+  getUserImg : string;
+};
