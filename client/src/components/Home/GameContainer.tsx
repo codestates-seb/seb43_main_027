@@ -41,10 +41,13 @@ const GameContainer = () => {
       (async () => {
         try {
           const res = await axios.get(
-            `${process.env.REACT_APP_API_URL}${apiRef.current[tabInd]}?page=${curPage}&size=${pageInfo.size}`
+            `${process.env.REACT_APP_API_URL}${apiRef.current[tabInd]}&page=${
+              curPage !== pageInfo.page ? curPage : 1
+            }&size=${pageInfo.size}`
           );
           setGames(res.data.data);
           setPageInfo(res.data.pageInfo);
+          curPage === pageInfo.page && setCurPage(1);
         } catch (err) {
           console.error(err);
         }
@@ -57,7 +60,7 @@ const GameContainer = () => {
           );
           const newPageInfo = {
             ...pageInfo,
-            page: curPage,
+            page: curPage !== pageInfo.page ? curPage : 1,
             totalSize: res.data.data.length,
             totalPage: Math.ceil(res.data.data.length / 10)
           };
@@ -66,6 +69,7 @@ const GameContainer = () => {
           const endInd = startInd + newPageInfo.size;
           setGames(res.data.data.slice(startInd, endInd));
           setPageInfo(newPageInfo);
+          curPage === pageInfo.page && setCurPage(1);
         } catch (err) {
           console.error(err);
         }
