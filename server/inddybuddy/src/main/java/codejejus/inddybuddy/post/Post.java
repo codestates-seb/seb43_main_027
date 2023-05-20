@@ -30,6 +30,8 @@ public class Post extends Timestamped {
     private Long views = 0L;
     @Formula("(select count(*) from reaction r where r.post_id=post_id and r.reaction_status='HAPPY')")
     private Long likeCount = 0L;
+    @Formula("(select count(*) from reaction r where r.post_id=post_id and r.reaction_status='UNHAPPY')")
+    private Long unlikeCount = 0L;
     @Formula("(select count(*) from comment c where c.post_id=post_id)")
     private Long commentCount = 0L;
     @ManyToOne(fetch = FetchType.LAZY)
