@@ -9,8 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface GameRepository extends JpaRepository<Game, Long> {
 
-    @EntityGraph(attributePaths = "categories", type = EntityGraph.EntityGraphType.FETCH)
-    Page<Game> findByGameNameContaining(String keyword, Pageable pageable);
+    Page<Game> findByGameNameContaining(Pageable pageable, String keyword);
 
     boolean existsByGameName(String gameName);
 }
