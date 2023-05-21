@@ -5,8 +5,9 @@ import styled from 'styled-components';
 import CreateChannelButton from '../ui/CreateChannelButton';
 import { TbMessages } from 'react-icons/tb';
 import PATH_URL from '../../constants/pathUrl';
+import { UserInfoProps } from '../../types/propsTypes';
 
-const UserProfileAction = () => {
+const UserProfileAction = ({ setIsEditClick }: UserInfoProps) => {
 
   const [ isSameUser, setIsSameUser ] = useState<boolean>(false);
   const [ isFollowed, setIsFollowed ] = useState(false);
@@ -23,6 +24,8 @@ const UserProfileAction = () => {
 
       if (loginId.toString() === memberId) {
         setIsSameUser(true);
+      } else {
+        setIsSameUser(false);
       };
   
       setIsLoginedId(loginId);
@@ -47,6 +50,7 @@ const UserProfileAction = () => {
   const handleEditProfile = () => {
     // todo: 프로필 수정 페이지로 이동하기
     console.log('프로필 수정 페이지로 이동');
+    setIsEditClick(true);
   };
   
   const handleFollow = () => {
@@ -123,6 +127,7 @@ const StyledWrapper = styled.div`
 const StyledMessageContain = styled.div`
   color: var(--cyan-dark-800);
   font-size: 35px;
+  cursor: pointer;
   &:hover {
     color: var(--button-inactive-color);
   }
