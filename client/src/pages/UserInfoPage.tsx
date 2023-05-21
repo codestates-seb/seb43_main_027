@@ -13,7 +13,7 @@ const UserInfoPage = () => {
       <StyledMyPageContain>
       {
         isEditClick ? 
-          <UserEditInfo />
+          <UserEditInfo setIsEditClick={setIsEditClick} />
         : <UserTitle setIsEditClick={setIsEditClick} />
       }
       </StyledMyPageContain>
