@@ -21,6 +21,10 @@ const PostInfo = ({
   const { gameId, postId } = useParams();
   const navigation = useNavigate();
 
+  const onNameClickHandler = () => {
+    navigation(`${PATH_URL.USER_INFO}${member.memberId}`);
+  };
+
   const onClickHandler = () => {
     // TODO: 게시글 삭제 500 error 남 포스트맨도
     if (confirm('게시글을 삭제하시겠습니까?')) {
@@ -47,7 +51,9 @@ const PostInfo = ({
     <StyledContainer>
       <StyledImg src={member.imageUrl} />
       <StyledInfoFlexBox>
-        <span>{member.userName}</span>
+        <span onClick={onNameClickHandler} style={{ cursor: 'pointer' }}>
+          {member.userName}
+        </span>
         <StyledFlexBox>
           <StyledInfoBox>
             <StyledIconBox>

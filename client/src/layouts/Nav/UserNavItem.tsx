@@ -3,20 +3,25 @@ import styled from 'styled-components';
 
 import { AiOutlineMail, AiOutlineUser } from 'react-icons/ai';
 import { User } from '../../types/dataTypes';
+import PATH_URL from '../../constants/pathUrl';
 
 const UserNavItem = ({ data: user }: { data: User }) => {
   const navigation = useNavigate();
 
   const onUserClickHandler = () => {
-    navigation('/user');
+    navigation(`${PATH_URL.USER_INFO}${user.memberId}`);
   };
   const onMailClickHandler = (e: React.MouseEvent<SVGAElement>) => {
     e.stopPropagation();
   };
   return (
     <StyledContainer onClick={onUserClickHandler}>
-      <AiOutlineUser color={'var(--cyan-dark-500)'} size={'3rem'} />
-      <StyledUserName>{user.username}</StyledUserName>
+      {user.imageUrl ? (
+        <StyledImg src={user.imageUrl} />
+      ) : (
+        <AiOutlineUser size={'3rem'} />
+      )}
+      <StyledUserName>{user.userName}</StyledUserName>
       <div>
         <AiOutlineMail
           color={'#999'}
@@ -50,4 +55,9 @@ const StyledContainer = styled.div`
 const StyledUserName = styled.span`
   font-weight: bold;
   font-size: 1.6rem;
+`;
+const StyledImg = styled.img`
+  border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
 `;

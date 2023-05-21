@@ -6,7 +6,8 @@ import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { patchData } from '../../api/apiCollection';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import PATH_URL from '../../constants/pathUrl';
 
 // TODO: 대댓글 기능 요청 기능 구현 완료 대댓글 구현될 시 대댓글 보여지도록 구현해야함
 const CommentItem = ({
@@ -21,6 +22,7 @@ const CommentItem = ({
   const [reComment, setReComment] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const navigation = useNavigate();
 
   const onReCommentClickHandler = () => {
     setReComment((prev) => !prev);
@@ -29,9 +31,13 @@ const CommentItem = ({
   const onUpdateClickHandler = () => {
     setIsUpdate((prev) => !prev);
   };
+
   const onReCommentSubmitHandler = () => {
     onReCommentClickHandler();
     onCommentSubmit();
+  };
+  const onNameClickHandler = () => {
+    navigation(`${PATH_URL.USER_INFO}${comment.member.memberId}`);
   };
 
   const onSubmitClickHandler = () => {
@@ -63,7 +69,9 @@ const CommentItem = ({
         <StyledImg src={comment.member.imageUrl} />
         <StyledWrapper>
           <StyledInfoBox>
-            <span>{comment.member.userName}</span>
+            <span onClick={onNameClickHandler} style={{ cursor: 'pointer' }}>
+              {comment.member.userName}
+            </span>
             <span>{elapsedText(new Date(comment.createdAt))}</span>
           </StyledInfoBox>
           {isUpdate ? (

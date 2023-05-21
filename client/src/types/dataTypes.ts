@@ -9,7 +9,7 @@ export type NavItemType = {
 export type User = {
   memberId: number;
   email: string;
-  username: string;
+  userName: string;
   memberStatus: string;
   imageUrl: string;
   createdAt: string;
