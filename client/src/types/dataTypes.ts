@@ -61,6 +61,7 @@ export type PathUrlType = {
   REGISTER: string;
   EDIT: string;
   GOOGLE: string;
+  SEARCH: string;
 };
 
 export type PostOptionType = {

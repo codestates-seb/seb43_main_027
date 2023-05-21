@@ -9,12 +9,14 @@ import LogIn from './pages/Login';
 import PATH_URL from './constants/pathUrl';
 import GameRegister from './pages/GameRegister';
 import GoogleLogIn from './components/Login/googleLogin';
+import Search from './pages/Search';
 
 const AppRoutes = () => {
   return (
     <Routes>
       <Route path='/' element={<Template />}>
         <Route path='/' element={<Home />} />
+        <Route path={`${PATH_URL.SEARCH}`} element={<Search />} />
         <Route
           path={`${PATH_URL.CATEGORY}:categoryId`}
           element={<CategoryGames />}
