@@ -127,13 +127,19 @@ const StyledCardContainer = styled.div`
   padding: 5rem;
   align-items: center;
   gap: 3rem 5%;
+  justify-content: center;
+
+  @media screen and (min-width: 500px) {
+    justify-content: space-between;
+  }
+
+  @media screen and (min-width: 650px) {
+    gap: 3rem 2%;
+    justify-content: flex-start;
+  }
   @media screen and (min-width: 1200px) {
     gap: 3rem 4%;
   }
-`;
-
-const StyledNotFoundText = styled.div`
-  margin-top: 3rem;
 `;
 
 const StyledEmptyItem = styled.div`
