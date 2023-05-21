@@ -9,7 +9,7 @@ export type NavItemType = {
 export type User = {
   memberId: number;
   email: string;
-  username: string;
+  userName: string;
   memberStatus: string;
   imageUrl: string;
   createdAt: string;
@@ -20,7 +20,7 @@ export type Signup = {
   username: string;
   email: string;
   password: string;
-}
+};
 
 export type CategoryType = {
   categoryId: number;
@@ -59,7 +59,9 @@ export type PathUrlType = {
   LOGIN: string;
   SIGNUP: string;
   REGISTER: string;
+  POST: string;
   EDIT: string;
+  GOOGLE: string;
   ERROR: string;
   NOTFOUND: string;
   USER_INFO: string;
@@ -84,5 +86,47 @@ export type GamePagePostType = {
   views: number;
   commentCount: number;
   likeCount: number;
+  createdAt?: string;
+  username?: string;
+};
+
+export type PostMemberType = {
+  email: string;
+  followerCount: number;
+  followingCount: number;
+  imageUrl: string;
+  memberId: number;
+  userName: string;
+};
+export type ReactionType = {
+  reactionId: number;
+  postId: number;
+  memberId: number;
+  reactionStatus: string;
+};
+
+export type PostDataType = {
+  commentCount: number;
+  comments: CommentType[];
+  content: string;
   createdAt: string;
+  fileUrlList: [];
+  gameId: number;
+  likeCount: number;
+  unlikeCount: number;
+  member: PostMemberType;
+  postId: number;
+  postTag: string;
+  reaction: ReactionType | null;
+  title: string;
+  updatedAt: string;
+  views: number;
+};
+
+export type CommentType = {
+  commentId: number;
+  member: PostMemberType;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
 };

@@ -11,20 +11,16 @@ import LoginTopWrapper from '../components/Login/LoginTopWrapper';
 import LoginOauthContainer from '../components/Login/LoginOauthContainer';
 import LoginButtonsContainer from '../components/Login/LoginButtonsContainer';
 
-const LogIn = () => {
+import oauthLogin from '../utils/OauthSignUpFunction';
+
+const Login = () => {
   const navigation = useNavigate();
 
   const dispatch = useDispatch();
   const userinfo = useSelector((state: RootState) => state.user);
   const logininfo = useSelector((state: RootState) => state.signup);
 
-  const oauthLogIn: React.MouseEventHandler = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    const googleAuthUrl = `${process.env.REACT_APP_API_URL}/oauth2/authorization/google?redirect_uri=http://localhost:3000/login`;
-    window.location.href = googleAuthUrl;
-  };
-
-  const emailLogIn: React.MouseEventHandler = async (e: React.MouseEvent) => {
+  const emailLogin: React.MouseEventHandler = async (e: React.MouseEvent) => {
     e.preventDefault();
     try {
       await axios
@@ -58,27 +54,27 @@ const LogIn = () => {
   }, [userinfo]);
 
   return (
-    <StyledLogInContainer>
-      <StyledLogInFormWrapper>
+    <StyledLoginContainer>
+      <StyledLoginFormWrapper>
         {/* top - component */}
         <LoginTopWrapper />
         {/* Form - component */}
-        <StyledLogInFormContainer>
+        <StyledLoginFormContainer>
           {/* Oauth - component */}
-          <LoginOauthContainer onClick={oauthLogIn} />
-          {/* Input - components */}
+          <LoginOauthContainer onClick={oauthLogin} />
+          {/* input - components */}
           <LoginFieldsContainer />
           {/* Button - components */}
-          <LoginButtonsContainer onClick={emailLogIn} />
-        </StyledLogInFormContainer>
-      </StyledLogInFormWrapper>
-    </StyledLogInContainer>
+          <LoginButtonsContainer onClick={emailLogin} />
+        </StyledLoginFormContainer>
+      </StyledLoginFormWrapper>
+    </StyledLoginContainer>
   );
 };
 
-export default LogIn;
+export default Login;
 
-const StyledLogInContainer = styled.div`
+const StyledLoginContainer = styled.div`
   flex: 1 1;
   display: flex;
   flex-direction: row;
@@ -87,7 +83,7 @@ const StyledLogInContainer = styled.div`
   background-color: #ffffff;
 `;
 
-const StyledLogInFormWrapper = styled.div`
+const StyledLoginFormWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -106,7 +102,7 @@ const StyledLogInFormWrapper = styled.div`
   }
 `;
 
-const StyledLogInFormContainer = styled.form`
+const StyledLoginFormContainer = styled.form`
   display: flex;
   flex-direction: column;
   width: 100%;

@@ -176,6 +176,7 @@ const StyledGameNameContainer = styled.div`
   flex-direction: column;
   align-items: center;
   white-space: nowrap;
+  width: 100%;
   margin: 1rem;
   > form {
     display: flex;
@@ -188,6 +189,7 @@ const StyledGameNameContainer = styled.div`
 
   > input {
     margin: 0.5rem 1rem;
+    width: 100%;
   }
 
   .colorchange {
@@ -213,8 +215,11 @@ const StyledGameNameContainer = styled.div`
 `;
 
 const StyledGameDetailContainer = styled(StyledGameNameContainer)`
+  width: 100%;
   textarea {
     min-height: 20rem;
+    width: 100%;
+    padding: 1rem;
   }
   @media screen and (max-width: 650px) {
     flex-direction: column;

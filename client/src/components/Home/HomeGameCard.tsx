@@ -15,11 +15,11 @@ const HomeGameCard = (props: GameType) => {
 export default HomeGameCard;
 
 const StyledContainer = styled.div`
-  width: 100%;
-  @media screen and (min-width: 650px) {
+  /* width: 100%; */
+  /* @media screen and (min-width: 650px) {
     width: 30%;
   }
   @media screen and (min-width: 1200px) {
     width: 22%;
-  }
+  } */
 `;

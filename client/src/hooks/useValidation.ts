@@ -12,4 +12,5 @@ function useValidation(value: any, validationFunction: ValidationFunction) {
   return false;
 }
 
+
 export default useValidation;

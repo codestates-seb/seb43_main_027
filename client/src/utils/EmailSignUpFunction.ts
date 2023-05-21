@@ -16,7 +16,7 @@ const emailSignUp: React.MouseEventHandler = async (e: React.MouseEvent) => {
           password: signupinfo.password 
         }
       )
-      .then((response) => {
+      .then(() => {
         alert('you successfully signed up!');
         // Navigate('/login');
       });
