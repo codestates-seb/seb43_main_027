@@ -45,3 +45,7 @@ export type PostListProps = {
 export type StyledUserImgType = {
   getUserImg : string;
 };
+
+export interface UserInfoProps {
+  setIsEditClick: React.Dispatch<React.SetStateAction<boolean>>;
+};
