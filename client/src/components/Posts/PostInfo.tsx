@@ -22,7 +22,7 @@ const PostInfo = ({
     <StyledContainer>
       <StyledImg src={member.imageUrl} />
       <StyledInfoFlexBox>
-        <span>{member.username}</span>
+        <span>{member.userName}</span>
         <StyledFlexBox>
           <StyledInfoBox>
             <StyledIconBox>
