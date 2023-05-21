@@ -21,14 +21,14 @@ const GameList: React.FC<TabSelectType> = ({ isSelectTab })  => {
   const [ isFilteredGames, setIsFilteredGames ] = useState<GameType[]>([]);
   const [ userMessage, setUserMessage ] = useState('등록된 게임채널이 없습니다.');
   const [ isPage, setPage ] = useState<number>(1);
-  const [ isSize, setSize ] = useState<number>(0);
+  const [ isSize, setSize ] = useState<number>(10);
   const [ isToTalSize, setTotalSize ] = useState<number>(0);
 
   // todo: 추후 데이터 생성 테스트시 인기,신규게임 페이지네이션 테스트 해야됨
   useEffect(() => {
     const fetchGamesData = async () => {
       try {
-        let apiUrl = `${process.env.REACT_APP_API_URL}/api/categories/${categoryId}/games?page=${isPage}`;
+        let apiUrl = `${process.env.REACT_APP_API_URL}/api/categories/${categoryId}/games?page=${isPage}&size=${isSize}`;
   
         switch (isSelectTab) {
           case '전체 게임': {
