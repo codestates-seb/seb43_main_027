@@ -61,6 +61,7 @@ export type PathUrlType = {
   REGISTER: string;
   POST: string;
   EDIT: string;
+  GOOGLE: string;
   ERROR: string;
   NOTFOUND: string;
   USER_INFO: string;
