@@ -8,8 +8,9 @@ import UserAboutMe from './UserAboutMe';
 import { StyledTitleWrapper, StyledAboutMe } from './UserTitle';
 import CreateChannelButton from '../ui/CreateChannelButton';
 import { CiCircleRemove } from 'react-icons/ci';
+import { UserInfoProps } from '../../types/propsTypes';
 
-const UserEditInfo = () => {
+const UserEditInfo = ({ setIsEditClick }: UserInfoProps) => {
   
   const { memberId } = useParams();
   const [ isUserImg, setIsUserImg ] = useState<string>('');
@@ -18,6 +19,15 @@ const UserEditInfo = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
+      const getMemberData = localStorage.getItem('user');
+      const memberData = getMemberData ? JSON.parse(getMemberData) : { memberId: -1 };
+      const loginId = memberData.memberId;
+  
+      if (memberId !== loginId.toString()) {
+        setIsEditClick(false);
+        return;
+      };
+
       try {
         const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/members/${memberId}/profile`);
         const fetchedData = res.data.data;
