@@ -17,27 +17,17 @@ const GoogleLogIn = () => {
     const url = new URL(window.location.href);
     if (!localStorage.getItem('accessToken')) {
       const param = url.searchParams.get('token');
-      if (param) {
-        console.log(`this is param: ${param}`);
-        setAccessToken(param);
-      }
-    } else {
-      console.log('there is access token in localStorage');
-      setAccessToken(localStorage.getItem('accessToken')!);
-    }
+      if (param) setAccessToken(param);
+    } else setAccessToken(localStorage.getItem('accessToken')!);
   }, []);
 
   useEffect(() => {
     if (!accessToken) {
       const actoken = localStorage.getItem('access_token');
-      if (actoken) {
-        setAccessToken(actoken);
-        console.log(`This is actoken: ${actoken}`);
-      }
+      if (actoken) setAccessToken(actoken);
     }
     if (accessToken) {
       localStorage.setItem('access_token', `Bearer ${accessToken}`);
-      console.log(`This is local access_token: ${accessToken}`);
       const headers = {
         Authorization: `Bearer ${accessToken}`
       };
@@ -48,7 +38,6 @@ const GoogleLogIn = () => {
           const userdata = response.data;
           dispatch(setUser({ ...userdata }));
           localStorage.setItem('user', JSON.stringify(userdata));
-          console.log(JSON.parse(localStorage.getItem('user')!));
           alert('you successfully logged in!');
           navigator('/');
         });
