@@ -11,7 +11,9 @@ const PATH_URL: PathUrlType = {
   EDIT: '/edit',
   GOOGLE: '/googlelogin'
   ERROR: '/error',
-  NOTFOUND: '*
+  NOTFOUND: '*',
+  USER_INFO: '/users/',
+
 };
 
 export default PATH_URL;

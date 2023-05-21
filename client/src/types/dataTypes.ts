@@ -64,6 +64,7 @@ export type PathUrlType = {
   GOOGLE: string;
   ERROR: string;
   NOTFOUND: string;
+  USER_INFO: string;
 };
 
 export type PostOptionType = {
