@@ -11,7 +11,10 @@ const CommentInput = ({ onCommentSubmit }: { onCommentSubmit: () => void }) => {
   const user = useSelector((s: RootState) => s.user);
 
   const onClickHandler = () => {
-    if (commentRef?.current?.value.length === 0) return;
+    if (commentRef?.current?.value.length === 0) {
+      alert('내용을 입력해주세요.');
+      return;
+    }
     postData(
       `${process.env.REACT_APP_API_URL}/api/games/${gameId}/posts/${postId}/comments`,
       JSON.stringify({
