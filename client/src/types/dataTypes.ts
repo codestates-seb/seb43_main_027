@@ -63,6 +63,7 @@ export type PathUrlType = {
   EDIT: string;
   ERROR: string;
   NOTFOUND: string;
+  USER_INFO: string;
 };
 
 export type PostOptionType = {
