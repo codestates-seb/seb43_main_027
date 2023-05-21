@@ -29,8 +29,6 @@ const UserTitle = ({ setIsEditClick }: UserInfoProps) => {
         setIsUserName(fetchedData.userName);
         setIsUserEmail(fetchedData.email);
 
-        console.log(fetchedData.memberStatus)
-
         if (fetchedData.userName === null) {
           setIsUserName('등록된 닉네임이 없습니다.');
         };
