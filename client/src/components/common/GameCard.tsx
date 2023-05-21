@@ -48,7 +48,8 @@ const StyledBadgeContainer = styled.div`
 const StyledTitle = styled.h3`
   display: -webkit-box;
   font-weight: bold;
-  font-size: 2.2rem;
+  padding: 0.4rem;
+  font-size: 2rem;
   width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;

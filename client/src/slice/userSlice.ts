@@ -4,7 +4,7 @@ import { User } from '../types/dataTypes';
 const initialState: User = {
   memberId: -1,
   email: '',
-  username: '',
+  userName: '',
   memberStatus: '',
   imageUrl: '',
   createdAt: '',

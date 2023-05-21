@@ -9,6 +9,7 @@ import PostContent from '../components/Posts/PostContent';
 import ImageSection from '../components/Posts/ImageSection';
 import CommentSection from '../components/Posts/CommentSection';
 import Reaction from '../components/Posts/Reaction';
+import PATH_URL from '../constants/pathUrl';
 
 const initValue: PostDataType = {
   content: '',
@@ -23,11 +24,12 @@ const initValue: PostDataType = {
     followerCount: 0,
     followingCount: 0,
     imageUrl: '',
-    username: ''
+    userName: ''
   },
   comments: [],
   gameId: -1,
   likeCount: 0,
+  unlikeCount: 0,
   postId: -1,
   updatedAt: '',
   views: 0,
@@ -38,19 +40,36 @@ const Posts = () => {
   const { postId } = useParams();
   const [post, setPost] = useState<PostDataType>(initValue);
   const [isMarked, setIsMarked] = useState<boolean>(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const navigation = useNavigate();
 
+  const needFetch = () => {
+    setIsSubmitted(true);
+  };
+  console.log('render');
   useEffect(() => {
     // TODO: 북마크 여부 검사
+    if (post.postId !== -1 && isSubmitted === false) return;
     getData(
       `${process.env.REACT_APP_API_URL}/api/posts/${postId}`,
       (res) => {
+        console.log(res.data.data);
         setPost({ ...res.data.data });
+        setIsSubmitted(false);
       },
-      () => console.log('error')
+      (err) => {
+        if (err?.response?.status === 401) {
+          alert('유효하지 않은 토큰입니다.');
+          navigation(PATH_URL.LOGIN);
+        }
+      },
+      {
+        headers: {
+          Authorization: localStorage.getItem('access_token')
+        }
+      }
     );
-  }, []);
-
+  }, [isSubmitted]);
   return (
     <StyledContainer>
       <Title title={post.title} tag={post.postTag} isMarked={isMarked} />
@@ -61,8 +80,17 @@ const Posts = () => {
       />
       <PostContent content={post.content} />
       <ImageSection urls={post.fileUrlList} />
-      <Reaction reaction={post.reaction} likeCount={post.likeCount} />
-      <CommentSection />
+      <Reaction
+        reaction={post.reaction}
+        likeCount={post.likeCount}
+        unlikeCount={post.unlikeCount}
+        onReactionChange={needFetch}
+      />
+      <CommentSection
+        commentCount={post.commentCount}
+        comments={post.comments}
+        onCommentSubmit={needFetch}
+      />
     </StyledContainer>
   );
 };

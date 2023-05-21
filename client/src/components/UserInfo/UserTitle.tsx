@@ -10,41 +10,41 @@ import Loading from '../common/Loading';
 import { UserInfoProps } from '../../types/propsTypes';
 
 const UserTitle = ({ setIsEditClick }: UserInfoProps) => {
-
   const { memberId } = useParams();
 
-  const [ isUserImg, setIsUserImg ] = useState<string>('');
-  const [ isUserName, setIsUserName ] = useState<string>('');
-  const [ isUserEmail, setIsUserEmail ] = useState<string>('');
-  const [ loading, setLoading ] = useState(true);
+  const [isUserImg, setIsUserImg] = useState<string>('');
+  const [isUserName, setIsUserName] = useState<string>('');
+  const [isUserEmail, setIsUserEmail] = useState<string>('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/members/${memberId}/profile`);
+        const res = await axios.get(
+          `${process.env.REACT_APP_API_URL}/api/members/${memberId}/profile`
+        );
         const fetchedData = res.data.data;
 
         setIsUserImg(fetchedData.imageUrl);
         setIsUserName(fetchedData.userName);
         setIsUserEmail(fetchedData.email);
-
       } catch (error) {
         console.log(error);
       } finally {
         setLoading(false);
-      };
+      }
     };
 
     fetchUserData();
-  } , [memberId]);
+  }, [memberId]);
 
   if (loading) {
     return <Loading />;
-  };
+  }
 
   if (isUserName === null) {
     setIsUserName('등록된 닉네임이 없습니다.');
-  };
+  }
 
   return (
     <StyledTitleWrapper>
