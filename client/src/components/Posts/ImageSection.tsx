@@ -14,8 +14,5 @@ const ImageSection = ({ urls }: { urls: [] }) => {
 export default ImageSection;
 
 const StyledContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
   padding: 1rem;
-  gap: 3rem 5%;
 `;

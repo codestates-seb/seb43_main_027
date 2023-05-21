@@ -44,6 +44,8 @@ const StyledContainer = styled.div`
 const StyledImg = styled.img`
   width: 3rem;
   height: 3rem;
+  border-radius: 50%;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
 `;
 const StyledBtn = styled.button`
   background-color: var(--cyan-dark-500);

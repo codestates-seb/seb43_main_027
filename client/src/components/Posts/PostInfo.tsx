@@ -91,6 +91,7 @@ const StyledImg = styled.img`
   width: 4rem;
   height: 4rem;
   border-radius: 50%;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
 `;
 
 const StyledFlexBox = styled.div`
