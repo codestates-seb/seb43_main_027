@@ -37,7 +37,7 @@ const GameChannel = ()  => {
 
   const handleCreate = () => {
     if (memberId === -1) {
-      navigate('/login');
+      navigate(`${PATH_URL.LOGIN}`);
     } else {
       navigate(`${PATH_URL.GAME}${gameId}${PATH_URL.POSTING}`);
     }

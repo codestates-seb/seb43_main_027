@@ -51,8 +51,6 @@ const UserProfileAction = ({ setIsEditClick }: UserInfoProps) => {
   }, [memberId]);
 
   const handleEditProfile = () => {
-    // todo: 프로필 수정 페이지로 이동하기
-    console.log('프로필 수정 페이지로 이동');
     setIsEditClick(true);
   };
 
