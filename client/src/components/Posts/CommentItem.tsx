@@ -8,6 +8,7 @@ import { RootState } from '../../store/store';
 import { patchData } from '../../api/apiCollection';
 import { useParams } from 'react-router-dom';
 
+// TODO: 대댓글 기능 요청 기능 구현 완료 대댓글 구현될 시 대댓글 보여지도록 구현해야함
 const CommentItem = ({
   comment,
   onCommentSubmit
@@ -86,7 +87,12 @@ const CommentItem = ({
           </StyledContainer>
         </StyledWrapper>
       </StyledContainer>
-      {reComment && <ReCommentInput />}
+      {reComment && (
+        <ReCommentInput
+          parentCommentId={comment.commentId}
+          onCommentSubmit={onCommentSubmit}
+        />
+      )}
     </StyledCommentContainer>
   );
 };
