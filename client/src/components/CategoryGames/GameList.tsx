@@ -179,7 +179,6 @@ const StyledGameList = styled.div`
     flex-wrap: wrap;
     flex-basis: 50%;
     padding: 50px 35px;
-    justify-content: center;
   }
 `;
 
