@@ -78,6 +78,7 @@ export default GameChannel;
 const StyledGameChannelWrapper = styled.div`
   background-color: var(--page-bg);
   width: 100%;
+  min-height: calc(100vh - 224px);
   flex-grow: 1;
   overflow-x: hidden;
 `;
