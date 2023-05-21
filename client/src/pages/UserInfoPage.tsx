@@ -6,7 +6,6 @@ import UserEditInfo from '../components/UserInfo/UserEditInfo';
 const UserInfoPage = () => {
 
   const [ isEditClick, setIsEditClick ] = useState<boolean>(false);
-  console.log(isEditClick);
 
   return (
     <StyledMyPageWrapper>

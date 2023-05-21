@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 import UserProfileImg from './UserProfileImg';
@@ -8,11 +8,12 @@ import UserAboutMe from './UserAboutMe';
 import UserProfileAction from './UserActions';
 import Loading from '../common/Loading';
 import { UserInfoProps } from '../../types/propsTypes';
+import PATH_URL from '../../constants/pathUrl';
 
 const UserTitle = ({ setIsEditClick }: UserInfoProps) => {
 
   const { memberId } = useParams();
-
+  const navigate = useNavigate();
   const [ isUserImg, setIsUserImg ] = useState<string>('');
   const [ isUserName, setIsUserName ] = useState<string>('');
   const [ isUserEmail, setIsUserEmail ] = useState<string>('');
@@ -28,6 +29,17 @@ const UserTitle = ({ setIsEditClick }: UserInfoProps) => {
         setIsUserName(fetchedData.userName);
         setIsUserEmail(fetchedData.email);
 
+        console.log(fetchedData.memberStatus)
+
+        if (fetchedData.userName === null) {
+          setIsUserName('등록된 닉네임이 없습니다.');
+        };
+        
+        if (fetchedData.memberStatus === 'DELETE') {
+          alert('삭제된 계정입니다.');
+          navigate(`${PATH_URL.ERROR}`);
+        };
+
       } catch (error) {
         console.log(error);
       } finally {
@@ -36,21 +48,23 @@ const UserTitle = ({ setIsEditClick }: UserInfoProps) => {
     };
 
     fetchUserData();
+
   } , [memberId]);
 
   if (loading) {
     return <Loading />;
   };
 
-  if (isUserName === null) {
-    setIsUserName('등록된 닉네임이 없습니다.');
-  };
-
   return (
     <StyledTitleWrapper>
       <UserProfileImg isUserImg={isUserImg} />
-      <UserProfileName isUserName={isUserName} isUserEmail={isUserEmail} />
-      <UserProfileAction setIsEditClick={setIsEditClick} />
+      <UserProfileName 
+        isUserName={isUserName} 
+        isUserEmail={isUserEmail}
+      />
+      <UserProfileAction 
+        setIsEditClick={setIsEditClick} 
+      />
       <StyledAboutMe>
         <UserAboutMe />
       </StyledAboutMe>
