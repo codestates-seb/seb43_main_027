@@ -3,8 +3,9 @@ import { AiOutlineUser } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { clearUser } from '../../slice/userSlice';
+import PATH_URL from '../../constants/pathUrl';
 
-const UserBtn = ({ url }: { url?: string }) => {
+const UserBtn = ({ url, memberId }: { url?: string; memberId: number }) => {
   const dispatch = useDispatch();
 
   const onClickHandler = () => {
@@ -18,7 +19,7 @@ const UserBtn = ({ url }: { url?: string }) => {
 
   return (
     <StyledContainer>
-      <Link to='/mypage'>
+      <Link to={`${PATH_URL.USER_INFO}${memberId}`}>
         {url ? (
           <StyledImg src={url} alt='유저 프로필 이미지' />
         ) : (

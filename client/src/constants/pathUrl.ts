@@ -11,7 +11,8 @@ const PATH_URL: PathUrlType = {
   POST: '/posts/',
   EDIT: '/edit',
   ERROR: '/error',
-  NOTFOUND: '*'
+  NOTFOUND: '*',
+  USER_INFO: '/users/',
 };
 
 export default PATH_URL;
