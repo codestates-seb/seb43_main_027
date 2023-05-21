@@ -3,6 +3,7 @@ package codejejus.inddybuddy.member;
 import codejejus.inddybuddy.member.dto.MemberDto;
 import codejejus.inddybuddy.member.entity.Member;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,6 +17,7 @@ public interface MemberMapper {
 
     MemberDto.Response memberToMemberDtoResponse(Member member);
 
+    @Mapping(source = "username", target = "userName")
     MemberDto.ProfileResponse memberToMemberProfileDtoResponse(Member member);
 
     default List<MemberDto.SimpleInfoResponse> getMemberSimpleInfoResponses(List<Member> members) {
