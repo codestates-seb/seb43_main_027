@@ -1,9 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { AiOutlineMail, AiOutlineUser } from 'react-icons/ai';
+import { AiOutlineUser } from 'react-icons/ai';
 import { User } from '../../types/dataTypes';
 import PATH_URL from '../../constants/pathUrl';
+import { TbMessages } from 'react-icons/tb';
 
 const UserNavItem = ({ data: user }: { data: User }) => {
   const navigation = useNavigate();
@@ -23,7 +24,7 @@ const UserNavItem = ({ data: user }: { data: User }) => {
       )}
       <StyledUserName>{user.userName}</StyledUserName>
       <div>
-        <AiOutlineMail
+        <TbMessages
           color={'#999'}
           size={20}
           onClick={onMailClickHandler}
