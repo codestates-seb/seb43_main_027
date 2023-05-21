@@ -1,23 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ChangeEvent, useRef } from 'react';
 import styled from 'styled-components';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import UserProfileImg from './UserProfileImg';
-import UserProfileName from './UserProfileName';
-import UserAboutMe from './UserAboutMe';
 import { StyledTitleWrapper, StyledAboutMe } from './UserTitle';
 import CreateChannelButton from '../ui/CreateChannelButton';
 import { CiCircleRemove } from 'react-icons/ci';
+import { FiEdit } from 'react-icons/fi';
 import { UserInfoProps } from '../../types/propsTypes';
 import PATH_URL from '../../constants/pathUrl';
+import { UserOutlined } from '@ant-design/icons';
+import { Input } from 'antd';
 
 const UserEditInfo = ({ setIsEditClick }: UserInfoProps) => {
-  
   const { memberId } = useParams();
   const navigate = useNavigate();
+
   const [ isUserImg, setIsUserImg ] = useState<string>('');
   const [ isUserName, setIsUserName ] = useState<string>('');
-  const [ isUserEmail, setIsUserEmail ] = useState<string>('');
+  const [ isEditAboutMe, setIsEditAboutMe ] = useState<string>('');
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [ selectedFile, setSelectedFile ] = useState<File | null>(null);
+
+  const { TextArea } = Input;
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -34,9 +40,11 @@ const UserEditInfo = ({ setIsEditClick }: UserInfoProps) => {
         const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/members/${memberId}/profile`);
         const fetchedData = res.data.data;
 
+        console.log(fetchedData);
+
         setIsUserImg(fetchedData.imageUrl);
         setIsUserName(fetchedData.userName);
-        setIsUserEmail(fetchedData.email);
+        setIsEditAboutMe(fetchedData.aboutMe);
 
       } catch (error) {
         console.log(error);
@@ -50,14 +58,63 @@ const UserEditInfo = ({ setIsEditClick }: UserInfoProps) => {
     setIsUserName('등록된 닉네임이 없습니다.');
   };
 
-  const handleSubmitEditClick = () => {
-    console.log('post 요청 보내기');
+  // 입력폼 핸들러
+  const handleUploadImg = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+      const fileURL = URL.createObjectURL(file);
+      setIsUserImg(fileURL);
+    }
   };
 
+  const handleNicknameChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setIsUserName(event.target.value);
+  };
+
+  const handleAboutChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    setIsEditAboutMe(event.target.value);
+  };
+
+  // 프로필 수정 로직
+  const handleSubmitEditClick = () => {
+    const formData = new FormData();
+
+    const jsonBlob = new Blob([JSON.stringify({
+      username: isUserName,
+      aboutMe: isEditAboutMe
+    })], { type: 'application/json' });
+    
+    formData.append('patch', jsonBlob);
+
+    if (selectedFile) {
+      formData.append('file', selectedFile, selectedFile.name);
+    };
+  
+    axios.patch(`${process.env.REACT_APP_API_URL}/api/members/${memberId}`, 
+    formData, 
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: localStorage.getItem('access_token'),
+        }
+      }
+    )
+      .then((response) => {
+        setIsEditClick(false);
+      })
+      .catch((error) => {
+        console.error('프로필 저장 요청 실패:', error);
+      });
+  };
+
+  // 프로필 수정 취소 로직
   const handleCancleClick = () => {
     window.location.reload();
   };
 
+
+  // 회원탈퇴 로직
   const handleRemoveClick = () => {
     const result = window.confirm('회원탈퇴를 선택하시면 모든 계정 정보가 영구적으로 삭제됩니다.\n계속 진행하시겠습니까?');
   
@@ -89,26 +146,59 @@ const UserEditInfo = ({ setIsEditClick }: UserInfoProps) => {
   };
 
   return (
-    <StyledTitleWrapper>
-      <UserProfileImg isUserImg={isUserImg} />
-      <UserProfileName isUserName={isUserName} isUserEmail={isUserEmail} />
+    <StyledEditWrapper>
+        <StyledText>이미지 수정:</StyledText>
+      <StyledEditImg>
+        <input type="file" onChange={handleUploadImg} style={{ display: 'none' }} ref={fileInputRef} />
+        <FiEdit onClick={() => { (document.querySelector('input[type="file"]') as HTMLInputElement)?.click(); }} />
+      </StyledEditImg>
+        <UserProfileImg isUserImg={isUserImg} />
+        닉네임 수정:
+        <Input 
+          placeholder="닉네임 수정" 
+          prefix={<UserOutlined />}
+          style={{ width: '200px' }} 
+          value={isUserName}
+          onChange={handleNicknameChange}
+        />
+        소개글 수정:
+      <StyledEditAboutMe>
+        <TextArea 
+          placeholder="소개글을 작성해주세요." 
+          maxLength={100}
+          style={{ height: '100px', width: '300px' }}
+          value={isEditAboutMe}
+          onChange={handleAboutChange}
+          autoSize={{ minRows: 3, maxRows: 5 }}
+        />
+      </StyledEditAboutMe>
       <StyledActionContain>  
-        <CreateChannelButton text={'프로필 저장하기'} onClick={handleSubmitEditClick}/>
+        <CreateChannelButton 
+          text={'프로필 저장하기'} 
+          onClick={handleSubmitEditClick}
+        />
         <StyledCancleContain>
           <CiCircleRemove onClick={handleCancleClick} />
         </StyledCancleContain>
       </StyledActionContain>
-      <StyledEditAboutMe>
-        <UserAboutMe />
-      </StyledEditAboutMe>
       <StyledRemoveBtn onClick={handleRemoveClick} >
         회원탈퇴
       </StyledRemoveBtn>
-    </StyledTitleWrapper>
+    </StyledEditWrapper>
   );
 };
 
 export default UserEditInfo;
+
+const StyledEditWrapper = styled(StyledTitleWrapper)`
+  gap: 15px;
+  font-size: 14px;
+`;
+
+const StyledText = styled.p`
+  position: relative;
+  top: 50px;
+`;
 
 const StyledEditAboutMe = styled(StyledAboutMe)`
   @media screen and (max-width: 650px) {
@@ -138,4 +228,17 @@ const StyledRemoveBtn = styled.div`
   color: var(--default-text-color);
   cursor: pointer;
   border-style: none;
+`;
+
+const StyledEditImg = styled.div`
+  font-size: 30px;
+  position: relative;
+  top: 160px;
+  left: 55px;
+  color: var(--button-inactive-color);
+  font-weight: bold;
+  cursor: pointer;
+  &:hover {
+    color: var(--cyan-dark-1000);
+  }
 `;
