@@ -7,10 +7,9 @@ import { TbMessages } from 'react-icons/tb';
 import PATH_URL from '../../constants/pathUrl';
 
 const UserProfileAction = () => {
-
-  const [ isSameUser, setIsSameUser ] = useState<boolean>(false);
-  const [ isFollowed, setIsFollowed ] = useState(false);
-  const [ loginedId, setIsLoginedId ] = useState<string>();
+  const [isSameUser, setIsSameUser] = useState<boolean>(false);
+  const [isFollowed, setIsFollowed] = useState(false);
+  const [loginedId, setIsLoginedId] = useState<string>();
 
   const { memberId } = useParams();
   const navigate = useNavigate();
@@ -18,13 +17,15 @@ const UserProfileAction = () => {
   useEffect(() => {
     const fetchFollowerData = async () => {
       const getMemberData = localStorage.getItem('user');
-      const memberData = getMemberData ? JSON.parse(getMemberData) : { memberId: -1 };
+      const memberData = getMemberData
+        ? JSON.parse(getMemberData)
+        : { memberId: -1 };
       const loginId = memberData.memberId;
 
       if (loginId.toString() === memberId) {
         setIsSameUser(true);
-      };
-  
+      }
+
       setIsLoginedId(loginId);
 
       try {
@@ -34,7 +35,9 @@ const UserProfileAction = () => {
         const followedData = res.data.data;
 
         setIsFollowed(
-          followedData.some((user: any) => user.memberId.toString() === memberId)
+          followedData.some(
+            (user: any) => user.memberId.toString() === memberId
+          )
         );
       } catch (error) {
         console.log(error);
@@ -42,13 +45,13 @@ const UserProfileAction = () => {
     };
 
     fetchFollowerData();
-  } , [memberId]);
+  }, [memberId]);
 
   const handleEditProfile = () => {
     // todo: 프로필 수정 페이지로 이동하기
     console.log('프로필 수정 페이지로 이동');
   };
-  
+
   const handleFollow = () => {
     if (Number(loginedId) === -1) {
       navigate(`${PATH_URL.LOGIN}`);
@@ -58,11 +61,11 @@ const UserProfileAction = () => {
         axios
           .delete(
             `${process.env.REACT_APP_API_URL}/api/members/${memberId}/unfollow`,
-              {
-                headers: {
-                  Authorization: `${token}`
-                }
+            {
+              headers: {
+                Authorization: `${token}`
               }
+            }
           )
           .then((response) => {
             setIsFollowed(false);
@@ -70,23 +73,28 @@ const UserProfileAction = () => {
           .catch((error) => {
             console.error('언팔로우 요청 실패:', error);
           });
-        }
+      }
       if (!isFollowed) {
-        axios.post(`${process.env.REACT_APP_API_URL}/api/members/${memberId}/follow`, {}, {
-          headers: {
-            Authorization: `${token}`
-          }
-        })
-        .then(response => {
-          setIsFollowed(true);
-        })
-        .catch(error => {
-          console.error('팔로우 요청 실패:', error);
-        });
+        axios
+          .post(
+            `${process.env.REACT_APP_API_URL}/api/members/${memberId}/follow`,
+            {},
+            {
+              headers: {
+                Authorization: `${token}`
+              }
+            }
+          )
+          .then((response) => {
+            setIsFollowed(true);
+          })
+          .catch((error) => {
+            console.error('팔로우 요청 실패:', error);
+          });
       }
     }
   };
-  
+
   const handleMessage = () => {
     // todo: 해당 유저와 채팅창으로 이동하기
     console.log('해당 유저와 채팅창으로 이동');
@@ -95,14 +103,18 @@ const UserProfileAction = () => {
   return (
     <StyledWrapper>
       {isSameUser ? (
-        <CreateChannelButton onClick={handleEditProfile} text={'프로필 수정하기'} />
+        <CreateChannelButton
+          onClick={handleEditProfile}
+          text={'프로필 수정하기'}
+        />
       ) : (
         <>
-          <CreateChannelButton onClick={handleFollow} text={isFollowed ? '팔로우 취소' : '팔로우 하기'} />
+          <CreateChannelButton
+            onClick={handleFollow}
+            text={isFollowed ? '팔로우 취소' : '팔로우 하기'}
+          />
           <StyledMessageContain>
-            <TbMessages
-              onClick={handleMessage} 
-            />
+            <TbMessages onClick={handleMessage} />
           </StyledMessageContain>
         </>
       )}
@@ -111,7 +123,6 @@ const UserProfileAction = () => {
 };
 
 export default UserProfileAction;
-
 
 const StyledWrapper = styled.div`
   margin-top: 10px;
