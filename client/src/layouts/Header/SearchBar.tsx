@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { AiOutlineSearch } from 'react-icons/ai';
 
 import SearchHint from './SearchHint';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 type SubmitEvent =
   | React.FormEvent<HTMLFormElement>
@@ -13,13 +13,21 @@ const SearchBar = () => {
   const [showHint, setShowHint] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const navigation = useNavigate();
-  const searchParams = useParams();
+
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const invertShowHint = () => setShowHint((prev) => !prev);
 
   const onSubmitHandler = (e: SubmitEvent) => {
     e.preventDefault();
-    navigation('/search', searchParams);
+    if (inputRef.current) {
+      console.log(inputRef.current.value);
+      setSearchParams({ q: inputRef.current.value });
+      navigation(`/search?${searchParams}`);
+      console.log('useSearchParams working');
+      console.log(searchParams);
+      console.log(searchParams.q);
+    }
 
     // 입력 완료 시 인풋창을 비우고 포커스아웃한다.
     if (inputRef.current) {
