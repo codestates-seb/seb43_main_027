@@ -7,10 +7,11 @@ import UserProfileName from './UserProfileName';
 import UserAboutMe from './UserAboutMe';
 import UserProfileAction from './UserActions';
 import Loading from '../common/Loading';
+import { UserInfoProps } from '../../types/propsTypes';
 
-const UserTitle = () => {
+const UserTitle = ({ setIsEditClick }: UserInfoProps) => {
 
- const { memberId } = useParams();
+  const { memberId } = useParams();
 
   const [ isUserImg, setIsUserImg ] = useState<string>('');
   const [ isUserName, setIsUserName ] = useState<string>('');
@@ -49,7 +50,7 @@ const UserTitle = () => {
     <StyledTitleWrapper>
       <UserProfileImg isUserImg={isUserImg} />
       <UserProfileName isUserName={isUserName} isUserEmail={isUserEmail} />
-      <UserProfileAction />
+      <UserProfileAction setIsEditClick={setIsEditClick} />
       <StyledAboutMe>
         <UserAboutMe />
       </StyledAboutMe>
@@ -59,7 +60,7 @@ const UserTitle = () => {
 
 export default UserTitle;
 
-const StyledTitleWrapper = styled.div`
+export const StyledTitleWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -71,7 +72,7 @@ const StyledTitleWrapper = styled.div`
   }
 `;
 
-const StyledAboutMe = styled.div`
+export const StyledAboutMe = styled.div`
   @media screen and (max-width: 650px) {
     display: none;
   }
