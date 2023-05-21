@@ -101,7 +101,7 @@ public class GameService {
     }
 
     private Page<Game> getByGameNameContaining(Pageable pageable, String keyword) {
-        return gameRepository.findByGameNameContaining(keyword, PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize()));
+        return gameRepository.findByGameNameContaining(PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize()), keyword);
     }
 
     private Page<Game> getGames(Pageable pageable, String filter) {

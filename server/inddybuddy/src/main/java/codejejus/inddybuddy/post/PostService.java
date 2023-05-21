@@ -86,7 +86,7 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public Page<PostDto.SimpleResponse> getPostsByKeyword(String keyword, Pageable pageable) {
+    public Page<PostDto.SimpleResponse> getPostsByKeyword(Pageable pageable, String keyword) {
         PageRequest pageRequest = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize());
         Page<Post> allByContainingKeyword =
                 postRepository.findAllByContentContainingOrTitleContaining(keyword, keyword, pageRequest);

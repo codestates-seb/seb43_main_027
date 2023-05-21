@@ -103,8 +103,9 @@ public class MemberController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<SingleResponse<List<MemberDto.SimpleInfoResponse>>> searchMemberByKeyword(@RequestParam(value = "q") String keyword) {
-        List<Member> members = memberService.findByUsernameContaining(keyword);
+    public ResponseEntity<SingleResponse<List<MemberDto.SimpleInfoResponse>>> searchMemberByKeyword(@PageableDefault(page = 1, size = 30) Pageable pageable,
+                                                                                                    @RequestParam(value = "q") String keyword) {
+        List<Member> members = memberService.findByUsernameContaining(pageable, keyword);
         List<MemberDto.SimpleInfoResponse> responses = memberMapper.pageMemberToSimpleInfoResponses(members);
         return ResponseEntity.ok(new SingleResponse<>(responses));
     }

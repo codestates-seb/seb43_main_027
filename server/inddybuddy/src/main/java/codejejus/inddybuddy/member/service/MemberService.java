@@ -10,6 +10,8 @@ import codejejus.inddybuddy.member.MemberRepository;
 import codejejus.inddybuddy.member.entity.Member;
 import codejejus.inddybuddy.member.entity.MemberPrincipal;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,8 +66,8 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public List<Member> findByUsernameContaining(String keyword) {
-        return memberRepository.findByUsernameContaining(keyword);
+    public List<Member> findByUsernameContaining(Pageable pageable, String keyword) {
+        return memberRepository.findByUsernameContaining(PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize()), keyword);
     }
 
     public void deleteMember(Long memberId, MemberPrincipal memberPrincipal) {
