@@ -12,3 +12,10 @@ export const categoryFilterTab: string[] = [
   '신규 게임', 
   '팔로우 게임'
 ];
+
+export const searchFilterTab: string[] = [
+  '전체',
+  '유저',
+  '게임',
+  '게시글'
+];
