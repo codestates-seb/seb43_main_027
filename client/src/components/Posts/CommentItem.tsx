@@ -29,6 +29,10 @@ const CommentItem = ({
   const onUpdateClickHandler = () => {
     setIsUpdate((prev) => !prev);
   };
+  const onReCommentSubmitHandler = () => {
+    onReCommentClickHandler();
+    onCommentSubmit();
+  };
 
   const onSubmitClickHandler = () => {
     if (inputRef && inputRef.current && inputRef.current.value.length > 0) {
@@ -90,7 +94,7 @@ const CommentItem = ({
       {reComment && (
         <ReCommentInput
           parentCommentId={comment.commentId}
-          onCommentSubmit={onCommentSubmit}
+          onCommentSubmit={onReCommentSubmitHandler}
         />
       )}
     </StyledCommentContainer>
