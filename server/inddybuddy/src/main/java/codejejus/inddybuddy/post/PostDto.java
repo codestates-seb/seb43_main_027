@@ -1,5 +1,6 @@
 package codejejus.inddybuddy.post;
 
+import codejejus.inddybuddy.bookmark.BookmarkDto;
 import codejejus.inddybuddy.comment.CommentDto;
 import codejejus.inddybuddy.member.dto.MemberDto;
 import codejejus.inddybuddy.member.entity.Member;
@@ -49,6 +50,7 @@ public class PostDto {
         private final LocalDateTime createdAt;
         private final LocalDateTime updatedAt;
         private ReactionDto.Response reaction;
+        private BookmarkDto.Response bookmark;
 
         @Builder
         public Response(Long postId, Long gameId, MemberDto.SimpleInfoResponse member, String title, String content, Long views, PostTag postTag, Long likeCount, Long unlikeCount, Long commentCount, List<String> fileUrlList, List<CommentDto.Response> comments, LocalDateTime createdAt, LocalDateTime updatedAt) {
@@ -70,6 +72,10 @@ public class PostDto {
 
         public void updateReaction(ReactionDto.Response reaction) {
             this.reaction = reaction;
+        }
+
+        public void updateBookmark(BookmarkDto.Response bookmark) {
+            this.bookmark = bookmark;
         }
     }
 

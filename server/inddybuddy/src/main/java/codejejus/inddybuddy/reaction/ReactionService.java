@@ -18,13 +18,13 @@ import java.util.Optional;
 public class ReactionService {
 
     private final ReactionRepository reactionRepository;
-    private final PostRepository postRepository;
+    private final PostService postService;
     private final ReactionMapper reactionMapper;
     private final MemberService memberService;
 
     public ReactionDto.Response createReaction(MemberPrincipal memberPrincipal, ReactionDto.Request request, Long postId) {
         Member member = memberService.findMember(memberPrincipal.getMember().getMemberId());
-        Post post = findVerifidPost(postId);
+        Post post = postService.findVerifidPost(postId);
         Reaction reaction = reactionMapper.dtoToEntity(request);
         reaction.update(member, post);
         verifyExistReaction(member, post);
@@ -34,22 +34,10 @@ public class ReactionService {
 
     public void deleteReaction(MemberPrincipal memberPrincipal, Long postId) {
         Member member = memberService.findMember(memberPrincipal.getMember().getMemberId());
-        Post post = findVerifidPost(postId);
+        Post post = postService.findVerifidPost(postId);
         Reaction findReaction = findVerifiedReaction(member, post);
         memberService.verifySameMember(memberPrincipal.getMember(), findReaction.getMember());
         reactionRepository.delete(findReaction);
-    }
-
-    public ReactionDto.Response findReaction(Member member, Post post) {
-        Optional<Reaction> optionalReaction = reactionRepository.findByMemberAndPost(member, post);
-        if (optionalReaction.isEmpty()) return null;
-        Reaction reaction = optionalReaction.get();
-        return reactionMapper.entityToResponse(reaction);
-    }
-
-    private Post findVerifidPost(Long postId) {
-        Optional<Post> optionalPost = postRepository.findById(postId);
-        return optionalPost.orElseThrow(() -> new CustomException(ExceptionCode.POST_NOT_FOUND));
     }
 
     private void verifyExistReaction(Member member, Post post) {
