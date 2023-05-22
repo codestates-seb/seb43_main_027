@@ -19,10 +19,34 @@ const PostList: React.FC<PostListProps> = ({ isSelectTag, isSelectTab, isMapping
   const [ isPage, setIsPage ] = useState<number>(1);
   const [ isSize, setIsSize ] = useState<number>(10);
   const [ isTotalSize, setIsTotalSize ] = useState<number>(0);
-
+  const [ isBookmarkedList, setIsBookmarkedList ] = useState<number[]>([]);
+ 
   useEffect(() => {
     setIsPage(1);
   }, [isSelectTab, isSelectTag]);
+
+  useEffect(() => {
+    if (memberId !== -1) {
+    const BookmarkedData = async () => {
+      try {
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/members/${memberId}/bookmark`, {
+          headers: {
+            Authorization: `${localStorage.getItem('access_token')}`,
+          }
+        });
+        const fetchedData = res.data.data;
+        const filteredPosts = fetchedData.filter((post:any) => post.gameId.toString() === gameId);
+        const postIdList = filteredPosts.map((post:any) => post.postId);
+        setIsBookmarkedList([...postIdList]);
+
+      } catch (error) {
+        console.log(error);
+      };
+    };
+      BookmarkedData();
+    };
+
+  }, [memberId]);
 
   useEffect(() => {
     const fetchPostsData = async () => {
@@ -92,6 +116,7 @@ const PostList: React.FC<PostListProps> = ({ isSelectTag, isSelectTab, isMapping
           const currentPosts = filteredPosts.slice(startIndex, endIndex); // 현재 페이지에 해당하는 데이터 추출
           setIsTotalSize(totalPostsCount);
           setIsFilteredPosts([...currentPosts]);
+
         } else {
           if (isFilteredPosts.length === 0) setIsUserMessage('작성된 게시글이 없습니다.');
           setIsSize(pageInfo.size);
@@ -114,6 +139,10 @@ const PostList: React.FC<PostListProps> = ({ isSelectTag, isSelectTab, isMapping
     window.scrollTo(0, 0);
   };
 
+  const isPostIdIncluded = (postId: number) => {
+    return isBookmarkedList.includes(postId);
+  };
+
   return (
     <PostListWrapper>
       {
@@ -129,6 +158,7 @@ const PostList: React.FC<PostListProps> = ({ isSelectTag, isSelectTab, isMapping
               commentCount={post.commentCount}
               likeCount={post.likeCount}
               createdAt={post.createdAt}
+              isPostIdIncluded={isPostIdIncluded(post.postId)}
             />
           ))
         ) : (
