@@ -19,7 +19,7 @@ const Reaction = ({
   reaction: ReactionType | null;
   likeCount: number;
   unlikeCount: number;
-  onReactionChange: () => void;
+  onReactionChange: (s: any) => () => void;
 }) => {
   const { postId } = useParams();
 
@@ -36,7 +36,13 @@ const Reaction = ({
         }
       },
       (res) => {
-        onReactionChange();
+        console.log(res);
+        onReactionChange({
+          reaction: res.data.data,
+          likeCount: reactionStatus === 'HAPPY' ? likeCount + 1 : likeCount,
+          unlikeCount:
+            reactionStatus === 'UNHAPPY' ? unlikeCount + 1 : unlikeCount
+        })();
       },
       (err) => {
         if (err?.response?.status === 409) {
@@ -45,7 +51,7 @@ const Reaction = ({
       }
     );
   };
-  const onUnLikeClickHandler = () => {
+  const onUnLikeClickHandler = (reactionStatus: string) => () => {
     deleteData(
       `${process.env.REACT_APP_API_URL}/api/posts/${postId}/unreaction`,
       {
@@ -54,7 +60,12 @@ const Reaction = ({
         }
       },
       () => {
-        onReactionChange();
+        onReactionChange({
+          reaction: null,
+          likeCount: reactionStatus === 'HAPPY' ? likeCount - 1 : likeCount,
+          unlikeCount:
+            reactionStatus === 'UNHAPPY' ? unlikeCount - 1 : unlikeCount
+        })();
       },
       (err) => {
         if (err?.response?.status === 409) {
@@ -75,7 +86,7 @@ const Reaction = ({
           <AiFillLike
             color={'var(--cyan-dark-500)'}
             cursor={'pointer'}
-            onClick={onUnLikeClickHandler}
+            onClick={onUnLikeClickHandler('HAPPY')}
           />
         )}
         <span>{likeCount}</span>
@@ -90,7 +101,7 @@ const Reaction = ({
           <AiFillDislike
             color={'var(--cyan-dark-500)'}
             cursor={'pointer'}
-            onClick={onUnLikeClickHandler}
+            onClick={onUnLikeClickHandler('UNHAPPY')}
           />
         )}
         <span>{unlikeCount}</span>

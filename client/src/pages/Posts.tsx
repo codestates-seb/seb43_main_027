@@ -15,23 +15,20 @@ import { postInitValue } from '../data/initialData';
 const Posts = () => {
   const { postId } = useParams();
   const [post, setPost] = useState<PostDataType>(postInitValue);
-  const [isMarked, setIsMarked] = useState<boolean>(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const navigation = useNavigate();
 
-  const needFetch = () => {
-    setIsSubmitted(true);
+  const needFetch = (newState: any) => () => {
+    setPost((prev) => ({ ...prev, ...newState }));
   };
-  console.log('render');
+
   useEffect(() => {
     // TODO: 북마크 여부 검사
-    if (post.postId !== -1 && isSubmitted === false) return;
+    if (post.postId !== -1) return;
     getData(
       `${process.env.REACT_APP_API_URL}/api/posts/${postId}`,
       (res) => {
         console.log(res.data.data);
         setPost({ ...res.data.data });
-        setIsSubmitted(false);
       },
       (err) => {
         if (err?.response?.status === 401) {
@@ -45,10 +42,15 @@ const Posts = () => {
         }
       }
     );
-  }, [isSubmitted]);
+  }, []);
   return (
     <StyledContainer>
-      <Title title={post.title} tag={post.postTag} isMarked={isMarked} />
+      <Title
+        title={post.title}
+        tag={post.postTag}
+        bookmark={post.bookmark}
+        onBookmarkChange={needFetch}
+      />
       <PostInfo
         member={post.member}
         createdAt={post.createdAt}
