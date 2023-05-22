@@ -6,7 +6,6 @@ import CategoryCard from '../common/CategoryCard';
 import Title from './Title';
 import CreateChannelButton from '../ui/CreateChannelButton';
 
-import iconData from '../../data/categoryIcons';
 import { CategoryType } from '../../types/dataTypes';
 import { useNavigate } from 'react-router-dom';
 import categoryData from '../../data/categoryData';
@@ -48,9 +47,13 @@ const CategoryContainer = () => {
         />
       </StyledTitleContainer>
       <StyledCategoryCardContainer>
-        {categories.map((category) => (
-          <CategoryCard key={category.categoryId} {...category} />
-        ))}
+        {categories.length > 0 ? (
+          categories.map((category) => (
+            <CategoryCard key={category.categoryId} {...category} />
+          ))
+        ) : (
+          <StyledErrorMsg>카테고리가 존재하지 않습니다.</StyledErrorMsg>
+        )}
       </StyledCategoryCardContainer>
     </StyledWrapper>
   );
@@ -80,4 +83,12 @@ const StyledTitleContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
+`;
+
+const StyledErrorMsg = styled.div`
+  width: 100%;
+  font-size: 1.6rem;
+  padding: 1rem;
+  text-align: center;
+  color: var(--default-text-color);
 `;

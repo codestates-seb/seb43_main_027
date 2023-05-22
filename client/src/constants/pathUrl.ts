@@ -9,7 +9,11 @@ const PATH_URL: PathUrlType = {
   GAME: '/games/',
   POSTING: '/posts',
   EDIT: '/edit',
+  POST: '/posts/',
   GOOGLE: '/googlelogin',
+  ERROR: '/error',
+  NOTFOUND: '*',
+  USER_INFO: '/users/',
   SEARCH: '/search',
 };
 

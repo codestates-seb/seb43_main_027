@@ -4,7 +4,7 @@ import { User } from '../types/dataTypes';
 const initialState: User = {
   memberId: -1,
   email: '',
-  username: '',
+  userName: '',
   memberStatus: '',
   imageUrl: '',
   createdAt: '',
@@ -16,6 +16,7 @@ const userSlice = createSlice({
   initialState: { ...initialState },
   reducers: {
     setUser(state, action) {
+      localStorage.setItem('user', JSON.stringify(action.payload));
       return action.payload;
     },
     clearUser() {

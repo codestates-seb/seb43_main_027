@@ -37,7 +37,7 @@ const GameChannel = ()  => {
 
   const handleCreate = () => {
     if (memberId === -1) {
-      navigate('/login');
+      navigate(`${PATH_URL.LOGIN}`);
     } else {
       navigate(`${PATH_URL.GAME}${gameId}${PATH_URL.POSTING}`);
     }
@@ -78,6 +78,7 @@ export default GameChannel;
 const StyledGameChannelWrapper = styled.div`
   background-color: var(--page-bg);
   width: 100%;
+  min-height: calc(100vh - 224px);
   flex-grow: 1;
   overflow-x: hidden;
 `;

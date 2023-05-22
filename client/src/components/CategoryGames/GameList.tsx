@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 import Pagination from 'react-js-pagination';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
 import GameItem from './GameItem';
 import { type GameType } from '../../types/dataTypes';
 import { type TabSelectType } from '../../types/propsTypes';
-import { dummyGamesData } from '../../data/dummyCategories';
+import PATH_URL from '../../constants/pathUrl';
 
 const GameList: React.FC<TabSelectType> = ({ isSelectTab })  => {
 
   const { categoryId } = useParams<{ categoryId: string}>();
-  // const memberId = useSelector((state: RootState) => state.user.memberId);
+  const navigate = useNavigate();
   const getMemberData = localStorage.getItem('user');
   const memberData = getMemberData ? JSON.parse(getMemberData) : { memberId: -1 };
   const memberId = memberData.memberId;
@@ -21,14 +19,17 @@ const GameList: React.FC<TabSelectType> = ({ isSelectTab })  => {
   const [ isFilteredGames, setIsFilteredGames ] = useState<GameType[]>([]);
   const [ userMessage, setUserMessage ] = useState('등록된 게임채널이 없습니다.');
   const [ isPage, setPage ] = useState<number>(1);
-  const [ isSize, setSize ] = useState<number>(0);
+  const [ isSize, setSize ] = useState<number>(10);
   const [ isToTalSize, setTotalSize ] = useState<number>(0);
 
-  // todo: 추후 데이터 생성 테스트시 인기,신규게임 페이지네이션 테스트 해야됨
+  useEffect(() => {
+    setPage(1);
+  }, [isSelectTab]);
+
   useEffect(() => {
     const fetchGamesData = async () => {
       try {
-        let apiUrl = `${process.env.REACT_APP_API_URL}/api/categories/${categoryId}/games?page=${isPage}`;
+        let apiUrl = `${process.env.REACT_APP_API_URL}/api/categories/${categoryId}/games?page=${isPage}&size=${isSize}`;
   
         switch (isSelectTab) {
           case '전체 게임': {
@@ -83,7 +84,12 @@ const GameList: React.FC<TabSelectType> = ({ isSelectTab })  => {
                 );
 
                 if (followedGames.length > 0) {
-                  setIsFilteredGames([...followedGames]);
+                  const totalGamesCount = followedGames.length;
+                  const startIndex = (isPage - 1) * isSize; // 시작 인덱스 계산
+                  const endIndex = startIndex + isSize; // 종료 인덱스 계산
+                  const currentGames = followedGames.slice(startIndex, endIndex); // 현재 페이지에 해당하는 데이터 추출
+                  setTotalSize(totalGamesCount);
+                  setIsFilteredGames([...currentGames]);
                 } else {
                   setIsFilteredGames([]);
                   setUserMessage('팔로우한 게임채널이 없습니다.');
@@ -99,9 +105,7 @@ const GameList: React.FC<TabSelectType> = ({ isSelectTab })  => {
             break;
         }
       } catch (error) {
-        // TODO: 404페이지 경로로 이동 시키기
-        // return navigate('/');
-        console.error(error);
+        return navigate(`${PATH_URL.ERROR}`);
       }
     };
 
@@ -164,7 +168,8 @@ const StyledGameList = styled.div`
   width: 100%;
   padding: 50px;
   position: relative;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: left;
   gap: 25px;
   flex-direction: row;
   flex-wrap: wrap;
