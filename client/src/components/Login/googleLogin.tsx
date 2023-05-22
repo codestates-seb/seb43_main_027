@@ -29,7 +29,7 @@ const GoogleLogIn = () => {
     if (accessToken) {
       localStorage.setItem('access_token', `Bearer ${accessToken}`);
       const headers = {
-        Authorization: `Bearer ${accessToken}`
+        Authorization: `${accessToken}`
       };
       try {
         axios(`${process.env.REACT_APP_API_URL}/api/members/profile`, {
