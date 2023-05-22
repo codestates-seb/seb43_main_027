@@ -42,6 +42,13 @@ const GameRegister = () => {
 
   const submitFormData = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (title === '' || tagStates.length === 0) {
+      if (title === '') {
+        return alert('제목을 입력해야합니다.');
+      } else return alert('태그를 최소 1개 이상 선택해주세요!');
+    }
+
     const reducer = (a: number[], c: boolean, i: number) => {
       if (c === true) a.push(i);
       return a;
