@@ -10,35 +10,11 @@ import ImageSection from '../components/Posts/ImageSection';
 import CommentSection from '../components/Posts/CommentSection';
 import Reaction from '../components/Posts/Reaction';
 import PATH_URL from '../constants/pathUrl';
-
-const initValue: PostDataType = {
-  content: '',
-  commentCount: 0,
-  createdAt: '',
-  title: '',
-  fileUrlList: [],
-  reaction: null,
-  member: {
-    memberId: -1,
-    email: '',
-    followerCount: 0,
-    followingCount: 0,
-    imageUrl: '',
-    userName: ''
-  },
-  comments: [],
-  gameId: -1,
-  likeCount: 0,
-  unlikeCount: 0,
-  postId: -1,
-  updatedAt: '',
-  views: 0,
-  postTag: ''
-};
+import { postInitValue } from '../data/initialData';
 
 const Posts = () => {
   const { postId } = useParams();
-  const [post, setPost] = useState<PostDataType>(initValue);
+  const [post, setPost] = useState<PostDataType>(postInitValue);
   const [isMarked, setIsMarked] = useState<boolean>(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const navigation = useNavigate();
