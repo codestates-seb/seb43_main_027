@@ -22,7 +22,7 @@ const PostList: React.FC<PostListProps> = ({ isSelectTag, isSelectTab, isMapping
 
   useEffect(() => {
     setIsPage(1);
-  }, [isSelectTab]);
+  }, [isSelectTab, isSelectTag]);
 
   useEffect(() => {
     const fetchPostsData = async () => {
@@ -72,7 +72,11 @@ const PostList: React.FC<PostListProps> = ({ isSelectTag, isSelectTab, isMapping
         };
 
         if (isSelectTag !== '전체') {
-          apiUrl += `&postTag=${isMappingTag}`;
+          if (isSelectTab === '북마크 글' || isSelectTab === '내가 쓴 글') {
+            apiUrl += `?postTag=${isMappingTag}`;
+          } else {
+            apiUrl += `&postTag=${isMappingTag}`;
+          }
         };
         
         const res = await axios.get(apiUrl, { headers });
