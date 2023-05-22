@@ -22,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -65,7 +66,11 @@ public class PostService {
             files.forEach(findPost::addFile);
         }
         findPost.updatePost(patchDto.getTitle(), patchDto.getContent(), patchDto.getPostTag());
-        return postMapper.entityToResponse(findPost);
+
+        PostDto.Response response = postMapper.entityToResponse(findPost);
+        applyLoginMemberReaction(memberPrincipal, findPost, response);
+        applyLoginMemberBookmark(memberPrincipal, findPost, response);
+        return response;
     }
 
     public PostDto.Response findPost(Long postId, MemberPrincipal memberPrincipal) {
@@ -116,7 +121,7 @@ public class PostService {
     @Transactional(readOnly = true)
     public Page<PostDto.MyPageResponse> getPostsByMember(Long memberId, Post.PostTag postTag, Pageable pageable) {
         Member member = memberService.findMember(memberId);
-        PageRequest pageRequest = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize());
+        PageRequest pageRequest = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize(), Sort.by(Sort.Direction.DESC, "createdAt", "postId"));
         Page<Post> postPage = postTag == null ?
                 postRepository.findAllByMember(member, pageRequest) :
                 postRepository.findAllByMemberAndPostTag(member, postTag, pageRequest);
