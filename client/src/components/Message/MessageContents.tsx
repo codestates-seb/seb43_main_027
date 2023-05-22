@@ -7,12 +7,20 @@ import { Single } from './SingleMessage';
 interface MessageContents {
   receiverId: number;
   messageResponse: Single[];
+  addPrevMessages: (newData: Single[]) => void;
 }
 
-const MessageContents = ({ messageResponse, receiverId }: MessageContents) => {
+const MessageContents = ({
+  messageResponse,
+  receiverId,
+  addPrevMessages
+}: MessageContents) => {
   return (
     <StyledBodyWrapper>
-      <MessageOutput messageResponse={messageResponse} />
+      <MessageOutput
+        messageResponse={messageResponse}
+        addPrevMessages={addPrevMessages}
+      />
       <MessageSend receiverId={receiverId} />
     </StyledBodyWrapper>
   );
@@ -22,5 +30,6 @@ export default MessageContents;
 
 const StyledBodyWrapper = styled.div`
   display: flex;
+  flex: 1 0 0;
   flex-direction: column;
 `;

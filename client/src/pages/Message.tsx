@@ -6,19 +6,37 @@ import axios from 'axios';
 import MessageHeader from '../components/Message/MessageHeader';
 import MessageContents from '../components/Message/MessageContents';
 import { Single } from '../components/Message/SingleMessage';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/store';
 
 // 대화 상대방 아이디 send 하는 쪽에 전달해주면 됨.
-const receiverId = 2;
 
 const Message = () => {
   const [messageResponse, setMessageResponse] = useState<Single[]>([]);
+  const chatInfo = useSelector((s: RootState) => s.chat);
+
+  console.log(chatInfo);
+
+  const addPrevMessages = (newData: Single[]) => {
+    setMessageResponse((prev) => [...newData, ...prev]);
+  };
+
+  const addNewMessages = (newData: Single) => {
+    setMessageResponse((prev) => [...prev, newData]);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/messages/${receiverId}`
+          `${process.env.REACT_APP_API_URL}/api/messages/${chatInfo.receiver.memberId}`,
+          {
+            headers: {
+              Authorization: localStorage.getItem('access_token')
+            }
+          }
         );
+        console.log(res.data.data);
         setMessageResponse(res.data.data);
       } catch (error) {
         console.error('에러가 발생했습니다: ', error);
@@ -30,10 +48,15 @@ const Message = () => {
 
   return (
     <StyledMessageContainer>
-      <MessageHeader />
+      <MessageHeader
+        imageUrl={chatInfo.receiver.imageUrl}
+        userName={chatInfo.receiver.userName}
+        userId={chatInfo.receiver.memberId}
+      />
       <MessageContents
         messageResponse={messageResponse}
-        receiverId={receiverId}
+        receiverId={chatInfo.receiver.memberId}
+        addPrevMessages={addPrevMessages}
       />
     </StyledMessageContainer>
   );
@@ -43,17 +66,13 @@ export default Message;
 
 const StyledMessageContainer = styled.div`
   display: flex;
-  margin-left: 50rem;
-  margin-top: -35rem;
+  top: 50px;
   flex-direction: column;
-  position: absolute;
+  position: fixed;
   background-color: rgb(255, 255, 255);
   width: 100%;
-  height: 100%;
   min-width: 40rem;
-  min-height: 80rem;
+  height: calc(100vh - 50px);
   padding: 2rem;
-  max-height: 40rem;
-
   z-index: 2;
 `;

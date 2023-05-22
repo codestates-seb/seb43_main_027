@@ -2,11 +2,6 @@ import styled from 'styled-components';
 
 import axios from 'axios';
 
-import { useState } from 'react';
-
-import InputContainer from '../common/InputContainer';
-import ButtonEl from '../elements/Button';
-
 type SendType = {
   receiverId: number;
 };
@@ -27,7 +22,7 @@ const MessageSend = ({ receiverId }: SendType) => {
   return (
     <StyledContainer>
       <StyledForm>
-        <StyledInputContainer title='' type='text' extraAction={sendMessage} />
+        <StyledInputContainer placeholder='메시지를 입력하세요.' />
         <StyledSubmitButton>전송</StyledSubmitButton>
       </StyledForm>
     </StyledContainer>
@@ -38,12 +33,16 @@ export default MessageSend;
 
 const StyledContainer = styled.div`
   display: flex;
+  background-color: #e6fffb;
+  padding: 1.5rem 1rem;
+  border-top: 1px solid var(--cyan-dark-500);
 `;
 
 const StyledForm = styled.form`
   display: flex;
   align-items: center;
   width: 100%;
+  gap: 1rem;
   :nth-child(1) {
     padding: 0;
   }
@@ -64,4 +63,11 @@ const StyledSubmitButton = styled.button`
   height: 3rem;
 `;
 
-const StyledInputContainer = styled(InputContainer)``;
+const StyledInputContainer = styled.input`
+  width: 100%;
+  outline: none;
+  border: 1px solid var(--cyan-dark-500);
+  font-size: 1.4rem;
+  padding: 0.5rem;
+  border-radius: 5px;
+`;

@@ -1,13 +1,34 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import PATH_URL from '../../constants/pathUrl';
+import { useDispatch } from 'react-redux';
+import { stopChat } from '../../slice/chatSlice';
+import { closeNav } from '../../slice/navSlice';
 
-const MessageHeader = () => {
+const MessageHeader = ({
+  imageUrl,
+  userName,
+  userId
+}: {
+  imageUrl: string;
+  userName: string;
+  userId: number;
+}) => {
+  const dispatch = useDispatch();
+  const onClickHandler = () => {
+    dispatch(stopChat());
+    dispatch(closeNav());
+  };
+
   return (
     <StyledWrapper>
       <StyledLeft>
-        <StyledIMG href='http://something' />
-        <StyledUsername>Username</StyledUsername>
+        <StyledImg src={imageUrl} />
+        <Link to={`${PATH_URL.USER_INFO}${userId}`} onClick={onClickHandler}>
+          <StyledUsername>{userName}</StyledUsername>
+        </Link>
       </StyledLeft>
-      <StyledBlank />
+
       <StyledRight>
         <StyledCloseButton>X</StyledCloseButton>
       </StyledRight>
@@ -26,17 +47,20 @@ const StyledWrapper = styled.div`
 const StyledLeft = styled.div`
   display: flex;
   flex: 1;
-  justify-content: center;
   align-items: center;
+  gap: 1rem;
 `;
 
-const StyledIMG = styled.a``;
+const StyledImg = styled.img`
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
+`;
 
-const StyledUsername = styled.div``;
-
-const StyledBlank = styled.div`
-  display: flex;
-  flex: 1;
+const StyledUsername = styled.div`
+  font-size: 1.4rem;
+  cursor: pointer;
 `;
 
 const StyledCloseButton = styled.button`
