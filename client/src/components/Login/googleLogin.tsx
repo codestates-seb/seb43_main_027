@@ -27,7 +27,7 @@ const GoogleLogIn = () => {
       if (actoken) setAccessToken(actoken);
     }
     if (accessToken) {
-      localStorage.setItem('access_token', `Bearer ${accessToken}`);
+      localStorage.setItem('access_token', `${accessToken}`);
       const headers = {
         Authorization: `Bearer ${accessToken}`
       };
