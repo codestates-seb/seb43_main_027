@@ -1,20 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import UserTitle from '../components/UserInfo/UserTitle';
 import UserEditInfo from '../components/UserInfo/UserEditInfo';
+import UserInfoList from '../components/UserInfo/UserInfoList';
 
 const UserInfoPage = () => {
 
   const [ isEditClick, setIsEditClick ] = useState<boolean>(false);
+  const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   return (
     <StyledMyPageWrapper>
       <StyledMyPageContain>
-      {
-        isEditClick ? 
+      {isEditClick ? (
           <UserEditInfo setIsEditClick={setIsEditClick} />
-        : <UserTitle setIsEditClick={setIsEditClick} />
-      }
+        ) : (
+          <UserTitle setIsEditClick={setIsEditClick} />
+        )}
+        {
+          windowWidth > 650 || !isEditClick 
+          ? <UserInfoList /> 
+          : null
+        }
       </StyledMyPageContain>
     </StyledMyPageWrapper>
   );
@@ -39,4 +58,7 @@ const StyledMyPageContain = styled.div`
   justify-content: left;
   flex-direction: row;
   gap: 20px;
+  @media screen and (max-width: 650px) {
+    flex-direction: column;
+  };
 `;
