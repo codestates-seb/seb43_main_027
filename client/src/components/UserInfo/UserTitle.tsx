@@ -20,6 +20,7 @@ const UserTitle = ({ setIsEditClick }: UserInfoProps) => {
   const [ isFollowerCount, setIsFollowerCount ] = useState<number>(0);
   const [ isFollowingCount, setIsFollowingCount ] = useState<number>(0);
   const [ loading, setLoading ] = useState(true);
+  const [ isFollowClick, setIsFollowClick ] = useState<boolean | undefined>(undefined);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -50,8 +51,9 @@ const UserTitle = ({ setIsEditClick }: UserInfoProps) => {
     };
 
     fetchUserData();
+    setIsFollowClick(undefined);
 
-  } , [memberId]);
+  } , [memberId, isFollowClick]);
 
   if (loading) {
     return <Loading />;
@@ -67,7 +69,8 @@ const UserTitle = ({ setIsEditClick }: UserInfoProps) => {
         isFollowingCount={isFollowingCount}
       />
       <UserProfileAction 
-        setIsEditClick={setIsEditClick} 
+        setIsEditClick={setIsEditClick}
+        setIsFollowClick={setIsFollowClick}
       />
       <StyledAboutMe>
         <UserAboutMe />
