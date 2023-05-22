@@ -25,5 +25,6 @@ const StyledLoginBtnContainer = styled.div`
 
 const StyledLoginBtn = ButtonEl({
   flex: '1',
-  fontSize: '1.6rem'
+  fontSize: '1.6rem',
+  type: 'submit'
 });
