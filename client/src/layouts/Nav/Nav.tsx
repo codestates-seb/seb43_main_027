@@ -16,6 +16,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { closeNav, openNav } from '../../slice/navSlice';
 
+import Message from '../../pages/Message';
+
 const itemList: NavItemType[] = [
   {
     type: 'user',
@@ -38,6 +40,8 @@ const Nav = ({ show, setShow }: NavStateType) => {
   const [selectedInd, setSelectedInd] = useState(0);
   const isOpened = useSelector((s: RootState) => s.nav);
   const dispatch = useDispatch();
+
+  const [isChatOpened, setIsChatOpened] = useState(true);
 
   const onClickHandler = (i: number) => () => {
     setSelectedInd(i);
@@ -72,6 +76,7 @@ const Nav = ({ show, setShow }: NavStateType) => {
             Content={itemList[selectedInd].contentElement}
           />
         )}
+        {isChatOpened && <Message />}
       </StyledNav>
     </>
   );
