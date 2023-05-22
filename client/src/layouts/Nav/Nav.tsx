@@ -17,6 +17,7 @@ import { RootState } from '../../store/store';
 import { closeNav, openNav } from '../../slice/navSlice';
 
 import Message from '../../pages/Message';
+import { stopChat } from '../../slice/chatSlice';
 
 const itemList: NavItemType[] = [
   {
@@ -38,10 +39,13 @@ const itemList: NavItemType[] = [
 
 const Nav = ({ show, setShow }: NavStateType) => {
   const [selectedInd, setSelectedInd] = useState(0);
-  const isOpened = useSelector((s: RootState) => s.nav);
-  const dispatch = useDispatch();
 
-  const [isChatOpened, setIsChatOpened] = useState(true);
+  const { isOpened, isChatOpened } = useSelector((s: RootState) => ({
+    isOpened: s.nav,
+    isChatOpened: s.chat.isChat
+  }));
+
+  const dispatch = useDispatch();
 
   const onClickHandler = (i: number) => () => {
     setSelectedInd(i);
@@ -49,10 +53,16 @@ const Nav = ({ show, setShow }: NavStateType) => {
     setShow(true);
   };
 
-  const onBackgroundClickHandler = () => dispatch(closeNav());
+  const onBackgroundClickHandler = () => {
+    dispatch(closeNav());
+    dispatch(stopChat());
+  };
 
   useEffect(() => {
-    if (!show) dispatch(closeNav());
+    if (!show) {
+      dispatch(closeNav());
+      dispatch(stopChat());
+    }
   }, [show]);
 
   return (
