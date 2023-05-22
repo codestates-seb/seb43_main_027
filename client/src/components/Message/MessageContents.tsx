@@ -8,12 +8,14 @@ interface MessageContents {
   receiverId: number;
   messageResponse: Single[];
   addPrevMessages: (newData: Single[]) => void;
+  addNewMessages: (newData: Single) => void;
 }
 
 const MessageContents = ({
   messageResponse,
   receiverId,
-  addPrevMessages
+  addPrevMessages,
+  addNewMessages
 }: MessageContents) => {
   return (
     <StyledBodyWrapper>
@@ -21,7 +23,7 @@ const MessageContents = ({
         messageResponse={messageResponse}
         addPrevMessages={addPrevMessages}
       />
-      <MessageSend receiverId={receiverId} />
+      <MessageSend receiverId={receiverId} addNewMessages={addNewMessages} />
     </StyledBodyWrapper>
   );
 };
