@@ -37,7 +37,7 @@ public class PostMapper {
                 .unlikeCount(post.getUnlikeCount())
                 .commentCount(post.getCommentCount())
                 .fileUrlList(post.getFiles().stream().map(File::getFileUrl).collect(Collectors.toList()))
-                .comments(post.getComments().stream().map(commentMapper::entityToResponse).collect(Collectors.toList()))
+                .comments(post.getComments().stream().filter(comment -> comment.getParentCommentId() == null).map(commentMapper::entityToResponse).collect(Collectors.toList()))
                 .createdAt(post.getCreatedAt())
                 .updatedAt(post.getUpdatedAt())
                 .build();

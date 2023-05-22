@@ -23,11 +23,12 @@ public class CommentService {
     private final CommentMapper commentMapper;
 
     public CommentDto.Response createComment(MemberPrincipal memberPrincipal, CommentDto.Request requestDto, Long postId) {
-        Comment comment = commentMapper.requestToEntity(requestDto);
         Post findPost = postService.findVerifidPost(postId);
+        Comment comment = commentMapper.requestToEntity(requestDto);
         comment.setMember(memberPrincipal.getMember());
         comment.setPost(findPost);
         Comment save = commentRepository.save(comment);
+
         return commentMapper.entityToResponse(save);
     }
 

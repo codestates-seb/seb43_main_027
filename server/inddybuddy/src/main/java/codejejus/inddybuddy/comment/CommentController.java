@@ -10,11 +10,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/games/{game-id}/posts/{post-id}/comments")
+@RequestMapping("api/posts/{post-id}/comments")
 public class CommentController {
 
     private final CommentService commentService;
-    private final CommentMapper mapper;
 
     @PostMapping
     public ResponseEntity<CommentDto.Response> createComment(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
