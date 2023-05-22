@@ -80,7 +80,7 @@ const StyledWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 25px 10px;
-  border-bottom: 1px solid green;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
 
   &:hover {
     box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
