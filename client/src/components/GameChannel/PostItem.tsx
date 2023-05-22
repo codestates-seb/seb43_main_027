@@ -8,6 +8,7 @@ import { type GamePagePostType } from '../../types/dataTypes';
 import { StarTwoTone } from '@ant-design/icons';
 import PATH_URL from '../../constants/pathUrl';
 import { postOptionTags } from '../../data/postOptionTags';
+import { Tooltip } from 'antd';
 
 const PostItem = ({
   postId,
@@ -23,6 +24,18 @@ const PostItem = ({
 
   const { gameId } = useParams();
 
+  const filteredTitle = title.length >= 20
+  ? title.slice(0, 20) + '...'
+  : title;
+
+  const renderTitle = title.length >= 20 ? (
+    <Tooltip placement="bottom" title={title}>
+      <StyledTitle>{filteredTitle}</StyledTitle>
+    </Tooltip>
+  ) : (
+    <StyledTitle>{title}</StyledTitle>
+  );
+
   const tagName = convertTag.asKR(postTag);
   const tagId = postOptionTags.findIndex((option) => option.value === tagName);
   const formattedDate =
@@ -33,7 +46,7 @@ const PostItem = ({
       <StyledWrapper>
         <StyledContent>
           <StyledFlexRow>
-            <StyledTitle>{title}</StyledTitle>
+            {renderTitle}
             <CategoryTag categoryId={tagId} categoryName={tagName} />
           </StyledFlexRow>
           <StyledFlexRow>
