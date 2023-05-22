@@ -6,8 +6,12 @@ import codejejus.inddybuddy.member.entity.Member;
 import codejejus.inddybuddy.member.entity.MemberPrincipal;
 import codejejus.inddybuddy.member.service.MemberService;
 import codejejus.inddybuddy.post.Post;
+import codejejus.inddybuddy.post.PostDto;
 import codejejus.inddybuddy.post.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,6 +48,16 @@ public class BookmarkService {
         Bookmark findBookmark = findVerifiedBookmark(member, post);
         memberService.verifySameMember(memberPrincipal.getMember(), findBookmark.getMember());
         findBookmark.updateBookmarkStatus(Bookmark.BookmarkStatus.DISABLE);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<PostDto.MyPageResponse> getBookmarkPostsByMember(Long memberId, Post.PostTag postTag, Pageable pageable) {
+        Member member = memberService.findMember(memberId);
+        PageRequest pageRequest = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize());
+        Page<Bookmark> bookmarkPage = postTag == null ?
+                bookmarkRepository.findAllByMember(member, pageRequest) :
+                bookmarkRepository.findAllByMemberAndPost_PostTag(member, postTag, pageRequest);
+        return bookmarkMapper.bookmarkToPost(bookmarkPage);
     }
 
     private boolean isBookmarkExists(Member member, Post post) {
