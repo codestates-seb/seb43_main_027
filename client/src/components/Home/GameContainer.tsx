@@ -129,16 +129,29 @@ const StyledCardContainer = styled.div`
   gap: 3rem 5%;
   justify-content: center;
 
-  @media screen and (min-width: 500px) {
+  @media screen and (min-width: 520px) {
     justify-content: space-between;
   }
 
   @media screen and (min-width: 650px) {
-    gap: 3rem 2%;
+    gap: 3rem calc(100% - 400px);
     justify-content: flex-start;
   }
+
+  @media screen and (min-width: 780px) {
+    gap: 3rem calc((100% - 600px) / 3);
+  }
   @media screen and (min-width: 1200px) {
-    gap: 3rem 4%;
+    gap: 3rem calc((100% - 800px) / 4);
+  }
+  @media screen and (min-width: 1400px) {
+    gap: 3rem calc((100% - 1000px) / 5);
+  }
+  @media screen and (min-width: 1600px) {
+    gap: 3rem calc((100% - 1200px) / 6);
+  }
+  @media screen and (min-width: 1800px) {
+    gap: 3rem calc((100% - 1400px) / 7);
   }
 `;
 
