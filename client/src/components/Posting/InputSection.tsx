@@ -13,13 +13,10 @@ import { InputChangeType, SubmitType } from '../../types/parameterTypes';
 import { patchData, postData } from '../../api/apiCollection';
 import { Select, Space } from 'antd';
 import Loading from '../common/Loading';
+import { postInputInitValue } from '../../data/initialData';
 
 const InputSection = () => {
-  const [post, setPost] = useState<PostType>({
-    postTag: '',
-    title: '',
-    content: ''
-  });
+  const [post, setPost] = useState<PostType>(postInputInitValue);
   const [url, setUrl] = useState<string[]>([]);
   const [files, setFiles] = useState<File[]>([]);
   const { gameId, postId } = useParams();

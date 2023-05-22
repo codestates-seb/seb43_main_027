@@ -29,13 +29,13 @@ const GoogleLogIn = () => {
     if (accessToken) {
       localStorage.setItem('access_token', `Bearer ${accessToken}`);
       const headers = {
-        Authorization: `Bearer ${accessToken}`
+        Authorization: `${accessToken}`
       };
       try {
         axios(`${process.env.REACT_APP_API_URL}/api/members/profile`, {
           headers
         }).then((response) => {
-          const userdata = response.data;
+          const userdata = response.data.data;
           dispatch(setUser({ ...userdata }));
           alert('you successfully logged in!');
           navigator('/');

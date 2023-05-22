@@ -12,8 +12,12 @@ import PostItem from '../../components/common/PostItem';
 
 import { NavStateType } from '../../types/propsTypes';
 import NavGameCardContainer from './NavGameCardContainer';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+import { closeNav, openNav } from '../../slice/navSlice';
 
 import Message from '../../pages/Message';
+import { stopChat } from '../../slice/chatSlice';
 
 const itemList: NavItemType[] = [
   {
@@ -35,18 +39,30 @@ const itemList: NavItemType[] = [
 
 const Nav = ({ show, setShow }: NavStateType) => {
   const [selectedInd, setSelectedInd] = useState(0);
-  const [isOpened, setIsOpened] = useState(false);
-  const [isChatOpened, setIsChatOpened] = useState(true);
+
+  const { isOpened, isChatOpened } = useSelector((s: RootState) => ({
+    isOpened: s.nav,
+    isChatOpened: s.chat.isChat
+  }));
+
+  const dispatch = useDispatch();
+
   const onClickHandler = (i: number) => () => {
     setSelectedInd(i);
-    setIsOpened(true);
+    dispatch(openNav());
     setShow(true);
   };
 
-  const onBackgroundClickHandler = () => setIsOpened(false);
+  const onBackgroundClickHandler = () => {
+    dispatch(closeNav());
+    dispatch(stopChat());
+  };
 
   useEffect(() => {
-    if (!show) setIsOpened(false);
+    if (!show) {
+      dispatch(closeNav());
+      dispatch(stopChat());
+    }
   }, [show]);
 
   return (
