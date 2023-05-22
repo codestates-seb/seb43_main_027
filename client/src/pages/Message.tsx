@@ -6,15 +6,17 @@ import axios from 'axios';
 import MessageHeader from '../components/Message/MessageHeader';
 import MessageContents from '../components/Message/MessageContents';
 import { Single } from '../components/Message/SingleMessage';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/store';
+import { stopChat } from '../slice/chatSlice';
 
 // 대화 상대방 아이디 send 하는 쪽에 전달해주면 됨.
 
 const Message = () => {
+  const user = useSelector((s: RootState) => s.user);
   const [messageResponse, setMessageResponse] = useState<Single[]>([]);
   const chatInfo = useSelector((s: RootState) => s.chat);
-
+  const dispatch = useDispatch();
   console.log(chatInfo);
 
   const addPrevMessages = (newData: Single[]) => {
@@ -24,6 +26,12 @@ const Message = () => {
   const addNewMessages = (newData: Single) => {
     setMessageResponse((prev) => [...prev, newData]);
   };
+
+  useEffect(() => {
+    if (user.memberId === -1) {
+      dispatch(stopChat());
+    }
+  }, [user]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,7 +44,6 @@ const Message = () => {
             }
           }
         );
-        console.log(res.data.data);
         setMessageResponse(res.data.data);
       } catch (error) {
         console.error('에러가 발생했습니다: ', error);
@@ -57,6 +64,7 @@ const Message = () => {
         messageResponse={messageResponse}
         receiverId={chatInfo.receiver.memberId}
         addPrevMessages={addPrevMessages}
+        addNewMessages={addNewMessages}
       />
     </StyledMessageContainer>
   );
