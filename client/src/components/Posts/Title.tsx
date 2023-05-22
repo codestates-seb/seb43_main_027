@@ -7,6 +7,8 @@ import { StarTwoTone } from '@ant-design/icons';
 import { useNavigate, useParams } from 'react-router-dom';
 import { BookmarkType } from '../../types/dataTypes';
 import { deleteData, postData } from '../../api/apiCollection';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 
 const Title = ({
   tag,
@@ -20,6 +22,7 @@ const Title = ({
   onBookmarkChange: (s: any) => () => void;
 }) => {
   const navigation = useNavigate();
+  const user = useSelector((s: RootState) => s.user);
   const { postId } = useParams();
   const tagId = postOptionTags.findIndex(
     (option) => option.value === convertTag.asKR(tag)
@@ -29,6 +32,10 @@ const Title = ({
     navigation(-1);
   };
   const onBookmarkClick = (status: undefined | string) => () => {
+    if (user.memberId === -1) {
+      alert('로그인이 필요한 기능입니다.');
+      return;
+    }
     if (status !== 'ACTIVE') {
       postData(
         `${process.env.REACT_APP_API_URL}/api/posts/${postId}/bookmark`,

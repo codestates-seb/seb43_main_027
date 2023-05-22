@@ -30,7 +30,7 @@ const MessageHeader = ({
       </StyledLeft>
 
       <StyledRight>
-        <StyledCloseButton>X</StyledCloseButton>
+        <StyledCloseButton onClick={onClickHandler}>X</StyledCloseButton>
       </StyledRight>
     </StyledWrapper>
   );

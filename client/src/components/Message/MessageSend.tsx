@@ -1,29 +1,57 @@
 import styled from 'styled-components';
 
 import axios from 'axios';
+import { Single } from './SingleMessage';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+import { useRef } from 'react';
+import { SubmitEvent } from '../../types/propsTypes';
 
 type SendType = {
   receiverId: number;
+  addNewMessages: (newData: Single) => void;
 };
 
-const MessageSend = ({ receiverId }: SendType) => {
-  const sendMessage = (value: string) => {
+const MessageSend = ({ receiverId, addNewMessages }: SendType) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const user = useSelector((s: RootState) => s.user);
+
+  const sendMessage = (e: SubmitEvent) => {
+    e.preventDefault();
     const token = localStorage.getItem('access_token');
     const headers = {
+      'Content-Type': 'application/json',
       Authorization: token
     };
-    axios.post(
-      `${process.env.REACT_APP_API_URL}/api/messages/${receiverId}`,
-      { content: value },
-      { headers }
-    );
+    const value = inputRef?.current?.value;
+    if (!value || value.length === 0) return;
+    axios
+      .post(
+        `${process.env.REACT_APP_API_URL}/api/messages/${receiverId}`,
+        JSON.stringify({ content: value }),
+        { headers }
+      )
+      .then(() => {
+        addNewMessages({
+          content: value,
+          createdAt: Date().toString(),
+          senderId: user.memberId
+        });
+        if (inputRef && inputRef.current) inputRef.current.value = '';
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   return (
     <StyledContainer>
-      <StyledForm>
-        <StyledInputContainer placeholder='메시지를 입력하세요.' />
-        <StyledSubmitButton>전송</StyledSubmitButton>
+      <StyledForm onSubmit={sendMessage}>
+        <StyledInputContainer
+          placeholder='메시지를 입력하세요.'
+          ref={inputRef}
+        />
+        <StyledSubmitButton onClick={sendMessage}>전송</StyledSubmitButton>
       </StyledForm>
     </StyledContainer>
   );

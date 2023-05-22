@@ -3,11 +3,8 @@ import styled from 'styled-components';
 import { AiOutlineSearch } from 'react-icons/ai';
 
 import SearchHint from './SearchHint';
+import { SubmitEvent } from '../../types/propsTypes';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-
-type SubmitEvent =
-  | React.FormEvent<HTMLFormElement>
-  | React.MouseEvent<HTMLButtonElement>;
 
 const SearchBar = () => {
   const [showHint, setShowHint] = useState(false);

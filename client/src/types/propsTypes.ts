@@ -30,7 +30,7 @@ export type GameItemPropsType = {
   followerCount: number;
   categories: CategoryType[];
   mainImgUrl: string;
-}
+};
 
 export type StyledTagPropsType = {
   styleId: number;
@@ -43,9 +43,13 @@ export type PostListProps = {
 };
 
 export type StyledUserImgType = {
-  getUserImg : string;
+  getUserImg: string;
 };
 
 export interface UserInfoProps {
   setIsEditClick: React.Dispatch<React.SetStateAction<boolean>>;
-};
+}
+
+export type SubmitEvent =
+  | React.FormEvent<HTMLFormElement>
+  | React.MouseEvent<HTMLButtonElement>;
