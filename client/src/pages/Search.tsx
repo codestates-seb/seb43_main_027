@@ -35,7 +35,8 @@ const Search = () => {
   // const searchEngine = () => {
   //   console.log(searchParams);
   // };
-
+  console.log(searchParams);
+  console.log(searchQuery);
   useEffect(() => {
     const fetchMultipleData = async () => {
       try {
