@@ -33,8 +33,6 @@ const Login = () => {
           localStorage.setItem('refresh_token', response.headers.refresh);
           const userdata = response.data;
           dispatch(setUser({ ...userdata }));
-          localStorage.setItem('user', JSON.stringify(userdata));
-          console.log(JSON.parse(localStorage.getItem('user')!));
           alert('you successfully logged in!');
           navigation('/');
         });

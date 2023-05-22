@@ -12,6 +12,7 @@ import PATH_URL from '../../constants/pathUrl';
 import { InputChangeType, SubmitType } from '../../types/parameterTypes';
 import { patchData, postData } from '../../api/apiCollection';
 import { Select, Space } from 'antd';
+import Loading from '../common/Loading';
 
 const InputSection = () => {
   const [post, setPost] = useState<PostType>({
@@ -22,6 +23,7 @@ const InputSection = () => {
   const [url, setUrl] = useState<string[]>([]);
   const [files, setFiles] = useState<File[]>([]);
   const { gameId, postId } = useParams();
+  const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigate();
 
   const onTagChangeHandler = (postTag: string) => {
@@ -127,58 +129,70 @@ const InputSection = () => {
   useEffect(() => {
     if (!postId) return;
     (async () => {
+      setIsLoading(true);
       try {
         const res = await axios(
           `${process.env.REACT_APP_API_URL}/api/posts/${postId}`
         );
-        const { content, title, fileUrlList } = res.data.data;
-        setPost((prev) => ({ ...prev, content, title }));
+        const { content, title, fileUrlList, postTag } = res.data.data;
+
+        setPost((prev) => ({
+          ...prev,
+          content,
+          title,
+          postTag
+        }));
         setUrl(fileUrlList);
+        setIsLoading(false);
       } catch (err: any) {
         if (err.response.status === 404) {
           alert('존재하지 않는 게시글입니다.');
           navigation(PATH_URL.ERROR);
         }
+        setIsLoading(false);
       }
     })();
   }, [postId]);
 
   return (
-    <form onSubmit={onSubmitHandler} encType='multipart/form-data'>
-      <StyledContainer>
-        <Space wrap>
-          <Select
-            defaultValue={post.postTag || '태그 선택'}
-            style={{ width: 120 }}
-            onChange={onTagChangeHandler}
-            options={postOptionTags.slice(1)}
-          />
-        </Space>
+    <>
+      <form onSubmit={onSubmitHandler} encType='multipart/form-data'>
+        <StyledContainer>
+          <Space wrap>
+            <Select
+              value={convertTag.asKR(post.postTag) || '태그 선택'}
+              style={{ width: 120 }}
+              onChange={onTagChangeHandler}
+              options={postOptionTags.slice(1)}
+            />
+          </Space>
 
-        <StyledTitleInput
-          value={post.title}
-          placeholder='제목을 입력하세요.'
-          onChange={onInputChangeHandler('title')}
-        />
-        <StyledTextarea
-          value={post.content}
-          placeholder='내용을 입력하세요.'
-          onChange={onInputChangeHandler('content')}
-        />
-        <ImageSection
-          files={files}
-          onUploadHandler={onUploadHandler}
-          onDeleteFileClickHandler={onDeleteFileClickHandler}
-          onDeleteUrlClickHandler={onDeleteUrlClickHandler}
-          urls={url}
-        />
-        <StyledButtonContainer>
-          <StyledSubmitButton onClick={onSubmitHandler}>
-            작성하기
-          </StyledSubmitButton>
-        </StyledButtonContainer>
-      </StyledContainer>
-    </form>
+          <StyledTitleInput
+            value={post.title}
+            placeholder='제목을 입력하세요.'
+            onChange={onInputChangeHandler('title')}
+          />
+          <StyledTextarea
+            value={post.content}
+            placeholder='내용을 입력하세요.'
+            onChange={onInputChangeHandler('content')}
+          />
+          <ImageSection
+            files={files}
+            onUploadHandler={onUploadHandler}
+            onDeleteFileClickHandler={onDeleteFileClickHandler}
+            onDeleteUrlClickHandler={onDeleteUrlClickHandler}
+            urls={url}
+          />
+          <StyledButtonContainer>
+            <StyledSubmitButton onClick={onSubmitHandler}>
+              작성하기
+            </StyledSubmitButton>
+          </StyledButtonContainer>
+        </StyledContainer>
+      </form>
+      {isLoading && <Loading />}
+    </>
   );
 };
 

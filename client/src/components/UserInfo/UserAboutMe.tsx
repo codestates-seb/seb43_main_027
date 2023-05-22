@@ -47,4 +47,5 @@ const StyledWrapper = styled.div`
   border-radius: 15px;
   word-break: keep-all;
   overflow-wrap: break-word;
+  font-size: 14px;
 `;

@@ -1,12 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import MyTitle from '../components/UserInfo/UserTitle';
+import UserTitle from '../components/UserInfo/UserTitle';
+import UserEditInfo from '../components/UserInfo/UserEditInfo';
 
 const UserInfoPage = () => {
+
+  const [ isEditClick, setIsEditClick ] = useState<boolean>(false);
+
   return (
     <StyledMyPageWrapper>
       <StyledMyPageContain>
-        <MyTitle />
+      {
+        isEditClick ? 
+          <UserEditInfo setIsEditClick={setIsEditClick} />
+        : <UserTitle setIsEditClick={setIsEditClick} />
+      }
       </StyledMyPageContain>
     </StyledMyPageWrapper>
   );

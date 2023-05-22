@@ -10,11 +10,11 @@ const PATH_URL: PathUrlType = {
   POSTING: '/posts',
   POST: '/post',
   EDIT: '/edit',
+  POST: '/posts/',
   GOOGLE: '/googlelogin',
   ERROR: '/error',
   NOTFOUND: '*',
-  USER_INFO: '/users/',
-
+  USER_INFO: '/users/'
 };
 
 export default PATH_URL;

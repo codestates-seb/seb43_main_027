@@ -24,7 +24,9 @@ const NavContent = ({
   // TODO: type에 따라서 데이터 패칭을 다르게 하고 보여준다.
 
   useEffect(() => {
+    if (user.memberId === -1) return;
     setIsLoading(true);
+
     (async () => {
       try {
         const res = await axios(
@@ -66,7 +68,7 @@ const NavContent = ({
       );
     }
 
-    return data.map((a) => <Content key={a} data={a} />);
+    return data.map((a, i) => <Content key={i} data={a} />);
   };
 
   return (
