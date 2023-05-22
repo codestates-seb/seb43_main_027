@@ -8,6 +8,7 @@ export interface Single {
 const SingleMessage = ({ content, createdAt }: Single) => {
   return (
     <StyledLI>
+      <StyledProfile src='http://something.com' />
       <StyledContent>{content}</StyledContent>
       <StyledDate>{createdAt}</StyledDate>
     </StyledLI>
@@ -17,9 +18,16 @@ const SingleMessage = ({ content, createdAt }: Single) => {
 export default SingleMessage;
 
 const StyledLI = styled.li`
-  font-size: 1.4rem;
+  margin: 0.5rem;
+  font-size: 1.6rem;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
+  height: 2rem;
 `;
+
+const StyledProfile = styled.img``;
 
 const StyledContent = styled.span``;
 
-const StyledDate = styled.span``;
+const StyledDate = styled.span`
+  font-size: 1.2rem;
+`;

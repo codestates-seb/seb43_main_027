@@ -7,46 +7,34 @@ import MessageHeader from '../components/Message/MessageHeader';
 import MessageContents from '../components/Message/MessageContents';
 import { Single } from '../components/Message/SingleMessage';
 
-const dummyMessage = [
-  {
-    senderId: 3,
-    content: '첫번째 그대의의',
-    createdAt: '2023-05-22T01:30:54'
-  },
-  {
-    senderId: 3,
-    content: '두 번째 그대의의ㅇㅇㅇ',
-    createdAt: '2023-05-22T01:31:06'
-  },
-  {
-    senderId: 3,
-    content: '세 번째 그대의의ㅇㅇㅇ',
-    createdAt: '2023-05-22T01:31:14'
-  },
-  {
-    senderId: 3,
-    content: '네번째 그대의',
-    createdAt: '2023-05-22T01:31:23'
-  }
-];
-
-const receiverId = 1;
+// 대화 상대방 아이디 send 하는 쪽에 전달해주면 됨.
+const receiverId = 2;
 
 const Message = () => {
-  const [messageChunk, setMessageChunk] = useState<Single[]>([]);
+  const [messageResponse, setMessageResponse] = useState<Single[]>([]);
 
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/api/messages/${receiverId}`)
-      .then((res) => {
-        setMessageChunk(res.data);
-      });
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(
+          `${process.env.REACT_APP_API_URL}/api/messages/${receiverId}`
+        );
+        setMessageResponse(res.data.data);
+      } catch (error) {
+        console.error('에러가 발생했습니다: ', error);
+      }
+    };
+
+    fetchData();
   }, []);
 
   return (
     <StyledMessageContainer>
       <MessageHeader />
-      <MessageContents messageChunk={messageChunk} receiverId={1} />
+      <MessageContents
+        messageResponse={messageResponse}
+        receiverId={receiverId}
+      />
     </StyledMessageContainer>
   );
 };
@@ -54,6 +42,18 @@ const Message = () => {
 export default Message;
 
 const StyledMessageContainer = styled.div`
+  display: flex;
+  margin-left: 50rem;
+  margin-top: -35rem;
+  flex-direction: column;
   position: absolute;
-  width: 50%;
+  background-color: rgb(255, 255, 255);
+  width: 100%;
+  height: 100%;
+  min-width: 40rem;
+  min-height: 80rem;
+  padding: 2rem;
+  max-height: 40rem;
+
+  z-index: 2;
 `;

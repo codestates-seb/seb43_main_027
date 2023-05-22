@@ -6,13 +6,13 @@ import { Single } from './SingleMessage';
 
 interface MessageContents {
   receiverId: number;
-  messageChunk: Single[];
+  messageResponse: Single[];
 }
 
-const MessageContents = ({ messageChunk, receiverId }: MessageContents) => {
+const MessageContents = ({ messageResponse, receiverId }: MessageContents) => {
   return (
     <StyledBodyWrapper>
-      <MessageOutput messageChunk={messageChunk} />
+      <MessageOutput messageResponse={messageResponse} />
       <MessageSend receiverId={receiverId} />
     </StyledBodyWrapper>
   );

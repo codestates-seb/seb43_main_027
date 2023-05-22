@@ -4,8 +4,8 @@ const MessageHeader = () => {
   return (
     <StyledWrapper>
       <StyledLeft>
-        <StyledIMG />
-        <StyledUsername />
+        <StyledIMG href='http://something' />
+        <StyledUsername>Username</StyledUsername>
       </StyledLeft>
       <StyledBlank />
       <StyledRight>
@@ -20,6 +20,7 @@ export default MessageHeader;
 const StyledWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  height: 5rem;
 `;
 
 const StyledLeft = styled.div`
@@ -41,9 +42,12 @@ const StyledBlank = styled.div`
 const StyledCloseButton = styled.button`
   background-color: var(--cyan-dark-400);
   color: white;
+  border-style: none;
+  height: 2rem;
 `;
 const StyledRight = styled.div`
   display: flex;
   flex: 1;
   justify-content: flex-end;
+  align-items: center;
 `;

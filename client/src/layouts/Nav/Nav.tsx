@@ -13,6 +13,8 @@ import PostItem from '../../components/common/PostItem';
 import { NavStateType } from '../../types/propsTypes';
 import NavGameCardContainer from './NavGameCardContainer';
 
+import Message from '../../pages/Message';
+
 const itemList: NavItemType[] = [
   {
     type: 'user',
@@ -34,6 +36,7 @@ const itemList: NavItemType[] = [
 const Nav = ({ show, setShow }: NavStateType) => {
   const [selectedInd, setSelectedInd] = useState(0);
   const [isOpened, setIsOpened] = useState(false);
+  const [isChatOpened, setIsChatOpened] = useState(true);
   const onClickHandler = (i: number) => () => {
     setSelectedInd(i);
     setIsOpened(true);
@@ -67,6 +70,7 @@ const Nav = ({ show, setShow }: NavStateType) => {
             Content={itemList[selectedInd].contentElement}
           />
         )}
+        {isChatOpened && <Message />}
       </StyledNav>
     </>
   );

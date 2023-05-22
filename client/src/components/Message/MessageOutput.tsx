@@ -3,14 +3,14 @@ import styled from 'styled-components';
 import SingleMessage, { Single } from './SingleMessage';
 
 interface OutputType {
-  messageChunk: Single[];
+  messageResponse: Single[];
 }
 
-const MessageOutput = ({ messageChunk }: OutputType) => {
+const MessageOutput = ({ messageResponse }: OutputType) => {
   return (
     <>
       <StyledUL>
-        {messageChunk.map((item, i) => (
+        {messageResponse.map((item, i) => (
           <SingleMessage
             key={i}
             content={item.content}
@@ -26,5 +26,8 @@ export default MessageOutput;
 
 const StyledUL = styled.ul`
   display: flex;
+
+  flex-direction: column;
   justify-content: flex-start;
+  height: 50rem;
 `;
