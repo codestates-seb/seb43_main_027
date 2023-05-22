@@ -1,6 +1,9 @@
 package codejejus.inddybuddy.post;
 
-import codejejus.inddybuddy.bookmark.*;
+import codejejus.inddybuddy.bookmark.Bookmark;
+import codejejus.inddybuddy.bookmark.BookmarkDto;
+import codejejus.inddybuddy.bookmark.BookmarkMapper;
+import codejejus.inddybuddy.bookmark.BookmarkRepository;
 import codejejus.inddybuddy.file.File;
 import codejejus.inddybuddy.file.FileService;
 import codejejus.inddybuddy.game.Game;
@@ -11,7 +14,10 @@ import codejejus.inddybuddy.global.exception.ExceptionCode;
 import codejejus.inddybuddy.member.entity.Member;
 import codejejus.inddybuddy.member.entity.MemberPrincipal;
 import codejejus.inddybuddy.member.service.MemberService;
-import codejejus.inddybuddy.reaction.*;
+import codejejus.inddybuddy.reaction.Reaction;
+import codejejus.inddybuddy.reaction.ReactionDto;
+import codejejus.inddybuddy.reaction.ReactionMapper;
+import codejejus.inddybuddy.reaction.ReactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -108,10 +114,12 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public Page<PostDto.MyPageResponse> getPostsByMember(Long memberId, Pageable pageable) {
+    public Page<PostDto.MyPageResponse> getPostsByMember(Long memberId, Post.PostTag postTag, Pageable pageable) {
         Member member = memberService.findMember(memberId);
         PageRequest pageRequest = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize());
-        Page<Post> postPage = postRepository.findAllByMember(member, pageRequest);
+        Page<Post> postPage = postTag == null ?
+                postRepository.findAllByMember(member, pageRequest) :
+                postRepository.findAllByMemberAndPostTag(member, postTag, pageRequest);
         return postMapper.entityToMyPageResponse(postPage);
     }
 
