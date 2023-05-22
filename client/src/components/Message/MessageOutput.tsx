@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import SingleMessage, { Single } from './SingleMessage';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 interface OutputType {
   messageResponse: Single[];
@@ -49,7 +49,7 @@ const StyledUL = styled.ul`
   flex: 1 0 0;
   gap: 4rem;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: flex-end;
   height: 50rem;
   overflow-y: scroll;
   padding: 0.5rem;
