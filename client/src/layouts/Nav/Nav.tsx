@@ -36,7 +36,7 @@ const itemList: NavItemType[] = [
 const Nav = ({ show, setShow }: NavStateType) => {
   const [selectedInd, setSelectedInd] = useState(0);
   const [isOpened, setIsOpened] = useState(false);
-  const [isChatOpened, setIsChatOpened] = useState(true);
+  // const [isChatOpened, setIsChatOpened] = useState(true);
   const onClickHandler = (i: number) => () => {
     setSelectedInd(i);
     setIsOpened(true);
@@ -70,7 +70,7 @@ const Nav = ({ show, setShow }: NavStateType) => {
             Content={itemList[selectedInd].contentElement}
           />
         )}
-        {isChatOpened && <Message />}
+        {/* {isChatOpened && <Message />} */}
       </StyledNav>
     </>
   );
