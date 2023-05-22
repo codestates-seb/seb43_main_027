@@ -13,7 +13,7 @@ public enum Filter {
     LIKE("좋아요 많은 순", Sort.by(Sort.Direction.DESC, "likeCount")),
     NEW("최신순", Sort.by(Sort.Direction.DESC, "createdAt")),
     OLD("오래된 순", Sort.by(Sort.Direction.ASC, "createdAt")),
-    MOST_VIEWS("조회수 많은 순", Sort.by(Sort.Direction.ASC, "views"));
+    MOST_VIEWS("조회수 많은 순", Sort.by(Sort.Direction.DESC, "views"));
     private final String name;
     private final Sort sort;
 
