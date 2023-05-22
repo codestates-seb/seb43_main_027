@@ -35,7 +35,7 @@ const GoogleLogIn = () => {
         axios(`${process.env.REACT_APP_API_URL}/api/members/profile`, {
           headers
         }).then((response) => {
-          const userdata = response.data;
+          const userdata = response.data.data;
           dispatch(setUser({ ...userdata }));
           alert('you successfully logged in!');
           navigator('/');
