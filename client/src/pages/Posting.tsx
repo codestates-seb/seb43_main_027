@@ -8,7 +8,7 @@ import PATH_URL from '../constants/pathUrl';
 const Posting = () => {
   const { postId } = useParams();
 
-  // useCheckAuth(PATH_URL.LOGIN);
+  useCheckAuth(PATH_URL.LOGIN);
 
   return (
     <StyledContainer>
