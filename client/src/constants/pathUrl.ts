@@ -13,7 +13,8 @@ const PATH_URL: PathUrlType = {
   GOOGLE: '/googlelogin',
   ERROR: '/error',
   NOTFOUND: '*',
-  USER_INFO: '/users/'
+  USER_INFO: '/users/',
+  SEARCH: '/search',
 };
 
 export default PATH_URL;

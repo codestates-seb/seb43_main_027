@@ -39,14 +39,12 @@ const itemList: NavItemType[] = [
 
 const Nav = ({ show, setShow }: NavStateType) => {
   const [selectedInd, setSelectedInd] = useState(0);
-
   const { isOpened, isChatOpened } = useSelector((s: RootState) => ({
     isOpened: s.nav,
     isChatOpened: s.chat.isChat
   }));
 
   const dispatch = useDispatch();
-
   const onClickHandler = (i: number) => () => {
     setSelectedInd(i);
     dispatch(openNav());
@@ -86,7 +84,7 @@ const Nav = ({ show, setShow }: NavStateType) => {
             Content={itemList[selectedInd].contentElement}
           />
         )}
-        {isChatOpened && <Message />}
+        {/* {isChatOpened && <Message />} */}
       </StyledNav>
     </>
   );
