@@ -24,22 +24,23 @@ public class CommentDto {
     public static class Response {
 
         private final Long commentId;
+        private final Comment.CommentStatus commentStatus;
         private final MemberDto.SimpleInfoResponse member;
         private final Long parentCommentId;
-        private final List<CommentDto.Response> replies;
         private final String content;
         private final LocalDateTime createdAt;
         private final LocalDateTime updatedAt;
-
+        private final List<CommentDto.Response> replies;
         @Builder
-        public Response(Long commentId, MemberDto.SimpleInfoResponse member, Long parentCommentId, List<CommentDto.Response> replies, String content, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        public Response(Long commentId, Comment.CommentStatus commentStatus, MemberDto.SimpleInfoResponse member, Long parentCommentId, List<CommentDto.Response> replies, String content, LocalDateTime createdAt, LocalDateTime updatedAt) {
             this.commentId = commentId;
+            this.commentStatus = commentStatus;
             this.member = member;
             this.parentCommentId = parentCommentId;
-            this.replies = replies;
             this.content = content;
             this.createdAt = createdAt;
             this.updatedAt = updatedAt;
+            this.replies = replies;
         }
     }
 }

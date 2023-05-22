@@ -31,7 +31,6 @@ public class Comment extends Timestamped {
 
     @Builder
     private Comment(Post post, Member member, String content, Long parentCommentId) {
-
         this.post = post;
         this.content = content;
         this.member = member;

@@ -3,6 +3,7 @@ package codejejus.inddybuddy.comment;
 import codejejus.inddybuddy.global.dto.SingleResponse;
 import codejejus.inddybuddy.global.utils.UriCreator;
 import codejejus.inddybuddy.member.entity.MemberPrincipal;
+import codejejus.inddybuddy.post.Post;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -28,5 +29,12 @@ public class CommentController {
                                                                              @AuthenticationPrincipal MemberPrincipal memberPrincipal,
                                                                              @RequestBody CommentDto.Request requestDto) {
         return ResponseEntity.ok(new SingleResponse<>(commentService.modifyComment(commentId, memberPrincipal, requestDto)));
+    }
+
+    @DeleteMapping("/{comment-id}")
+    public ResponseEntity<Comment> deletePost(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
+                                              @PathVariable("comment-id") Long commentId) {
+        commentService.deleteComment(commentId, memberPrincipal);
+        return ResponseEntity.noContent().build();
     }
 }

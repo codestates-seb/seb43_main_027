@@ -32,6 +32,7 @@ public class CommentMapper {
 
         return CommentDto.Response.builder()
                 .commentId(comment.getCommentId())
+                .commentStatus(comment.getCommentStatus())
                 .parentCommentId(comment.getParentCommentId())
                 .replies(childResponse)
                 .member(memberMapper.getMemberSimpleInfoResponse(comment.getMember()))
