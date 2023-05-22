@@ -21,6 +21,7 @@ const UserEditInfo = ({ setIsEditClick }: UserInfoProps) => {
 
   const [isUserImg, setIsUserImg] = useState<string>('');
   const [isUserName, setIsUserName] = useState<string>('');
+  const [isUserEmail, setIsUserEmail] = useState<string>('');
   const [isEditAboutMe, setIsEditAboutMe] = useState<string>('');
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -51,6 +52,7 @@ const UserEditInfo = ({ setIsEditClick }: UserInfoProps) => {
 
         setIsUserImg(fetchedData.imageUrl);
         setIsUserName(fetchedData.userName);
+        setIsUserEmail(fetchedData.email);
         setIsEditAboutMe(fetchedData.aboutMe);
       } catch (error) {
         console.log(error);
@@ -176,6 +178,7 @@ const UserEditInfo = ({ setIsEditClick }: UserInfoProps) => {
         />
       </StyledEditImg>
       <UserProfileImg isUserImg={isUserImg} />
+      <StyledEmailText>{isUserEmail}</StyledEmailText>
       닉네임 수정:
       <Input
         placeholder='닉네임 수정'
@@ -262,4 +265,8 @@ const StyledEditImg = styled.div`
   &:hover {
     color: var(--cyan-dark-1000);
   }
+`;
+
+const StyledEmailText = styled.p`
+  color: var(--cyan-light-700);
 `;
