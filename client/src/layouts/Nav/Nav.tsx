@@ -84,7 +84,7 @@ const Nav = ({ show, setShow }: NavStateType) => {
             Content={itemList[selectedInd].contentElement}
           />
         )}
-        {/* {isChatOpened && <Message />} */}
+        {isChatOpened && <Message />}
       </StyledNav>
     </>
   );
