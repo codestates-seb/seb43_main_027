@@ -42,6 +42,14 @@ const GameRegister = () => {
 
   const submitFormData = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (title === '' || tagStates.filter((a) => a === true).length === 0) {
+      if (title === '') {
+        return alert('제목을 입력해야합니다.');
+      }
+      return alert('태그를 최소 1개 이상 선택해주세요!');
+    }
+
     const reducer = (a: number[], c: boolean, i: number) => {
       if (c === true) a.push(i);
       return a;
@@ -77,13 +85,18 @@ const GameRegister = () => {
     // formData를 axios를 사용하여 POST합니다.
     axios
       .post(`${process.env.REACT_APP_API_URL}/api/games`, formData, { headers })
-      .then((response) => {
+      .then(() => {
         alert('등록에 성공하였습니다');
         navigation(-1);
       })
       .catch((error) => {
-        console.error(error);
-        navigation('/error');
+        if (error.response && error.response.status === 409) {
+          alert('중복된 게임이름입니다');
+          console.log('중복');
+        } else {
+          alert(error);
+          navigation('/error');
+        }
       });
   };
 
