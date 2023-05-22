@@ -22,7 +22,8 @@ export const postInitValue: PostDataType = {
   postId: -1,
   updatedAt: '',
   views: 0,
-  postTag: ''
+  postTag: '',
+  bookmark: null
 };
 
 export const postInputInitValue = {
