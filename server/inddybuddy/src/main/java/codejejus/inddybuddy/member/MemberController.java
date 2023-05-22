@@ -1,8 +1,5 @@
 package codejejus.inddybuddy.member;
 
-import codejejus.inddybuddy.relation.followgame.FollowGameService;
-import codejejus.inddybuddy.relation.followmember.FollowMember;
-import codejejus.inddybuddy.relation.followmember.FollowMemberService;
 import codejejus.inddybuddy.game.Game;
 import codejejus.inddybuddy.game.GameDto;
 import codejejus.inddybuddy.game.GameMapper;
@@ -13,8 +10,12 @@ import codejejus.inddybuddy.member.dto.MemberDto;
 import codejejus.inddybuddy.member.entity.Member;
 import codejejus.inddybuddy.member.entity.MemberPrincipal;
 import codejejus.inddybuddy.member.service.MemberService;
+import codejejus.inddybuddy.post.Post;
 import codejejus.inddybuddy.post.PostDto;
 import codejejus.inddybuddy.post.PostService;
+import codejejus.inddybuddy.relation.followgame.FollowGameService;
+import codejejus.inddybuddy.relation.followmember.FollowMember;
+import codejejus.inddybuddy.relation.followmember.FollowMemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -57,12 +58,6 @@ public class MemberController {
         return ResponseEntity.ok(new SingleResponse<>(memberMapper.memberToMemberDtoResponse(member)));
     }
 
-    @GetMapping
-    public ResponseEntity<SingleResponse<MemberDto.Response>> getMember(@AuthenticationPrincipal MemberPrincipal memberPrincipal) {
-        Member member = memberService.findMember(memberPrincipal.getMember().getMemberId());
-        return ResponseEntity.ok(new SingleResponse<>(memberMapper.memberToMemberDtoResponse(member)));
-    }
-
     @GetMapping("/{member-id}/profile")
     public ResponseEntity<SingleResponse<MemberDto.ProfileResponse>> getMemberProfile(@PathVariable("member-id") Long memberId) {
         Member member = memberService.findMember(memberId);
@@ -85,8 +80,9 @@ public class MemberController {
 
     @GetMapping("/{member-id}/mypost")
     public ResponseEntity<MultiResponse<PostDto.MyPageResponse>> getMemberPosts(@PathVariable("member-id") Long memberId,
+                                                                                @RequestParam(required = false) Post.PostTag postTag,
                                                                                 @PageableDefault(page = 1, size = 30) Pageable pageable) {
-        Page<PostDto.MyPageResponse> pageResponses = postService.getPostsByMember(memberId, pageable);
+        Page<PostDto.MyPageResponse> pageResponses = postService.getPostsByMember(memberId, postTag, pageable);
         return ResponseEntity.ok(new MultiResponse<>(pageResponses.getContent(), pageResponses));
     }
 
@@ -104,7 +100,7 @@ public class MemberController {
 
     @GetMapping("/search")
     public ResponseEntity<SingleResponse<List<MemberDto.SimpleInfoResponse>>> searchMemberByKeyword(@PageableDefault(page = 1, size = 30) Pageable pageable,
-                                                                                                    @RequestParam(value = "q") String keyword) {
+                                                                                                    @RequestParam(required = false, value = "q") String keyword) {
         List<Member> members = memberService.findByUsernameContaining(pageable, keyword);
         List<MemberDto.SimpleInfoResponse> responses = memberMapper.pageMemberToSimpleInfoResponses(members);
         return ResponseEntity.ok(new SingleResponse<>(responses));

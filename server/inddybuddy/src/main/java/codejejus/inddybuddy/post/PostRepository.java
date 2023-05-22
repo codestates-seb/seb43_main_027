@@ -20,5 +20,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Page<Post> findAllByGameAndPostTag(Game game, Post.PostTag postTag, PageRequest pageRequest);
 
     @EntityGraph(attributePaths = {"game", "member"})
+    Page<Post> findAllByMemberAndPostTag(Member member, Post.PostTag postTag, Pageable pageable);
+
+    @EntityGraph(attributePaths = {"game", "member"})
     Page<Post> findAllByMember(Member member, Pageable pageable);
 }
