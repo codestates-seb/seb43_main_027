@@ -17,6 +17,8 @@ const UserTitle = ({ setIsEditClick }: UserInfoProps) => {
   const [ isUserImg, setIsUserImg ] = useState<string>('');
   const [ isUserName, setIsUserName ] = useState<string>('');
   const [ isUserEmail, setIsUserEmail ] = useState<string>('');
+  const [ isFollowerCount, setIsFollowerCount ] = useState<number>(0);
+  const [ isFollowingCount, setIsFollowingCount ] = useState<number>(0);
   const [ loading, setLoading ] = useState(true);
 
   useEffect(() => {
@@ -28,6 +30,8 @@ const UserTitle = ({ setIsEditClick }: UserInfoProps) => {
         setIsUserImg(fetchedData.imageUrl);
         setIsUserName(fetchedData.userName);
         setIsUserEmail(fetchedData.email);
+        setIsFollowerCount(fetchedData.followerCount);
+        setIsFollowingCount(fetchedData.followingCount);
 
         if (fetchedData.userName === null) {
           setIsUserName('등록된 닉네임이 없습니다.');
@@ -59,6 +63,8 @@ const UserTitle = ({ setIsEditClick }: UserInfoProps) => {
       <UserProfileName 
         isUserName={isUserName} 
         isUserEmail={isUserEmail}
+        isFollowerCount={isFollowerCount}
+        isFollowingCount={isFollowingCount}
       />
       <UserProfileAction 
         setIsEditClick={setIsEditClick} 
