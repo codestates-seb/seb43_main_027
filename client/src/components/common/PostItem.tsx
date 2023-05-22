@@ -8,10 +8,23 @@ import postOptionTags from '../../data/postOptionTags';
 import { elapsedText } from '../../utils/elapsedText';
 
 import { GamePagePostType } from '../../types/dataTypes';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { closeNav } from '../../slice/navSlice';
+import PATH_URL from '../../constants/pathUrl';
 
 const PostItem = ({ data: bookmarked }: { data: GamePagePostType }) => {
+  const dispatch = useDispatch();
+  const navigation = useNavigate();
+
+  const onClickHandler = () => {
+    dispatch(closeNav());
+    navigation(
+      `${PATH_URL}/games/${bookmarked.gameId}/posts/${bookmarked.postId}`
+    );
+  };
   return (
-    <StyledContainer>
+    <StyledContainer onClick={onClickHandler}>
       <div>
         <StyledTitleContainer>
           <StyledTitle>{bookmarked.title}</StyledTitle>
@@ -46,6 +59,7 @@ export default PostItem;
 
 const StyledContainer = styled.div`
   display: flex;
+  cursor: pointer;
   padding: 1rem 2rem;
   background-color: #fff;
   width: 100%;

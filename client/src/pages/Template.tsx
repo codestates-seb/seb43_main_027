@@ -4,6 +4,7 @@ import Nav from '../layouts/Nav/Nav';
 import Footer from '../layouts/Footer/Footer';
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
+import WithScrollTop from '../components/common/WithScrollTop';
 
 const Template = () => {
   const [show, setShow] = useState(false);
@@ -12,7 +13,9 @@ const Template = () => {
       <Header setShow={setShow} show={show} />
       <StyledFlexBox>
         <Nav show={show} setShow={setShow} />
-        <Outlet />
+        <WithScrollTop>
+          <Outlet />
+        </WithScrollTop>
       </StyledFlexBox>
       <Footer />
     </>

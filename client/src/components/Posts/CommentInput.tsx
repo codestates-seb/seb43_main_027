@@ -5,7 +5,11 @@ import { RootState } from '../../store/store';
 import { useParams } from 'react-router-dom';
 import { postData } from '../../api/apiCollection';
 
-const CommentInput = ({ onCommentSubmit }: { onCommentSubmit: () => void }) => {
+const CommentInput = ({
+  onCommentSubmit
+}: {
+  onCommentSubmit: (value: string) => void;
+}) => {
   const commentRef = useRef<HTMLInputElement>(null);
   const { gameId, postId } = useParams();
   const user = useSelector((s: RootState) => s.user);
@@ -26,12 +30,14 @@ const CommentInput = ({ onCommentSubmit }: { onCommentSubmit: () => void }) => {
           Authorization: localStorage.getItem('access_token')
         }
       },
-      (res) => {
-        if (commentRef && commentRef.current) commentRef.current.value = '';
-        onCommentSubmit();
-      },
       () => {
-        console.log('test');
+        if (commentRef && commentRef.current) {
+          onCommentSubmit(commentRef.current.value);
+          commentRef.current.value = '';
+        }
+      },
+      (err) => {
+        console.error(err);
       }
     );
   };

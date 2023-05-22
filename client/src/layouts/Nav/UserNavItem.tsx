@@ -5,15 +5,27 @@ import { AiOutlineUser } from 'react-icons/ai';
 import { User } from '../../types/dataTypes';
 import PATH_URL from '../../constants/pathUrl';
 import { TbMessages } from 'react-icons/tb';
+import { useDispatch } from 'react-redux';
+import { closeNav } from '../../slice/navSlice';
+import { startChat } from '../../slice/chatSlice';
 
 const UserNavItem = ({ data: user }: { data: User }) => {
   const navigation = useNavigate();
+  const dispatch = useDispatch();
 
   const onUserClickHandler = () => {
     navigation(`${PATH_URL.USER_INFO}${user.memberId}`);
+    dispatch(closeNav());
   };
   const onMailClickHandler = (e: React.MouseEvent<SVGAElement>) => {
     e.stopPropagation();
+    dispatch(
+      startChat({
+        memberId: user.memberId,
+        imageUrl: user.imageUrl,
+        userName: user.userName
+      })
+    );
   };
   return (
     <StyledContainer onClick={onUserClickHandler}>

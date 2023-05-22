@@ -6,7 +6,7 @@ const initialState: CategoryType = {
   categoryName: ''
 };
 
-const userSlice = createSlice({
+const categorySlice = createSlice({
   name: 'category',
   initialState: { ...initialState },
   reducers: {
@@ -19,5 +19,5 @@ const userSlice = createSlice({
     }
   }
 });
-export const { setCategory, clearCategory } = userSlice.actions;
-export default userSlice.reducer;
+export const { setCategory, clearCategory } = categorySlice.actions;
+export default categorySlice.reducer;
