@@ -20,7 +20,7 @@ const CommentInput = ({
       return;
     }
     postData(
-      `${process.env.REACT_APP_API_URL}/api/games/${gameId}/posts/${postId}/comments`,
+      `${process.env.REACT_APP_API_URL}/api/posts/${postId}/comments`,
       JSON.stringify({
         content: commentRef?.current?.value
       }),
