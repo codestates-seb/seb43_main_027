@@ -89,12 +89,11 @@ const PostList: React.FC<PostListProps> = ({ isSelectTag, isSelectTab, isMapping
           setIsTotalSize(totalPostsCount);
           setIsFilteredPosts([...currentPosts]);
         } else {
+          if (isFilteredPosts.length === 0) setIsUserMessage('작성된 게시글이 없습니다.');
           setIsSize(pageInfo.size);
           setIsTotalSize(pageInfo.totalSize);
           setIsFilteredPosts([...filteredPosts]);
-        }
-
-        if (isFilteredPosts.length === 0) setIsUserMessage('작성된 게시글이 없습니다.');
+        };
       
       } catch (error) {
         setIsFilteredPosts([]);
