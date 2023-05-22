@@ -12,10 +12,12 @@ import PATH_URL from '../../constants/pathUrl';
 // TODO: 대댓글 기능 요청 기능 구현 완료 대댓글 구현될 시 대댓글 보여지도록 구현해야함
 const CommentItem = ({
   comment,
-  onCommentSubmit
+  onCommentSubmit,
+  onReCommentSubmit
 }: {
   comment: CommentType;
-  onCommentSubmit: () => void;
+  onCommentSubmit: (s: any, id: number) => void;
+  onReCommentSubmit: (s: any, id: number) => void;
 }) => {
   const user = useSelector((s: RootState) => s.user);
   const { gameId, postId } = useParams();
@@ -34,7 +36,7 @@ const CommentItem = ({
 
   const onReCommentSubmitHandler = () => {
     onReCommentClickHandler();
-    onCommentSubmit();
+    // onCommentSubmit();
   };
   const onNameClickHandler = () => {
     navigation(`${PATH_URL.USER_INFO}${comment.member.memberId}`);
@@ -52,8 +54,10 @@ const CommentItem = ({
           }
         },
         () => {
-          if (inputRef && inputRef.current) inputRef.current.value = '';
-          onCommentSubmit();
+          if (inputRef && inputRef.current) {
+            onCommentSubmit(inputRef.current.value, comment.commentId);
+            inputRef.current.value = '';
+          }
           setIsUpdate(false);
         },
         (err) => {

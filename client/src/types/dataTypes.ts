@@ -105,7 +105,12 @@ export type ReactionType = {
   memberId: number;
   reactionStatus: string;
 };
-
+export type BookmarkType = {
+  bookmarkId: number;
+  postId: number;
+  memberId: number;
+  bookmarkStatus: string;
+};
 export type PostDataType = {
   commentCount: number;
   comments: CommentType[];
@@ -122,6 +127,7 @@ export type PostDataType = {
   title: string;
   updatedAt: string;
   views: number;
+  bookmark: BookmarkType | null;
 };
 
 export type CommentType = {
