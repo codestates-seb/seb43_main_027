@@ -11,6 +11,7 @@ export interface ButtonType {
   radius?: string,
   border?: string,
   hoverBg?: string,
+  type?: 'submit'|'button'|'reset';
 }
 
 export interface InputType {
