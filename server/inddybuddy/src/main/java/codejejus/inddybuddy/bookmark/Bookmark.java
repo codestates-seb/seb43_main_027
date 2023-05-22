@@ -2,6 +2,7 @@ package codejejus.inddybuddy.bookmark;
 
 import codejejus.inddybuddy.member.entity.Member;
 import codejejus.inddybuddy.post.Post;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -24,6 +25,10 @@ public class Bookmark {
     @JoinColumn(name = "post_id")
     private Post post;
 
+    public void updateBookmarkStatus(BookmarkStatus bookmarkStatus) {
+        this.bookmarkStatus = bookmarkStatus;
+    }
+
     @Getter
     public enum BookmarkStatus {
 
@@ -33,5 +38,15 @@ public class Bookmark {
         BookmarkStatus(String description) {
             this.description = description;
         }
+    }
+
+    @Builder
+    public Bookmark(BookmarkStatus bookmarkStatus) {
+        this.bookmarkStatus = bookmarkStatus;
+    }
+
+    public void update(Member member, Post post) {
+        this.member = member;
+        this.post = post;
     }
 }

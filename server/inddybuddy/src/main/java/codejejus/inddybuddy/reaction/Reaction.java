@@ -39,8 +39,7 @@ public class Reaction extends Timestamped {
     }
 
     @Builder
-    public Reaction(Long reactionId, ReactionStatus reactionStatus) {
-        this.reactionId = reactionId;
+    public Reaction(ReactionStatus reactionStatus) {
         this.reactionStatus = reactionStatus;
     }
 
