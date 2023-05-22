@@ -3,36 +3,18 @@ package codejejus.inddybuddy.comment;
 import codejejus.inddybuddy.member.dto.MemberDto;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
 
 public class CommentDto {
-
-    @Getter
-    public static class Post {
-
-        private long memberId;
-        @Setter
-        private long postId;
-        @NotBlank
-        private String content;
-    }
-
-    @Getter
-    public static class Patch {
-
-        @Setter
-        private Long commentId;
-        @NotBlank
-        private String content;
-    }
 
     @Getter
     public static class Request {
 
         private Long commentId;
+        private Long postId;
         private String content;
         private Long memberId;
         private Long parentCommentId;
@@ -42,18 +24,23 @@ public class CommentDto {
     public static class Response {
 
         private final Long commentId;
+        private final Comment.CommentStatus commentStatus;
         private final MemberDto.SimpleInfoResponse member;
+        private final Long parentCommentId;
         private final String content;
         private final LocalDateTime createdAt;
         private final LocalDateTime updatedAt;
-
+        private final List<CommentDto.Response> replies;
         @Builder
-        public Response(Long commentId, MemberDto.SimpleInfoResponse member, String content, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        public Response(Long commentId, Comment.CommentStatus commentStatus, MemberDto.SimpleInfoResponse member, Long parentCommentId, List<CommentDto.Response> replies, String content, LocalDateTime createdAt, LocalDateTime updatedAt) {
             this.commentId = commentId;
+            this.commentStatus = commentStatus;
             this.member = member;
+            this.parentCommentId = parentCommentId;
             this.content = content;
             this.createdAt = createdAt;
             this.updatedAt = updatedAt;
+            this.replies = replies;
         }
     }
 }

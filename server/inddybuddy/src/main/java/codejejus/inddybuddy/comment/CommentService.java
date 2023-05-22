@@ -23,11 +23,12 @@ public class CommentService {
     private final CommentMapper commentMapper;
 
     public CommentDto.Response createComment(MemberPrincipal memberPrincipal, CommentDto.Request requestDto, Long postId) {
-        Comment comment = commentMapper.requestToEntity(requestDto);
         Post findPost = postService.findVerifidPost(postId);
+        Comment comment = commentMapper.requestToEntity(requestDto);
         comment.setMember(memberPrincipal.getMember());
         comment.setPost(findPost);
         Comment save = commentRepository.save(comment);
+
         return commentMapper.entityToResponse(save);
     }
 
@@ -38,6 +39,11 @@ public class CommentService {
         return commentMapper.entityToResponse(findComment);
     }
 
+    public void deleteComment(Long commentId, MemberPrincipal memberPrincipal) {
+        Comment findComment = findVerifidComment(commentId);
+        memberService.verifySameMember(findComment.getMember(), memberPrincipal.getMember());
+        findComment.setCommentStatus(Comment.CommentStatus.COMMENT_DELETED);
+    }
     private Comment findVerifidComment(Long commentId) {
         Optional<Comment> optionalComment = commentRepository.findById(commentId);
         return optionalComment.orElseThrow(() -> new CustomException(ExceptionCode.COMMENT_NOT_FOUND));

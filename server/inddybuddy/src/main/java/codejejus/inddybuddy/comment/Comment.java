@@ -3,14 +3,9 @@ package codejejus.inddybuddy.comment;
 import codejejus.inddybuddy.global.audit.Timestamped;
 import codejejus.inddybuddy.member.entity.Member;
 import codejejus.inddybuddy.post.Post;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -21,14 +16,7 @@ public class Comment extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentId;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_comment_id")
-    private Comment parentComment;
-    @OneToMany(mappedBy = "parentComment", fetch = FetchType.LAZY,
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
-    private List<Comment> childComments = new ArrayList<>();
-    //    @Column()
-//    private Long parentCommentId;
+    private Long parentCommentId;
     @Column(nullable = false, length = 1000)
     private String content;
     @Enumerated(EnumType.STRING)
@@ -42,10 +30,11 @@ public class Comment extends Timestamped {
     private Post post;
 
     @Builder
-    public Comment(String content, Member member) {
-
+    private Comment(Post post, Member member, String content, Long parentCommentId) {
+        this.post = post;
         this.content = content;
         this.member = member;
+        this.parentCommentId = parentCommentId;
     }
 
     public void updateCommentStatus(CommentStatus commentStatus) {
