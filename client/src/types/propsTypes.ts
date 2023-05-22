@@ -53,3 +53,10 @@ export interface UserInfoProps {
 export type SubmitEvent =
   | React.FormEvent<HTMLFormElement>
   | React.MouseEvent<HTMLButtonElement>;
+
+export type UserProfileType = {
+  isUserName: string, 
+  isUserEmail: string,
+  isFollowerCount: number,
+  isFollowingCount: number
+};
