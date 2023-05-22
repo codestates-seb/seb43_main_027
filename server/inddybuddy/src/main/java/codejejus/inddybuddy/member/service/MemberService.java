@@ -49,8 +49,6 @@ public class MemberService {
                 .ifPresent(password -> findMember.setPassword(passwordEncoder.encode(password)));
         Optional.ofNullable(member.getUsername())
                 .ifPresent(findMember::setUsername);
-        Optional.ofNullable(member.getImageUrl())
-                .ifPresent(findMember::setImageUrl);
         Optional.ofNullable(member.getAboutMe())
                 .ifPresent(findMember::setAboutMe);
         if (multipartFile != null) {
