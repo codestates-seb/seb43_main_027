@@ -217,6 +217,9 @@ export default UserEditInfo;
 const StyledEditWrapper = styled(StyledTitleWrapper)`
   gap: 15px;
   font-size: 14px;
+  @media screen and (max-width: 650px) {
+    height: 100vh;
+  };
 `;
 
 const StyledText = styled.p`
