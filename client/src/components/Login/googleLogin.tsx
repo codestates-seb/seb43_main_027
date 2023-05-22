@@ -37,7 +37,6 @@ const GoogleLogIn = () => {
         }).then((response) => {
           const userdata = response.data;
           dispatch(setUser({ ...userdata }));
-          localStorage.setItem('user', JSON.stringify(userdata));
           alert('you successfully logged in!');
           navigator('/');
         });
