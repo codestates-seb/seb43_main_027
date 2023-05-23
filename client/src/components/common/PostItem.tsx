@@ -36,12 +36,12 @@ const PostItem = ({ data: bookmarked }: { data: GamePagePostType }) => {
           />
         </StyledTitleContainer>
         <StyledPostInfoContainer>
-          <span>작성자: {bookmarked.userName}</span>
-          <span>
+          <StyledText>작성자: {bookmarked.userName}</StyledText>
+          <StyledText>
             작성일:{' '}
             {typeof bookmarked.createdAt === 'string' &&
               elapsedText(new Date(bookmarked.createdAt))}
-          </span>
+          </StyledText>
           {/* <span>추천 수: {bookmarked.likeCount}</span> */}
         </StyledPostInfoContainer>
       </div>
@@ -75,12 +75,29 @@ const StyledSubContent = styled.div`
 const StyledTitleContainer = styled.div`
   display: flex;
   gap: 2rem;
+  & span {
+    height: fit-content;
+  }
 `;
 const StyledTitle = styled.h3`
   font-weight: bold;
   font-size: 2rem;
   cursor: pointer;
+  width: 10rem;
+  overflow: hidden;
+  padding: 0.5rem 0;
+  word-break: keep-all;
+  text-overflow: ellipsis;
 `;
+const StyledText = styled.span`
+  width: 9rem;
+  padding: 0.5rem 0;
+  overflow: hidden;
+  word-break: keep-all;
+  text-overflow: ellipsis;
+  font-size: 0.8rem;
+`;
+
 const StyledPostInfoContainer = styled.div`
   display: flex;
   color: rgba(0, 0, 0, 0.45);
