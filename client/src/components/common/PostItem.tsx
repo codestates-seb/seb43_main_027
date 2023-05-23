@@ -20,7 +20,7 @@ const PostItem = ({ data: bookmarked }: { data: GamePagePostType }) => {
   const onClickHandler = () => {
     dispatch(closeNav());
     navigation(
-      `${PATH_URL}/games/${bookmarked.gameId}/posts/${bookmarked.postId}`
+      `${PATH_URL.GAME}${bookmarked.gameId}/posts/${bookmarked.postId}`
     );
   };
   return (
@@ -42,7 +42,7 @@ const PostItem = ({ data: bookmarked }: { data: GamePagePostType }) => {
             {typeof bookmarked.createdAt === 'string' &&
               elapsedText(new Date(bookmarked.createdAt))}
           </span>
-          <span>추천 수: {bookmarked.likeCount}</span>
+          {/* <span>추천 수: {bookmarked.likeCount}</span> */}
         </StyledPostInfoContainer>
       </div>
       <StyledSubContent>
