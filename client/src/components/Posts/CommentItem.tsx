@@ -20,7 +20,7 @@ const CommentItem = ({
   onReCommentDelete
 }: {
   comment: CommentType;
-  onCommentSubmit: (s: any, id: number) => void;
+  onCommentSubmit: (s: CommentType, id: number) => void;
   onCommentDelete: (commentId: number) => void;
   onReCommentSubmit: (s: any, id: number) => void;
   onReCommentUpdate: (s: any, commentId: number, parentId: number) => void;
@@ -60,9 +60,10 @@ const CommentItem = ({
             Authorization: localStorage.getItem('access_token')
           }
         },
-        () => {
+        (res) => {
+          console.log(res);
           if (inputRef && inputRef.current) {
-            onCommentSubmit(inputRef.current.value, comment.commentId);
+            onCommentSubmit(res.data.data, comment.commentId);
             inputRef.current.value = '';
           }
           setIsUpdate(false);
@@ -105,7 +106,11 @@ const CommentItem = ({
           </StyledInfoBox>
           {isUpdate ? (
             <>
-              <StyledInput defaultValue={comment.content} ref={inputRef} />
+              <StyledInput
+                defaultValue={comment.content}
+                ref={inputRef}
+                maxLength={1000}
+              />
               <StyledButton onClick={onSubmitClickHandler}>
                 수정하기
               </StyledButton>
@@ -194,7 +199,8 @@ const StyledInfoBox = styled.div`
 
 const StyledCommentContent = styled.div`
   width: 100%;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
+  word-break: break-all;
 `;
 
 const StyledText = styled.span`
