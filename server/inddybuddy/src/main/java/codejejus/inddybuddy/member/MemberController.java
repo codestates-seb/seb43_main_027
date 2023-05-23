@@ -1,10 +1,6 @@
 package codejejus.inddybuddy.member;
 
 import codejejus.inddybuddy.bookmark.BookmarkService;
-import codejejus.inddybuddy.post.Post;
-import codejejus.inddybuddy.relation.followgame.FollowGameService;
-import codejejus.inddybuddy.relation.followmember.FollowMember;
-import codejejus.inddybuddy.relation.followmember.FollowMemberService;
 import codejejus.inddybuddy.game.Game;
 import codejejus.inddybuddy.game.GameDto;
 import codejejus.inddybuddy.game.GameMapper;
@@ -15,8 +11,12 @@ import codejejus.inddybuddy.member.dto.MemberDto;
 import codejejus.inddybuddy.member.entity.Member;
 import codejejus.inddybuddy.member.entity.MemberPrincipal;
 import codejejus.inddybuddy.member.service.MemberService;
+import codejejus.inddybuddy.post.Post;
 import codejejus.inddybuddy.post.PostDto;
 import codejejus.inddybuddy.post.PostService;
+import codejejus.inddybuddy.relation.followgame.FollowGameService;
+import codejejus.inddybuddy.relation.followmember.FollowMember;
+import codejejus.inddybuddy.relation.followmember.FollowMemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -110,10 +110,16 @@ public class MemberController {
 
     @GetMapping("/search")
     public ResponseEntity<MultiResponse<MemberDto.SimpleInfoResponse>> searchMemberByKeyword(@PageableDefault(page = 1, size = 30) Pageable pageable,
-                                                                                             @RequestParam(required = false, value = "q") String keyword) {
+                                                                                             @RequestParam(value = "q") String keyword) {
+        if (keyword == null || keyword.equals("")) {
+            Page<Member> memberPage = memberService.findMembers(pageable);
+            Page<MemberDto.SimpleInfoResponse> responsePage = memberMapper.pageMemberToSimpleInfoResponses(memberPage);
+            return ResponseEntity.ok(new MultiResponse<>(responsePage.getContent(), responsePage));
+        }
         Page<Member> members = memberService.findByUsernameContaining(pageable, keyword);
         Page<MemberDto.SimpleInfoResponse> responses = memberMapper.pageMemberToSimpleInfoResponses(members);
         return ResponseEntity.ok(new MultiResponse<>(responses.getContent(), responses));
+
     }
 
     @DeleteMapping("/{member-id}")

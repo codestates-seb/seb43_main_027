@@ -2,13 +2,13 @@ package codejejus.inddybuddy.member.service;
 
 import codejejus.inddybuddy.file.File;
 import codejejus.inddybuddy.file.FileService;
-import codejejus.inddybuddy.relation.followmember.FollowMemberService;
 import codejejus.inddybuddy.global.exception.CustomException;
 import codejejus.inddybuddy.global.exception.ExceptionCode;
 import codejejus.inddybuddy.global.utils.AuthorityUtils;
 import codejejus.inddybuddy.member.MemberRepository;
 import codejejus.inddybuddy.member.entity.Member;
 import codejejus.inddybuddy.member.entity.MemberPrincipal;
+import codejejus.inddybuddy.relation.followmember.FollowMemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -110,5 +110,9 @@ public class MemberService {
         if (!member.getEmail().equals(memberPrincipal.getEmail())) {
             throw new CustomException(ExceptionCode.MEMBER_NOT_SAME);
         }
+    }
+
+    public Page<Member> findMembers(Pageable pageable) {
+        return memberRepository.findAll(PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize()));
     }
 }
