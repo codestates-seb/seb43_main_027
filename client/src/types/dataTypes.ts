@@ -132,8 +132,11 @@ export type PostDataType = {
 
 export type CommentType = {
   commentId: number;
+  commentStatus: string;
+  parentCommentId: number;
   member: PostMemberType;
   content: string;
   createdAt: string;
   updatedAt: string;
+  replies: CommentType[];
 };
