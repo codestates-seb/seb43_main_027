@@ -37,6 +37,7 @@ public class PostDto {
 
         private final Long postId;
         private final Long gameId;
+        private final String gameName;
         private final MemberDto.SimpleInfoResponse member;
         private final String title;
         private final String content;
@@ -53,9 +54,10 @@ public class PostDto {
         private BookmarkDto.Response bookmark;
 
         @Builder
-        public Response(Long postId, Long gameId, MemberDto.SimpleInfoResponse member, String title, String content, Long views, PostTag postTag, Long likeCount, Long unlikeCount, Long commentCount, List<String> fileUrlList, List<CommentDto.Response> comments, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        public Response(Long postId, Long gameId, String gameName, MemberDto.SimpleInfoResponse member, String title, String content, Long views, PostTag postTag, Long likeCount, Long unlikeCount, Long commentCount, List<String> fileUrlList, List<CommentDto.Response> comments, LocalDateTime createdAt, LocalDateTime updatedAt) {
             this.postId = postId;
             this.gameId = gameId;
+            this.gameName = gameName;
             this.member = member;
             this.title = title;
             this.content = content;
