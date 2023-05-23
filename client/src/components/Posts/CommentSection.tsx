@@ -46,6 +46,7 @@ const CommentSection = ({
   // TODO: 대댓글 추가 시 댓글 상태변경 구현 필요
   const onReCommentSubmit = (value: CommentType, parentId: number) => {
     onCommentSubmit({
+      commentCount: commentCount + 1,
       comments: comments.map((comment) =>
         comment.commentId === parentId
           ? { ...comment, replies: [...comment.replies, value] }
