@@ -77,7 +77,6 @@ const MessageOutput = ({
 
   return (
     <>
-      <button onClick={fetchNewMessages}>test</button>
       <StyledUL ref={setFirstLi}>
         {isLoading ? <Loading /> : <StyledScrollDiv ref={observerTargetEl} />}
         {messageResponse.map((item, i) =>
@@ -112,13 +111,11 @@ const StyledUL = styled.ul`
   flex-direction: column;
   height: 50rem;
   overflow-y: scroll;
-  padding: 0.5rem;
+  padding: 0.5rem 2rem;
   margin-bottom: 2rem;
+
   > :first-child {
     margin-top: auto;
-  }
-  ::-webkit-scrollbar {
-    display: none;
   }
 `;
 
