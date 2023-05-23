@@ -77,9 +77,11 @@ const Title = ({
         cursor='pointer'
         onClick={onBackClickHandler}
       />
+      <StyledTagContainer>
+        <CategoryTag categoryId={tagId} categoryName={convertTag.asKR(tag)} />
+      </StyledTagContainer>
       <StyledFlexWrapper>
         <StyledTitle>{title}</StyledTitle>
-        <CategoryTag categoryId={tagId} categoryName={convertTag.asKR(tag)} />
         <StarTwoTone
           twoToneColor={
             bookmark?.bookmarkStatus === 'ACTIVE' ? '#13A8A8' : '#b4b4b4'
@@ -94,6 +96,9 @@ const Title = ({
 export default Title;
 
 const StyledContainer = styled.div``;
+const StyledTagContainer = styled.div`
+  margin-top: 2rem;
+`;
 
 const StyledFlexWrapper = styled.div`
   margin-top: 2.5rem;
