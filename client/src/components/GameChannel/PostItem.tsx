@@ -1,9 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Link, useParams } from 'react-router-dom';
-import axios from 'axios';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
 import convertTag from '../../utils/convertTag';
 import { elapsedText } from '../../utils/elapsedText';
 import CategoryTag from '../common/CategoryTag';
@@ -11,6 +8,7 @@ import { type GamePagePostType } from '../../types/dataTypes';
 import { StarTwoTone } from '@ant-design/icons';
 import PATH_URL from '../../constants/pathUrl';
 import { postOptionTags } from '../../data/postOptionTags';
+import { Tooltip } from 'antd';
 
 const PostItem = ({
   postId,
@@ -20,17 +18,23 @@ const PostItem = ({
   views,
   commentCount,
   likeCount,
-  createdAt
+  createdAt,
+  isPostIdIncluded
 }: GamePagePostType) => {
-  // todo: 게시글 팔로우 조회기능추가- 해당 게시글을 북마크했는지 판단해서 불리언으로 별표시하기
 
   const { gameId } = useParams();
-  const getMemberData = localStorage.getItem('user');
-  const memberData = getMemberData
-    ? JSON.parse(getMemberData)
-    : { memberId: -1 };
-  const memberId = memberData.memberId;
-  const [isMarked, setMarked] = useState(false);
+
+  const filteredTitle = title.length >= 20
+  ? title.slice(0, 20) + '...'
+  : title;
+
+  const renderTitle = title.length >= 20 ? (
+    <Tooltip placement="bottom" title={title}>
+      <StyledTitle>{filteredTitle}</StyledTitle>
+    </Tooltip>
+  ) : (
+    <StyledTitle>{title}</StyledTitle>
+  );
 
   const tagName = convertTag.asKR(postTag);
   const tagId = postOptionTags.findIndex((option) => option.value === tagName);
@@ -42,7 +46,7 @@ const PostItem = ({
       <StyledWrapper>
         <StyledContent>
           <StyledFlexRow>
-            <StyledTitle>{title}</StyledTitle>
+            {renderTitle}
             <CategoryTag categoryId={tagId} categoryName={tagName} />
           </StyledFlexRow>
           <StyledFlexRow>
@@ -63,7 +67,7 @@ const PostItem = ({
             <StyledSpan>댓글:</StyledSpan>
             {commentCount}
             <StarTwoTone
-              twoToneColor={isMarked ? '#13A8A8' : '#b4b4b4'}
+              twoToneColor={isPostIdIncluded ? '#13A8A8' : '#b4b4b4'}
               style={{ fontSize: '15px' }}
             />
           </StyledInfo>
@@ -80,7 +84,7 @@ const StyledWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 25px 10px;
-  border-bottom: 1px solid green;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
 
   &:hover {
     box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);

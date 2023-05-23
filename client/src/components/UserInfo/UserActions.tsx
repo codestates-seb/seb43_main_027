@@ -5,9 +5,9 @@ import styled from 'styled-components';
 import CreateChannelButton from '../ui/CreateChannelButton';
 import { TbMessages } from 'react-icons/tb';
 import PATH_URL from '../../constants/pathUrl';
-import { UserInfoProps } from '../../types/propsTypes';
+import { UserActionProps } from '../../types/propsTypes';
 
-const UserProfileAction = ({ setIsEditClick }: UserInfoProps) => {
+const UserProfileAction = ({ setIsEditClick, setIsFollowClick }: UserActionProps ) => {
   const [isSameUser, setIsSameUser] = useState<boolean>(false);
   const [isFollowed, setIsFollowed] = useState(false);
   const [loginedId, setIsLoginedId] = useState<string>();
@@ -71,6 +71,7 @@ const UserProfileAction = ({ setIsEditClick }: UserInfoProps) => {
           )
           .then((response) => {
             setIsFollowed(false);
+            setIsFollowClick(isFollowed);
           })
           .catch((error) => {
             console.error('언팔로우 요청 실패:', error);
@@ -89,11 +90,12 @@ const UserProfileAction = ({ setIsEditClick }: UserInfoProps) => {
           )
           .then((response) => {
             setIsFollowed(true);
+            setIsFollowClick(isFollowed);
           })
           .catch((error) => {
             console.error('팔로우 요청 실패:', error);
           });
-      }
+      };
     }
   };
 

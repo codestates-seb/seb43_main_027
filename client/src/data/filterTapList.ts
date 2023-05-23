@@ -19,3 +19,18 @@ export const searchFilterTab: string[] = [
   '게임',
   '게시글'
 ];
+
+export const userInfoTab: string[] = [
+  '팔로워',
+  '팔로잉',
+  '팔로우 게임',
+  '작성글',
+  '북마크 글'
+];
+
+export const otherInfoTab: string[] = [
+  '팔로워',
+  '팔로잉',
+  '팔로우 게임',
+  '작성글'
+];

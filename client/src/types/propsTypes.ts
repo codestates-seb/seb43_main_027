@@ -46,10 +46,22 @@ export type StyledUserImgType = {
   getUserImg: string;
 };
 
-export interface UserInfoProps {
+export type UserInfoProps = {
   setIsEditClick: React.Dispatch<React.SetStateAction<boolean>>;
-}
+};
+
+export type UserActionProps = {
+  setIsEditClick: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsFollowClick: React.Dispatch<React.SetStateAction<boolean | undefined>>;
+};
 
 export type SubmitEvent =
   | React.FormEvent<HTMLFormElement>
   | React.MouseEvent<HTMLButtonElement>;
+
+export type UserProfileType = {
+  isUserName: string, 
+  isUserEmail: string,
+  isFollowerCount: number,
+  isFollowingCount: number
+};
