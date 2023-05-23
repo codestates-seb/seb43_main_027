@@ -118,6 +118,7 @@ export type PostDataType = {
   createdAt: string;
   fileUrlList: [];
   gameId: number;
+  gameName: string;
   likeCount: number;
   unlikeCount: number;
   member: PostMemberType;
