@@ -130,7 +130,7 @@ const StyledItemContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   height: fit-content;
-  min-height: 30rem;
+  min-height: 10rem;
   justify-content: space-between;
   gap: 2rem;
   ::-webkit-scrollbar {
