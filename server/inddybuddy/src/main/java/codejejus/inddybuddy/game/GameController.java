@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import java.net.URI;
 import java.util.List;
 
@@ -44,29 +45,29 @@ public class GameController {
     }
 
     @PatchMapping("/{game-id}")
-    public ResponseEntity<SingleResponse<GameDto.Response>> modifyGame(@PathVariable("game-id") Long gameId,
-                                                                       @AuthenticationPrincipal MemberPrincipal memberPrincipal,
+    public ResponseEntity<SingleResponse<GameDto.Response>> modifyGame(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
+                                                                       @PathVariable("game-id") @Valid @Positive Long gameId,
                                                                        @RequestPart GameDto.Request patch,
                                                                        @RequestPart(value = "file", required = false) MultipartFile multipartFile) {
         return ResponseEntity.ok(new SingleResponse<>(gameService.modifyGame(gameId, memberPrincipal, patch, multipartFile)));
     }
 
     @GetMapping("/{game-id}")
-    public ResponseEntity<SingleResponse<GameDto.Response>> getGame(@PathVariable("game-id") Long gameId) {
+    public ResponseEntity<SingleResponse<GameDto.Response>> getGame(@PathVariable("game-id") @Valid @Positive Long gameId) {
         return ResponseEntity.ok(new SingleResponse<>(gameService.getGame(gameId)));
     }
 
     @GetMapping("/search")
-    public ResponseEntity<MultiResponse<GameDto.Response>> searchGamesByKeyword(@PageableDefault(page = 1, size = 30) Pageable pageable,
-                                                                                @RequestParam(value = "q") String keyword) {
+    public ResponseEntity<MultiResponse<GameDto.Response>> searchGamesByKeyword(@RequestParam(value = "q") String keyword,
+                                                                                @PageableDefault(page = 1, size = 30) Pageable pageable) {
         Page<GameDto.Response> pageGames = gameService.getGamesByKeyword(pageable, keyword);
         List<GameDto.Response> games = pageGames.getContent();
         return ResponseEntity.ok(new MultiResponse<>(games, pageGames));
     }
 
     @GetMapping
-    public ResponseEntity<MultiResponse<GameDto.Response>> getAllGames(@PageableDefault(page = 1, size = 30) Pageable pageable,
-                                                                       @RequestParam(required = false) String filter) {
+    public ResponseEntity<MultiResponse<GameDto.Response>> getAllGames(@RequestParam(required = false) String filter,
+                                                                       @PageableDefault(page = 1, size = 30) Pageable pageable) {
         Page<GameDto.Response> pageGames = gameService.getAllGames(pageable, filter);
         List<GameDto.Response> games = pageGames.getContent();
         return ResponseEntity.ok(new MultiResponse<>(games, pageGames));
@@ -74,28 +75,28 @@ public class GameController {
 
     @PostMapping("/{game_id}/follow")
     public ResponseEntity<FollowMember> followMember(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
-                                                     @PathVariable("game_id") Long gameId) {
+                                                     @PathVariable("game_id") @Valid @Positive Long gameId) {
         gameService.followGame(gameId, memberPrincipal);
         return ResponseEntity.created(UriCreator.createURI(gameId)).build();
     }
 
     @GetMapping("/{game_id}/follower")
-    public ResponseEntity<SingleResponse<List<MemberDto.SimpleInfoResponse>>> getGameFollowers(@PathVariable("game_id") Long gameId) {
+    public ResponseEntity<SingleResponse<List<MemberDto.SimpleInfoResponse>>> getGameFollowers(@PathVariable("game_id") @Valid @Positive Long gameId) {
         List<Member> followers = followGameService.getAllFollowerByMemberId(gameId);
         return ResponseEntity.ok(new SingleResponse<>(memberMapper.getMemberSimpleInfoResponses(followers)));
     }
 
     @DeleteMapping("/{game_id}/unfollow")
     public ResponseEntity<FollowMember> unfollowMember(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
-                                                       @PathVariable("game_id") Long gameId) {
+                                                       @PathVariable("game_id") @Valid @Positive Long gameId) {
         gameService.unfollowGame(gameId, memberPrincipal);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/{game-id}/posts")
-    public ResponseEntity<PostDto.Response> createPost(@PathVariable("game-id") Long gameId,
-                                                       @AuthenticationPrincipal MemberPrincipal memberPrincipal,
-                                                       @RequestPart PostDto.PostRequest post,
+    public ResponseEntity<PostDto.Response> createPost(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
+                                                       @PathVariable("game-id") @Valid @Positive Long gameId,
+                                                       @RequestPart @Valid PostDto.PostRequest post,
                                                        @RequestPart(value = "files", required = false) List<MultipartFile> multipartFiles) {
         PostDto.Response PostResponse = postService.createPost(gameId, memberPrincipal, post, multipartFiles);
         URI uri = UriCreator.createURI(PostResponse.getPostId());
@@ -104,10 +105,10 @@ public class GameController {
     }
 
     @GetMapping("/{game-id}/posts")
-    public ResponseEntity<MultiResponse<PostDto.SimpleResponse>> getAllPosts(@PathVariable("game-id") Long gameId,
-                                                                             @PageableDefault(page = 1, size = 30) Pageable pageable,
+    public ResponseEntity<MultiResponse<PostDto.SimpleResponse>> getAllPosts(@PathVariable("game-id") @Valid @Positive Long gameId,
                                                                              @RequestParam(required = false) Post.PostTag postTag,
-                                                                             @RequestParam(required = false) String filter) {
+                                                                             @RequestParam(required = false) String filter,
+                                                                             @PageableDefault(page = 1, size = 30) Pageable pageable) {
         Page<PostDto.SimpleResponse> pagePosts = postService.getAllPosts(gameId, pageable, postTag, filter);
         List<PostDto.SimpleResponse> posts = pagePosts.getContent();
         return ResponseEntity.ok(new MultiResponse<>(posts, pagePosts));

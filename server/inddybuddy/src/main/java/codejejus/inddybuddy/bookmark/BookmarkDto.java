@@ -7,6 +7,7 @@ import lombok.Getter;
 import javax.validation.constraints.NotBlank;
 
 public class BookmarkDto {
+
     @Getter
     public static class Request {
 
