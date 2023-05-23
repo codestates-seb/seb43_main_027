@@ -89,6 +89,7 @@ export type GamePagePostType = {
   likeCount: number;
   createdAt?: string;
   username?: string;
+  isPostIdIncluded?: boolean | undefined;
 };
 
 export type PostMemberType = {

@@ -48,4 +48,5 @@ const StyledWrapper = styled.div`
   word-break: keep-all;
   overflow-wrap: break-word;
   font-size: 14px;
+  color: var(--category-tag-bg-default);
 `;

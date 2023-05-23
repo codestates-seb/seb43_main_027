@@ -17,15 +17,41 @@ const PostList: React.FC<PostListProps> = ({ isSelectTag, isSelectTab, isMapping
   const [ isUserMessage, setIsUserMessage ] = useState('작성된 게시글이 없습니다.');
 
   const [ isPage, setIsPage ] = useState<number>(1);
-  const [ isSize, setIsSize ] = useState<number>(0);
+  const [ isSize, setIsSize ] = useState<number>(10);
   const [ isTotalSize, setIsTotalSize ] = useState<number>(0);
+  const [ isBookmarkedList, setIsBookmarkedList ] = useState<number[]>([]);
+ 
+  useEffect(() => {
+    setIsPage(1);
+  }, [isSelectTab, isSelectTag]);
 
-  // todo: 내가 북마크한 게시글, 내가쓴 게시글 아직 필터링안됨
+  useEffect(() => {
+    if (memberId !== -1) {
+    const BookmarkedData = async () => {
+      try {
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/members/${memberId}/bookmark`, {
+          headers: {
+            Authorization: `${localStorage.getItem('access_token')}`,
+          }
+        });
+        const fetchedData = res.data.data;
+        const filteredPosts = fetchedData.filter((post:any) => post.gameId.toString() === gameId);
+        const postIdList = filteredPosts.map((post:any) => post.postId);
+        setIsBookmarkedList([...postIdList]);
+
+      } catch (error) {
+        console.log(error);
+      };
+    };
+      BookmarkedData();
+    };
+
+  }, [memberId]);
 
   useEffect(() => {
     const fetchPostsData = async () => {
       try {
-        let apiUrl = `${process.env.REACT_APP_API_URL}/api/games/${gameId}/posts?page=${isPage}`;
+        let apiUrl = `${process.env.REACT_APP_API_URL}/api/games/${gameId}/posts?page=${isPage}&size=${isSize}`;
         let headers = {};
 
         switch (isSelectTab) {
@@ -46,7 +72,7 @@ const PostList: React.FC<PostListProps> = ({ isSelectTag, isSelectTab, isMapping
               setIsFilteredPosts([]);
               return setIsUserMessage('로그인이 필요한 기능입니다.');
             } else {
-              apiUrl =  `${process.env.REACT_APP_API_URL}/api/members/${memberId}/bookmark?page=${isPage}`;
+              apiUrl =  `${process.env.REACT_APP_API_URL}/api/members/${memberId}/bookmark`;
               headers = {
                 Authorization: `${localStorage.getItem('access_token')}`,
               };
@@ -59,7 +85,7 @@ const PostList: React.FC<PostListProps> = ({ isSelectTag, isSelectTab, isMapping
               setIsFilteredPosts([]);
               return setIsUserMessage('로그인이 필요한 기능입니다.');
             } else {
-              apiUrl = `${process.env.REACT_APP_API_URL}/api/members/${memberId}/mypost?page=${isPage}`;
+              apiUrl = `${process.env.REACT_APP_API_URL}/api/members/${memberId}/mypost`;
               setIsUserMessage('작성된 게시글이 없습니다.');
             }
             break;
@@ -70,20 +96,33 @@ const PostList: React.FC<PostListProps> = ({ isSelectTag, isSelectTab, isMapping
         };
 
         if (isSelectTag !== '전체') {
-          apiUrl += `&postTag=${isMappingTag}`;
+          if (isSelectTab === '북마크 글' || isSelectTab === '내가 쓴 글') {
+            apiUrl += `?postTag=${isMappingTag}`;
+          } else {
+            apiUrl += `&postTag=${isMappingTag}`;
+          }
         };
         
         const res = await axios.get(apiUrl, { headers });
         const currentPosts = res.data.data;
         const pageInfo = res.data.pageInfo;
-    
+
         const filteredPosts = currentPosts.filter((post:any) => post.gameId.toString() === gameId);
+        
+        if (isSelectTab === '북마크 글' || isSelectTab === '내가 쓴 글') {
+          const totalPostsCount = filteredPosts.length;
+          const startIndex = (isPage - 1) * isSize; // 시작 인덱스 계산
+          const endIndex = startIndex + isSize; // 종료 인덱스 계산
+          const currentPosts = filteredPosts.slice(startIndex, endIndex); // 현재 페이지에 해당하는 데이터 추출
+          setIsTotalSize(totalPostsCount);
+          setIsFilteredPosts([...currentPosts]);
 
-        setIsFilteredPosts([...filteredPosts]);
-        setIsSize(pageInfo.size);
-        setIsTotalSize(pageInfo.totalSize);
-
-        if (isFilteredPosts.length === 0) setIsUserMessage('작성된 게시글이 없습니다.');
+        } else {
+          if (isFilteredPosts.length === 0) setIsUserMessage('작성된 게시글이 없습니다.');
+          setIsSize(pageInfo.size);
+          setIsTotalSize(pageInfo.totalSize);
+          setIsFilteredPosts([...filteredPosts]);
+        };
       
       } catch (error) {
         setIsFilteredPosts([]);
@@ -93,10 +132,15 @@ const PostList: React.FC<PostListProps> = ({ isSelectTag, isSelectTab, isMapping
 
     fetchPostsData();
 
-  }, [isSelectTab, isSelectTag, memberId, isPage]);
+  }, [isSelectTab, isSelectTag, memberId, isPage, gameId]);
 
   const handlePageChange = (page: number) => {
     setIsPage(page);
+    window.scrollTo(0, 0);
+  };
+
+  const isPostIdIncluded = (postId: number) => {
+    return isBookmarkedList.includes(postId);
   };
 
   return (
@@ -114,6 +158,7 @@ const PostList: React.FC<PostListProps> = ({ isSelectTag, isSelectTab, isMapping
               commentCount={post.commentCount}
               likeCount={post.likeCount}
               createdAt={post.createdAt}
+              isPostIdIncluded={isPostIdIncluded(post.postId)}
             />
           ))
         ) : (

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import UserProfileImg from './UserProfileImg';
-import { StyledTitleWrapper, StyledAboutMe } from './UserTitle';
+import { StyledTitleWrapper } from './UserTitle';
 import CreateChannelButton from '../ui/CreateChannelButton';
 import { CiCircleRemove } from 'react-icons/ci';
 import { FiEdit } from 'react-icons/fi';
@@ -21,6 +21,7 @@ const UserEditInfo = ({ setIsEditClick }: UserInfoProps) => {
 
   const [isUserImg, setIsUserImg] = useState<string>('');
   const [isUserName, setIsUserName] = useState<string>('');
+  const [isUserEmail, setIsUserEmail] = useState<string>('');
   const [isEditAboutMe, setIsEditAboutMe] = useState<string>('');
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -51,6 +52,7 @@ const UserEditInfo = ({ setIsEditClick }: UserInfoProps) => {
 
         setIsUserImg(fetchedData.imageUrl);
         setIsUserName(fetchedData.userName);
+        setIsUserEmail(fetchedData.email);
         setIsEditAboutMe(fetchedData.aboutMe);
       } catch (error) {
         console.log(error);
@@ -176,6 +178,7 @@ const UserEditInfo = ({ setIsEditClick }: UserInfoProps) => {
         />
       </StyledEditImg>
       <UserProfileImg isUserImg={isUserImg} />
+      <StyledEmailText>{isUserEmail}</StyledEmailText>
       닉네임 수정:
       <Input
         placeholder='닉네임 수정'
@@ -214,6 +217,9 @@ export default UserEditInfo;
 const StyledEditWrapper = styled(StyledTitleWrapper)`
   gap: 15px;
   font-size: 14px;
+  @media screen and (max-width: 650px) {
+    height: 100vh;
+  };
 `;
 
 const StyledText = styled.p`
@@ -221,7 +227,7 @@ const StyledText = styled.p`
   top: 50px;
 `;
 
-const StyledEditAboutMe = styled(StyledAboutMe)`
+const StyledEditAboutMe = styled.div`
   @media screen and (max-width: 650px) {
     display: flex;
   }
@@ -262,4 +268,8 @@ const StyledEditImg = styled.div`
   &:hover {
     color: var(--cyan-dark-1000);
   }
+`;
+
+const StyledEmailText = styled.p`
+  color: var(--cyan-light-700);
 `;

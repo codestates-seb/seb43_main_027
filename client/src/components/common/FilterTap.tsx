@@ -69,6 +69,6 @@ const FiterItem = styled.li`
   };
   @media screen and (max-width: 650px) {
     font-size: 12px;
-    padding: 20px 15px;
+    padding: 20px 10px;
   }
 `;
