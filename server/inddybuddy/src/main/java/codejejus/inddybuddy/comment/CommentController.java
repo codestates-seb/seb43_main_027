@@ -17,11 +17,17 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping
-    public ResponseEntity<CommentDto.Response> createComment(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
+    public ResponseEntity<SingleResponse<CommentDto.Response>> createComment(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
                                                              @RequestBody CommentDto.Request requestDto,
                                                              @PathVariable("post-id") Long postId) {
         CommentDto.Response commentResponse = commentService.createComment(memberPrincipal, requestDto, postId);
-        return ResponseEntity.created(UriCreator.createURI(commentResponse.getCommentId())).build();
+        SingleResponse<CommentDto.Response> singleResponse = new SingleResponse<>(commentResponse);
+        return ResponseEntity.created(UriCreator.createURI(commentResponse.getCommentId())).body(singleResponse);
+    }
+
+    @GetMapping("/{comment-id}")
+    public ResponseEntity<SingleResponse<CommentDto.Response>> getComment(@PathVariable("comment-id") Long commentId) {
+        return ResponseEntity.ok(new SingleResponse<>(commentService.getComment(commentId)));
     }
 
     @PatchMapping("/{comment-id}")
