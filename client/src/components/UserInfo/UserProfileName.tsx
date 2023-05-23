@@ -66,6 +66,7 @@ const StyledFollowed = styled.div`
   flex-direction: row;
   gap: 30px;
   margin-top: 10px;
+  margin-bottom: 10px;
   font-size: 13px;
   color: var(--sub-text-color);
 `;
