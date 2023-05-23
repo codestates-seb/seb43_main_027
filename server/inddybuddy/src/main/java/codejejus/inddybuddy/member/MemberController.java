@@ -11,6 +11,8 @@ import codejejus.inddybuddy.member.dto.MemberDto;
 import codejejus.inddybuddy.member.entity.Member;
 import codejejus.inddybuddy.member.entity.MemberPrincipal;
 import codejejus.inddybuddy.member.service.MemberService;
+import codejejus.inddybuddy.message.MessageDto;
+import codejejus.inddybuddy.message.MessageService;
 import codejejus.inddybuddy.post.Post;
 import codejejus.inddybuddy.post.PostDto;
 import codejejus.inddybuddy.post.PostService;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,21 +42,22 @@ public class MemberController {
     private final MemberMapper memberMapper;
     private final GameMapper gameMapper;
     private final MemberService memberService;
+    private final MessageService messageService;
     private final FollowMemberService followMemberService;
     private final FollowGameService followGameService;
     private final PostService postService;
     private final BookmarkService bookmarkService;
 
     @PostMapping("/signup")
-    public ResponseEntity<URI> postMember(@RequestBody MemberDto.Post post) {
+    public ResponseEntity<URI> postMember(@RequestBody @Valid MemberDto.Post post) {
         Member member = memberService.createMember(memberMapper.memberDtoPostToMember(post));
         return ResponseEntity.created(UriCreator.createURI(member.getMemberId())).build();
     }
 
     @PatchMapping("/{member-id}")
     public ResponseEntity<SingleResponse<MemberDto.Response>> patchMember(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
-                                                                          @PathVariable("member-id") Long memberId,
-                                                                          @Valid @RequestPart MemberDto.Patch patch,
+                                                                          @PathVariable("member-id") @Valid @Positive Long memberId,
+                                                                          @RequestPart @Valid MemberDto.Patch patch,
                                                                           @RequestPart(value = "file", required = false) MultipartFile multipartFile) {
         patch.addMemberId(memberId);
         Member member = memberService.updateMember(memberMapper.memberDtoPatchToMember(patch), memberPrincipal, multipartFile);
@@ -61,7 +65,7 @@ public class MemberController {
     }
 
     @GetMapping("/{member-id}/profile")
-    public ResponseEntity<SingleResponse<MemberDto.ProfileResponse>> getMemberProfile(@PathVariable("member-id") Long memberId) {
+    public ResponseEntity<SingleResponse<MemberDto.ProfileResponse>> getMemberProfile(@PathVariable("member-id") @Valid @Positive Long memberId) {
         Member member = memberService.findMember(memberId);
         MemberDto.ProfileResponse response = memberMapper.memberToMemberProfileDtoResponse(member);
         return ResponseEntity.ok(new SingleResponse<>(response));
@@ -74,14 +78,14 @@ public class MemberController {
     }
 
     @GetMapping("/{member-id}/mygame")
-    public ResponseEntity<SingleResponse<List<GameDto.Response>>> getFollowingGame(@PathVariable("member-id") Long memberId) {
+    public ResponseEntity<SingleResponse<List<GameDto.Response>>> getFollowingGame(@PathVariable("member-id") @Valid @Positive Long memberId) {
         List<Game> games = followGameService.getAllFollowGame(memberId);
         List<GameDto.Response> responses = games.stream().map(gameMapper::entityToResponse).collect(Collectors.toList());
         return ResponseEntity.ok(new SingleResponse<>(responses));
     }
 
     @GetMapping("/{member-id}/mypost")
-    public ResponseEntity<MultiResponse<PostDto.MyPageResponse>> getMemberPosts(@PathVariable("member-id") Long memberId,
+    public ResponseEntity<MultiResponse<PostDto.MyPageResponse>> getMemberPosts(@PathVariable("member-id") @Valid @Positive Long memberId,
                                                                                 @RequestParam(required = false) Post.PostTag postTag,
                                                                                 @PageableDefault(page = 1, size = 30) Pageable pageable) {
         Page<PostDto.MyPageResponse> pageResponses = postService.getPostsByMember(memberId, postTag, pageable);
@@ -90,7 +94,7 @@ public class MemberController {
 
     @GetMapping("/{member-id}/bookmark")
     public ResponseEntity<MultiResponse<PostDto.MyPageResponse>> getBookmarkPostsByMember(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
-                                                                                          @PathVariable("member-id") Long memberId,
+                                                                                          @PathVariable("member-id") @Valid @Positive Long memberId,
                                                                                           @RequestParam(required = false) Post.PostTag postTag,
                                                                                           @PageableDefault(page = 1, size = 30) Pageable pageable) {
         Page<PostDto.MyPageResponse> pageResponses = bookmarkService.getBookmarkPostsByMember(memberId, memberPrincipal, postTag, pageable);
@@ -120,26 +124,31 @@ public class MemberController {
         Page<Member> members = memberService.findByUsernameContaining(pageable, keyword);
         Page<MemberDto.SimpleInfoResponse> responses = memberMapper.pageMemberToSimpleInfoResponses(members);
         return ResponseEntity.ok(new MultiResponse<>(responses.getContent(), responses));
+    }
 
+    @GetMapping("messages")
+    public ResponseEntity<SingleResponse<List<MemberDto.MessageResponse>>> getMemberMessages(@AuthenticationPrincipal MemberPrincipal memberPrincipal) {
+        List<MessageDto.MemberResponse> messageMembers = messageService.findAllByMessageMembers(memberPrincipal.getMember());
+        return ResponseEntity.ok(new SingleResponse<>(memberMapper.memberResponseToSimpleInfoResponses(messageMembers)));
     }
 
     @DeleteMapping("/{member-id}")
     public ResponseEntity<Member> deleteMember(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
-                                               @PathVariable("member-id") Long memberId) {
+                                               @PathVariable("member-id") @Valid @Positive Long memberId) {
         memberService.deleteMember(memberId, memberPrincipal);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/{member-id}/follow")
     public ResponseEntity<FollowMember> followMember(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
-                                                     @PathVariable("member-id") Long memberId) {
+                                                     @PathVariable("member-id") @Valid @Positive Long memberId) {
         memberService.followMember(memberId, memberPrincipal);
         return ResponseEntity.created(UriCreator.createURI(memberId)).build();
     }
 
     @DeleteMapping("/{member-id}/unfollow")
     public ResponseEntity<FollowMember> unfollowMember(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
-                                                       @PathVariable("member-id") Long memberId) {
+                                                       @PathVariable("member-id") @Valid @Positive Long memberId) {
         memberService.unfollowMember(memberId, memberPrincipal);
         return ResponseEntity.noContent().build();
     }

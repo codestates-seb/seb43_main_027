@@ -13,6 +13,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -39,6 +43,11 @@ public class MessageService {
         Page<Message> messages = messageRepository
                 .findAllMessages(sender, receiver, PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize(), Filter.getMatchedSort("new")));
         return messageMapper.entityToResponses(messages);
+    }
+
+    public List<MessageDto.MemberResponse> findAllByMessageMembers(Member member) {
+        Set<Message> messages = messageRepository.findAllByMessageMembers(member);
+        return messages.stream().map(MessageDto.MemberResponse::new).collect(Collectors.toList());
     }
 
     private void verifySender(Member receiver, Member sender) {

@@ -4,9 +4,9 @@ import codejejus.inddybuddy.member.dto.MemberDto;
 import lombok.Builder;
 import lombok.Getter;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 public class CommentDto {
 
@@ -15,6 +15,7 @@ public class CommentDto {
 
         private Long commentId;
         private Long postId;
+        @NotBlank
         private String content;
         private Long memberId;
         private Long parentCommentId;
@@ -31,6 +32,7 @@ public class CommentDto {
         private final LocalDateTime createdAt;
         private final LocalDateTime updatedAt;
         private final List<CommentDto.Response> replies;
+
         @Builder
         public Response(Long commentId, Comment.CommentStatus commentStatus, MemberDto.SimpleInfoResponse member, Long parentCommentId, List<CommentDto.Response> replies, String content, LocalDateTime createdAt, LocalDateTime updatedAt) {
             this.commentId = commentId;

@@ -1,6 +1,7 @@
 package codejejus.inddybuddy.member.dto;
 
 import codejejus.inddybuddy.member.entity.Member;
+import codejejus.inddybuddy.message.MessageDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -17,11 +18,13 @@ public class MemberDto {
     public static class Post {
 
         @Email
+        @NotBlank
         private String email;
         @NotBlank(message = "비밀번호는 필수 입력 값입니다.")
         @Pattern(regexp = "(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,16}", message = "비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.")
         private String password;
         @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-z0-9-_]{2,10}$", message = "닉네임은 특수문자를 제외한 2~10자리여야 합니다.")
+        @NotBlank
         private String username;
     }
 
@@ -99,6 +102,35 @@ public class MemberDto {
             this.imageUrl = member.getImageUrl();
             this.followerCount = member.getFollowerCount();
             this.followingCount = member.getFollowingCount();
+        }
+    }
+
+    @Getter
+    public static class MessageInfoResponse {
+
+        private final Long memberId;
+        private final String email;
+        private final String userName;
+        private final String imageUrl;
+
+        public MessageInfoResponse(Member member) {
+            this.memberId = member.getMemberId();
+            this.email = member.getEmail();
+            this.userName = member.getUsername();
+            this.imageUrl = member.getImageUrl();
+        }
+    }
+
+    @AllArgsConstructor
+    @Getter
+    public static class MessageResponse {
+
+        private MessageInfoResponse sender;
+        private MessageInfoResponse receiver;
+
+        public MessageResponse(MessageDto.MemberResponse memberResponse) {
+            this.sender = new MessageInfoResponse(memberResponse.getSender());
+            this.receiver = new MessageInfoResponse(memberResponse.getReceiver());
         }
     }
 
