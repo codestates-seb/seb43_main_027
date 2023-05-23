@@ -20,7 +20,7 @@ public class BookmarkController {
     @PostMapping("/bookmark")
     public ResponseEntity<SingleResponse<BookmarkDto.Response>> createReaction(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
                                                                                @PathVariable("post-id") @Valid @Positive Long postId,
-                                                                               @RequestBody @Valid BookmarkDto.Request request) {
+                                                                               @RequestBody BookmarkDto.Request request) {
         return ResponseEntity.ok(new SingleResponse<>(bookmarkService.createBookmark(memberPrincipal, request, postId)));
     }
 

@@ -24,7 +24,6 @@ public class PostDto {
         private String title;
         @NotBlank
         private String content;
-        @NotBlank
         private PostTag postTag;
     }
 

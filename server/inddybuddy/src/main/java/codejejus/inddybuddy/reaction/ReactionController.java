@@ -20,7 +20,7 @@ public class ReactionController {
     @PostMapping("/reaction")
     public ResponseEntity<SingleResponse<ReactionDto.Response>> createReaction(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
                                                                                @PathVariable("post-id") @Valid @Positive Long postId,
-                                                                               @RequestBody @Valid ReactionDto.Request request) {
+                                                                               @RequestBody ReactionDto.Request request) {
         return ResponseEntity.ok(new SingleResponse<>(reactionService.createReaction(memberPrincipal, request, postId)));
     }
 
