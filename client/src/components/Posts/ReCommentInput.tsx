@@ -4,13 +4,14 @@ import styled from 'styled-components';
 import { RootState } from '../../store/store';
 import { useParams } from 'react-router-dom';
 import { postData } from '../../api/apiCollection';
+import { CommentType } from '../../types/dataTypes';
 
 const ReCommentInput = ({
   parentCommentId,
   onCommentSubmit
 }: {
   parentCommentId: number;
-  onCommentSubmit: (s: any, id: number) => void;
+  onCommentSubmit: (s: CommentType, id: number) => void;
 }) => {
   const commentRef = useRef<HTMLInputElement>(null);
   const { postId } = useParams();
@@ -35,7 +36,7 @@ const ReCommentInput = ({
       },
       (res) => {
         if (commentRef && commentRef.current) {
-          onCommentSubmit(commentRef.current.value, parentCommentId);
+          onCommentSubmit(res.data.data, parentCommentId);
           commentRef.current.value = '';
         }
       },
