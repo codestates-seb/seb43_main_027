@@ -6,7 +6,7 @@ spring:
     password: ${RDS_PASSWORD}
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     database: mysql
   servlet:
