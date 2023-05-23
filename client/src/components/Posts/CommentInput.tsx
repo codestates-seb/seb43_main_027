@@ -4,11 +4,12 @@ import styled from 'styled-components';
 import { RootState } from '../../store/store';
 import { useParams } from 'react-router-dom';
 import { postData } from '../../api/apiCollection';
+import { CommentType } from '../../types/dataTypes';
 
 const CommentInput = ({
   onCommentSubmit
 }: {
-  onCommentSubmit: (value: string) => void;
+  onCommentSubmit: (value: CommentType) => void;
 }) => {
   const commentRef = useRef<HTMLInputElement>(null);
   const { gameId, postId } = useParams();
@@ -30,9 +31,9 @@ const CommentInput = ({
           Authorization: localStorage.getItem('access_token')
         }
       },
-      () => {
+      (res) => {
         if (commentRef && commentRef.current) {
-          onCommentSubmit(commentRef.current.value);
+          onCommentSubmit(res.data.data);
           commentRef.current.value = '';
         }
       },
@@ -50,6 +51,7 @@ const CommentInput = ({
             type='text'
             placeholder='댓글을 입력해주세요.'
             ref={commentRef}
+            maxLength={1000}
           />
         </StyledWrapper>
         <StyledButton onClick={onClickHandler}>등록하기</StyledButton>
