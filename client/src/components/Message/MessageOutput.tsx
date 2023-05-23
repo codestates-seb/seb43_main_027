@@ -24,13 +24,14 @@ const MessageOutput = ({
   const page = useRef(2);
 
   const fetchNewMessages = () => {
-    if (pageInfo && pageInfo.totalSize <= page.current) return;
+    if (!pageInfo || (pageInfo && pageInfo.totalSize <= pageInfo.page)) return;
     getData(
-      `${process.env.REACT_APP_API_URL}/api/messages/${chatInfo.receiver.memberId}?page=${page.current}&size=10`,
+      `${process.env.REACT_APP_API_URL}/api/messages/${
+        chatInfo.receiver.memberId
+      }?page=${pageInfo.page + 1}&size=30`,
       (res) => {
         setIsScroll(false);
         addPrevMessages(res.data.data);
-        page.current += 1;
       },
       (err) => {
         console.error(err);
