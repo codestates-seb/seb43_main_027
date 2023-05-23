@@ -133,15 +133,13 @@ const StyledItemContainer = styled.div`
   min-height: 10rem;
   justify-content: space-between;
   gap: 2rem;
-  ::-webkit-scrollbar {
-    display: none;
-  }
+
   @media screen and (min-width: 650px) {
     position: fixed;
     top: 70px;
     width: 100%;
     max-width: 36rem;
     max-height: 40vh;
-    overflow: scroll;
+    overflow-y: scroll;
   }
 `;
