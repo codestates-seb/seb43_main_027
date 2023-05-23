@@ -15,9 +15,11 @@ const CommentSection = ({
   onCommentSubmit: (s: any) => () => void;
 }) => {
   const user = useSelector((s: RootState) => s.user);
-
+  console.log(comments);
   const onCommentValueChange = (value: string) => {
+    // TODO: 생성 시 결과값 받으면 바로 넣어야함
     onCommentSubmit({
+      commentCount: commentCount + 1,
       comments: [
         ...comments,
         {
@@ -26,10 +28,13 @@ const CommentSection = ({
             imageUrl: user.imageUrl,
             userName: user.userName
           },
+          commentStatus: 'COMMENT_REGISTRATION',
+          parentCommentId: -1,
           content: value,
           commentId: Date.now(),
-          createdAt: new Date(),
-          updatedAt: new Date()
+          createdAt: Date().toString(),
+          updatedAt: Date().toString(),
+          replies: []
         }
       ]
     })();
@@ -46,23 +51,40 @@ const CommentSection = ({
       )
     })();
   };
+  const onCommentDelete = (commentId: number) => {
+    console.log('deleted');
+    onCommentSubmit({
+      comments: comments.map((comment) =>
+        comment.commentId === commentId
+          ? {
+              ...comment,
+              commentStatus: 'COMMENT_DELETED'
+            }
+          : comment
+      )
+    })();
+  };
 
   // TODO: 대댓글 추가 시 댓글 상태변경 구현 필요
   const onReCommentSubmit = (value: any, parentId: number) => {
+    const newReply: CommentType = {
+      commentId: Date.now(),
+      commentStatus: 'COMMENT_REGISTRATION',
+      content: value,
+      member: {
+        ...user,
+        followerCount: 0,
+        followingCount: 0
+      },
+      parentCommentId: parentId,
+      replies: [],
+      createdAt: Date().toString(),
+      updatedAt: Date().toString()
+    };
     onCommentSubmit({
       comments: comments.map((comment) =>
         comment.commentId === parentId
-          ? {
-              member: {
-                memberId: user.memberId,
-                imageUrl: user.imageUrl,
-                userName: user.userName
-              },
-              content: value,
-              commentId: Date.now(),
-              createdAt: new Date(),
-              updatedAt: new Date()
-            }
+          ? { ...comment, replies: [...comment.replies, newReply] }
           : comment
       )
     })();
@@ -74,9 +96,38 @@ const CommentSection = ({
     commentId: number,
     parentId: number
   ) => {
-    console.log('test');
+    onCommentSubmit({
+      comments: comments.map((comment) =>
+        comment.commentId === parentId
+          ? {
+              ...comment,
+              replies: comment.replies.map((reply) =>
+                reply.commentId === commentId
+                  ? { ...reply, content: value }
+                  : reply
+              )
+            }
+          : comment
+      )
+    })();
   };
 
+  const onReCommentDelete = (commentId: number, parentId: number) => {
+    onCommentSubmit({
+      comments: comments.map((comment) =>
+        comment.commentId === parentId
+          ? {
+              ...comment,
+              replies: comment.replies.map((reply) =>
+                reply.commentId === commentId
+                  ? { ...reply, commentStatus: 'COMMENT_DELETED' }
+                  : reply
+              )
+            }
+          : comment
+      )
+    })();
+  };
   return (
     <StyledContainer>
       <StyledCount>댓글 : {commentCount}</StyledCount>
@@ -88,7 +139,10 @@ const CommentSection = ({
           comment={comment}
           key={comment.commentId}
           onCommentSubmit={onCommentUpdate}
+          onCommentDelete={onCommentDelete}
           onReCommentSubmit={onReCommentSubmit}
+          onReCommentUpdate={onReCommentUpdate}
+          onReCommentDelete={onReCommentDelete}
         />
       ))}
     </StyledContainer>
