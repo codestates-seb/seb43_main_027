@@ -4,6 +4,7 @@ import codejejus.inddybuddy.member.dto.MemberDto;
 import codejejus.inddybuddy.member.entity.Member;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,7 +31,7 @@ public interface MemberMapper {
         return new MemberDto.SimpleInfoResponse(member);
     }
 
-    default List<MemberDto.SimpleInfoResponse> pageMemberToSimpleInfoResponses(List<Member> page) {
-        return page.stream().map(this::getMemberSimpleInfoResponse).collect(Collectors.toList());
+    default Page<MemberDto.SimpleInfoResponse> pageMemberToSimpleInfoResponses(Page<Member> page) {
+        return page.map(this::getMemberSimpleInfoResponse);
     }
 }
