@@ -28,6 +28,7 @@ public class PostMapper {
         return PostDto.Response.builder()
                 .postId(post.getPostId())
                 .gameId(post.getGame().getGameId())
+                .gameName(post.getGame().getGameName())
                 .member(memberMapper.getMemberSimpleInfoResponse(post.getMember()))
                 .title(post.getTitle())
                 .content(post.getContent())

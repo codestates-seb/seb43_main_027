@@ -16,6 +16,7 @@ public class GameMapper {
         return Game.builder()
                 .gameName(requestDto.getGameName())
                 .downloadUrl(requestDto.getDownloadUrl())
+                .description(requestDto.getDescription())
                 .build();
     }
 
@@ -24,6 +25,7 @@ public class GameMapper {
                 .gameId(game.getGameId())
                 .gameName(game.getGameName())
                 .mainImgUrl(game.getMainImageUrl())
+                .description(game.getDescription())
                 .downloadUrl(game.getDownloadUrl())
                 .categories(gameCategoryService.findCategoryByGame(game))
                 .followerCount(game.getFollowerCount())

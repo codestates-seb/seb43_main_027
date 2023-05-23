@@ -20,6 +20,8 @@ public class Game extends Timestamped {
     private Long gameId;
     @Column(length = 100, unique = true)
     private String gameName;
+    @Column(columnDefinition = "TEXT")
+    private String description;
     private String downloadUrl;
     private String mainImageUrl = Constants.GAME_DEFAULT_IMG;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -29,9 +31,10 @@ public class Game extends Timestamped {
     private Long followerCount;
 
     @Builder
-    public Game(String gameName, String downloadUrl, Member member) {
+    public Game(String gameName, String downloadUrl, String description, Member member) {
         this.gameName = gameName;
         this.downloadUrl = downloadUrl;
+        this.description = description;
         this.member = member;
     }
 
