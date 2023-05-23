@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import UserProfileImg from './UserProfileImg';
-import { StyledTitleWrapper, StyledAboutMe } from './UserTitle';
+import { StyledTitleWrapper } from './UserTitle';
 import CreateChannelButton from '../ui/CreateChannelButton';
 import { CiCircleRemove } from 'react-icons/ci';
 import { FiEdit } from 'react-icons/fi';
@@ -227,7 +227,7 @@ const StyledText = styled.p`
   top: 50px;
 `;
 
-const StyledEditAboutMe = styled(StyledAboutMe)`
+const StyledEditAboutMe = styled.div`
   @media screen and (max-width: 650px) {
     display: flex;
   }
