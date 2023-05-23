@@ -89,10 +89,11 @@ public class MemberController {
     }
 
     @GetMapping("/{member-id}/bookmark")
-    public ResponseEntity<MultiResponse<PostDto.MyPageResponse>> getBookmarkPostsByMember(@PathVariable("member-id") Long memberId,
+    public ResponseEntity<MultiResponse<PostDto.MyPageResponse>> getBookmarkPostsByMember(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
+                                                                                          @PathVariable("member-id") Long memberId,
                                                                                           @RequestParam(required = false) Post.PostTag postTag,
                                                                                           @PageableDefault(page = 1, size = 30) Pageable pageable) {
-        Page<PostDto.MyPageResponse> pageResponses = bookmarkService.getBookmarkPostsByMember(memberId, postTag, pageable);
+        Page<PostDto.MyPageResponse> pageResponses = bookmarkService.getBookmarkPostsByMember(memberId, memberPrincipal, postTag, pageable);
         return ResponseEntity.ok(new MultiResponse<>(pageResponses.getContent(), pageResponses));
     }
 
