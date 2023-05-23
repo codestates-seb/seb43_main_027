@@ -48,6 +48,16 @@ const NavContent = ({
     })();
   }, [type]);
 
+  useEffect(() => {
+    document.body.setAttribute('style', 'overflow: hidden');
+    return () => {
+      document.body.setAttribute(
+        'style',
+        'overflow-y: scroll; overflow-x:hidden'
+      );
+    };
+  }, []);
+
   const getContent = () => {
     if (user.memberId === -1)
       return (
@@ -95,11 +105,9 @@ const StyledContainer = styled.div`
   width: 100%;
   padding: 2rem;
   max-height: 40rem;
-  overflow: scroll;
+  overflow: auto;
   z-index: 2;
-  ::-webkit-scrollbar {
-    display: none;
-  }
+
   @media screen and (min-width: 650px) {
     top: 0;
     left: 100%;
@@ -130,18 +138,16 @@ const StyledItemContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   height: fit-content;
-  min-height: 30rem;
+  min-height: 10rem;
   justify-content: space-between;
   gap: 2rem;
-  ::-webkit-scrollbar {
-    display: none;
-  }
+
   @media screen and (min-width: 650px) {
     position: fixed;
     top: 70px;
     width: 100%;
     max-width: 36rem;
     max-height: 40vh;
-    overflow: scroll;
+    overflow-y: scroll;
   }
 `;

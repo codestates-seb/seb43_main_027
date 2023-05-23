@@ -24,13 +24,21 @@ const CategoryContainer = () => {
         const { data }: { data: CategoryType[] } = await axios(
           `${process.env.REACT_APP_API_URL}/api/categories`
         );
-        setCategories(
-          data.map((category) => ({
+        const newCategories: CategoryType[] = [];
+
+        data.forEach((category) => {
+          const newCategory = {
             ...category,
             categoryName: categoryData[category.categoryName].text,
             categoryIcon: categoryData[category.categoryName].icon
-          }))
-        );
+          };
+
+          category.categoryName === 'OTHER'
+            ? newCategories.unshift(newCategory)
+            : newCategories.push(newCategory);
+        });
+
+        setCategories(newCategories);
       } catch (err) {
         console.error(err);
       }

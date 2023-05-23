@@ -6,6 +6,7 @@ import { PageInfoType } from '../../types/dataTypes';
 import { getData } from '../../api/apiCollection';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
+import Loading from '../common/Loading';
 
 interface OutputType {
   messageResponse: Single[];
@@ -21,37 +22,63 @@ const MessageOutput = ({
   const [lastLi, setLastLi] = useState<Element | null>(null);
   const [isScroll, setIsScroll] = useState(true);
   const chatInfo = useSelector((s: RootState) => s.chat);
-  const page = useRef(2);
+  const [isLoading, setIsLoading] = useState(false);
+  const observerTargetEl = useRef<HTMLDivElement>(null);
+  const [firstLi, setFirstLi] = useState<Element | null>(null);
+  const pageRef = useRef(2);
 
   const fetchNewMessages = () => {
-    if (pageInfo && pageInfo.totalSize <= page.current) return;
-    getData(
-      `${process.env.REACT_APP_API_URL}/api/messages/${chatInfo.receiver.memberId}?page=${page.current}&size=10`,
-      (res) => {
-        setIsScroll(false);
-        addPrevMessages(res.data.data);
-        page.current += 1;
-      },
-      (err) => {
-        console.error(err);
-      },
-      {
-        headers: {
-          Authorization: localStorage.getItem('access_token')
+    if (!pageInfo || (pageInfo && pageInfo.totalPage < pageRef.current)) return;
+    setIsLoading(true);
+    setTimeout(() => {
+      getData(
+        `${process.env.REACT_APP_API_URL}/api/messages/${chatInfo.receiver.memberId}?page=${pageRef.current}&size=30`,
+        (res) => {
+          setIsScroll(false);
+          addPrevMessages(res.data.data);
+          setTimeout(() => {
+            firstLi?.scrollTo(0, firstLi?.clientHeight * 3);
+          }, 0);
+          pageRef.current += 1;
+          setIsLoading(false);
+        },
+        (err) => {
+          console.error(err);
+          setIsLoading(false);
+        },
+        {
+          headers: {
+            Authorization: localStorage.getItem('access_token')
+          }
         }
-      }
-    );
+      );
+    }, 100);
   };
 
   useEffect(() => {
-    if (lastLi && isScroll) lastLi.scrollIntoView({ behavior: 'smooth' });
+    if (!observerTargetEl.current || !pageInfo) return;
+
+    const io = new IntersectionObserver((entries, observer) => {
+      if (entries[0].isIntersecting) {
+        fetchNewMessages();
+      }
+    });
+    io.observe(observerTargetEl.current);
+
+    return () => {
+      io.disconnect();
+    };
+  }, [messageResponse]);
+
+  useEffect(() => {
+    if (lastLi && isScroll) lastLi.scrollIntoView();
     setIsScroll(true);
   }, [lastLi]);
 
   return (
     <>
-      <button onClick={fetchNewMessages}>test</button>
-      <StyledUL>
+      <StyledUL ref={setFirstLi}>
+        {isLoading ? <Loading /> : <StyledScrollDiv ref={observerTargetEl} />}
         {messageResponse.map((item, i) =>
           i === messageResponse.length - 1 ? (
             <div key={i} className='last' ref={setLastLi}>
@@ -84,12 +111,14 @@ const StyledUL = styled.ul`
   flex-direction: column;
   height: 50rem;
   overflow-y: scroll;
-  padding: 0.5rem;
+  padding: 0.5rem 2rem;
   margin-bottom: 2rem;
+
   > :first-child {
     margin-top: auto;
   }
-  ::-webkit-scrollbar {
-    display: none;
-  }
+`;
+
+const StyledScrollDiv = styled.div`
+  height: 100px;
 `;

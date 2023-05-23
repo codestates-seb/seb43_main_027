@@ -119,6 +119,7 @@ export type PostDataType = {
   createdAt: string;
   fileUrlList: [];
   gameId: number;
+  gameName: string;
   likeCount: number;
   unlikeCount: number;
   member: PostMemberType;
@@ -133,8 +134,11 @@ export type PostDataType = {
 
 export type CommentType = {
   commentId: number;
+  commentStatus: string;
+  parentCommentId: number;
   member: PostMemberType;
   content: string;
   createdAt: string;
   updatedAt: string;
+  replies: CommentType[];
 };

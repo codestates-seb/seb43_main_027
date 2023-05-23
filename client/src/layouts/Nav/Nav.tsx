@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 import { IoGameControllerOutline } from 'react-icons/io5';
@@ -39,6 +39,7 @@ const itemList: NavItemType[] = [
 
 const Nav = ({ show, setShow }: NavStateType) => {
   const [selectedInd, setSelectedInd] = useState(0);
+  const navRef = useRef<HTMLElement | null>(null);
   const { isOpened, isChatOpened } = useSelector((s: RootState) => ({
     isOpened: s.nav,
     isChatOpened: s.chat.isChat
@@ -63,10 +64,28 @@ const Nav = ({ show, setShow }: NavStateType) => {
     }
   }, [show]);
 
+  useEffect(() => {
+    const calculateVisibleHeight = () => {
+      const element = navRef.current; // ref를 통해 요소 가져오기
+      if (element) {
+        const rect = element.getBoundingClientRect(); // 요소의 위치와 크기 정보 가져오기
+        const windowHeight =
+          window.innerHeight || document.documentElement.clientHeight; // 화면의 높이 가져오기
+
+        const height = Math.max(
+          0,
+          Math.min(rect.bottom, windowHeight) - Math.max(rect.top, 0)
+        ); // 요소의 보여지는 높이 계산
+        console.log(height);
+      }
+    };
+
+    calculateVisibleHeight();
+  }, [navRef.current]);
   return (
     <>
       {isOpened && <StyledBackground onClick={onBackgroundClickHandler} />}
-      <StyledNav show={show}>
+      <StyledNav show={show} ref={navRef}>
         <StyledStickyBox>
           {itemList.map((item, i) => (
             <NavItem
@@ -120,7 +139,7 @@ const StyledStickyBox = styled.div`
     position: sticky;
     width: 50px;
     top: 50px;
-    height: 400px;
+    height: fit-content;
   }
 `;
 const StyledBackground = styled.div`

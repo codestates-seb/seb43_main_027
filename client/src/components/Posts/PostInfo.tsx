@@ -11,11 +11,13 @@ import { deleteData } from '../../api/apiCollection';
 const PostInfo = ({
   member,
   views,
-  createdAt
+  createdAt,
+  updatedAt
 }: {
   member: PostMemberType;
   views: number;
   createdAt: string;
+  updatedAt: string;
 }) => {
   const { memberId } = useSelector((s: RootState) => s.user);
   const { gameId, postId } = useParams();
@@ -61,6 +63,9 @@ const PostInfo = ({
               <span>{views}</span>
             </StyledIconBox>
             <span>{elapsedText(new Date(createdAt))}</span>
+            {createdAt !== updatedAt && (
+              <span>({elapsedText(new Date(updatedAt))} 수정됨)</span>
+            )}
           </StyledInfoBox>
           {memberId === member.memberId && (
             <StyledTextContainer>

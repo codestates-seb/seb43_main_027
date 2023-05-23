@@ -54,6 +54,7 @@ const Posts = () => {
       <PostInfo
         member={post.member}
         createdAt={post.createdAt}
+        updatedAt={post.updatedAt}
         views={post.views}
       />
       <PostContent content={post.content} />

@@ -17,6 +17,7 @@ export const postInitValue: PostDataType = {
   },
   comments: [],
   gameId: -1,
+  gameName: '',
   likeCount: 0,
   unlikeCount: 0,
   postId: -1,
