@@ -2,7 +2,6 @@ package codejejus.inddybuddy.post;
 
 import codejejus.inddybuddy.global.dto.MultiResponse;
 import codejejus.inddybuddy.global.dto.SingleResponse;
-import codejejus.inddybuddy.global.utils.UriCreator;
 import codejejus.inddybuddy.member.entity.MemberPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -13,7 +12,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -39,7 +37,7 @@ public class PostController {
 
     @GetMapping("/search")
     public ResponseEntity<MultiResponse<PostDto.SimpleResponse>> searchPostsByKeyword(@PageableDefault(page = 1, size = 30) Pageable pageable,
-                                                                                      @RequestParam(value = "q", required = false) String keyword) {
+                                                                                      @RequestParam(value = "q") String keyword) {
         Page<PostDto.SimpleResponse> responsePage = postService.getPostsByKeyword(pageable, keyword);
         List<PostDto.SimpleResponse> responses = responsePage.getContent();
         return ResponseEntity.ok(new MultiResponse<>(responses, responsePage));

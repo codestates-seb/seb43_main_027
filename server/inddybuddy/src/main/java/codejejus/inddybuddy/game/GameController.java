@@ -1,7 +1,5 @@
 package codejejus.inddybuddy.game;
 
-import codejejus.inddybuddy.relation.followgame.FollowGameService;
-import codejejus.inddybuddy.relation.followmember.FollowMember;
 import codejejus.inddybuddy.global.dto.MultiResponse;
 import codejejus.inddybuddy.global.dto.SingleResponse;
 import codejejus.inddybuddy.global.utils.UriCreator;
@@ -12,6 +10,8 @@ import codejejus.inddybuddy.member.entity.MemberPrincipal;
 import codejejus.inddybuddy.post.Post;
 import codejejus.inddybuddy.post.PostDto;
 import codejejus.inddybuddy.post.PostService;
+import codejejus.inddybuddy.relation.followgame.FollowGameService;
+import codejejus.inddybuddy.relation.followmember.FollowMember;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -57,7 +57,7 @@ public class GameController {
 
     @GetMapping("/search")
     public ResponseEntity<MultiResponse<GameDto.Response>> searchGamesByKeyword(@PageableDefault(page = 1, size = 30) Pageable pageable,
-                                                                                @RequestParam(value = "q", required = false) String keyword) {
+                                                                                @RequestParam(value = "q") String keyword) {
         Page<GameDto.Response> pageGames = gameService.getGamesByKeyword(pageable, keyword);
         List<GameDto.Response> games = pageGames.getContent();
         return ResponseEntity.ok(new MultiResponse<>(games, pageGames));
