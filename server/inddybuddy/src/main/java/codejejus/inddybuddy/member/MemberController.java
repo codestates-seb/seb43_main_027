@@ -93,28 +93,29 @@ public class MemberController {
     }
 
     @GetMapping("/{member-id}/bookmark")
-    public ResponseEntity<MultiResponse<PostDto.MyPageResponse>> getBookmarkPostsByMember(@PathVariable("member-id") @Valid @Positive Long memberId,
+    public ResponseEntity<MultiResponse<PostDto.MyPageResponse>> getBookmarkPostsByMember(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
+                                                                                          @PathVariable("member-id") @Valid @Positive Long memberId,
                                                                                           @RequestParam(required = false) Post.PostTag postTag,
                                                                                           @PageableDefault(page = 1, size = 30) Pageable pageable) {
-        Page<PostDto.MyPageResponse> pageResponses = bookmarkService.getBookmarkPostsByMember(memberId, postTag, pageable);
+        Page<PostDto.MyPageResponse> pageResponses = bookmarkService.getBookmarkPostsByMember(memberId, memberPrincipal, postTag, pageable);
         return ResponseEntity.ok(new MultiResponse<>(pageResponses.getContent(), pageResponses));
     }
 
     @GetMapping("/{member-id}/following")
-    public ResponseEntity<SingleResponse<List<MemberDto.SimpleInfoResponse>>> getFollowingMember(@PathVariable("member-id") Long memberId) {
+    public ResponseEntity<SingleResponse<List<MemberDto.SimpleInfoResponse>>> getFollowingMember(@PathVariable("member-id") @Valid @Positive Long memberId) {
         List<Member> followings = followMemberService.getAllFollowingByMemberId(memberId);
         return ResponseEntity.ok(new SingleResponse<>(memberMapper.getMemberSimpleInfoResponses(followings)));
     }
 
     @GetMapping("/{member-id}/follower")
-    public ResponseEntity<SingleResponse<List<MemberDto.SimpleInfoResponse>>> getFollowerMember(@PathVariable("member-id") Long memberId) {
+    public ResponseEntity<SingleResponse<List<MemberDto.SimpleInfoResponse>>> getFollowerMember(@PathVariable("member-id") @Valid @Positive Long memberId) {
         List<Member> followers = followMemberService.getAllFollowerByMemberId(memberId);
         return ResponseEntity.ok(new SingleResponse<>(memberMapper.getMemberSimpleInfoResponses(followers)));
     }
 
     @GetMapping("/search")
-    public ResponseEntity<MultiResponse<MemberDto.SimpleInfoResponse>> searchMemberByKeyword(@PageableDefault(page = 1, size = 30) Pageable pageable,
-                                                                                             @RequestParam(value = "q") String keyword) {
+    public ResponseEntity<MultiResponse<MemberDto.SimpleInfoResponse>> searchMemberByKeyword(@RequestParam(value = "q") String keyword,
+                                                                                             @PageableDefault(page = 1, size = 30) Pageable pageable) {
         if (keyword == null || keyword.equals("")) {
             Page<Member> memberPage = memberService.findMembers(pageable);
             Page<MemberDto.SimpleInfoResponse> responsePage = memberMapper.pageMemberToSimpleInfoResponses(memberPage);

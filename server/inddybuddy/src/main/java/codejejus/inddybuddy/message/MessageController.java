@@ -25,16 +25,16 @@ public class MessageController {
     private final MessageService messageService;
 
     @PostMapping("/{member-id}")
-    public ResponseEntity<?> postMessage(@PathVariable("member-id") @Valid @Positive Long receiverId,
-                                         @AuthenticationPrincipal MemberPrincipal memberPrincipal,
+    public ResponseEntity<?> postMessage(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
+                                         @PathVariable("member-id") @Valid @Positive Long receiverId,
                                          @RequestBody @Valid MessageDto.Request request) {
         messageService.sendMessage(request, memberPrincipal, receiverId);
         return ResponseEntity.created(UriCreator.createURI(receiverId)).build();
     }
 
     @GetMapping("/{member-id}")
-    public ResponseEntity<MultiResponse<MessageDto.Response>> getMessages(@PathVariable("member-id") @Valid @Positive Long receiverId,
-                                                                          @AuthenticationPrincipal MemberPrincipal memberPrincipal,
+    public ResponseEntity<MultiResponse<MessageDto.Response>> getMessages(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
+                                                                          @PathVariable("member-id") @Valid @Positive Long receiverId,
                                                                           @PageableDefault(page = 1, size = 30) Pageable pageable) {
         Page<MessageDto.Response> responsePage = messageService.findSendMessages(memberPrincipal, receiverId, pageable);
         List<MessageDto.Response> responses = responsePage.getContent().stream()

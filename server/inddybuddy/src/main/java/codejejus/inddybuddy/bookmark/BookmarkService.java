@@ -52,8 +52,9 @@ public class BookmarkService {
     }
 
     @Transactional(readOnly = true)
-    public Page<PostDto.MyPageResponse> getBookmarkPostsByMember(Long memberId, Post.PostTag postTag, Pageable pageable) {
+    public Page<PostDto.MyPageResponse> getBookmarkPostsByMember(Long memberId, MemberPrincipal memberPrincipal, Post.PostTag postTag, Pageable pageable) {
         Member member = memberService.findMember(memberId);
+        memberService.verifySameMember(member, memberPrincipal.getMember());
         PageRequest pageRequest = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize(), Filter.NEW.getSort());
         Page<Bookmark> bookmarkPage = postTag == null ?
                 bookmarkRepository.findAllByMember(member, pageRequest) :

@@ -8,6 +8,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,14 +19,14 @@ public class BookmarkController {
 
     @PostMapping("/bookmark")
     public ResponseEntity<SingleResponse<BookmarkDto.Response>> createReaction(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
-                                                                               @RequestBody @Valid BookmarkDto.Request request,
-                                                                               @PathVariable("post-id") Long postId) {
+                                                                               @PathVariable("post-id") @Valid @Positive Long postId,
+                                                                               @RequestBody BookmarkDto.Request request) {
         return ResponseEntity.ok(new SingleResponse<>(bookmarkService.createBookmark(memberPrincipal, request, postId)));
     }
 
     @DeleteMapping("/unbookmark")
     public ResponseEntity<Bookmark> deleteReaction(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
-                                                   @PathVariable("post-id") Long postId) {
+                                                   @PathVariable("post-id") @Valid @Positive Long postId) {
         bookmarkService.deleteBookmark(memberPrincipal, postId);
         return ResponseEntity.noContent().build();
     }

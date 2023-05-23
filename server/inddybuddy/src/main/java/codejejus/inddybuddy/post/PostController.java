@@ -24,22 +24,22 @@ public class PostController {
     private final PostService postService;
 
     @PatchMapping("/{post-id}")
-    public ResponseEntity<SingleResponse<PostDto.Response>> modifyPost(@PathVariable("post-id") @Valid @Positive Long postId,
-                                                                       @AuthenticationPrincipal MemberPrincipal memberPrincipal,
+    public ResponseEntity<SingleResponse<PostDto.Response>> modifyPost(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
+                                                                       @PathVariable("post-id") @Valid @Positive Long postId,
                                                                        @RequestPart PostDto.Patch patch,
                                                                        @RequestPart(value = "files", required = false) List<MultipartFile> multipartFiles) {
         return ResponseEntity.ok(new SingleResponse<>(postService.modifyPost(postId, memberPrincipal, patch, multipartFiles)));
     }
 
     @GetMapping("/{post-id}")
-    public ResponseEntity<SingleResponse<PostDto.Response>> findPost(@PathVariable("post-id") @Valid @Positive Long postId,
-                                                                     @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
+    public ResponseEntity<SingleResponse<PostDto.Response>> findPost(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
+                                                                     @PathVariable("post-id") @Valid @Positive Long postId) {
         return ResponseEntity.ok(new SingleResponse<>(postService.findPost(postId, memberPrincipal)));
     }
 
     @GetMapping("/search")
-    public ResponseEntity<MultiResponse<PostDto.SimpleResponse>> searchPostsByKeyword(@PageableDefault(page = 1, size = 30) Pageable pageable,
-                                                                                      @RequestParam(value = "q") String keyword) {
+    public ResponseEntity<MultiResponse<PostDto.SimpleResponse>> searchPostsByKeyword(@RequestParam(value = "q") String keyword,
+                                                                                      @PageableDefault(page = 1, size = 30) Pageable pageable) {
         Page<PostDto.SimpleResponse> responsePage = postService.getPostsByKeyword(pageable, keyword);
         List<PostDto.SimpleResponse> responses = responsePage.getContent();
         return ResponseEntity.ok(new MultiResponse<>(responses, responsePage));
@@ -47,7 +47,7 @@ public class PostController {
 
     @DeleteMapping("/{post-id}")
     public ResponseEntity<Post> deletePost(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
-                                           @PathVariable("post-id") Long postId) {
+                                           @PathVariable("post-id") @Valid @Positive Long postId) {
         postService.deletePost(postId, memberPrincipal);
         return ResponseEntity.noContent().build();
     }

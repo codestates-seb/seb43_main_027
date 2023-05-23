@@ -22,28 +22,28 @@ public class CommentController {
 
     @PostMapping
     public ResponseEntity<SingleResponse<CommentDto.Response>> createComment(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
-                                                                             @RequestBody @Valid CommentDto.Request requestDto,
-                                                                             @PathVariable("post-id") @Positive Long postId) {
+                                                                             @PathVariable("post-id") @Valid @Positive Long postId,
+                                                                             @RequestBody @Valid CommentDto.Request requestDto) {
         CommentDto.Response commentResponse = commentService.createComment(memberPrincipal, requestDto, postId);
         SingleResponse<CommentDto.Response> singleResponse = new SingleResponse<>(commentResponse);
         return ResponseEntity.created(UriCreator.createURI(commentResponse.getCommentId())).body(singleResponse);
     }
 
     @GetMapping("/{comment-id}")
-    public ResponseEntity<SingleResponse<CommentDto.Response>> getComment(@PathVariable("comment-id") Long commentId) {
+    public ResponseEntity<SingleResponse<CommentDto.Response>> getComment(@PathVariable("comment-id") @Valid @Positive Long commentId) {
         return ResponseEntity.ok(new SingleResponse<>(commentService.getComment(commentId)));
     }
 
     @PatchMapping("/{comment-id}")
-    public ResponseEntity<SingleResponse<CommentDto.Response>> modifyComment(@PathVariable("comment-id") Long commentId,
-                                                                             @AuthenticationPrincipal MemberPrincipal memberPrincipal,
-                                                                             @RequestBody CommentDto.Request requestDto) {
+    public ResponseEntity<SingleResponse<CommentDto.Response>> modifyComment(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
+                                                                             @PathVariable("comment-id") @Valid @Positive Long commentId,
+                                                                             @RequestBody @Valid CommentDto.Request requestDto) {
         return ResponseEntity.ok(new SingleResponse<>(commentService.modifyComment(commentId, memberPrincipal, requestDto)));
     }
 
     @DeleteMapping("/{comment-id}")
     public ResponseEntity<Comment> deletePost(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
-                                              @PathVariable("comment-id") Long commentId) {
+                                              @PathVariable("comment-id") @Valid @Positive Long commentId) {
         commentService.deleteComment(commentId, memberPrincipal);
         return ResponseEntity.noContent().build();
     }
