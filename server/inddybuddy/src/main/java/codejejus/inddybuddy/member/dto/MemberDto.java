@@ -1,6 +1,7 @@
 package codejejus.inddybuddy.member.dto;
 
 import codejejus.inddybuddy.member.entity.Member;
+import codejejus.inddybuddy.message.MessageDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -99,6 +100,35 @@ public class MemberDto {
             this.imageUrl = member.getImageUrl();
             this.followerCount = member.getFollowerCount();
             this.followingCount = member.getFollowingCount();
+        }
+    }
+
+    @Getter
+    public static class MessageInfoResponse {
+
+        private final Long memberId;
+        private final String email;
+        private final String userName;
+        private final String imageUrl;
+
+        public MessageInfoResponse(Member member) {
+            this.memberId = member.getMemberId();
+            this.email = member.getEmail();
+            this.userName = member.getUsername();
+            this.imageUrl = member.getImageUrl();
+        }
+    }
+
+    @AllArgsConstructor
+    @Getter
+    public static class MessageResponse {
+
+        private MessageInfoResponse sender;
+        private MessageInfoResponse receiver;
+
+        public MessageResponse(MessageDto.MemberResponse memberResponse) {
+            this.sender = new MessageInfoResponse(memberResponse.getSender());
+            this.receiver = new MessageInfoResponse(memberResponse.getReceiver());
         }
     }
 
