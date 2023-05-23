@@ -9,6 +9,8 @@ import codejejus.inddybuddy.post.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.Optional;
 
@@ -30,6 +32,11 @@ public class CommentService {
         Comment save = commentRepository.save(comment);
 
         return commentMapper.entityToResponse(save);
+    }
+
+    public CommentDto.Response getComment(Long commentId) {
+        Comment comment = findVerifidComment(commentId);
+        return commentMapper.entityToResponse(comment);
     }
 
     public CommentDto.Response modifyComment(Long commentId, MemberPrincipal memberPrincipal, CommentDto.Request requestDto) {
