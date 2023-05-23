@@ -1,10 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const UserInfoList = () => {
+const UserInfoList = ({ isSelectTab }
+  : { 
+    isSelectTab: string
+  }
+  ) => {
+
   return (
     <StyledWrapper>
-      게시글 정보
+      { isSelectTab }
     </StyledWrapper>
   );
 };
@@ -12,5 +17,5 @@ const UserInfoList = () => {
 export default UserInfoList;
 
 const StyledWrapper = styled.div`
-
+  padding: 20px;
 `;
