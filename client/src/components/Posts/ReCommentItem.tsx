@@ -15,7 +15,11 @@ const ReCommentItem = ({
   onReCommentDelete
 }: {
   comment: CommentType;
-  onReCommentSubmit: (s: any, commentId: number, parentId: number) => void;
+  onReCommentSubmit: (
+    s: CommentType,
+    commentId: number,
+    parentId: number
+  ) => void;
   onReCommentDelete: (commentId: number, parentId: number) => void;
 }) => {
   const navigation = useNavigate();
@@ -39,10 +43,10 @@ const ReCommentItem = ({
             Authorization: localStorage.getItem('access_token')
           }
         },
-        () => {
+        (res) => {
           if (inputRef && inputRef.current) {
             onReCommentSubmit(
-              inputRef.current.value,
+              res.data.data,
               comment.commentId,
               comment.parentCommentId
             );
@@ -91,7 +95,11 @@ const ReCommentItem = ({
           </StyledInfoBox>
           {isUpdate ? (
             <>
-              <StyledInput defaultValue={comment.content} ref={inputRef} />
+              <StyledInput
+                defaultValue={comment.content}
+                ref={inputRef}
+                maxLength={1000}
+              />
               <StyledButton onClick={onSubmitClickHandler}>
                 수정하기
               </StyledButton>
@@ -160,7 +168,8 @@ const StyledInfoBox = styled.div`
 
 const StyledCommentContent = styled.div`
   width: 100%;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
+  word-break: break-all;
 `;
 
 const StyledText = styled.span`
