@@ -1,5 +1,6 @@
 package codejejus.inddybuddy.bookmark;
 
+import codejejus.inddybuddy.global.constant.Filter;
 import codejejus.inddybuddy.global.exception.CustomException;
 import codejejus.inddybuddy.global.exception.ExceptionCode;
 import codejejus.inddybuddy.member.entity.Member;
@@ -53,7 +54,7 @@ public class BookmarkService {
     @Transactional(readOnly = true)
     public Page<PostDto.MyPageResponse> getBookmarkPostsByMember(Long memberId, Post.PostTag postTag, Pageable pageable) {
         Member member = memberService.findMember(memberId);
-        PageRequest pageRequest = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize());
+        PageRequest pageRequest = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize(), Filter.NEW.getSort());
         Page<Bookmark> bookmarkPage = postTag == null ?
                 bookmarkRepository.findAllByMember(member, pageRequest) :
                 bookmarkRepository.findAllByMemberAndPost_PostTag(member, postTag, pageRequest);

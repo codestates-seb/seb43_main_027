@@ -109,11 +109,11 @@ public class MemberController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<SingleResponse<List<MemberDto.SimpleInfoResponse>>> searchMemberByKeyword(@PageableDefault(page = 1, size = 30) Pageable pageable,
-                                                                                                    @RequestParam(required = false, value = "q") String keyword) {
-        List<Member> members = memberService.findByUsernameContaining(pageable, keyword);
-        List<MemberDto.SimpleInfoResponse> responses = memberMapper.pageMemberToSimpleInfoResponses(members);
-        return ResponseEntity.ok(new SingleResponse<>(responses));
+    public ResponseEntity<MultiResponse<MemberDto.SimpleInfoResponse>> searchMemberByKeyword(@PageableDefault(page = 1, size = 30) Pageable pageable,
+                                                                                             @RequestParam(required = false, value = "q") String keyword) {
+        Page<Member> members = memberService.findByUsernameContaining(pageable, keyword);
+        Page<MemberDto.SimpleInfoResponse> responses = memberMapper.pageMemberToSimpleInfoResponses(members);
+        return ResponseEntity.ok(new MultiResponse<>(responses.getContent(), responses));
     }
 
     @DeleteMapping("/{member-id}")
