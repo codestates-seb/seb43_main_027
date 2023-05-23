@@ -63,6 +63,7 @@ const UserInfoPage = () => {
               />
               <UserInfoList 
                 isSelectTab={isSelectTab}
+                isSameUser={isSameUser}
               />
             </StyledContain>
             ) 
@@ -78,6 +79,7 @@ export default UserInfoPage;
 const StyledMyPageWrapper = styled.div`
   background-color: var(--page-bg);
   width: 100%;
+  min-width: 300px;
   min-height: calc(100vh - 224px);
   flex-grow: 1;
   overflow-x: hidden;

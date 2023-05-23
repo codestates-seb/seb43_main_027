@@ -61,7 +61,7 @@ const StyledEmail = styled.p`
   overflow-wrap: break-word;
 `;
 
-const StyledFollowed = styled.div`
+export const StyledFollowed = styled.div`
   display: flex;
   flex-direction: row;
   gap: 30px;
