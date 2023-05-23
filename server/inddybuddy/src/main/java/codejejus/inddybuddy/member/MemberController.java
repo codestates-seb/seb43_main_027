@@ -11,6 +11,8 @@ import codejejus.inddybuddy.member.dto.MemberDto;
 import codejejus.inddybuddy.member.entity.Member;
 import codejejus.inddybuddy.member.entity.MemberPrincipal;
 import codejejus.inddybuddy.member.service.MemberService;
+import codejejus.inddybuddy.message.MessageDto;
+import codejejus.inddybuddy.message.MessageService;
 import codejejus.inddybuddy.post.Post;
 import codejejus.inddybuddy.post.PostDto;
 import codejejus.inddybuddy.post.PostService;
@@ -39,6 +41,7 @@ public class MemberController {
     private final MemberMapper memberMapper;
     private final GameMapper gameMapper;
     private final MemberService memberService;
+    private final MessageService messageService;
     private final FollowMemberService followMemberService;
     private final FollowGameService followGameService;
     private final PostService postService;
@@ -119,7 +122,12 @@ public class MemberController {
         Page<Member> members = memberService.findByUsernameContaining(pageable, keyword);
         Page<MemberDto.SimpleInfoResponse> responses = memberMapper.pageMemberToSimpleInfoResponses(members);
         return ResponseEntity.ok(new MultiResponse<>(responses.getContent(), responses));
+    }
 
+    @GetMapping("messages")
+    public ResponseEntity<SingleResponse<List<MemberDto.MessageResponse>>> getMemberMessages(@AuthenticationPrincipal MemberPrincipal memberPrincipal) {
+        List<MessageDto.MemberResponse> messageMembers = messageService.findAllByMessageMembers(memberPrincipal.getMember());
+        return ResponseEntity.ok(new SingleResponse<>(memberMapper.memberResponseToSimpleInfoResponses(messageMembers)));
     }
 
     @DeleteMapping("/{member-id}")
