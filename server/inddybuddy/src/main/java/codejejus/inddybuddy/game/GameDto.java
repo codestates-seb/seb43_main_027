@@ -4,6 +4,7 @@ import codejejus.inddybuddy.category.Category;
 import lombok.Builder;
 import lombok.Getter;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -12,6 +13,7 @@ public class GameDto {
     @Getter
     public static class Request {
 
+        @NotBlank
         private String gameName;
         private String downloadUrl;
         private String description;

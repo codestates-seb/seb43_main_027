@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/posts/{post-id}")
@@ -16,7 +18,7 @@ public class BookmarkController {
 
     @PostMapping("/bookmark")
     public ResponseEntity<SingleResponse<BookmarkDto.Response>> createReaction(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
-                                                                               @RequestBody BookmarkDto.Request request,
+                                                                               @RequestBody @Valid BookmarkDto.Request request,
                                                                                @PathVariable("post-id") Long postId) {
         return ResponseEntity.ok(new SingleResponse<>(bookmarkService.createBookmark(memberPrincipal, request, postId)));
     }
