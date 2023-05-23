@@ -16,38 +16,16 @@ const CommentSection = ({
 }) => {
   const user = useSelector((s: RootState) => s.user);
   console.log(comments);
-  const onCommentValueChange = (value: string) => {
-    // TODO: 생성 시 결과값 받으면 바로 넣어야함
+  const onCommentValueChange = (value: CommentType) => {
     onCommentSubmit({
       commentCount: commentCount + 1,
-      comments: [
-        ...comments,
-        {
-          member: {
-            memberId: user.memberId,
-            imageUrl: user.imageUrl,
-            userName: user.userName
-          },
-          commentStatus: 'COMMENT_REGISTRATION',
-          parentCommentId: -1,
-          content: value,
-          commentId: Date.now(),
-          createdAt: Date().toString(),
-          updatedAt: Date().toString(),
-          replies: []
-        }
-      ]
+      comments: [...comments, value]
     })();
   };
-  const onCommentUpdate = (value: string, commentId: number) => {
+  const onCommentUpdate = (value: CommentType, commentId: number) => {
     onCommentSubmit({
       comments: comments.map((comment) =>
-        comment.commentId === commentId
-          ? {
-              ...comment,
-              content: value
-            }
-          : comment
+        comment.commentId === commentId ? value : comment
       )
     })();
   };
@@ -66,25 +44,11 @@ const CommentSection = ({
   };
 
   // TODO: 대댓글 추가 시 댓글 상태변경 구현 필요
-  const onReCommentSubmit = (value: any, parentId: number) => {
-    const newReply: CommentType = {
-      commentId: Date.now(),
-      commentStatus: 'COMMENT_REGISTRATION',
-      content: value,
-      member: {
-        ...user,
-        followerCount: 0,
-        followingCount: 0
-      },
-      parentCommentId: parentId,
-      replies: [],
-      createdAt: Date().toString(),
-      updatedAt: Date().toString()
-    };
+  const onReCommentSubmit = (value: CommentType, parentId: number) => {
     onCommentSubmit({
       comments: comments.map((comment) =>
         comment.commentId === parentId
-          ? { ...comment, replies: [...comment.replies, newReply] }
+          ? { ...comment, replies: [...comment.replies, value] }
           : comment
       )
     })();
@@ -92,7 +56,7 @@ const CommentSection = ({
 
   // TODO: 대댓글 수정 시 댓글 상태변경 구현 필요
   const onReCommentUpdate = (
-    value: string,
+    value: CommentType,
     commentId: number,
     parentId: number
   ) => {
@@ -102,9 +66,7 @@ const CommentSection = ({
           ? {
               ...comment,
               replies: comment.replies.map((reply) =>
-                reply.commentId === commentId
-                  ? { ...reply, content: value }
-                  : reply
+                reply.commentId === commentId ? value : reply
               )
             }
           : comment
