@@ -104,10 +104,10 @@ const StyledFlexWrapper = styled.div`
   margin-top: 2.5rem;
   font-size: 2.5rem;
   display: flex;
+  justify-content: space-between;
   gap: 1rem;
   > :last-child {
     cursor: pointer;
-    flex: 1 0 0;
     text-align: end;
   }
 `;
