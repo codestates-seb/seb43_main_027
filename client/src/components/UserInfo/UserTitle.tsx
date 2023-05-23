@@ -44,7 +44,7 @@ const UserTitle = ({ setIsEditClick }: UserInfoProps) => {
         };
 
       } catch (error) {
-        console.log(error);
+        navigate(`${PATH_URL.ERROR}`);
       } finally {
         setLoading(false);
       };
@@ -68,13 +68,11 @@ const UserTitle = ({ setIsEditClick }: UserInfoProps) => {
         isFollowerCount={isFollowerCount}
         isFollowingCount={isFollowingCount}
       />
+      <UserAboutMe />
       <UserProfileAction 
         setIsEditClick={setIsEditClick}
         setIsFollowClick={setIsFollowClick}
       />
-      <StyledAboutMe>
-        <UserAboutMe />
-      </StyledAboutMe>
     </StyledTitleWrapper>
   );
 };
@@ -90,11 +88,5 @@ export const StyledTitleWrapper = styled.div`
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
   @media screen and (max-width: 650px) {
     width: 100%;
-  }
-`;
-
-export const StyledAboutMe = styled.div`
-  @media screen and (max-width: 650px) {
-    display: none;
   }
 `;
