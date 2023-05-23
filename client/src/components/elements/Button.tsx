@@ -20,7 +20,9 @@ function ButtonEl(props: ButtonType) {
 
 export default ButtonEl;
 
-const StyledBtn = styled.button<ButtonType>`
+const StyledBtn = styled.button.attrs((props) => ({
+  type: props.type || 'button'
+}))<ButtonType>`
   flex: ${(props) => props.flex || ''};
   font-size: ${(props) => props.fontSize || '1.3rem'};
   font-weight: ${(props) => props.fontWeight || '600'};

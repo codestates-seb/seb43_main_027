@@ -20,7 +20,7 @@ function useInput(init = '', extraActionWithValue?:(value:string)=>void ,
     setValue(e.target.value);
     if (customValidationFunction) {
       const validationResult = useValidation(e.target.value,customValidationFunction)
-      if(validationResult) setValidity(validationResult);
+      setValidity(validationResult);
     }
     if (extraActionWithValue) extraActionWithValue(e.target.value);
     console.log(validity);
