@@ -4,11 +4,14 @@ import codejejus.inddybuddy.reaction.Reaction.ReactionStatus;
 import lombok.Builder;
 import lombok.Getter;
 
+import javax.validation.constraints.NotBlank;
+
 public class ReactionDto {
 
     @Getter
     public static class Request {
 
+        @NotBlank
         private ReactionStatus reactionStatus;
     }
 

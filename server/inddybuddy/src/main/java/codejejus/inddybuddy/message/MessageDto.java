@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Getter;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 public class MessageDto {
@@ -12,6 +13,7 @@ public class MessageDto {
     @Getter
     static class Request {
 
+        @NotBlank
         private String content;
     }
 

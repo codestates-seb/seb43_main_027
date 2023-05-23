@@ -4,10 +4,13 @@ import codejejus.inddybuddy.bookmark.Bookmark.BookmarkStatus;
 import lombok.Builder;
 import lombok.Getter;
 
+import javax.validation.constraints.NotBlank;
+
 public class BookmarkDto {
     @Getter
     public static class Request {
 
+        @NotBlank
         private BookmarkStatus bookmarkStatus;
     }
 

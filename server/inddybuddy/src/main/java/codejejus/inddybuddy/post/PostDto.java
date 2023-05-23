@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -18,8 +19,12 @@ public class PostDto {
 
     @Getter
     public static class PostRequest {
+
+        @NotBlank
         private String title;
+        @NotBlank
         private String content;
+        @NotBlank
         private PostTag postTag;
     }
 

@@ -12,6 +12,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import java.util.List;
 
 @RestController
@@ -22,7 +24,7 @@ public class PostController {
     private final PostService postService;
 
     @PatchMapping("/{post-id}")
-    public ResponseEntity<SingleResponse<PostDto.Response>> modifyPost(@PathVariable("post-id") Long postId,
+    public ResponseEntity<SingleResponse<PostDto.Response>> modifyPost(@PathVariable("post-id") @Valid @Positive Long postId,
                                                                        @AuthenticationPrincipal MemberPrincipal memberPrincipal,
                                                                        @RequestPart PostDto.Patch patch,
                                                                        @RequestPart(value = "files", required = false) List<MultipartFile> multipartFiles) {
@@ -30,7 +32,7 @@ public class PostController {
     }
 
     @GetMapping("/{post-id}")
-    public ResponseEntity<SingleResponse<PostDto.Response>> findPost(@PathVariable("post-id") Long postId,
+    public ResponseEntity<SingleResponse<PostDto.Response>> findPost(@PathVariable("post-id") @Valid @Positive Long postId,
                                                                      @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
         return ResponseEntity.ok(new SingleResponse<>(postService.findPost(postId, memberPrincipal)));
     }

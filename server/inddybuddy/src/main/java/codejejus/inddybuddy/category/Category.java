@@ -1,13 +1,10 @@
 package codejejus.inddybuddy.category;
 
-import codejejus.inddybuddy.game.Game;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Getter

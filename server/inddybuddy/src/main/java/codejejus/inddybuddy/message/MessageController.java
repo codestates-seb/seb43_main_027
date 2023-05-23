@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,15 +25,15 @@ public class MessageController {
     private final MessageService messageService;
 
     @PostMapping("/{member-id}")
-    public ResponseEntity<?> postMessage(@PathVariable("member-id") Long receiverId,
+    public ResponseEntity<?> postMessage(@PathVariable("member-id") @Valid @Positive Long receiverId,
                                          @AuthenticationPrincipal MemberPrincipal memberPrincipal,
-                                         @RequestBody MessageDto.Request request) {
+                                         @RequestBody @Valid MessageDto.Request request) {
         messageService.sendMessage(request, memberPrincipal, receiverId);
         return ResponseEntity.created(UriCreator.createURI(receiverId)).build();
     }
 
     @GetMapping("/{member-id}")
-    public ResponseEntity<MultiResponse<MessageDto.Response>> getMessages(@PathVariable("member-id") Long receiverId,
+    public ResponseEntity<MultiResponse<MessageDto.Response>> getMessages(@PathVariable("member-id") @Valid @Positive Long receiverId,
                                                                           @AuthenticationPrincipal MemberPrincipal memberPrincipal,
                                                                           @PageableDefault(page = 1, size = 30) Pageable pageable) {
         Page<MessageDto.Response> responsePage = messageService.findSendMessages(memberPrincipal, receiverId, pageable);

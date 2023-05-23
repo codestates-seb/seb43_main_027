@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -48,15 +49,15 @@ public class MemberController {
     private final BookmarkService bookmarkService;
 
     @PostMapping("/signup")
-    public ResponseEntity<URI> postMember(@RequestBody MemberDto.Post post) {
+    public ResponseEntity<URI> postMember(@RequestBody @Valid MemberDto.Post post) {
         Member member = memberService.createMember(memberMapper.memberDtoPostToMember(post));
         return ResponseEntity.created(UriCreator.createURI(member.getMemberId())).build();
     }
 
     @PatchMapping("/{member-id}")
     public ResponseEntity<SingleResponse<MemberDto.Response>> patchMember(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
-                                                                          @PathVariable("member-id") Long memberId,
-                                                                          @Valid @RequestPart MemberDto.Patch patch,
+                                                                          @PathVariable("member-id") @Valid @Positive Long memberId,
+                                                                          @RequestPart @Valid MemberDto.Patch patch,
                                                                           @RequestPart(value = "file", required = false) MultipartFile multipartFile) {
         patch.addMemberId(memberId);
         Member member = memberService.updateMember(memberMapper.memberDtoPatchToMember(patch), memberPrincipal, multipartFile);
@@ -64,7 +65,7 @@ public class MemberController {
     }
 
     @GetMapping("/{member-id}/profile")
-    public ResponseEntity<SingleResponse<MemberDto.ProfileResponse>> getMemberProfile(@PathVariable("member-id") Long memberId) {
+    public ResponseEntity<SingleResponse<MemberDto.ProfileResponse>> getMemberProfile(@PathVariable("member-id") @Valid @Positive Long memberId) {
         Member member = memberService.findMember(memberId);
         MemberDto.ProfileResponse response = memberMapper.memberToMemberProfileDtoResponse(member);
         return ResponseEntity.ok(new SingleResponse<>(response));
@@ -77,14 +78,14 @@ public class MemberController {
     }
 
     @GetMapping("/{member-id}/mygame")
-    public ResponseEntity<SingleResponse<List<GameDto.Response>>> getFollowingGame(@PathVariable("member-id") Long memberId) {
+    public ResponseEntity<SingleResponse<List<GameDto.Response>>> getFollowingGame(@PathVariable("member-id") @Valid @Positive Long memberId) {
         List<Game> games = followGameService.getAllFollowGame(memberId);
         List<GameDto.Response> responses = games.stream().map(gameMapper::entityToResponse).collect(Collectors.toList());
         return ResponseEntity.ok(new SingleResponse<>(responses));
     }
 
     @GetMapping("/{member-id}/mypost")
-    public ResponseEntity<MultiResponse<PostDto.MyPageResponse>> getMemberPosts(@PathVariable("member-id") Long memberId,
+    public ResponseEntity<MultiResponse<PostDto.MyPageResponse>> getMemberPosts(@PathVariable("member-id") @Valid @Positive Long memberId,
                                                                                 @RequestParam(required = false) Post.PostTag postTag,
                                                                                 @PageableDefault(page = 1, size = 30) Pageable pageable) {
         Page<PostDto.MyPageResponse> pageResponses = postService.getPostsByMember(memberId, postTag, pageable);
@@ -92,7 +93,7 @@ public class MemberController {
     }
 
     @GetMapping("/{member-id}/bookmark")
-    public ResponseEntity<MultiResponse<PostDto.MyPageResponse>> getBookmarkPostsByMember(@PathVariable("member-id") Long memberId,
+    public ResponseEntity<MultiResponse<PostDto.MyPageResponse>> getBookmarkPostsByMember(@PathVariable("member-id") @Valid @Positive Long memberId,
                                                                                           @RequestParam(required = false) Post.PostTag postTag,
                                                                                           @PageableDefault(page = 1, size = 30) Pageable pageable) {
         Page<PostDto.MyPageResponse> pageResponses = bookmarkService.getBookmarkPostsByMember(memberId, postTag, pageable);
@@ -132,21 +133,21 @@ public class MemberController {
 
     @DeleteMapping("/{member-id}")
     public ResponseEntity<Member> deleteMember(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
-                                               @PathVariable("member-id") Long memberId) {
+                                               @PathVariable("member-id") @Valid @Positive Long memberId) {
         memberService.deleteMember(memberId, memberPrincipal);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/{member-id}/follow")
     public ResponseEntity<FollowMember> followMember(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
-                                                     @PathVariable("member-id") Long memberId) {
+                                                     @PathVariable("member-id") @Valid @Positive Long memberId) {
         memberService.followMember(memberId, memberPrincipal);
         return ResponseEntity.created(UriCreator.createURI(memberId)).build();
     }
 
     @DeleteMapping("/{member-id}/unfollow")
     public ResponseEntity<FollowMember> unfollowMember(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
-                                                       @PathVariable("member-id") Long memberId) {
+                                                       @PathVariable("member-id") @Valid @Positive Long memberId) {
         memberService.unfollowMember(memberId, memberPrincipal);
         return ResponseEntity.noContent().build();
     }

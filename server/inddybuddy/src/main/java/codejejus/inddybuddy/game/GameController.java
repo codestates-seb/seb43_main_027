@@ -21,6 +21,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class GameController {
 
     @PostMapping
     public ResponseEntity<GameDto.Response> createGame(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
-                                                       @RequestPart GameDto.Request post,
+                                                       @RequestPart @Valid GameDto.Request post,
                                                        @RequestPart(value = "file", required = false) MultipartFile multipartFile) {
         GameDto.Response gameResponse = gameService.createGame(memberPrincipal, post, multipartFile);
         return ResponseEntity.created(UriCreator.createURI(gameResponse.getGameId())).build();

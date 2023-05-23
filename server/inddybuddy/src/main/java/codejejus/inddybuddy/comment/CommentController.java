@@ -3,23 +3,27 @@ package codejejus.inddybuddy.comment;
 import codejejus.inddybuddy.global.dto.SingleResponse;
 import codejejus.inddybuddy.global.utils.UriCreator;
 import codejejus.inddybuddy.member.entity.MemberPrincipal;
-import codejejus.inddybuddy.post.Post;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/posts/{post-id}/comments")
+@Validated
 public class CommentController {
 
     private final CommentService commentService;
 
     @PostMapping
     public ResponseEntity<SingleResponse<CommentDto.Response>> createComment(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
-                                                             @RequestBody CommentDto.Request requestDto,
-                                                             @PathVariable("post-id") Long postId) {
+                                                                             @RequestBody @Valid CommentDto.Request requestDto,
+                                                                             @PathVariable("post-id") @Positive Long postId) {
         CommentDto.Response commentResponse = commentService.createComment(memberPrincipal, requestDto, postId);
         SingleResponse<CommentDto.Response> singleResponse = new SingleResponse<>(commentResponse);
         return ResponseEntity.created(UriCreator.createURI(commentResponse.getCommentId())).body(singleResponse);

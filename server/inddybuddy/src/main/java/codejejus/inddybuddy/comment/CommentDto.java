@@ -4,6 +4,7 @@ import codejejus.inddybuddy.member.dto.MemberDto;
 import lombok.Builder;
 import lombok.Getter;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -14,6 +15,7 @@ public class CommentDto {
 
         private Long commentId;
         private Long postId;
+        @NotBlank
         private String content;
         private Long memberId;
         private Long parentCommentId;
