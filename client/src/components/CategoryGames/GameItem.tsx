@@ -42,7 +42,7 @@ const GameItem = ({
 
 export default GameItem;
 
-const StyledItemWrapper = styled.div`
+export const StyledItemWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
