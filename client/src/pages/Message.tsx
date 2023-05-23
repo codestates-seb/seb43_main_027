@@ -97,4 +97,9 @@ const StyledMessageContainer = styled.div`
   height: calc(100vh - 50px);
   padding: 2rem;
   z-index: 2;
+
+  @media screen and (min-width: 650px) {
+    left: 50px;
+    width: calc(100% - 50px);
+  }
 `;
