@@ -83,3 +83,10 @@ export type UserStyledButtonPropsType = {
   delectUser?: boolean;
 };
 
+export type UserAboutPropsType = {
+  isUserAboutMe: string | null;
+};
+
+export type StyledAboutMePropsType = {
+  emptyState: boolean;
+};
