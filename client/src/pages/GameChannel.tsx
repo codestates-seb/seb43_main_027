@@ -93,7 +93,6 @@ const StyledGameChannelContain = styled.div`
   flex-direction: row;
   gap: 20px;
   @media screen and (max-width: 650px) {
-    padding: 30px 0px;
     flex-direction: column;
   }
 `;

@@ -7,18 +7,11 @@ import UserProfileImg from './UserProfileImg';
 import { StyledFollowed } from './UserProfileName';
 import { StyledItemWrapper } from '../CategoryGames/GameItem';
 import { TbMessages } from 'react-icons/tb';
+import { AiOutlineClose } from 'react-icons/ai';
 import { useDispatch } from 'react-redux';
 import { startChat } from '../../slice/chatSlice';
-
-type UserItemPropsType = {
-
-  imageUrl: string,
-  userName: string,
-  followerCount: number,
-  followingCount: number,
-  memberId: string,
-  isFollowingIdIncluded: boolean | undefined,
-};
+import { UserItemPropsType, UserStyledButtonPropsType } from '../../types/propsTypes';
+import DeleteGamer from '../../asset/Deletegamer.png';
 
 const UserItem = ({
   imageUrl,
@@ -40,6 +33,11 @@ const UserItem = ({
   const userNameState = userName.length >= 20
   ? '*삭제된 계정*'
   : userName;
+
+  const delectUserAction = userNameState === '*삭제된 계정*' && !isFollowingIdIncluded;
+  const delectUser = userNameState === '*삭제된 계정*';
+
+
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -109,7 +107,14 @@ const UserItem = ({
   return (
     <StyledWrapper>
     <StyledContain onClick={handleUserPageClick}>
-      <UserProfileImg isUserImg={imageUrl} />
+      {
+        delectUser && (
+        <StyledDeltedIcon>
+          <AiOutlineClose />
+        </StyledDeltedIcon>
+        )
+      }
+      <UserProfileImg isUserImg={delectUser ? DeleteGamer : imageUrl } />
         <StyledUserName>{userNameState}</StyledUserName>
         <StyledFollowed>
         <p>팔로워: {followerCount}</p>
@@ -120,6 +125,8 @@ const UserItem = ({
     <StyledRow>
       <StyledFollowButton
         onClick={handleFollow}
+        disabled={delectUserAction}
+        delectUser={delectUserAction}
       >
         {isFollowingIdIncluded ? '팔로우 취소' : '팔로우 하기'}
       </StyledFollowButton>
@@ -143,6 +150,7 @@ export default UserItem;
 
 const StyledWrapper = styled(StyledItemWrapper)`
   display: flex;
+  position: relative;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
   border-radius: 15px;
   justify-content: center;
@@ -175,19 +183,20 @@ const StyledUserName = styled.p`
   text-align: center;
 `;
 
-const StyledFollowButton = styled.div`
-  font-size: 14px;
+const StyledFollowButton = styled.button<UserStyledButtonPropsType>`
+  font-family: 'yg-jalnan';
+  font-size: 13px;
   padding: 10px 15px;
-  background-color: var(--cyan-light-700);
+  background-color: ${({ delectUser }) => delectUser ? 'var(--category-tag-bg-default)' : 'var(--cyan-light-700)' };
   border-radius: 15px;
   color: var(--cyan-light-100);
   display: flex;
   flex-direction: row;
   align-items: center;
-
-  cursor: pointer;
+  border-style: none;
+  cursor: ${({ delectUser }) => (delectUser ? 'not-allowed' : 'pointer')};
   &:hover {
-    background-color: var(--button-inactive-hover-color);
+    background-color: ${({ delectUser }) => delectUser ? 'var(--category-tag-bg-default)' : 'var(--button-inactive-hover-color)' };
   }
 `;
 
@@ -206,4 +215,11 @@ const StyledRow = styled.div`
   justify-content: space-between;
   width: 100%;
   padding: 10px 20px;
+`;
+
+const StyledDeltedIcon = styled.div`
+  position: absolute;
+  top: 50px;
+  font-size: 100px;
+  color: var(--category-tag-color-2);
 `;

@@ -8,6 +8,7 @@ import CategoryTag from '../common/CategoryTag';
 import CreateChannelButton from '../ui/CreateChannelButton';
 import PATH_URL from '../../constants/pathUrl';
 import categoryData from '../../data/categoryData';
+import DefaultGame from '../../asset/DefaultGame.png';
 
 const GameTitle = () => {
   const { gameId } = useParams();
@@ -19,6 +20,7 @@ const GameTitle = () => {
   const [isGameData, setIsGameData] = useState<GameType | null>(null);
   const [loading, setLoading] = useState(true);
   const [isFollowed, setIsFollowed] = useState(false);
+  const [imageError, setImageError] = useState(false); // 추가: 이미지 로드 에러 여부 상태값
 
   useEffect(() => {
     const fetchGameData = async () => {
@@ -101,9 +103,23 @@ const GameTitle = () => {
     }
   };
 
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
+  const defaultImg = isGameData?.mainImgUrl === 'https://codejejus-deploy.s3.ap-northeast-2.amazonaws.com/images/defaultGameImg.png';
+
   return (
     <StyledTitleWrapper>
-      <StlyedGameImg src={isGameData?.mainImgUrl} alt='game-image' />
+      {imageError || defaultImg ? (
+        <StyledGameImg src={DefaultGame} alt="default-game-image" />
+      ) : (
+        <StyledGameImg
+          src={isGameData?.mainImgUrl}
+          alt="game-image"
+          onError={handleImageError}
+        />
+      )}
       <StyledGameName>{isGameData?.gameName}</StyledGameName>
       <StyledTagContain>
         {isGameData?.categories?.map((item, index) => (
@@ -145,7 +161,7 @@ const StyledTitleWrapper = styled.div`
   }
 `;
 
-const StlyedGameImg = styled.img`
+const StyledGameImg = styled.img`
   width: 300px;
   height: 250px;
   border-radius: 15px;

@@ -1,42 +1,22 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { UserAboutPropsType, StyledAboutMePropsType } from '../../types/propsTypes';
+import { SERVICE_MESSAGE } from '../../constants/stringMessage';
 
-const UserAboutMe = () => {
+const UserAboutMe = ({ isUserAboutMe }: UserAboutPropsType) => {
 
-  const [ isAboutMeText, setIsAboutMeText ] = useState<string>('');
-  const { memberId } = useParams();
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/members/${memberId}/profile`);
-        const fetchedAboutMe = res.data.data.aboutMe;
-        setIsAboutMeText(fetchedAboutMe);
-
-      } catch (error) {
-        console.log(error);
-      };
-    };
-
-    fetchUserData();
-  } , [memberId]);
-
-  if (isAboutMeText === null) {
-    setIsAboutMeText('아직 작성한 소개글이 없습니다.');
-  };
+  const emptyState = isUserAboutMe === null || isUserAboutMe.length === 0;
 
   return (
-    <StyledWrapper>
-      { isAboutMeText }
+    <StyledWrapper emptyState={emptyState}>
+      { emptyState ? SERVICE_MESSAGE.EMPTY_ABOUT : isUserAboutMe }
     </StyledWrapper>
   );
 };
 
 export default UserAboutMe;
 
-const StyledWrapper = styled.div`
+const StyledWrapper = styled.div<StyledAboutMePropsType>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -49,4 +29,5 @@ const StyledWrapper = styled.div`
   overflow-wrap: break-word;
   font-size: 14px;
   color: var(--category-tag-bg-default);
+  color: ${({emptyState}) => emptyState ? 'var(--cyan-dark-600)' : 'var(--category-tag-bg-default)' }
 `;
