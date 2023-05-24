@@ -19,18 +19,19 @@ const UserEditInfo = ({ setIsEditClick }: UserInfoProps) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [isUserImg, setIsUserImg] = useState<string>('');
-  const [isUserName, setIsUserName] = useState<string>('');
-  const [isUserEmail, setIsUserEmail] = useState<string>('');
-  const [isEditAboutMe, setIsEditAboutMe] = useState<string>('');
+  const [ isUserImg, setIsUserImg ] = useState<string>('');
+  const [ isUserName, setIsUserName ] = useState<string>('');
+
+  const [ isUserEmail, setIsUserEmail ] = useState<string>('');
+  const [ isEditAboutMe, setIsEditAboutMe ] = useState<string>('');
   const [ editPassword, setEditPassword ] = useState<string>('');
   const [ vaildPassword, setVaildPassword ] = useState<string>('');
-  const [error, setError] = useState('');
-  const [remindError, setRemindError] = useState('');
-  const [isOpenNewInput, setIsOpenNewInput] = useState<boolean>(false);
+  const [ error, setError ] = useState('');
+  const [ remindError, setRemindError ] = useState('');
+  const [ isOpenNewInput, setIsOpenNewInput ] = useState<boolean>(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [ selectedFile, setSelectedFile ] = useState<File | null>(null);
   const { TextArea } = Input;
 
   const passwordValidate = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-={}[\]|:;"'<>,.?/]).{8,16}$/;
@@ -81,7 +82,18 @@ const UserEditInfo = ({ setIsEditClick }: UserInfoProps) => {
   };
 
   const handleNicknameChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setIsUserName(event.target.value);
+    const newNickname = event.target.value;
+  
+    setIsUserName(newNickname);
+  
+    const nicknameRegex = /^[a-zA-Z가-힣0-9]{2,10}$/;
+    const isValidNickname = nicknameRegex.test(newNickname);
+  
+    if (!isValidNickname) {
+      setError('특수문자를 제외한 2-10자여야 합니다.');
+    } else {
+      setError('');
+    }
   };
 
   const handleAboutChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -121,6 +133,7 @@ const UserEditInfo = ({ setIsEditClick }: UserInfoProps) => {
 
   // 프로필 수정 로직
   const handleSubmitEditClick = () => {
+    if (!error && isUserName.length !== 0) {
     const formData = new FormData();
 
     const jsonBlob = new Blob(
@@ -157,6 +170,9 @@ const UserEditInfo = ({ setIsEditClick }: UserInfoProps) => {
       .catch((error) => {
         console.error('프로필 저장 요청 실패:', error);
       });
+    } else {
+      return;
+    }
   };
 
   // 프로필 수정 취소 로직
@@ -265,6 +281,7 @@ const UserEditInfo = ({ setIsEditClick }: UserInfoProps) => {
       <UserProfileImg isUserImg={isUserImg} />
       <StyledEmailText>{isUserEmail}</StyledEmailText>
       닉네임 수정:
+      {error.length > 0 && <StyledError>{error}</StyledError>}
       <Input
         placeholder='닉네임 수정'
         prefix={<UserOutlined />}
