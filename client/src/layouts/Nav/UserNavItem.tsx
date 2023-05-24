@@ -16,6 +16,7 @@ const UserNavItem = ({ data: user }: { data: User }) => {
   const onUserClickHandler = () => {
     navigation(`${PATH_URL.USER_INFO}${user.memberId}`);
     dispatch(closeNav());
+    window.location.reload();
   };
   const onMailClickHandler = (e: React.MouseEvent<SVGAElement>) => {
     e.stopPropagation();
@@ -34,7 +35,9 @@ const UserNavItem = ({ data: user }: { data: User }) => {
       ) : (
         <AiOutlineUser size={'3rem'} />
       )}
-      <StyledUserName>{user.userName}</StyledUserName>
+      <StyledUserName>
+        {user.userName?.length >= 20 ? '*삭제된 계정*' : user.userName}
+      </StyledUserName>
       <div>
         <TbMessages
           color={'#999'}

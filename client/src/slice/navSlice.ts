@@ -2,15 +2,24 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const navSlice = createSlice({
   name: 'nav',
-  initialState: false,
+  initialState: {
+    isOpened: false,
+    isDisplayed: false
+  },
   reducers: {
-    openNav() {
-      return true;
+    openNav(state) {
+      return { ...state, isOpened: true };
     },
-    closeNav() {
-      return false;
+    displayNav(state) {
+      return { ...state, isDisplayed: true };
+    },
+    hideNav(state) {
+      return { ...state, isDisplayed: false };
+    },
+    closeNav(state) {
+      return { ...state, isOpened: false };
     }
   }
 });
-export const { openNav, closeNav } = navSlice.actions;
+export const { openNav, closeNav, displayNav, hideNav } = navSlice.actions;
 export default navSlice.reducer;

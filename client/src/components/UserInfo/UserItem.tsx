@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 import { startChat } from '../../slice/chatSlice';
 
 type UserItemPropsType = {
+
   imageUrl: string,
   userName: string,
   followerCount: number,
@@ -27,10 +28,12 @@ const UserItem = ({
   memberId,
   isFollowingIdIncluded
 }: UserItemPropsType) => {
-
   const getMemberData = localStorage.getItem('user');
-  const memberData = getMemberData ? JSON.parse(getMemberData) : { memberId: -1 };
-  const loginedId = memberData.memberId;
+
+  const memberData = getMemberData
+    ? JSON.parse(getMemberData)
+    : { memberId: -1 };
+  const logined = memberData.memberId;
 
   const sameItem = memberId === String(loginedId);
 

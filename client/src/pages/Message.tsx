@@ -63,9 +63,16 @@ const Message = () => {
     fetchData();
   }, []);
 
+  const onWrapperClick = () => {
+    dispatch(stopChat());
+  };
+  const onClickStopEvent = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
+
   return (
-    <>
-      <StyledMessageContainer>
+    <StyledWrapper onClick={onWrapperClick}>
+      <StyledMessageContainer onClick={onClickStopEvent}>
         <MessageHeader
           imageUrl={chatInfo.receiver.imageUrl}
           userName={chatInfo.receiver.userName}
@@ -74,17 +81,33 @@ const Message = () => {
         <MessageContents
           messageResponse={messageResponse}
           receiverId={chatInfo.receiver.memberId}
+          receiverName={chatInfo.receiver.userName}
           addPrevMessages={addPrevMessages}
           addNewMessages={addNewMessages}
           pageInfo={pageInfo}
         />
       </StyledMessageContainer>
       {isLoading && <Loading />}
-    </>
+    </StyledWrapper>
   );
 };
 
 export default Message;
+
+const StyledWrapper = styled.div`
+  @media screen and (min-width: 650px) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 25px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 2rem 0;
+    z-index: 10;
+  }
+`;
 
 const StyledMessageContainer = styled.div`
   display: flex;
@@ -99,7 +122,10 @@ const StyledMessageContainer = styled.div`
   z-index: 2;
 
   @media screen and (min-width: 650px) {
+    position: static;
     left: 50px;
-    width: calc(100% - 50px);
+    width: 50rem;
+    height: calc(100vh - 100px);
+    border-radius: 10px;
   }
 `;

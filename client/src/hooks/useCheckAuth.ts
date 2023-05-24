@@ -20,14 +20,17 @@ export const useCheckAuth = (navigateTo: string) => {
   };
 
   useEffect(() => {
-    if (localStorage.getItem('access_token') && user.memberId === -1) {
+    const access_token = localStorage.getItem('access_token');
+    if (access_token && user.memberId === -1) {
       getData(
         `${process.env.REACT_APP_API_URL}/api/members/profile`,
         onSuccess,
         onFail,
         {
           headers: {
-            Authorization: localStorage.getItem('access_token')
+            Authorization: access_token.startsWith('Bearer')
+              ? access_token
+              : `Bearer ${access_token}`
           }
         }
       );

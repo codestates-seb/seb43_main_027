@@ -9,7 +9,7 @@ const Member = ({ info }: { info: MemberType }) => {
   return (
     <StyledContainer>
       <Link to={info.src}>
-        <AiOutlineGithub size={'3rem'} />
+        {info.icon ? info.icon : <AiOutlineGithub size={'3rem'} />}
       </Link>
       <StyledSpan>{info.name}</StyledSpan>
       <StyledBadge>{info.type}</StyledBadge>
