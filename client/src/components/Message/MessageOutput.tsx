@@ -78,7 +78,13 @@ const MessageOutput = ({
   return (
     <>
       <StyledUL ref={setFirstLi}>
-        {isLoading ? <Loading /> : <StyledScrollDiv ref={observerTargetEl} />}
+        {isLoading ? (
+          <StyledLoadingContainer>
+            <Loading />
+          </StyledLoadingContainer>
+        ) : (
+          <StyledScrollDiv ref={observerTargetEl} />
+        )}
         {messageResponse.map((item, i) =>
           i === messageResponse.length - 1 ? (
             <div key={i} className='last' ref={setLastLi}>
@@ -121,4 +127,12 @@ const StyledUL = styled.ul`
 
 const StyledScrollDiv = styled.div`
   height: 100px;
+`;
+
+const StyledLoadingContainer = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
 `;
