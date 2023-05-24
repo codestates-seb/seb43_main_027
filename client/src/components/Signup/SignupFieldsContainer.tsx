@@ -7,7 +7,8 @@ import { setSignupInfo } from '../../slice/signupSlice';
 
 const usernameRegExp = /^[가-힣A-Za-z0-9]{2,10}$/;
 const emailRegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const passwordRegExp = /^[a-zA-Z0-9!@#$%^&*()_+-={}]{8,16}$/;
+const passwordRegExp =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,16}$/;
 
 const usernameValidityTest = (value: string) => {
   return usernameRegExp.test(value);
@@ -50,7 +51,7 @@ const SignupFieldsContainer = () => {
         placeholder='8자리 이상'
         title='비밀번호'
         extraAction={dispatchPassword}
-        validationMessage='비밀번호는 8-16자 영문,숫자,특수문자의 조합이어야 합니다.'
+        validationMessage='비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자의 조합이어야 합니다.'
         validationFunction={passwordValidityTest}
         type='password'
       ></StyledInputContainer>
