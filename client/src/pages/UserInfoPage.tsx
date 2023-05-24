@@ -15,6 +15,8 @@ const UserInfoPage = () => {
   const [ isSameUser, setIsSameUser ] = useState<boolean>(false);
   const [ windowWidth, setWindowWidth ] = useState<number>(window.innerWidth);
   const [ isSelectTab, setIsSelectTab ] = useState<string>(otherInfoTab[0]);
+  const [ isSelectTag, setIsSelectTag ] = useState<string>('전체');
+  const [ isMappingTag, setIsMappingTag ] = useState<string>('');
 
   const navigate = useNavigate();
 
@@ -60,10 +62,14 @@ const UserInfoPage = () => {
                 isSameUser={isSameUser} 
                 setIsSelectTab={setIsSelectTab} 
                 isSelectTab={isSelectTab} 
+                setIsSelectTag={setIsSelectTag}
+                setIsMappingTag={setIsMappingTag}
               />
               <UserInfoList 
                 isSelectTab={isSelectTab}
                 isSameUser={isSameUser}
+                isSelectTag={isSelectTag}
+                isMappingTag={isMappingTag}
               />
             </StyledContain>
             ) 
@@ -79,7 +85,6 @@ export default UserInfoPage;
 const StyledMyPageWrapper = styled.div`
   background-color: var(--page-bg);
   width: 100%;
-  min-width: 300px;
   min-height: calc(100vh - 224px);
   flex-grow: 1;
   overflow-x: hidden;
