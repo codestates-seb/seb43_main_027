@@ -12,6 +12,7 @@ interface MessageContents {
   addPrevMessages: (newData: Single[]) => void;
   addNewMessages: (newData: Single) => void;
   pageInfo: PageInfoType | null;
+  setIsSubmitted: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const MessageContents = ({
@@ -20,7 +21,8 @@ const MessageContents = ({
   receiverName,
   addPrevMessages,
   addNewMessages,
-  pageInfo
+  pageInfo,
+  setIsSubmitted
 }: MessageContents) => {
   return (
     <StyledBodyWrapper>
@@ -33,6 +35,7 @@ const MessageContents = ({
         receiverId={receiverId}
         addNewMessages={addNewMessages}
         receiverName={receiverName}
+        setIsSubmitted={setIsSubmitted}
       />
     </StyledBodyWrapper>
   );
