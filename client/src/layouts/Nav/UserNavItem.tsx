@@ -16,6 +16,7 @@ const UserNavItem = ({ data: user }: { data: User }) => {
   const onUserClickHandler = () => {
     navigation(`${PATH_URL.USER_INFO}${user.memberId}`);
     dispatch(closeNav());
+    window.location.reload();
   };
   const onMailClickHandler = (e: React.MouseEvent<SVGAElement>) => {
     e.stopPropagation();

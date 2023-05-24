@@ -5,13 +5,16 @@ import { RootState } from '../../store/store';
 import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import Loading from '../../components/common/Loading';
+import { filterDeletedUser } from '../../utils/filterDeletedUser';
 
 const NavContent = ({
   type,
-  Content
+  Content,
+  navHeight
 }: {
   type: string;
   Content: (props: any) => JSX.Element;
+  navHeight: number;
 }) => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -19,9 +22,9 @@ const NavContent = ({
   const apiRef = useRef<{ [key: string]: string }>({
     user: `/api/members/${user.memberId}/following`,
     bookmark: `/api/members/${user.memberId}/bookmark`,
-    games: `/api/members/${user.memberId}/mygame`
+    games: `/api/members/${user.memberId}/mygame`,
+    messages: '/api/members/messages'
   });
-  // TODO: type에 따라서 데이터 패칭을 다르게 하고 보여준다.
 
   useEffect(() => {
     if (user.memberId === -1) return;
@@ -38,10 +41,23 @@ const NavContent = ({
           }
         );
         setIsLoading(false);
-        setData(res.data.data);
+        console.log('test');
+        if (type === 'messages') {
+          console.log(data);
+          const newData = res.data.data.map((data: any) => {
+            if (data.sender.memberId !== user.memberId) return data.sender;
+            else return data.receiver;
+          });
+          setData(newData.filter(filterDeletedUser));
+        } else if (type === 'user') {
+          setData(res.data.data.filter(filterDeletedUser));
+        } else {
+          setData(res.data.data);
+        }
       } catch (err: any) {
         setIsLoading(false);
-        if (err.response.status === 404) {
+        console.log(err);
+        if (err?.response.status === 404) {
           alert('해당 경로가 존재하지 않습니다.');
         }
       }
@@ -80,10 +96,9 @@ const NavContent = ({
 
     return data.map((a, i) => <Content key={i} data={a} />);
   };
-
   return (
     <>
-      <StyledContainer>
+      <StyledContainer navHeight={navHeight}>
         <StyledRelativeBox>
           {isLoading ? (
             <Loading />
@@ -98,7 +113,7 @@ const NavContent = ({
 
 export default NavContent;
 
-const StyledContainer = styled.div`
+const StyledContainer = styled.div<{ navHeight: number }>`
   display: flex;
   position: absolute;
   background-color: #fff;
@@ -109,11 +124,16 @@ const StyledContainer = styled.div`
   z-index: 2;
 
   @media screen and (min-width: 650px) {
-    top: 0;
-    left: 100%;
-    min-width: 40rem;
-    height: 100%;
+    width: 40rem;
     max-height: 100%;
+    position: fixed;
+    left: 50px;
+    top: 0;
+    padding-top: 60px;
+    height: ${({ navHeight }) => {
+      console.log('test', navHeight);
+      return `${navHeight}px`;
+    }};
   }
 `;
 
@@ -143,11 +163,9 @@ const StyledItemContainer = styled.div`
   gap: 2rem;
 
   @media screen and (min-width: 650px) {
-    position: fixed;
     top: 70px;
     width: 100%;
     max-width: 36rem;
-    max-height: 40vh;
     overflow-y: scroll;
   }
 `;

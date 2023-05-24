@@ -28,7 +28,6 @@ const PostInfo = ({
   };
 
   const onClickHandler = () => {
-    // TODO: 게시글 삭제 500 error 남 포스트맨도
     if (confirm('게시글을 삭제하시겠습니까?')) {
       deleteData(
         `${process.env.REACT_APP_API_URL}/api/posts/${postId}`,
@@ -54,7 +53,7 @@ const PostInfo = ({
       <StyledImg src={member.imageUrl} />
       <StyledInfoFlexBox>
         <span onClick={onNameClickHandler} style={{ cursor: 'pointer' }}>
-          {member.userName}
+          {member.userName.length >= 20 ? '*삭제된 계정*' : member.userName}
         </span>
         <StyledFlexBox>
           <StyledInfoBox>

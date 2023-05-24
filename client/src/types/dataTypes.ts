@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 
 export type NavItemType = {
-  type: 'user' | 'bookmark' | 'games';
+  type: 'user' | 'bookmark' | 'games' | 'messages';
   element: ReactElement;
   contentElement: (props: any) => JSX.Element;
 };
@@ -65,6 +65,7 @@ export type PathUrlType = {
   ERROR: string;
   NOTFOUND: string;
   USER_INFO: string;
+  FOLLOWER: string;
   SEARCH: string;
 };
 

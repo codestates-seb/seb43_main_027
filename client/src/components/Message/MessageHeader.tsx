@@ -17,7 +17,6 @@ const MessageHeader = ({
   const dispatch = useDispatch();
   const onClickHandler = () => {
     dispatch(stopChat());
-    dispatch(closeNav());
   };
 
   return (
@@ -42,6 +41,7 @@ const StyledWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   height: 5rem;
+  border-bottom: 1px solid var(--cyan-dark-500);
 `;
 
 const StyledLeft = styled.div`
@@ -68,6 +68,7 @@ const StyledCloseButton = styled.button`
   color: white;
   border-style: none;
   height: 2rem;
+  border-radius: 5px;
 `;
 const StyledRight = styled.div`
   display: flex;

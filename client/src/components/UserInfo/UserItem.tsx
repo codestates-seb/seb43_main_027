@@ -8,12 +8,12 @@ import { StyledItemWrapper } from '../CategoryGames/GameItem';
 import { TbMessages } from 'react-icons/tb';
 
 type UserItemPropsType = {
-  imageUrl: string,
-  userName: string,
-  followerCount: number,
-  followingCount: number,
-  isFollowed: boolean,
-  memberId: string,
+  imageUrl: string;
+  userName: string;
+  followerCount: number;
+  followingCount: number;
+  isFollowed: boolean;
+  memberId: string;
   setIsFollowClick: React.Dispatch<React.SetStateAction<boolean>>;
   isSameUser: boolean;
 };
@@ -28,9 +28,10 @@ const UserItem = ({
   setIsFollowClick,
   isSameUser
 }: UserItemPropsType) => {
-
   const getMemberData = localStorage.getItem('user');
-  const memberData = getMemberData ? JSON.parse(getMemberData) : { memberId: -1 };
+  const memberData = getMemberData
+    ? JSON.parse(getMemberData)
+    : { memberId: -1 };
   const logined = memberData.memberId;
 
   const sameItem = memberId === String(logined);
@@ -60,27 +61,24 @@ const UserItem = ({
       <UserProfileImg isUserImg={imageUrl} />
         <StyledUserName>{userNameState}</StyledUserName>
         <StyledFollowed>
-        <p>팔로워: {followerCount}</p>
-        <p>팔로잉: {followingCount}</p>
-      </StyledFollowed>
-    </StyledContain>
-    { !sameItem ?
-    <StyledRow>
-      <StyledFollowButton
-        onClick={handleFollow}
-      >
-        {isFollowed ? '팔로우' : '팔로잉'}
-      </StyledFollowButton>
-      <StyledMessageContain>
-        <TbMessages onClick={handleMessage} />
-      </StyledMessageContain>
-    </StyledRow>
-    :  <StyledFollowButton
-          onClick={handleUserPageClick}
-        >
-        {'내 프로필보기'}
-      </StyledFollowButton>
-    }
+          <p>팔로워: {followerCount}</p>
+          <p>팔로잉: {followingCount}</p>
+        </StyledFollowed>
+      </StyledContain>
+      {!sameItem ? (
+        <StyledRow>
+          <StyledFollowButton onClick={handleFollow}>
+            {isFollowed ? '팔로우' : '팔로잉'}
+          </StyledFollowButton>
+          <StyledMessageContain>
+            <TbMessages onClick={handleMessage} />
+          </StyledMessageContain>
+        </StyledRow>
+      ) : (
+        <StyledFollowButton onClick={handleUserPageClick}>
+          {'내 프로필보기'}
+        </StyledFollowButton>
+      )}
     </StyledWrapper>
   );
 };
