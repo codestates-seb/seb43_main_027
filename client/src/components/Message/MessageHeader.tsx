@@ -41,6 +41,7 @@ const StyledWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   height: 5rem;
+  border-bottom: 1px solid var(--cyan-dark-500);
 `;
 
 const StyledLeft = styled.div`
