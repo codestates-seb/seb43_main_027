@@ -28,6 +28,7 @@ const UserEditInfo = ({ setIsEditClick }: UserInfoProps) => {
   const [ vaildPassword, setVaildPassword ] = useState<string>('');
   const [ error, setError ] = useState('');
   const [ remindError, setRemindError ] = useState('');
+  const [ nickNameError, setNickNameError ] = useState('');
   const [ isOpenNewInput, setIsOpenNewInput ] = useState<boolean>(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -90,9 +91,9 @@ const UserEditInfo = ({ setIsEditClick }: UserInfoProps) => {
     const isValidNickname = nicknameRegex.test(newNickname);
   
     if (!isValidNickname) {
-      setError('특수문자를 제외한 2-10자여야 합니다.');
+      setNickNameError('특수문자를 제외한 2-10자여야 합니다.');
     } else {
-      setError('');
+      setNickNameError('');
     }
   };
 
@@ -281,7 +282,7 @@ const UserEditInfo = ({ setIsEditClick }: UserInfoProps) => {
       <UserProfileImg isUserImg={isUserImg} />
       <StyledEmailText>{isUserEmail}</StyledEmailText>
       닉네임 수정:
-      {error.length > 0 && <StyledError>{error}</StyledError>}
+      {nickNameError.length > 0 && <StyledError>{nickNameError}</StyledError>}
       <Input
         placeholder='닉네임 수정'
         prefix={<UserOutlined />}
