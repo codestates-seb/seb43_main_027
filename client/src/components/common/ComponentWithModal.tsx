@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ReactElement, useState } from 'react';
 import styled from 'styled-components';
 
 import ButtonEl from '../elements/Button';
@@ -16,12 +16,13 @@ import { ButtonType } from '../../types/componentsTypes';
  *
  */
 
-const ButtonWithModal = ({
+const ComponentWithModal = ({
   buttonText,
   buttonTextWhileBackgroud,
   confirmMessage,
   confirmOnClick,
-  cancelOnClick
+  cancelOnClick,
+  children
 }: ModalButtonType): JSX.Element => {
   const [isOpen, setIsOpen] = useState(false);
   const openModalHandler = () => {
@@ -41,9 +42,7 @@ const ButtonWithModal = ({
   return (
     <StyledModalContainer>
       <StyledModalButtonContainer>
-        <ModalButton onClick={openModalHandler}>
-          {!isOpen ? buttonText : buttonTextWhileBackgroud}
-        </ModalButton>
+        <div onClick={openModalHandler}>{children}</div>
       </StyledModalButtonContainer>
       {isOpen && (
         //  모달 바깥을 클릭해도 취소가 되도록 할지 여부에 따라 backdrop 온클릭 속성 유무 결정
@@ -66,14 +65,15 @@ const ButtonWithModal = ({
 };
 
 interface ModalButtonType extends ButtonType {
-  buttonText: string;
+  buttonText?: string;
   buttonTextWhileBackgroud?: string;
   confirmMessage: string;
   confirmOnClick?: () => void;
   cancelOnClick?: () => void;
+  children: ReactElement;
 }
 
-export default ButtonWithModal;
+export default ComponentWithModal;
 
 const StyledModalBackdrop = styled.div`
   position: fixed;
@@ -97,12 +97,6 @@ const StyledModalButtonContainer = styled.div`
   display: flex;
   width: 100%;
 `;
-
-const ModalButton = ButtonEl({
-  flex: '1',
-  padding: '20px',
-  radius: '10px'
-});
 
 const ModalConfirmButton = ButtonEl({
   flex: '1',

@@ -11,6 +11,7 @@ import PATH_URL from '../../constants/pathUrl';
 import { deleteData, postData } from '../../api/apiCollection';
 import { useState } from 'react';
 import { startChat } from '../../slice/chatSlice';
+import ComponentWithModal from '../common/ComponentWithModal';
 
 const FollowerItem = (
   props: User & {
@@ -88,9 +89,19 @@ const FollowerItem = (
       {props.userName.length < 21 ? (
         user.memberId !== props.memberId ? (
           <StyledRow>
-            <StyledFollowButton onClick={onFollowBtnClickHandler}>
-              {isFollowed ? '팔로우 취소' : '팔로우'}
-            </StyledFollowButton>
+            {isFollowed ? (
+              <ComponentWithModal
+                confirmOnClick={onFollowBtnClickHandler}
+                confirmMessage='팔로우를 취소하시겠습니까?'
+              >
+                <StyledFollowButton>팔로우취소</StyledFollowButton>
+              </ComponentWithModal>
+            ) : (
+              <StyledFollowButton onClick={onFollowBtnClickHandler}>
+                팔로우
+              </StyledFollowButton>
+            )}
+
             <StyledMessageContain>
               <TbMessages onClick={onMessageClickHandler} />
             </StyledMessageContain>
@@ -105,9 +116,12 @@ const FollowerItem = (
       ) : user.memberId !== props.memberId ? (
         <StyledRow>
           {isFollowed ? (
-            <StyledFollowButton onClick={onFollowBtnClickHandler}>
-              팔로우 취소
-            </StyledFollowButton>
+            <ComponentWithModal
+              confirmOnClick={onFollowBtnClickHandler}
+              confirmMessage='팔로우를 취소하시겠습니까?'
+            >
+              <StyledFollowButton>팔로우취소</StyledFollowButton>
+            </ComponentWithModal>
           ) : (
             <StyledFollowButton disabled>팔로우</StyledFollowButton>
           )}
