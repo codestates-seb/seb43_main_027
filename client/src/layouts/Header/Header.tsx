@@ -10,11 +10,11 @@ import UserBtn from './UserBtn';
 import { RootState } from '../../store/store';
 import { NavStateType } from '../../types/propsTypes';
 
-const Header = ({ setShow, show }: NavStateType) => {
+const Header = () => {
   const user = useSelector((s: RootState) => s.user);
   return (
     <StyledContainer>
-      <MenuBtn setShow={setShow} show={show} />
+      <MenuBtn />
       <StyledResponsiveContainer>
         <Logo />
         <SearchBar />

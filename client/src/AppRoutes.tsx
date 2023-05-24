@@ -13,6 +13,7 @@ import Posts from './pages/Posts';
 import Page404 from './components/common/404';
 import UserInfoPage from './pages/UserInfoPage';
 import Search from './pages/Search';
+import GameFollower from './pages/GameFollower';
 
 const AppRoutes = () => {
   return (
@@ -44,6 +45,10 @@ const AppRoutes = () => {
         <Route
           path={`${PATH_URL.GAME}:gameId${PATH_URL.POST}:postId`}
           element={<Posts />}
+        />
+        <Route
+          path={`${PATH_URL.GAME}:gameId${PATH_URL.FOLLOWER}`}
+          element={<GameFollower />}
         />
         <Route path={PATH_URL.ERROR} element={<Page404 />} />
         <Route path={PATH_URL.NOTFOUND} element={<Page404 />} />

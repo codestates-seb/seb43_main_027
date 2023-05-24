@@ -9,6 +9,7 @@ import { BookmarkType } from '../../types/dataTypes';
 import { deleteData, postData } from '../../api/apiCollection';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
+import PATH_URL from '../../constants/pathUrl';
 
 const Title = ({
   tag,
@@ -23,7 +24,7 @@ const Title = ({
 }) => {
   const navigation = useNavigate();
   const user = useSelector((s: RootState) => s.user);
-  const { postId } = useParams();
+  const { gameId, postId } = useParams();
   const tagId = postOptionTags.findIndex(
     (option) => option.value === convertTag.asKR(tag)
   );
@@ -31,6 +32,11 @@ const Title = ({
   const onBackClickHandler = () => {
     navigation(-1);
   };
+
+  const onBackToGameClickHandler = () => {
+    navigation(`${PATH_URL.GAME}${gameId}`);
+  };
+
   const onBookmarkClick = (status: undefined | string) => () => {
     if (user.memberId === -1) {
       alert('로그인이 필요한 기능입니다.');
@@ -77,9 +83,14 @@ const Title = ({
         cursor='pointer'
         onClick={onBackClickHandler}
       />
+
       <StyledTagContainer>
         <CategoryTag categoryId={tagId} categoryName={convertTag.asKR(tag)} />
+        <StyledBackToGame onClick={onBackToGameClickHandler}>
+          게임으로 돌아가기
+        </StyledBackToGame>
       </StyledTagContainer>
+
       <StyledFlexWrapper>
         <StyledTitle>{title}</StyledTitle>
         <StarTwoTone
@@ -98,6 +109,9 @@ export default Title;
 const StyledContainer = styled.div``;
 const StyledTagContainer = styled.div`
   margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
 `;
 
 const StyledFlexWrapper = styled.div`
@@ -109,6 +123,15 @@ const StyledFlexWrapper = styled.div`
   > :last-child {
     cursor: pointer;
     text-align: end;
+  }
+`;
+
+const StyledBackToGame = styled.div`
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: var(--default-text-color);
+  &:hover {
+    color: var(--button-hover-color);
   }
 `;
 
