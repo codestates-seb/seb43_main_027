@@ -24,7 +24,9 @@ const MessageHeader = ({
       <StyledLeft>
         <StyledImg src={imageUrl} />
         <Link to={`${PATH_URL.USER_INFO}${userId}`} onClick={onClickHandler}>
-          <StyledUsername>{userName}</StyledUsername>
+          <StyledUsername>
+            {userName.length >= 20 ? '*삭제된 계정*' : userName}
+          </StyledUsername>
         </Link>
       </StyledLeft>
 

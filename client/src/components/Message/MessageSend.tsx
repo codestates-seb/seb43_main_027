@@ -9,10 +9,15 @@ import { SubmitEvent } from '../../types/propsTypes';
 
 type SendType = {
   receiverId: number;
+  receiverName: string;
   addNewMessages: (newData: Single) => void;
 };
 
-const MessageSend = ({ receiverId, addNewMessages }: SendType) => {
+const MessageSend = ({
+  receiverId,
+  addNewMessages,
+  receiverName
+}: SendType) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const user = useSelector((s: RootState) => s.user);
 
@@ -48,10 +53,20 @@ const MessageSend = ({ receiverId, addNewMessages }: SendType) => {
     <StyledContainer>
       <StyledForm onSubmit={sendMessage}>
         <StyledInputContainer
-          placeholder='메시지를 입력하세요.'
+          placeholder={
+            receiverName.length >= 20
+              ? '삭제된 유저와는 채팅을 할 수 없습니다.'
+              : '메시지를 입력하세요.'
+          }
           ref={inputRef}
+          disabled={receiverName.length >= 20}
         />
-        <StyledSubmitButton onClick={sendMessage}>전송</StyledSubmitButton>
+        <StyledSubmitButton
+          onClick={sendMessage}
+          disabled={receiverName.length >= 20}
+        >
+          전송
+        </StyledSubmitButton>
       </StyledForm>
     </StyledContainer>
   );
@@ -82,9 +97,11 @@ const StyledForm = styled.form`
   }
 `;
 
-const StyledSubmitButton = styled.button`
-  background-color: var(--cyan-dark-500);
+const StyledSubmitButton = styled.button<{ disabled: boolean }>`
+  background-color: ${({ disabled }) =>
+    disabled ? '#888' : 'var(--cyan-dark-500)'};
   color: white;
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   border-style: none;
   border-radius: 5px;
   width: 5rem;

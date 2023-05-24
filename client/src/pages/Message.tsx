@@ -81,6 +81,7 @@ const Message = () => {
         <MessageContents
           messageResponse={messageResponse}
           receiverId={chatInfo.receiver.memberId}
+          receiverName={chatInfo.receiver.userName}
           addPrevMessages={addPrevMessages}
           addNewMessages={addNewMessages}
           pageInfo={pageInfo}
