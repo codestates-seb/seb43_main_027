@@ -65,6 +65,7 @@ export type PathUrlType = {
   ERROR: string;
   NOTFOUND: string;
   USER_INFO: string;
+  FOLLOWER: string;
   SEARCH: string;
 };
 
