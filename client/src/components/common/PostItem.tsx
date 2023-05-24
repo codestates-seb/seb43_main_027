@@ -79,15 +79,17 @@ const StyledTitleContainer = styled.div`
     height: fit-content;
   }
 `;
+
 const StyledTitle = styled.h3`
   font-weight: bold;
   font-size: 2rem;
   cursor: pointer;
-  width: 10rem;
-  overflow: hidden;
   padding: 0.5rem 0;
-  word-break: keep-all;
+  overflow: hidden;
+  width: 10rem;
   text-overflow: ellipsis;
+  white-space: nowrap;
+  word-break: keep-all;
 `;
 const StyledText = styled.span`
   width: 9rem;
