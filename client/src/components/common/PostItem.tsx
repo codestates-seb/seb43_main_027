@@ -36,7 +36,12 @@ const PostItem = ({ data: bookmarked }: { data: GamePagePostType }) => {
           />
         </StyledTitleContainer>
         <StyledPostInfoContainer>
-          <StyledText>작성자: {bookmarked.userName}</StyledText>
+          <StyledText>
+            작성자:{' '}
+            {bookmarked.userName?.length >= 20
+              ? '*삭제된 계정*'
+              : bookmarked.userName}
+          </StyledText>
           <StyledText>
             작성일:{' '}
             {typeof bookmarked.createdAt === 'string' &&
@@ -86,7 +91,7 @@ const StyledTitle = styled.h3`
   cursor: pointer;
   padding: 0.5rem 0;
   overflow: hidden;
-  width: 10rem;
+  max-width: 10rem;
   text-overflow: ellipsis;
   white-space: nowrap;
   word-break: keep-all;
@@ -97,6 +102,7 @@ const StyledText = styled.span`
   overflow: hidden;
   word-break: keep-all;
   text-overflow: ellipsis;
+  white-space: nowrap;
   font-size: 0.8rem;
 `;
 
