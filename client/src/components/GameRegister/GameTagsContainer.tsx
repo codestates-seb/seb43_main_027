@@ -85,4 +85,7 @@ const StyledResetButton = styled(StyledButton)`
 //  태그 마지막 줄 간격 조절을 위한 투명 블럭
 const StyledBlock = styled.div`
   width: 15rem;
+  @media screen and (max-width: 650px) {
+    width: 10rem;
+  }
 `;
