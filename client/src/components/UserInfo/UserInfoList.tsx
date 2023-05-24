@@ -24,8 +24,10 @@ const UserInfoList = ({ isSelectTab, isSameUser, isSelectTag, isMappingTag }
   const memberData = getMemberData ? JSON.parse(getMemberData) : { memberId: -1 };
   const loginedId = memberData.memberId;
 
-  const [ isFollowClick, setIsFollowClick ] = useState(false);
   const [ isFollowedList, setIsFollowedList ] = useState<FollowerType[]>([]);
+
+  const [ isMyFollowingList, setIsMyFollowingList ] = useState<number[]>([]);
+
   const [ isFollowedGames, setIsFollowedGames ] = useState<GameType[]>([]);
   const [ isFilteredPosts, setIsFilteredPosts ] = useState<GamePagePostType[]>([]);
   const [ userMessage, setUserMessage ] = useState('');
@@ -34,7 +36,23 @@ const UserInfoList = ({ isSelectTab, isSameUser, isSelectTag, isMappingTag }
   const [ isBookmarkClick, setIsBookmarkClick ] = useState(false);
   const [ isTotalCount, setIsTotalCount ] = useState<number>(-1);
 
-  
+  useEffect(() => {
+    if (Number(memberId) !== -1) {
+      const MyFollowingData = async () => {
+        
+        try {
+          const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/members/${loginedId}/following`);
+          const followData = res.data.data;
+          const followingIdList = followData.map((item:any) => item.memberId);
+          setIsMyFollowingList([...followingIdList]);
+
+        } catch (error) {
+          console.log(error);
+        };
+      };
+        MyFollowingData();
+      };
+  }, [loginedId, memberId]);
 
   useEffect(() => {
     if (Number(memberId) !== -1) {
@@ -179,6 +197,10 @@ const UserInfoList = ({ isSelectTab, isSameUser, isSelectTag, isMappingTag }
     return isBookmarkedList.includes(postId);
   };
 
+  const isFollowingIdIncluded = (memberId: number) => {
+    return isMyFollowingList.includes(memberId);
+  };
+
   const isEmptyItem = isTotalCount === 0;
 
   return (
@@ -198,10 +220,8 @@ const UserInfoList = ({ isSelectTab, isSameUser, isSelectTag, isMappingTag }
                 userName={item.userName}
                 followerCount={item.followerCount}
                 followingCount={item.followingCount}
-                isFollowed={true}
                 memberId={String(item.memberId)}
-                setIsFollowClick={setIsFollowClick}
-                isSameUser={isSameUser}
+                isFollowingIdIncluded={isFollowingIdIncluded(item.memberId)}
               />
             )}
           )
