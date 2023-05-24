@@ -51,11 +51,18 @@ const StyledItemContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 2rem;
-  justify-content: space-around;
+  justify-content: space-between;
+  padding: 2rem;
+
+  @media screen and (min-width: 400px) {
+    justify-content: center;
+  }
+  @media screen and (min-width: 500px) {
+    justify-content: space-between;
+  }
 
   @media screen and (min-width: 650px) {
     gap: 3rem calc(100% - 400px);
-    justify-content: center;
   }
 
   @media screen and (min-width: 780px) {
