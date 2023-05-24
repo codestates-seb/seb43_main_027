@@ -5,6 +5,7 @@ import { RootState } from '../../store/store';
 import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import Loading from '../../components/common/Loading';
+import { filterDeletedUser } from '../../utils/filterDeletedUser';
 
 const NavContent = ({
   type,
@@ -47,8 +48,9 @@ const NavContent = ({
             if (data.sender.memberId !== user.memberId) return data.sender;
             else return data.receiver;
           });
-          console.log(newData);
-          setData(newData);
+          setData(newData.filter(filterDeletedUser));
+        } else if (type === 'user') {
+          setData(res.data.data.filter(filterDeletedUser));
         } else {
           setData(res.data.data);
         }
@@ -127,7 +129,7 @@ const StyledContainer = styled.div<{ navHeight: number }>`
     position: fixed;
     left: 50px;
     top: 0;
-    padding-top: 50px;
+    padding-top: 60px;
     height: ${({ navHeight }) => {
       console.log('test', navHeight);
       return `${navHeight}px`;
@@ -161,11 +163,9 @@ const StyledItemContainer = styled.div`
   gap: 2rem;
 
   @media screen and (min-width: 650px) {
-    /* position: fixed; */
     top: 70px;
     width: 100%;
     max-width: 36rem;
-    max-height: 40vh;
     overflow-y: scroll;
   }
 `;
