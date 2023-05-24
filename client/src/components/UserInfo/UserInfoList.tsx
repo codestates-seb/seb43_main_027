@@ -315,6 +315,10 @@ const StyledWrapper = styled.div`
 `;
 const StyledCol = styled.div`
   font-size: 14px;
+  @media screen and (max-width: 650px) {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 `;
 
 const StyledTotalNumber = styled.div`
@@ -328,7 +332,7 @@ const StyledRow = styled.div`
   gap: 30px;
   display: flex;
   @media screen and (max-width: 650px) {
-    justify-content: flex-start;
+    justify-content: center;
   }
 `;
 
