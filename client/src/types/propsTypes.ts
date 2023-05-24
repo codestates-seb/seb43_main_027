@@ -69,3 +69,17 @@ export type UserProfileType = {
   isFollowerCount: number;
   isFollowingCount: number;
 };
+
+export type UserItemPropsType = {
+  imageUrl: string,
+  userName: string,
+  followerCount: number,
+  followingCount: number,
+  memberId: string,
+  isFollowingIdIncluded: boolean | undefined,
+};
+
+export type UserStyledButtonPropsType = { 
+  delectUser?: boolean;
+};
+
