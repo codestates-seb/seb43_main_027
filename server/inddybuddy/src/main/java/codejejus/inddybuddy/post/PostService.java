@@ -75,14 +75,13 @@ public class PostService {
 
     public PostDto.Response findPost(Long postId, MemberPrincipal memberPrincipal) {
         Post post = findVerifidPost(postId);
-        post.addView();
+        postRepository.updateViewCount(post.getViews() + 1, post.getPostId());
         PostDto.Response response = postMapper.entityToResponse(post);
-
+        response.addView();
         if (memberPrincipal != null) {
             applyLoginMemberReaction(memberPrincipal, post, response);
             applyLoginMemberBookmark(memberPrincipal, post, response);
         }
-
         return response;
     }
 

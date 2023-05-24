@@ -7,6 +7,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
@@ -24,4 +27,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @EntityGraph(attributePaths = {"game", "member"})
     Page<Post> findAllByMember(Member member, Pageable pageable);
+
+    @Modifying
+    @Query("update Post p set p.views = :viewCount where p.postId = :id")
+    int updateViewCount(@Param("viewCount") Long viewCount, @Param("id") Long id);
 }
