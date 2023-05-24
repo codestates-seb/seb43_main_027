@@ -43,11 +43,27 @@ const NavContent = ({
         setIsLoading(false);
         console.log('test');
         if (type === 'messages') {
-          console.log(data);
-          const newData = res.data.data.map((data: any) => {
-            if (data.sender.memberId !== user.memberId) return data.sender;
-            else return data.receiver;
-          });
+          const tmp = new Set(
+            res.data.data.map((data: any) => {
+              if (data.sender.memberId !== user.memberId)
+                return data.sender.memberId;
+              else return data.receiver.memberId;
+            })
+          );
+
+          const newData = res.data.data
+            .map((data: any) => {
+              if (data.sender.memberId !== user.memberId) return data.sender;
+              else return data.receiver;
+            })
+            .filter((a: any) => {
+              if (tmp.has(a.memberId)) {
+                tmp.delete(a.memberId);
+                return true;
+              }
+              return false;
+            });
+
           setData(newData);
         } else {
           setData(res.data.data);
