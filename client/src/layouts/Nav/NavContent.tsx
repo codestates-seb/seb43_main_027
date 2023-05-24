@@ -48,9 +48,7 @@ const NavContent = ({
             if (data.sender.memberId !== user.memberId) return data.sender;
             else return data.receiver;
           });
-          setData(newData.filter(filterDeletedUser));
-        } else if (type === 'user') {
-          setData(res.data.data.filter(filterDeletedUser));
+          setData(newData);
         } else {
           setData(res.data.data);
         }
