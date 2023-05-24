@@ -150,6 +150,7 @@ const PostList: React.FC<PostListProps> = ({ isSelectTag, isSelectTab, isMapping
           isFilteredPosts.map((post, index) => (
             <PostItem
               key={index}
+              gameId={post.gameId}
               postId={post.postId}
               userName={post.userName}
               title={post.title}
