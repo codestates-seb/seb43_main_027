@@ -123,7 +123,7 @@ const StyledMessageContainer = styled.div`
   @media screen and (min-width: 650px) {
     position: static;
     left: 50px;
-    width: 40rem;
+    width: 50rem;
     height: calc(100vh - 100px);
     border-radius: 10px;
   }
