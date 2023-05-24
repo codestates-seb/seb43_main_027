@@ -14,6 +14,7 @@ const UserBtn = ({ url, memberId }: { url?: string; memberId: number }) => {
       localStorage.removeItem('refresh_token');
       localStorage.removeItem('user');
       dispatch(clearUser());
+      window.location.reload();
     }
   };
 
