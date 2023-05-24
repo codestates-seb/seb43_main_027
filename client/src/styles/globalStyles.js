@@ -145,17 +145,17 @@ const GlobalStyle = createGlobalStyle`
   };
 
   //  스크롤바 커스터마이징
-  body::-webkit-scrollbar {
+  *::-webkit-scrollbar {
     width: 0.8vw;
     overflow:overlay;
   };
 
-  body::-webkit-scrollbar-thumb {
+  *::-webkit-scrollbar-thumb {
     background: hsla(0, 0%, 42%, 0.49);
     opacity: 0.5;
   };
 
-  body::-webkit-scrollbar-thumb:hover {
+  *::-webkit-scrollbar-thumb:hover {
     background: hsla(0, 0%, 42%, 0.69);
     opacity: 0.5;
   };

@@ -164,6 +164,5 @@ const StyledItemContainer = styled.div`
     top: 70px;
     width: 100%;
     max-width: 36rem;
-    overflow-y: scroll;
   }
 `;
