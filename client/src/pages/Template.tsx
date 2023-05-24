@@ -28,6 +28,7 @@ const StyledFlexBox = styled.div`
   min-height: calc(100vh - 50px);
   @media screen and (min-width: 650px) {
     flex-direction: row;
+    position: relative;
     > div {
       margin-left: 50px;
     }
