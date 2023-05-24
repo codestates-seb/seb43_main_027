@@ -14,10 +14,11 @@ import { NavStateType } from '../../types/propsTypes';
 import NavGameCardContainer from './NavGameCardContainer';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
-import { closeNav, openNav } from '../../slice/navSlice';
+import { closeNav, displayNav, openNav } from '../../slice/navSlice';
 
 import Message from '../../pages/Message';
 import { stopChat } from '../../slice/chatSlice';
+import { TbMessages } from 'react-icons/tb';
 
 const itemList: NavItemType[] = [
   {
@@ -34,22 +35,31 @@ const itemList: NavItemType[] = [
     type: 'games',
     element: <IoGameControllerOutline />,
     contentElement: NavGameCardContainer
+  },
+  {
+    type: 'messages',
+    element: <TbMessages />,
+    contentElement: UserNavItem
   }
 ];
 
-const Nav = ({ show, setShow }: NavStateType) => {
+const Nav = () => {
   const [selectedInd, setSelectedInd] = useState(0);
   const navRef = useRef<HTMLElement | null>(null);
-  const { isOpened, isChatOpened } = useSelector((s: RootState) => ({
-    isOpened: s.nav,
-    isChatOpened: s.chat.isChat
+
+  const { isOpened, isChatOpened, show } = useSelector((s: RootState) => ({
+    isOpened: s.nav.isOpened,
+    isChatOpened: s.chat.isChat,
+    show: s.nav.isDisplayed
   }));
+
+  const [height, setHeight] = useState(0);
 
   const dispatch = useDispatch();
   const onClickHandler = (i: number) => () => {
     setSelectedInd(i);
     dispatch(openNav());
-    setShow(true);
+    dispatch(displayNav());
   };
 
   const onBackgroundClickHandler = () => {
@@ -72,16 +82,16 @@ const Nav = ({ show, setShow }: NavStateType) => {
         const windowHeight =
           window.innerHeight || document.documentElement.clientHeight; // 화면의 높이 가져오기
 
-        const height = Math.max(
+        const navHeight = Math.max(
           0,
           Math.min(rect.bottom, windowHeight) - Math.max(rect.top, 0)
         ); // 요소의 보여지는 높이 계산
-        console.log(height);
+        setHeight(navHeight);
       }
     };
 
     calculateVisibleHeight();
-  }, [navRef.current]);
+  }, [navRef.current, isOpened]);
   return (
     <>
       {isOpened && <StyledBackground onClick={onBackgroundClickHandler} />}
@@ -101,6 +111,7 @@ const Nav = ({ show, setShow }: NavStateType) => {
           <NavContent
             type={itemList[selectedInd].type}
             Content={itemList[selectedInd].contentElement}
+            navHeight={height}
           />
         )}
         {isChatOpened && <Message />}
@@ -121,10 +132,10 @@ const StyledNav = styled.nav<{ show: boolean }>`
   z-index: 2;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
   @media screen and (min-width: 650px) {
-    position: relative;
+    position: absolute;
     display: block;
     width: 50px;
-    height: inherit;
+    height: 100%;
     top: 0;
   }
 `;
