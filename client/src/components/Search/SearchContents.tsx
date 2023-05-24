@@ -1,15 +1,19 @@
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
-// import { type UserType } from '../../types/dataTypes';
+import { type GamePagePostType, PageInfoType } from '../../types/dataTypes';
 
-import GameItem from '../CategoryGames/GameItem';
+import PostItem from '../GameChannel/PostItem';
 
 interface SearchContentsType {
   isSelectTab: '전체' | '게시글';
-  searchContentsInfo: any[];
+  searchContentsInfo: SearchContentsInfo;
 }
 
+export interface SearchContentsInfo {
+  data: GamePagePostType[];
+  pageInfo: PageInfoType;
+}
 interface SearchContentsWrapperType {
   isPreview: boolean;
 }
@@ -22,11 +26,38 @@ const SearchContents = ({
     <StyledSearchContentsWrapper
       isPreview={isSelectTab === '전체' ? true : false}
     >
-      {searchContentsInfo.length > 0 ? (
+      {searchContentsInfo.data.length > 0 &&
+      searchContentsInfo.data[0].postId > 0 ? (
         isSelectTab === '전체' ? (
-          <div>전체</div>
+          searchContentsInfo.data
+            .slice(0, 5)
+            .map((post, index) => (
+              <PostItem
+                key={index}
+                postId={post.postId}
+                userName={post.userName}
+                title={post.title}
+                views={post.views}
+                postTag={post.postTag}
+                commentCount={post.commentCount}
+                likeCount={post.likeCount}
+                createdAt={post.createdAt}
+              />
+            ))
         ) : (
-          <div>item</div>
+          searchContentsInfo.data.map((post, index) => (
+            <PostItem
+              key={index}
+              postId={post.postId}
+              userName={post.userName}
+              title={post.title}
+              views={post.views}
+              postTag={post.postTag}
+              commentCount={post.commentCount}
+              likeCount={post.likeCount}
+              createdAt={post.createdAt}
+            />
+          ))
         )
       ) : (
         <StyledEmptyItem>검색 결과가 없습니다.</StyledEmptyItem>
@@ -39,7 +70,10 @@ export default SearchContents;
 
 const StyledSearchContentsWrapper = styled.div<SearchContentsWrapperType>`
   display: flex;
-  flex-direction: ${(p) => (p.isPreview ? 'row' : 'column')};
+  ${(p) =>
+    p.isPreview
+      ? 'flex-direction: column; height:30%; width:80%; '
+      : 'flex-direction: column; height:80%; width:80%'};
 `;
 
 const StyledEmptyItem = styled.div`
