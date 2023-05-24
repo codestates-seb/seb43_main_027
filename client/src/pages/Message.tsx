@@ -21,6 +21,7 @@ const Message = () => {
   const [pageInfo, setPageInfo] = useState<PageInfoType | null>(null);
   const chatInfo = useSelector((s: RootState) => s.chat);
   const dispatch = useDispatch();
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const addPrevMessages = (newData: Single[]) => {
@@ -53,6 +54,7 @@ const Message = () => {
         setMessageResponse(res.data.data);
         setPageInfo(res.data.pageInfo);
         setIsLoading(false);
+        setIsSubmitted(false);
       } catch (error) {
         alert('채팅 내용을 불러오는 도중 에러가 발생했습니다.');
         dispatch(stopChat());
@@ -61,7 +63,7 @@ const Message = () => {
     };
 
     fetchData();
-  }, []);
+  }, [isSubmitted]);
 
   const onWrapperClick = () => {
     dispatch(stopChat());
@@ -85,6 +87,7 @@ const Message = () => {
           addPrevMessages={addPrevMessages}
           addNewMessages={addNewMessages}
           pageInfo={pageInfo}
+          setIsSubmitted={setIsSubmitted}
         />
       </StyledMessageContainer>
       {isLoading && <Loading />}

@@ -11,12 +11,14 @@ type SendType = {
   receiverId: number;
   receiverName: string;
   addNewMessages: (newData: Single) => void;
+  setIsSubmitted: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const MessageSend = ({
   receiverId,
   addNewMessages,
-  receiverName
+  receiverName,
+  setIsSubmitted
 }: SendType) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const user = useSelector((s: RootState) => s.user);
@@ -37,11 +39,7 @@ const MessageSend = ({
         { headers }
       )
       .then(() => {
-        addNewMessages({
-          content: value,
-          createdAt: Date().toString(),
-          senderId: user.memberId
-        });
+        setIsSubmitted(true);
         if (inputRef && inputRef.current) inputRef.current.value = '';
       })
       .catch((err) => {
