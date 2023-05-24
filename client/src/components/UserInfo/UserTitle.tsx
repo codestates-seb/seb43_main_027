@@ -17,6 +17,7 @@ const UserTitle = ({ setIsEditClick }: UserInfoProps) => {
   const [ isUserImg, setIsUserImg ] = useState<string>('');
   const [ isUserName, setIsUserName ] = useState<string>('');
   const [ isUserEmail, setIsUserEmail ] = useState<string>('');
+  const [ isUserAboutMe, setIsUserAboutMe ] = useState<string | null>('');
   const [ isFollowerCount, setIsFollowerCount ] = useState<number>(0);
   const [ isFollowingCount, setIsFollowingCount ] = useState<number>(0);
   const [ loading, setLoading ] = useState(true);
@@ -31,6 +32,7 @@ const UserTitle = ({ setIsEditClick }: UserInfoProps) => {
         setIsUserImg(fetchedData.imageUrl);
         setIsUserName(fetchedData.userName);
         setIsUserEmail(fetchedData.email);
+        setIsUserAboutMe(fetchedData.aboutMe);
         setIsFollowerCount(fetchedData.followerCount);
         setIsFollowingCount(fetchedData.followingCount);
 
@@ -68,7 +70,9 @@ const UserTitle = ({ setIsEditClick }: UserInfoProps) => {
         isFollowerCount={isFollowerCount}
         isFollowingCount={isFollowingCount}
       />
-      <UserAboutMe />
+      <UserAboutMe 
+        isUserAboutMe={isUserAboutMe}
+      />
       <UserProfileAction 
         setIsEditClick={setIsEditClick}
         setIsFollowClick={setIsFollowClick}
