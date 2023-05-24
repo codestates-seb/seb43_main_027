@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PATH_URL from '../../constants/pathUrl';
 import styled from 'styled-components';
-import axios from 'axios';
 import UserProfileImg from './UserProfileImg';
 import { StyledFollowed } from './UserProfileName';
 import { StyledItemWrapper } from '../CategoryGames/GameItem';
@@ -36,6 +35,10 @@ const UserItem = ({
 
   const sameItem = memberId === String(logined);
 
+  const userNameState = userName.length >= 20
+  ? '*삭제된 계정*'
+  : userName;
+
   const navigate = useNavigate();
   const handleFollow = () => {
     setIsFollowClick(true);
@@ -51,13 +54,11 @@ const UserItem = ({
     window.location.reload();
   };
 
-  console.log(sameItem)
-
   return (
     <StyledWrapper>
     <StyledContain onClick={handleUserPageClick}>
       <UserProfileImg isUserImg={imageUrl} />
-        <StyledUserName>{userName}</StyledUserName>
+        <StyledUserName>{userNameState}</StyledUserName>
         <StyledFollowed>
         <p>팔로워: {followerCount}</p>
         <p>팔로잉: {followingCount}</p>
