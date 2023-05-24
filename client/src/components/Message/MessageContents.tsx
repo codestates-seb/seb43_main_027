@@ -8,6 +8,7 @@ import { PageInfoType } from '../../types/dataTypes';
 interface MessageContents {
   receiverId: number;
   messageResponse: Single[];
+  receiverName: string;
   addPrevMessages: (newData: Single[]) => void;
   addNewMessages: (newData: Single) => void;
   pageInfo: PageInfoType | null;
@@ -16,6 +17,7 @@ interface MessageContents {
 const MessageContents = ({
   messageResponse,
   receiverId,
+  receiverName,
   addPrevMessages,
   addNewMessages,
   pageInfo
@@ -27,7 +29,11 @@ const MessageContents = ({
         addPrevMessages={addPrevMessages}
         pageInfo={pageInfo}
       />
-      <MessageSend receiverId={receiverId} addNewMessages={addNewMessages} />
+      <MessageSend
+        receiverId={receiverId}
+        addNewMessages={addNewMessages}
+        receiverName={receiverName}
+      />
     </StyledBodyWrapper>
   );
 };
