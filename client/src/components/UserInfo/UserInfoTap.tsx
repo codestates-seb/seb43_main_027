@@ -7,18 +7,18 @@ import { StyledMainContent } from '../../pages/GameChannel';
 import SelectTag from '../common/SelectTag';
 import postOptionTags, { optionMapping } from '../../data/postOptionTags';
 
-const UserInfoTap = ({ isSameUser, setIsSelectTab, isSelectTab }
+const UserInfoTap = ({ isSameUser, setIsSelectTab, isSelectTab, setIsSelectTag, setIsMappingTag  }
   : { 
       isSameUser: boolean,
       setIsSelectTab: React.Dispatch<React.SetStateAction<string>>,
-      isSelectTab: string
+      isSelectTab: string,
+      setIsSelectTag: React.Dispatch<React.SetStateAction<string>>,
+      setIsMappingTag: React.Dispatch<React.SetStateAction<string>>,
   }
   ) => {
 
   const { memberId } = useParams();
   const [ showSelectTag, setShowSelectTag ] = useState<boolean>(false);
-  const [ isSelectTag, setIsSelectTag ] = useState<string>('전체');
-  const [ isMappingTag, setIsMappingTag ] = useState<string>('');
 
   useEffect(() => {
     if (isSameUser) {
