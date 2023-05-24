@@ -15,68 +15,80 @@ const CommentSection = ({
   onCommentSubmit: (s: any) => () => void;
 }) => {
   const user = useSelector((s: RootState) => s.user);
-
-  const onCommentValueChange = (value: string) => {
+  console.log(comments);
+  const onCommentValueChange = (value: CommentType) => {
     onCommentSubmit({
-      comments: [
-        ...comments,
-        {
-          member: {
-            memberId: user.memberId,
-            imageUrl: user.imageUrl,
-            userName: user.userName
-          },
-          content: value,
-          commentId: Date.now(),
-          createdAt: new Date(),
-          updatedAt: new Date()
-        }
-      ]
+      commentCount: commentCount + 1,
+      comments: [...comments, value]
     })();
   };
-  const onCommentUpdate = (value: string, commentId: number) => {
+  const onCommentUpdate = (value: CommentType, commentId: number) => {
+    onCommentSubmit({
+      comments: comments.map((comment) =>
+        comment.commentId === commentId ? value : comment
+      )
+    })();
+  };
+  const onCommentDelete = (commentId: number) => {
+    console.log('deleted');
     onCommentSubmit({
       comments: comments.map((comment) =>
         comment.commentId === commentId
           ? {
               ...comment,
-              content: value
+              commentStatus: 'COMMENT_DELETED'
             }
           : comment
       )
     })();
   };
 
-  // TODO: 대댓글 추가 시 댓글 상태변경 구현 필요
-  const onReCommentSubmit = (value: any, parentId: number) => {
+  const onReCommentSubmit = (value: CommentType, parentId: number) => {
+    onCommentSubmit({
+      commentCount: commentCount + 1,
+      comments: comments.map((comment) =>
+        comment.commentId === parentId
+          ? { ...comment, replies: [...comment.replies, value] }
+          : comment
+      )
+    })();
+  };
+
+  const onReCommentUpdate = (
+    value: CommentType,
+    commentId: number,
+    parentId: number
+  ) => {
     onCommentSubmit({
       comments: comments.map((comment) =>
         comment.commentId === parentId
           ? {
-              member: {
-                memberId: user.memberId,
-                imageUrl: user.imageUrl,
-                userName: user.userName
-              },
-              content: value,
-              commentId: Date.now(),
-              createdAt: new Date(),
-              updatedAt: new Date()
+              ...comment,
+              replies: comment.replies.map((reply) =>
+                reply.commentId === commentId ? value : reply
+              )
             }
           : comment
       )
     })();
   };
 
-  // TODO: 대댓글 수정 시 댓글 상태변경 구현 필요
-  const onReCommentUpdate = (
-    value: string,
-    commentId: number,
-    parentId: number
-  ) => {
-    console.log('test');
+  const onReCommentDelete = (commentId: number, parentId: number) => {
+    onCommentSubmit({
+      comments: comments.map((comment) =>
+        comment.commentId === parentId
+          ? {
+              ...comment,
+              replies: comment.replies.map((reply) =>
+                reply.commentId === commentId
+                  ? { ...reply, commentStatus: 'COMMENT_DELETED' }
+                  : reply
+              )
+            }
+          : comment
+      )
+    })();
   };
-
   return (
     <StyledContainer>
       <StyledCount>댓글 : {commentCount}</StyledCount>
@@ -88,7 +100,10 @@ const CommentSection = ({
           comment={comment}
           key={comment.commentId}
           onCommentSubmit={onCommentUpdate}
+          onCommentDelete={onCommentDelete}
           onReCommentSubmit={onReCommentSubmit}
+          onReCommentUpdate={onReCommentUpdate}
+          onReCommentDelete={onReCommentDelete}
         />
       ))}
     </StyledContainer>

@@ -20,7 +20,7 @@ const PostItem = ({ data: bookmarked }: { data: GamePagePostType }) => {
   const onClickHandler = () => {
     dispatch(closeNav());
     navigation(
-      `${PATH_URL}/games/${bookmarked.gameId}/posts/${bookmarked.postId}`
+      `${PATH_URL.GAME}${bookmarked.gameId}/posts/${bookmarked.postId}`
     );
   };
   return (
@@ -36,13 +36,18 @@ const PostItem = ({ data: bookmarked }: { data: GamePagePostType }) => {
           />
         </StyledTitleContainer>
         <StyledPostInfoContainer>
-          <span>작성자: {bookmarked.userName}</span>
-          <span>
+          <StyledText>
+            작성자:{' '}
+            {bookmarked.userName?.length >= 20
+              ? '*삭제된 계정*'
+              : bookmarked.userName}
+          </StyledText>
+          <StyledText>
             작성일:{' '}
             {typeof bookmarked.createdAt === 'string' &&
               elapsedText(new Date(bookmarked.createdAt))}
-          </span>
-          <span>추천 수: {bookmarked.likeCount}</span>
+          </StyledText>
+          {/* <span>추천 수: {bookmarked.likeCount}</span> */}
         </StyledPostInfoContainer>
       </div>
       <StyledSubContent>
@@ -75,12 +80,32 @@ const StyledSubContent = styled.div`
 const StyledTitleContainer = styled.div`
   display: flex;
   gap: 2rem;
+  & span {
+    height: fit-content;
+  }
 `;
+
 const StyledTitle = styled.h3`
   font-weight: bold;
   font-size: 2rem;
   cursor: pointer;
+  padding: 0.5rem 0;
+  overflow: hidden;
+  max-width: 10rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-break: keep-all;
 `;
+const StyledText = styled.span`
+  width: 9rem;
+  padding: 0.5rem 0;
+  overflow: hidden;
+  word-break: keep-all;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.8rem;
+`;
+
 const StyledPostInfoContainer = styled.div`
   display: flex;
   color: rgba(0, 0, 0, 0.45);

@@ -15,6 +15,7 @@ const StyledTag = styled.span<StyledTagPropsType>`
   font-weight: bold;
   padding: 5px 10px;
   color: #3e3948;
+  max-height: 25px;
   border-radius: 5px;
   color: ${({ styleId }) =>
     css`var(--category-tag-color-${styleId}, var(--category-tag-color-default));

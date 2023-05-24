@@ -1,11 +1,19 @@
 import styled from 'styled-components';
 
-import { NavStateType } from '../../types/propsTypes';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+import { displayNav, hideNav } from '../../slice/navSlice';
 
-const MenuBtn = ({ setShow, show }: NavStateType) => {
+const MenuBtn = () => {
+  const show = useSelector((s: RootState) => s.nav.isDisplayed);
+  const dispatch = useDispatch();
+
   const onClickHandler = () => {
-    setShow((prev) => !prev);
+    console.log(show);
+    if (show) dispatch(hideNav());
+    else dispatch(displayNav());
   };
+
   return (
     <StyledMenuButton onClick={onClickHandler} show={show}>
       <div />

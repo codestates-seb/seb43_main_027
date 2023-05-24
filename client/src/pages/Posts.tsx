@@ -22,8 +22,6 @@ const Posts = () => {
   };
 
   useEffect(() => {
-    // TODO: 북마크 여부 검사
-    if (post.postId !== -1) return;
     getData(
       `${process.env.REACT_APP_API_URL}/api/posts/${postId}`,
       (res) => {
@@ -42,7 +40,7 @@ const Posts = () => {
         }
       }
     );
-  }, []);
+  }, [postId]);
   return (
     <StyledContainer>
       <Title
@@ -54,6 +52,7 @@ const Posts = () => {
       <PostInfo
         member={post.member}
         createdAt={post.createdAt}
+        updatedAt={post.updatedAt}
         views={post.views}
       />
       <PostContent content={post.content} />

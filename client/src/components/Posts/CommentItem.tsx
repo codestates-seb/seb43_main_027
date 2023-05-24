@@ -5,22 +5,29 @@ import ReCommentInput from './ReCommentInput';
 import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
-import { patchData } from '../../api/apiCollection';
+import { deleteData, patchData } from '../../api/apiCollection';
 import { useNavigate, useParams } from 'react-router-dom';
 import PATH_URL from '../../constants/pathUrl';
+import ReCommentItem from './ReCommentItem';
 
 // TODO: 대댓글 기능 요청 기능 구현 완료 대댓글 구현될 시 대댓글 보여지도록 구현해야함
 const CommentItem = ({
   comment,
   onCommentSubmit,
-  onReCommentSubmit
+  onCommentDelete,
+  onReCommentSubmit,
+  onReCommentUpdate,
+  onReCommentDelete
 }: {
   comment: CommentType;
-  onCommentSubmit: (s: any, id: number) => void;
+  onCommentSubmit: (s: CommentType, id: number) => void;
+  onCommentDelete: (commentId: number) => void;
   onReCommentSubmit: (s: any, id: number) => void;
+  onReCommentUpdate: (s: any, commentId: number, parentId: number) => void;
+  onReCommentDelete: (commentId: number, parentId: number) => void;
 }) => {
   const user = useSelector((s: RootState) => s.user);
-  const { gameId, postId } = useParams();
+  const { postId } = useParams();
   const [reComment, setReComment] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -34,9 +41,9 @@ const CommentItem = ({
     setIsUpdate((prev) => !prev);
   };
 
-  const onReCommentSubmitHandler = () => {
+  const onReCommentSubmitHandler = (s: any, id: number) => {
     onReCommentClickHandler();
-    // onCommentSubmit();
+    onReCommentSubmit(s, id);
   };
   const onNameClickHandler = () => {
     navigation(`${PATH_URL.USER_INFO}${comment.member.memberId}`);
@@ -45,7 +52,7 @@ const CommentItem = ({
   const onSubmitClickHandler = () => {
     if (inputRef && inputRef.current && inputRef.current.value.length > 0) {
       patchData(
-        `${process.env.REACT_APP_API_URL}/api/games/${gameId}/posts/${postId}/comments/${comment.commentId}`,
+        `${process.env.REACT_APP_API_URL}/api/posts/${postId}/comments/${comment.commentId}`,
         JSON.stringify({ content: inputRef?.current?.value }),
         {
           headers: {
@@ -53,9 +60,10 @@ const CommentItem = ({
             Authorization: localStorage.getItem('access_token')
           }
         },
-        () => {
+        (res) => {
+          console.log(res);
           if (inputRef && inputRef.current) {
-            onCommentSubmit(inputRef.current.value, comment.commentId);
+            onCommentSubmit(res.data.data, comment.commentId);
             inputRef.current.value = '';
           }
           setIsUpdate(false);
@@ -67,6 +75,24 @@ const CommentItem = ({
     }
     return;
   };
+
+  const onDeleteClickHandler = () => {
+    deleteData(
+      `${process.env.REACT_APP_API_URL}/api/posts/${postId}/comments/${comment.commentId}`,
+      {
+        headers: {
+          Authorization: localStorage.getItem('access_token')
+        }
+      },
+      () => {
+        onCommentDelete(comment.commentId);
+      },
+      (err) => {
+        console.error(err);
+      }
+    );
+  };
+
   return (
     <StyledCommentContainer>
       <StyledContainer>
@@ -74,35 +100,59 @@ const CommentItem = ({
         <StyledWrapper>
           <StyledInfoBox>
             <span onClick={onNameClickHandler} style={{ cursor: 'pointer' }}>
-              {comment.member.userName}
+              {comment.member.userName.length >= 20
+                ? '*삭제된 계정*'
+                : comment.member.userName}
             </span>
             <span>{elapsedText(new Date(comment.createdAt))}</span>
           </StyledInfoBox>
           {isUpdate ? (
             <>
-              <StyledInput defaultValue={comment.content} ref={inputRef} />
+              <StyledInput
+                defaultValue={comment.content}
+                ref={inputRef}
+                maxLength={1000}
+              />
               <StyledButton onClick={onSubmitClickHandler}>
                 수정하기
               </StyledButton>
             </>
           ) : (
-            <StyledCommentContent>{comment.content}</StyledCommentContent>
+            <StyledCommentContent>
+              {comment.commentStatus === 'COMMENT_REGISTRATION'
+                ? comment.content
+                : '삭제된 댓글입니다'}
+            </StyledCommentContent>
           )}
-
-          <StyledContainer>
-            {user.memberId === comment.member.memberId && (
-              <StyledText onClick={onUpdateClickHandler}>
-                {!isUpdate ? '수정하기' : '취소하기'}
-              </StyledText>
-            )}
-            {user.memberId !== -1 && (
-              <StyledText onClick={onReCommentClickHandler}>
-                대댓글 달기
-              </StyledText>
-            )}
-          </StyledContainer>
+          {comment.commentStatus === 'COMMENT_REGISTRATION' && (
+            <StyledContainer>
+              {user.memberId === comment.member.memberId && (
+                <>
+                  <StyledText onClick={onUpdateClickHandler}>
+                    {!isUpdate ? '수정하기' : '취소하기'}
+                  </StyledText>
+                  <StyledText onClick={onDeleteClickHandler}>
+                    삭제하기
+                  </StyledText>
+                </>
+              )}
+              {user.memberId !== -1 && comment.parentCommentId !== -1 && (
+                <StyledText onClick={onReCommentClickHandler}>
+                  대댓글 달기
+                </StyledText>
+              )}
+            </StyledContainer>
+          )}
         </StyledWrapper>
       </StyledContainer>
+      {comment.replies?.map((reply) => (
+        <ReCommentItem
+          key={reply.commentId}
+          comment={reply}
+          onReCommentSubmit={onReCommentUpdate}
+          onReCommentDelete={onReCommentDelete}
+        />
+      ))}
       {reComment && (
         <ReCommentInput
           parentCommentId={comment.commentId}
@@ -151,7 +201,8 @@ const StyledInfoBox = styled.div`
 
 const StyledCommentContent = styled.div`
   width: 100%;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
+  word-break: break-all;
 `;
 
 const StyledText = styled.span`

@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { UserProfileType } from '../../types/propsTypes';
 
-const UserProfileName = ({ isUserName, isUserEmail } : { isUserName: string, isUserEmail: string }) => {
+const UserProfileName = ({ 
+  isUserName,
+  isUserEmail,
+  isFollowerCount,
+  isFollowingCount
+} : UserProfileType ) => {
 
   const [ isSameUser, setIsSameUser ] = useState<boolean>(false);
   const { memberId } = useParams();
@@ -14,6 +20,8 @@ const UserProfileName = ({ isUserName, isUserEmail } : { isUserName: string, isU
 
     if (loginId.toString() === memberId) {
       setIsSameUser(true);
+    } else {
+      setIsSameUser(false);
     };
 
   } , [memberId]);
@@ -24,6 +32,10 @@ const UserProfileName = ({ isUserName, isUserEmail } : { isUserName: string, isU
       <StyledEmail>
         {isSameUser && isUserEmail}
       </StyledEmail>
+      <StyledFollowed>
+        <p>팔로워: {isFollowerCount}</p>
+        <p>팔로잉: {isFollowingCount}</p>
+      </StyledFollowed>
     </StyledWrapper>
   );
 };
@@ -47,4 +59,14 @@ const StyledEmail = styled.p`
   color: var(--cyan-light-700);
   word-break: keep-all;
   overflow-wrap: break-word;
+`;
+
+export const StyledFollowed = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 13px;
+  color: var(--sub-text-color);
 `;

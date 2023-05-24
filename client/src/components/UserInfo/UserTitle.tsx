@@ -17,7 +17,10 @@ const UserTitle = ({ setIsEditClick }: UserInfoProps) => {
   const [ isUserImg, setIsUserImg ] = useState<string>('');
   const [ isUserName, setIsUserName ] = useState<string>('');
   const [ isUserEmail, setIsUserEmail ] = useState<string>('');
+  const [ isFollowerCount, setIsFollowerCount ] = useState<number>(0);
+  const [ isFollowingCount, setIsFollowingCount ] = useState<number>(0);
   const [ loading, setLoading ] = useState(true);
+  const [ isFollowClick, setIsFollowClick ] = useState<boolean | undefined>(undefined);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -28,6 +31,8 @@ const UserTitle = ({ setIsEditClick }: UserInfoProps) => {
         setIsUserImg(fetchedData.imageUrl);
         setIsUserName(fetchedData.userName);
         setIsUserEmail(fetchedData.email);
+        setIsFollowerCount(fetchedData.followerCount);
+        setIsFollowingCount(fetchedData.followingCount);
 
         if (fetchedData.userName === null) {
           setIsUserName('등록된 닉네임이 없습니다.');
@@ -39,15 +44,16 @@ const UserTitle = ({ setIsEditClick }: UserInfoProps) => {
         };
 
       } catch (error) {
-        console.log(error);
+        navigate(`${PATH_URL.ERROR}`);
       } finally {
         setLoading(false);
       };
     };
 
     fetchUserData();
+    setIsFollowClick(undefined);
 
-  } , [memberId]);
+  } , [memberId, isFollowClick]);
 
   if (loading) {
     return <Loading />;
@@ -59,13 +65,14 @@ const UserTitle = ({ setIsEditClick }: UserInfoProps) => {
       <UserProfileName 
         isUserName={isUserName} 
         isUserEmail={isUserEmail}
+        isFollowerCount={isFollowerCount}
+        isFollowingCount={isFollowingCount}
       />
+      <UserAboutMe />
       <UserProfileAction 
-        setIsEditClick={setIsEditClick} 
+        setIsEditClick={setIsEditClick}
+        setIsFollowClick={setIsFollowClick}
       />
-      <StyledAboutMe>
-        <UserAboutMe />
-      </StyledAboutMe>
     </StyledTitleWrapper>
   );
 };
@@ -81,11 +88,5 @@ export const StyledTitleWrapper = styled.div`
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
   @media screen and (max-width: 650px) {
     width: 100%;
-  }
-`;
-
-export const StyledAboutMe = styled.div`
-  @media screen and (max-width: 650px) {
-    display: none;
   }
 `;

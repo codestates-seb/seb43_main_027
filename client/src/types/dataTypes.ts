@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 
 export type NavItemType = {
-  type: 'user' | 'bookmark' | 'games';
+  type: 'user' | 'bookmark' | 'games' | 'messages';
   element: ReactElement;
   contentElement: (props: any) => JSX.Element;
 };
@@ -65,6 +65,7 @@ export type PathUrlType = {
   ERROR: string;
   NOTFOUND: string;
   USER_INFO: string;
+  FOLLOWER: string;
   SEARCH: string;
 };
 
@@ -89,6 +90,7 @@ export type GamePagePostType = {
   likeCount: number;
   createdAt?: string;
   username?: string;
+  isPostIdIncluded?: boolean | undefined;
 };
 
 export type PostMemberType = {
@@ -118,6 +120,7 @@ export type PostDataType = {
   createdAt: string;
   fileUrlList: [];
   gameId: number;
+  gameName: string;
   likeCount: number;
   unlikeCount: number;
   member: PostMemberType;
@@ -132,8 +135,11 @@ export type PostDataType = {
 
 export type CommentType = {
   commentId: number;
+  commentStatus: string;
+  parentCommentId: number;
   member: PostMemberType;
   content: string;
   createdAt: string;
   updatedAt: string;
+  replies: CommentType[];
 };

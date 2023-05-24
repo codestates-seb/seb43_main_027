@@ -14,7 +14,6 @@ const SingleMessage = ({ content, createdAt, senderId }: Single) => {
 
   return (
     <StyledLI isSender={user.memberId === senderId}>
-      {/* <StyledProfile src='http://something.com' /> */}
       <StyledContent>{content}</StyledContent>
       <StyledDate>{elapsedText(new Date(createdAt))}</StyledDate>
     </StyledLI>

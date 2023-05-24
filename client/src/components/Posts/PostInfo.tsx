@@ -11,11 +11,13 @@ import { deleteData } from '../../api/apiCollection';
 const PostInfo = ({
   member,
   views,
-  createdAt
+  createdAt,
+  updatedAt
 }: {
   member: PostMemberType;
   views: number;
   createdAt: string;
+  updatedAt: string;
 }) => {
   const { memberId } = useSelector((s: RootState) => s.user);
   const { gameId, postId } = useParams();
@@ -26,7 +28,6 @@ const PostInfo = ({
   };
 
   const onClickHandler = () => {
-    // TODO: 게시글 삭제 500 error 남 포스트맨도
     if (confirm('게시글을 삭제하시겠습니까?')) {
       deleteData(
         `${process.env.REACT_APP_API_URL}/api/posts/${postId}`,
@@ -52,7 +53,7 @@ const PostInfo = ({
       <StyledImg src={member.imageUrl} />
       <StyledInfoFlexBox>
         <span onClick={onNameClickHandler} style={{ cursor: 'pointer' }}>
-          {member.userName}
+          {member.userName.length >= 20 ? '*삭제된 계정*' : member.userName}
         </span>
         <StyledFlexBox>
           <StyledInfoBox>
@@ -61,6 +62,9 @@ const PostInfo = ({
               <span>{views}</span>
             </StyledIconBox>
             <span>{elapsedText(new Date(createdAt))}</span>
+            {createdAt !== updatedAt && (
+              <span>({elapsedText(new Date(updatedAt))} 수정됨)</span>
+            )}
           </StyledInfoBox>
           {memberId === member.memberId && (
             <StyledTextContainer>

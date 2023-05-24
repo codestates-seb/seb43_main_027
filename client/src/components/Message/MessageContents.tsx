@@ -3,25 +3,40 @@ import styled from 'styled-components';
 import MessageOutput from './MessageOutput';
 import MessageSend from './MessageSend';
 import { Single } from './SingleMessage';
+import { PageInfoType } from '../../types/dataTypes';
 
 interface MessageContents {
   receiverId: number;
   messageResponse: Single[];
+  receiverName: string;
   addPrevMessages: (newData: Single[]) => void;
+  addNewMessages: (newData: Single) => void;
+  pageInfo: PageInfoType | null;
+  setIsSubmitted: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const MessageContents = ({
   messageResponse,
   receiverId,
-  addPrevMessages
+  receiverName,
+  addPrevMessages,
+  addNewMessages,
+  pageInfo,
+  setIsSubmitted
 }: MessageContents) => {
   return (
     <StyledBodyWrapper>
       <MessageOutput
         messageResponse={messageResponse}
         addPrevMessages={addPrevMessages}
+        pageInfo={pageInfo}
       />
-      <MessageSend receiverId={receiverId} />
+      <MessageSend
+        receiverId={receiverId}
+        addNewMessages={addNewMessages}
+        receiverName={receiverName}
+        setIsSubmitted={setIsSubmitted}
+      />
     </StyledBodyWrapper>
   );
 };

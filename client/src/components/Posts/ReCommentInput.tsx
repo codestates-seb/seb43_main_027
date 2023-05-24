@@ -4,16 +4,17 @@ import styled from 'styled-components';
 import { RootState } from '../../store/store';
 import { useParams } from 'react-router-dom';
 import { postData } from '../../api/apiCollection';
+import { CommentType } from '../../types/dataTypes';
 
 const ReCommentInput = ({
   parentCommentId,
   onCommentSubmit
 }: {
   parentCommentId: number;
-  onCommentSubmit: () => void;
+  onCommentSubmit: (s: CommentType, id: number) => void;
 }) => {
   const commentRef = useRef<HTMLInputElement>(null);
-  const { gameId, postId } = useParams();
+  const { postId } = useParams();
   const user = useSelector((s: RootState) => s.user);
 
   const onClickHandler = () => {
@@ -22,9 +23,10 @@ const ReCommentInput = ({
       return;
     }
     postData(
-      `${process.env.REACT_APP_API_URL}/api/games/${gameId}/posts/${postId}/comments`,
+      `${process.env.REACT_APP_API_URL}/api/posts/${postId}/comments`,
       JSON.stringify({
-        content: commentRef?.current?.value
+        content: commentRef?.current?.value,
+        parentCommentId
       }),
       {
         headers: {
@@ -33,8 +35,10 @@ const ReCommentInput = ({
         }
       },
       (res) => {
-        if (commentRef && commentRef.current) commentRef.current.value = '';
-        onCommentSubmit();
+        if (commentRef && commentRef.current) {
+          onCommentSubmit(res.data.data, parentCommentId);
+          commentRef.current.value = '';
+        }
       },
       () => {
         console.log('test');

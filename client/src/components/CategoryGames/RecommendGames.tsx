@@ -31,7 +31,8 @@ const RecommedGames = () => {
         `${process.env.REACT_APP_API_URL}/api/categories/${categoryId}/games?page=${1}&filter=POPULAR`
         );
         const gamesData = res.data.data;
-        setGamesList(gamesData);
+        const sliceGameList = gamesData.slice(0, 5);
+        setGamesList(sliceGameList);
       } catch (error) {
         console.log(error);
       };
@@ -45,6 +46,7 @@ const RecommedGames = () => {
       .slice(0, 5);
   
     isCurrentSlide(filteredGames[currentSlideIndex]);
+    
   
     if (currentSlideIndex === 0) {
       setIntroduceMode(true);
@@ -70,7 +72,7 @@ const RecommedGames = () => {
     return gamesList.map((item, index) => (
       <StyledSwiperSlide key={index}>
         <Link to={`${PATH_URL.GAME}${item.gameId}`}>
-          <StyledBadge>TOP:{item.gameName}</StyledBadge>
+          <StyledBadge>TOP: {item.gameName}</StyledBadge>
           <StyledSwiperSlideImg src={item.mainImgUrl} alt='slide_image' />
         </Link>
       </StyledSwiperSlide>
@@ -171,6 +173,13 @@ const StyledSwiperContainer = styled(Swiper)`
   .swiper-slide-shadow-right {
     display: none;
   }
+  .swiper-pagination-bullet {
+    background-color: var(--cyan-light-300);
+    opacity: 0.4;
+  }
+  .swiper-pagination-bullet-active {
+    opacity: 1;
+  }
 `;
 
 const StyledSwiperSlide = styled(SwiperSlide)`
@@ -184,31 +193,30 @@ const StyledSwiperSlide = styled(SwiperSlide)`
 `;
 
 const StyledSwiperSlideImg = styled.img`
-  width: 100%;
-  height: 80%;
-  min-width: 250px;
-  min-height: 350px;
+  width: 400px;
+  height: 350px;
   object-fit: cover;
   border-radius: 15px;
   cursor: pointer;
   background-color: #fff;
   @media screen and (max-width: 650px) {
-    min-height: 240px;
+    width: 250px;
+    height: 240px;
   }
 `;
 
 const StyledBadge = styled.div`
-  position: absolute;
+  position: relative;
   padding: 10px 20px 10px 15px;
   word-break: keep-all;
   background-color: #fff;
   color: var(--cyan-dark-500);
   font-size: 16px;
   top: 50px;
-  left: -10px;
+  left: -30px;
   border-top-right-radius: 15px;
   border-bottom-right-radius: 15px;
-  text-align: center;
+  text-align: left;
   font-weight: 700;
   opacity: 0.8;
   max-width: 200px;

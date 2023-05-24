@@ -168,6 +168,7 @@ const InputSection = () => {
             value={post.title}
             placeholder='제목을 입력하세요.'
             onChange={onInputChangeHandler('title')}
+            maxLength={40}
           />
           <StyledTextarea
             value={post.content}

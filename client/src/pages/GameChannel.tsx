@@ -98,7 +98,7 @@ const StyledGameChannelContain = styled.div`
   }
 `;
 
-const StyledMainContent = styled.main`
+export const StyledMainContent = styled.main`
   display: flex;
   flex-direction: column;
   width: 100vw;
@@ -110,7 +110,7 @@ const StyledMainContent = styled.main`
   }
 `;
 
-const StyledSubContent = styled.section`
+export const StyledSubContent = styled.section`
   display: flex;
   flex-direction: row;
   width: 100%;
