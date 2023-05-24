@@ -55,6 +55,8 @@ export type UserInfoProps = {
 export type UserActionProps = {
   setIsEditClick: React.Dispatch<React.SetStateAction<boolean>>;
   setIsFollowClick: React.Dispatch<React.SetStateAction<boolean | undefined>>;
+  imageUrl: string;
+  userName: string;
 };
 
 export type SubmitEvent =

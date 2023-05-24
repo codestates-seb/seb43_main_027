@@ -6,14 +6,18 @@ import CreateChannelButton from '../ui/CreateChannelButton';
 import { TbMessages } from 'react-icons/tb';
 import PATH_URL from '../../constants/pathUrl';
 import { UserActionProps } from '../../types/propsTypes';
+import { useDispatch } from 'react-redux';
+import { startChat } from '../../slice/chatSlice';
 
-const UserProfileAction = ({ setIsEditClick, setIsFollowClick }: UserActionProps ) => {
+
+const UserProfileAction = ({ setIsEditClick, setIsFollowClick, imageUrl, userName }: UserActionProps ) => {
   const [isSameUser, setIsSameUser] = useState<boolean>(false);
   const [isFollowed, setIsFollowed] = useState(false);
   const [loginedId, setIsLoginedId] = useState<string>();
 
   const { memberId } = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchFollowerData = async () => {
@@ -100,8 +104,13 @@ const UserProfileAction = ({ setIsEditClick, setIsFollowClick }: UserActionProps
   };
 
   const handleMessage = () => {
-    // todo: 해당 유저와 채팅창으로 이동하기
-    console.log('해당 유저와 채팅창으로 이동');
+    const receiver = {
+      memberId,
+      imageUrl,
+      userName
+    };
+
+    dispatch(startChat(receiver));
   };
 
   return (
