@@ -4,7 +4,6 @@ import codejejus.inddybuddy.member.dto.MemberDto;
 import codejejus.inddybuddy.member.entity.Member;
 import codejejus.inddybuddy.message.MessageDto;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -19,7 +18,6 @@ public interface MemberMapper {
 
     MemberDto.Response memberToMemberDtoResponse(Member member);
 
-    @Mapping(source = "username", target = "userName")
     MemberDto.ProfileResponse memberToMemberProfileDtoResponse(Member member);
 
     default List<MemberDto.SimpleInfoResponse> getMemberSimpleInfoResponses(List<Member> members) {
