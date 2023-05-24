@@ -51,11 +51,12 @@ public class MemberService {
                 .ifPresent(findMember::setUsername);
         Optional.ofNullable(member.getAboutMe())
                 .ifPresent(findMember::setAboutMe);
-        if (multipartFile != null) {
-            fileService.deleteMemberImg(findMember);
-            File memberImg = fileService.createFile(multipartFile, findMember);
-            findMember.setImageUrl(memberImg.getFileUrl());
-        }
+        Optional.ofNullable(multipartFile)
+                .ifPresent(findMultipart -> {
+                    fileService.deleteMemberImg(findMember);
+                    File memberImg = fileService.createFile(findMultipart, findMember);
+                    findMember.setImageUrl(memberImg.getFileUrl());
+                });
         return memberRepository.save(findMember);
     }
 
@@ -93,15 +94,13 @@ public class MemberService {
     }
 
     private void verifyExistEmail(String email) {
-        boolean isExist = memberRepository.existsByEmail(email);
-        if (isExist) {
+        if (memberRepository.existsByEmail(email)) {
             throw new CustomException(ExceptionCode.MEMBER_EMAIL_EXIST);
         }
     }
 
     private void verifyExistUsername(String username) {
-        boolean isExist = memberRepository.existsByUsername(username);
-        if (isExist) {
+        if (memberRepository.existsByUsername(username)) {
             throw new CustomException(ExceptionCode.MEMBER_USERNAME_EXIST);
         }
     }

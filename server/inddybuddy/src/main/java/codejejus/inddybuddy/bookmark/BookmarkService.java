@@ -56,9 +56,9 @@ public class BookmarkService {
         Member member = memberService.findMember(memberId);
         memberService.verifySameMember(member, memberPrincipal.getMember());
         PageRequest pageRequest = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize(), Filter.NEW.getSort());
-        Page<Bookmark> bookmarkPage = postTag == null ?
-                bookmarkRepository.findAllByMember(member, pageRequest) :
-                bookmarkRepository.findAllByMemberAndPost_PostTag(member, postTag, pageRequest);
+        Page<Bookmark> bookmarkPage = Optional.ofNullable(postTag)
+                .map(tag -> bookmarkRepository.findAllByMemberAndPost_PostTag(member, tag, pageRequest))
+                .orElseGet(() -> bookmarkRepository.findAllByMember(member, pageRequest));
         return bookmarkMapper.bookmarkToPost(bookmarkPage);
     }
 
