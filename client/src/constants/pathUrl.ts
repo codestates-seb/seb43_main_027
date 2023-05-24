@@ -14,7 +14,8 @@ const PATH_URL: PathUrlType = {
   ERROR: '/error',
   NOTFOUND: '*',
   USER_INFO: '/users/',
-  SEARCH: '/search',
+  FOLLOWER: '/follower',
+  SEARCH: '/search'
 };
 
 export default PATH_URL;
