@@ -92,7 +92,7 @@ const UserEditInfo = ({ setIsEditClick }: UserInfoProps) => {
     const { value } = event.target;
 
     if (!passwordValidate.test(value)) {
-      setError('비밀번호는 영문자, 숫자, 특수문자 조합의 8-16자여야 합니다.');
+      setError('영문자, 숫자, 특수문자 조합의 8-16자여야 합니다.');
       setEditPassword(value);
       return;
     }
@@ -174,7 +174,7 @@ const UserEditInfo = ({ setIsEditClick }: UserInfoProps) => {
   };
 
   const handleSubmitNewPassword = () => {
-    if (!error && !remindError) {
+    if (!error && !remindError && editPassword.length !== 0) {
       console.log('비밀번호 변경됨:', editPassword);
       const formData = new FormData();
       const jsonBlob = new Blob(
