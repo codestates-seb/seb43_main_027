@@ -33,7 +33,7 @@ const UserItem = ({
   const memberData = getMemberData
     ? JSON.parse(getMemberData)
     : { memberId: -1 };
-  const logined = memberData.memberId;
+  const loginedId = memberData.memberId;
 
   const sameItem = memberId === String(loginedId);
 
