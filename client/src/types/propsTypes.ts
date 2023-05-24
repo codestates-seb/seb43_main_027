@@ -1,3 +1,4 @@
+import { ReactElement } from 'react';
 import { type CategoryType } from './dataTypes';
 
 export type NavStateType = {
@@ -8,6 +9,7 @@ export type MemberType = {
   src: string;
   name: string;
   type: 'Front-End' | 'Back-End';
+  icon?: ReactElement;
 };
 
 export type SwiperBgType = {
@@ -60,8 +62,8 @@ export type SubmitEvent =
   | React.MouseEvent<HTMLButtonElement>;
 
 export type UserProfileType = {
-  isUserName: string, 
-  isUserEmail: string,
-  isFollowerCount: number,
-  isFollowingCount: number
+  isUserName: string;
+  isUserEmail: string;
+  isFollowerCount: number;
+  isFollowingCount: number;
 };
