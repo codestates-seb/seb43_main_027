@@ -99,7 +99,8 @@ const NavContent = ({
       const msg: { [key: string]: string } = {
         user: '팔로우한 유저가 없습니다.',
         bookmark: '북마크한 게시글이 없습니다.',
-        games: '팔로우한 게임이 없습니다.'
+        games: '팔로우한 게임이 없습니다.',
+        messages: '채팅한 유저가 없습니다.'
       };
       return (
         <StyledNotiMsgContainer>
