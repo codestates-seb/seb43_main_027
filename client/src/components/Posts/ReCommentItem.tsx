@@ -89,7 +89,9 @@ const ReCommentItem = ({
         <StyledWrapper>
           <StyledInfoBox>
             <span onClick={onNameClickHandler} style={{ cursor: 'pointer' }}>
-              {comment.member.userName}
+              {comment.member.userName.length >= 20
+                ? '*삭제된 계정*'
+                : comment.member.userName}
             </span>
             <span>{elapsedText(new Date(comment.createdAt))}</span>
           </StyledInfoBox>
