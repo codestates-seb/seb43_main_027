@@ -135,8 +135,8 @@ const StyledNav = styled.nav<{ show: boolean }>`
     position: absolute;
     display: block;
     width: 50px;
-    height: 100%;
-    top: 0;
+    height: calc(100% + 50px);
+    top: -50px;
   }
 `;
 const StyledStickyBox = styled.div`
