@@ -72,6 +72,8 @@ const UserTitle = ({ setIsEditClick }: UserInfoProps) => {
       <UserProfileAction 
         setIsEditClick={setIsEditClick}
         setIsFollowClick={setIsFollowClick}
+        imageUrl={isUserImg}
+        userName={isUserName}
       />
     </StyledTitleWrapper>
   );

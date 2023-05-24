@@ -55,6 +55,8 @@ export type UserInfoProps = {
 export type UserActionProps = {
   setIsEditClick: React.Dispatch<React.SetStateAction<boolean>>;
   setIsFollowClick: React.Dispatch<React.SetStateAction<boolean | undefined>>;
+  imageUrl: string;
+  userName: string;
 };
 
 export type SubmitEvent =
@@ -67,3 +69,17 @@ export type UserProfileType = {
   isFollowerCount: number;
   isFollowingCount: number;
 };
+
+export type UserItemPropsType = {
+  imageUrl: string,
+  userName: string,
+  followerCount: number,
+  followingCount: number,
+  memberId: string,
+  isFollowingIdIncluded: boolean | undefined,
+};
+
+export type UserStyledButtonPropsType = { 
+  delectUser?: boolean;
+};
+
