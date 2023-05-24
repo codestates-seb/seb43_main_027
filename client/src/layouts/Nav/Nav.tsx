@@ -70,7 +70,6 @@ const Nav = () => {
   useEffect(() => {
     if (!show) {
       dispatch(closeNav());
-      dispatch(stopChat());
     }
   }, [show]);
 
@@ -114,8 +113,8 @@ const Nav = () => {
             navHeight={height}
           />
         )}
-        {isChatOpened && <Message />}
       </StyledNav>
+      {isChatOpened && <Message />}
     </>
   );
 };

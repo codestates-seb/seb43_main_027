@@ -14,6 +14,7 @@ import { patchData, postData } from '../../api/apiCollection';
 import { Select, Space } from 'antd';
 import Loading from '../common/Loading';
 import { postInputInitValue } from '../../data/initialData';
+import Modal from '../common/Modal';
 
 const InputSection = () => {
   const [post, setPost] = useState<PostType>(postInputInitValue);
@@ -21,6 +22,7 @@ const InputSection = () => {
   const [files, setFiles] = useState<File[]>([]);
   const { gameId, postId } = useParams();
   const [isLoading, setIsLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const navigation = useNavigate();
 
   const onTagChangeHandler = (postTag: string) => {
@@ -64,7 +66,7 @@ const InputSection = () => {
     e.preventDefault();
 
     if (!validatePost(post)) {
-      alert('입력값을 정확히 입력해주세요');
+      setIsOpen(true);
       return;
     }
     const formData = new FormData();
@@ -190,6 +192,13 @@ const InputSection = () => {
         </StyledContainer>
       </form>
       {isLoading && <Loading />}
+      <Modal
+        isOpen={isOpen}
+        confirmMessage='입력값을 정확히 입력해주세요.'
+        closeModalHandlerWithConfirm={() => {
+          setIsOpen(false);
+        }}
+      />
     </>
   );
 };
