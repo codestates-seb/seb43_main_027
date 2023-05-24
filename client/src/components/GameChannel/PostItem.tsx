@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import convertTag from '../../utils/convertTag';
 import { elapsedText } from '../../utils/elapsedText';
 import CategoryTag from '../common/CategoryTag';
@@ -11,6 +11,7 @@ import { postOptionTags } from '../../data/postOptionTags';
 import { Tooltip } from 'antd';
 
 const PostItem = ({
+  gameId,
   postId,
   userName,
   title,
@@ -22,11 +23,13 @@ const PostItem = ({
   isPostIdIncluded
 }: GamePagePostType) => {
 
-  const { gameId } = useParams();
-
   const filteredTitle = title.length >= 20
   ? title.slice(0, 20) + '...'
   : title;
+
+  const userNameState = userName.length >= 20
+  ? '*삭제된 계정*'
+  : userName;
 
   const renderTitle = title.length >= 20 ? (
     <Tooltip placement="bottom" title={title}>
@@ -52,7 +55,7 @@ const PostItem = ({
           <StyledFlexRow>
             <StyledInfo>
               <StyledSpan>작성자:</StyledSpan>
-              {userName}
+              <StyledUserName>{userNameState}</StyledUserName>
               <StyledSpan>작성일:</StyledSpan>
               {formattedDate}
               <StyledSpan>추천 수:</StyledSpan>
@@ -83,20 +86,19 @@ const StyledWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
   padding: 25px 10px;
+  gap: 20px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.15);
-
   &:hover {
     box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
-  }
-  @media screen and (max-width: 650px) {
-    width: 100%;
   }
 `;
 
 const StyledContent = styled.div`
   display: flex;
   flex-direction: column;
+  min-width: 389px;
 `;
 
 const StyledFlexRow = styled.div`
@@ -130,4 +132,13 @@ const StyledInfo = styled.div`
 const StyledSpan = styled.span`
   font-weight: 600;
   color: var(--sub-text-color);
+`;
+
+const StyledUserName = styled.span`
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  max-width: 115px;
+  @media screen and (max-width: 650px) {
+    max-width: 80px;
+  }
 `;
