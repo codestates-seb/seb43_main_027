@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import PATH_URL from '../../constants/pathUrl';
 import styled from 'styled-components';
 import UserProfileImg from './UserProfileImg';
 import { StyledFollowed } from './UserProfileName';
 import { StyledItemWrapper } from '../CategoryGames/GameItem';
 import { TbMessages } from 'react-icons/tb';
+import { useDispatch } from 'react-redux';
+import { startChat } from '../../slice/chatSlice';
 
 type UserItemPropsType = {
   imageUrl: string,
   userName: string,
   followerCount: number,
   followingCount: number,
-  isFollowed: boolean,
   memberId: string,
-  setIsFollowClick: React.Dispatch<React.SetStateAction<boolean>>;
-  isSameUser: boolean;
+  isFollowingIdIncluded: boolean | undefined,
 };
 
 const UserItem = ({
@@ -23,35 +24,83 @@ const UserItem = ({
   userName,
   followerCount,
   followingCount,
-  isFollowed,
   memberId,
-  setIsFollowClick,
-  isSameUser
+  isFollowingIdIncluded
 }: UserItemPropsType) => {
 
   const getMemberData = localStorage.getItem('user');
   const memberData = getMemberData ? JSON.parse(getMemberData) : { memberId: -1 };
-  const logined = memberData.memberId;
+  const loginedId = memberData.memberId;
 
-  const sameItem = memberId === String(logined);
+  const sameItem = memberId === String(loginedId);
 
   const userNameState = userName.length >= 20
   ? '*삭제된 계정*'
   : userName;
 
   const navigate = useNavigate();
-  const handleFollow = () => {
-    setIsFollowClick(true);
-  };
+  const dispatch = useDispatch();
 
   const handleMessage = () => {
-    // todo: 해당 유저와 채팅창으로 이동하기
-    console.log('해당 유저와 채팅창으로 이동');
+    const receiver = {
+      memberId,
+      imageUrl,
+      userName
+    };
+
+    dispatch(startChat(receiver));
   };
 
   const handleUserPageClick = () => {
-    navigate(`${PATH_URL.USER_INFO}${memberId}`);
-    window.location.reload();
+    if (userNameState === '*삭제된 계정*') {
+      alert('삭제된 계정입니다.');
+    } else {
+      navigate(`${PATH_URL.USER_INFO}${memberId}`);
+      window.location.reload();
+    }
+  };
+
+  const handleFollow = () => {
+    if (Number(loginedId) !== -1) {
+      const token = localStorage.getItem('access_token');
+      if (isFollowingIdIncluded) {
+        axios
+          .delete(
+            `${process.env.REACT_APP_API_URL}/api/members/${memberId}/unfollow`,
+            {
+              headers: {
+                Authorization: `${token}`
+              }
+            }
+          )
+          .then((response) => {
+            window.location.reload();
+          })
+          .catch((error) => {
+            console.error('언팔로우 요청 실패:', error);
+          });
+      }
+      if (!isFollowingIdIncluded) {
+        axios
+          .post(
+            `${process.env.REACT_APP_API_URL}/api/members/${memberId}/follow`,
+            {},
+            {
+              headers: {
+                Authorization: `${token}`
+              }
+            }
+          )
+          .then((response) => {
+            window.location.reload();
+          })
+          .catch((error) => {
+            console.error('팔로우 요청 실패:', error);
+          });
+      };
+    } else {
+      alert('로그인이 필요한 기능입니다.');
+    }
   };
 
   return (
@@ -64,22 +113,24 @@ const UserItem = ({
         <p>팔로잉: {followingCount}</p>
       </StyledFollowed>
     </StyledContain>
-    { !sameItem ?
+    { !sameItem ? (
     <StyledRow>
       <StyledFollowButton
         onClick={handleFollow}
       >
-        {isFollowed ? '팔로우' : '팔로잉'}
+        {isFollowingIdIncluded ? '팔로우 취소' : '팔로우 하기'}
       </StyledFollowButton>
       <StyledMessageContain>
         <TbMessages onClick={handleMessage} />
       </StyledMessageContain>
     </StyledRow>
-    :  <StyledFollowButton
+    ) :  (
+        <StyledFollowButton
           onClick={handleUserPageClick}
         >
         {'내 프로필보기'}
       </StyledFollowButton>
+      )
     }
     </StyledWrapper>
   );
@@ -122,8 +173,8 @@ const StyledUserName = styled.p`
 `;
 
 const StyledFollowButton = styled.div`
-  font-size: 15px;
-  padding: 10px 25px;
+  font-size: 14px;
+  padding: 10px 15px;
   background-color: var(--cyan-light-700);
   border-radius: 15px;
   color: var(--cyan-light-100);
