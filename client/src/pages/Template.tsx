@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import Header from '../layouts/Header/Header';
 import Nav from '../layouts/Nav/Nav';
 import Footer from '../layouts/Footer/Footer';
@@ -7,12 +6,11 @@ import styled from 'styled-components';
 import WithScrollTop from '../components/common/WithScrollTop';
 
 const Template = () => {
-  const [show, setShow] = useState(false);
   return (
     <>
-      <Header setShow={setShow} show={show} />
+      <Header />
       <StyledFlexBox>
-        <Nav show={show} setShow={setShow} />
+        <Nav />
         <WithScrollTop>
           <Outlet />
         </WithScrollTop>
@@ -30,5 +28,8 @@ const StyledFlexBox = styled.div`
   min-height: calc(100vh - 50px);
   @media screen and (min-width: 650px) {
     flex-direction: row;
+    > div {
+      margin-left: 50px;
+    }
   }
 `;
