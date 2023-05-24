@@ -15,7 +15,7 @@ const searchHintList: Hint[] = [
     value: '유저에서 검색하기'
   },
   {
-    title: 'content',
+    title: 'post',
     value: '게시글에서 검색하기'
   }
 ];
