@@ -85,8 +85,8 @@ const FollowerItem = (
           <p>팔로잉: {props.followingCount}</p>
         </StyledFollowed>
       </StyledContain>
-      {props.userName.length < 11 &&
-        (user.memberId !== props.memberId ? (
+      {props.userName.length < 21 ? (
+        user.memberId !== props.memberId ? (
           <StyledRow>
             <StyledFollowButton onClick={onFollowBtnClickHandler}>
               {isFollowed ? '팔로우 취소' : '팔로우'}
@@ -101,7 +101,28 @@ const FollowerItem = (
               {'내 프로필보기'}
             </StyledFollowButton>
           </StyledRow>
-        ))}
+        )
+      ) : user.memberId !== props.memberId ? (
+        <StyledRow>
+          {isFollowed ? (
+            <StyledFollowButton onClick={onFollowBtnClickHandler}>
+              팔로우 취소
+            </StyledFollowButton>
+          ) : (
+            <StyledFollowButton disabled>팔로우</StyledFollowButton>
+          )}
+
+          <StyledMessageContain>
+            <TbMessages onClick={onMessageClickHandler} />
+          </StyledMessageContain>
+        </StyledRow>
+      ) : (
+        <StyledRow>
+          <StyledFollowButton onClick={onUserClickHandler(user.memberId)}>
+            {'내 프로필보기'}
+          </StyledFollowButton>
+        </StyledRow>
+      )}
     </StyledWrapper>
   );
 };
@@ -142,10 +163,14 @@ const StyledUserName = styled.p`
   text-align: center;
 `;
 
-const StyledFollowButton = styled.div`
+const StyledFollowButton = styled.button<{ disabled?: boolean }>`
   font-size: 15px;
   padding: 10px 25px;
-  background-color: var(--cyan-light-700);
+  outline: none;
+  border: none;
+  background-color: ${({ disabled }) =>
+    disabled ? '#888' : 'var(--cyan-light-700)'};
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   border-radius: 15px;
   color: var(--cyan-light-100);
   display: flex;
@@ -153,10 +178,9 @@ const StyledFollowButton = styled.div`
   align-items: center;
   flex: 1 0 0;
   justify-content: center;
-
-  cursor: pointer;
   &:hover {
-    background-color: var(--button-inactive-hover-color);
+    background-color: ${({ disabled }) =>
+      !disabled && 'var(--button-inactive-hover-color)'};
   }
 `;
 
