@@ -46,7 +46,7 @@ public class PostDto {
         private final String title;
         private final String content;
         private final PostTag postTag;
-        private final Long views;
+        private Long views;
         private final Long likeCount;
         private final Long unlikeCount;
         private final Long commentCount;
@@ -82,6 +82,11 @@ public class PostDto {
 
         public void updateBookmark(BookmarkDto.Response bookmark) {
             this.bookmark = bookmark;
+        }
+
+
+        public void addView() {
+            this.views += 1;
         }
     }
 

@@ -33,7 +33,7 @@ cloud:
       accessKey: ${AWS_ACCESS_KEY}
       secretKey: ${AWS_SECRET_KEY}
     s3:
-      bucket: codejejus-deploy
+      bucket: codejejus-deploy/images
     region:
       auto: false
       static: ap-northeast-2

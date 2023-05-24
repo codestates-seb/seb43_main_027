@@ -77,7 +77,7 @@ public class PostService {
 
     public PostDto.Response findPost(Long postId, MemberPrincipal memberPrincipal) {
         Post post = findVerifidPost(postId);
-        post.addView();
+        postRepository.updateViewCount(post.getViews() + 1, post.getPostId());
         PostDto.Response response = postMapper.entityToResponse(post);
         Optional.ofNullable(memberPrincipal)
                 .ifPresent(member -> {
