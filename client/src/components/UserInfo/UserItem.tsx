@@ -11,6 +11,7 @@ import { AiOutlineClose } from 'react-icons/ai';
 import { useDispatch } from 'react-redux';
 import { startChat } from '../../slice/chatSlice';
 import { UserItemPropsType, UserStyledButtonPropsType } from '../../types/propsTypes';
+import DeleteGamer from '../../asset/Deletegamer.png';
 
 const UserItem = ({
   imageUrl,
@@ -35,6 +36,8 @@ const UserItem = ({
 
   const delectUserAction = userNameState === '*삭제된 계정*' && !isFollowingIdIncluded;
   const delectUser = userNameState === '*삭제된 계정*';
+
+
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -111,7 +114,7 @@ const UserItem = ({
         </StyledDeltedIcon>
         )
       }
-      <UserProfileImg isUserImg={imageUrl} />
+      <UserProfileImg isUserImg={delectUser ? DeleteGamer : imageUrl } />
         <StyledUserName>{userNameState}</StyledUserName>
         <StyledFollowed>
         <p>팔로워: {followerCount}</p>
@@ -191,7 +194,7 @@ const StyledFollowButton = styled.button<UserStyledButtonPropsType>`
   flex-direction: row;
   align-items: center;
   border-style: none;
-  cursor: pointer;
+  cursor: ${({ delectUser }) => (delectUser ? 'not-allowed' : 'pointer')};
   &:hover {
     background-color: ${({ delectUser }) => delectUser ? 'var(--category-tag-bg-default)' : 'var(--button-inactive-hover-color)' };
   }
