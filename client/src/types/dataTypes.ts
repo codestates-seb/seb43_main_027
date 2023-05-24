@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 
 export type NavItemType = {
-  type: 'user' | 'bookmark' | 'games';
+  type: 'user' | 'bookmark' | 'games' | 'messages';
   element: ReactElement;
   contentElement: (props: any) => JSX.Element;
 };
