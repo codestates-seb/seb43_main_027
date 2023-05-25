@@ -18,6 +18,8 @@ import { RootState } from '../store/store';
 
 const Signup = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenFail, setIsOpenFail] = useState(false);
+  const [isOpenError, setIsOpenError] = useState(false);
   const navigation = useNavigate();
 
   const userinfo = useSelector((state: RootState) => state.user);
@@ -36,11 +38,11 @@ const Signup = () => {
         .then(() => {
           setIsOpen(true);
         });
-    } catch (error) {
+    } catch (error: any) {
       if (error.response && error.response.status === 409) {
-        setIsOpen(true);
+        setIsOpenFail(true);
       } else {
-        setIsOpen(true);
+        setIsOpenError(true);
       }
     }
   };
@@ -65,21 +67,27 @@ const Signup = () => {
 
   return (
     <StyledSignupContainer>
-      <SignupModal
-        isOpen={isOpen}
-        confirmMessage={'저희의 친구가 되주셔서 감사합니다!'}
-        closeHandler={modalClose}
-      />
-      <SignupFailModal
-        isOpen={isOpen}
-        confirmMessage={'이미 사용중인 닉네임,또는 아이디입니다.'}
-        closeHandler={modalCloseFail}
-      />
-      <SignupErrorModal
-        isOpen={isOpen}
-        confirmMessage={'알 수 없는 오류가 발생했습니다.'}
-        closeHandler={modalCloseError}
-      />
+      {isOpen && (
+        <SignupModal
+          isOpen={isOpen}
+          confirmMessage={'저희의 친구가 되주셔서 감사합니다!'}
+          closeHandler={modalClose}
+        />
+      )}
+      {isOpenFail && (
+        <SignupFailModal
+          isOpen={isOpenFail}
+          confirmMessage={'이미 사용중인 닉네임,또는 아이디입니다.'}
+          closeHandler={modalCloseFail}
+        />
+      )}
+      {isOpenError && (
+        <SignupErrorModal
+          isOpen={isOpenError}
+          confirmMessage={'알 수 없는 오류가 발생했습니다.'}
+          closeHandler={modalCloseError}
+        />
+      )}
       <StyledSignupFormWrapper>
         {/* top - component */}
         <SignupTopWrapper />
