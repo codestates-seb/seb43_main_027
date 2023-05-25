@@ -49,9 +49,10 @@ export default SearchBar;
 
 const StyledFormContainer = styled.form`
   position: relative;
-  min-width: 70%;
+  min-width: 60%;
   @media screen and (max-width: 650px) {
     width: 100%;
+    min-width: 0%;
   }
 `;
 const StyledInput = styled.input`

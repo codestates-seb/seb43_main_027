@@ -120,7 +120,7 @@ const StyledModalView = styled.div.attrs((props) => ({
 
   @media screen and (max-width: 650px) {
     width: 30rem;
-    height: 10rem;
+    /* height: 10rem; */
   }
 `;
 
