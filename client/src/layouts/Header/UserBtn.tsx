@@ -28,7 +28,7 @@ const UserBtn = ({ url, memberId }: { url?: string; memberId: number }) => {
       </Link>
       <ComponentWithModal
         confirmMessage='로그아웃 하시겠습니까?'
-        cancelOnClick={onClickHandler}
+        confirmOnClick={onClickHandler}
       >
         <StyledBtn>로그아웃</StyledBtn>
       </ComponentWithModal>
