@@ -12,6 +12,7 @@ const SingupModal = ({
   return (
     <>
       <Modal
+        needError={false}
         isOpen={isOpen}
         confirmMessage={confirmMessage}
         closeModalHandlerWithConfirm={closeHandler}

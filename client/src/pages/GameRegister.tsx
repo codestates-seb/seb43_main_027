@@ -7,11 +7,22 @@ import styled from 'styled-components';
 
 import GameTagsContainer from '../components/GameRegister/GameTagsContainer';
 import GameRegisterImageSection from '../components/GameRegister/GameRegisterImageSection';
+import GameRegisterModal from '../components/GameRegister/GameRegisterModal';
+import GameRegisterFailModal from '../components/GameRegister/GameRegisterFailModal';
+import GameRegisterErrorModal from '../components/GameRegister/GameRegisterErrorModal';
+import GameTitleModal from '../components/GameRegister/GameTitleModal';
+import GameTagModal from '../components/GameRegister/GameTagModal';
 
 import { gameTagInfo } from '../data/gameTags';
 const { gameTags, textTranslate } = gameTagInfo;
 
 const GameRegister = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isOpenFail, setIsOpenFail] = useState(false);
+  const [isOpenError, setIsOpenError] = useState(false);
+  const [isTitle, setIsTitle] = useState(false);
+  const [isTag, setIsTag] = useState(false);
+
   const navigation = useNavigate();
   const [title, setTitle] = useState('');
   const [detail, setDetail] = useState('');
@@ -45,9 +56,9 @@ const GameRegister = () => {
 
     if (title === '' || tagStates.filter((a) => a === true).length === 0) {
       if (title === '') {
-        return alert('제목을 입력해야합니다.');
+        return setIsTitle(true);
       }
-      return alert('태그를 최소 1개 이상 선택해주세요!');
+      return setIsTag(true);
     }
 
     const reducer = (a: number[], c: boolean, i: number) => {
@@ -86,22 +97,70 @@ const GameRegister = () => {
     axios
       .post(`${process.env.REACT_APP_API_URL}/api/games`, formData, { headers })
       .then(() => {
-        alert('등록에 성공하였습니다');
-        navigation(-1);
+        setIsOpen(true);
       })
       .catch((error) => {
         if (error.response && error.response.status === 409) {
-          alert('중복된 게임이름입니다');
-          console.log('중복');
+          setIsOpenFail(true);
         } else {
-          alert(error);
-          navigation('/error');
+          setIsOpenError(true);
         }
       });
   };
 
+  const modalClose = () => {
+    navigation(-1);
+  };
+  const modalCloseFail = () => {
+    setIsOpenFail(false);
+  };
+  const modalCloseError = () => {
+    navigation('/error');
+  };
+  const modalCloseTitle = () => {
+    setIsTitle(false);
+  };
+  const modalCloseTag = () => {
+    setIsTag(false);
+  };
+
   return (
     <StyledFormContainer>
+      {isOpen && (
+        <GameRegisterModal
+          isOpen={isOpen}
+          confirmMessage={'등록에 성공하였습니다!'}
+          closeHandler={modalClose}
+        />
+      )}
+      {isOpenFail && (
+        <GameRegisterFailModal
+          isOpen={isOpenFail}
+          confirmMessage={'중복된 게임이름입니다'}
+          closeHandler={modalCloseFail}
+        />
+      )}
+      {isOpenError && (
+        <GameRegisterErrorModal
+          isOpen={isOpenError}
+          confirmMessage={'알 수 없는 오류가 발생했습니다.'}
+          closeHandler={modalCloseError}
+        />
+      )}
+      {isTitle && (
+        <GameTitleModal
+          isOpen={isTitle}
+          confirmMessage={'제목을 입력해야합니다.'}
+          closeHandler={modalCloseTitle}
+        />
+      )}
+      {isTag && (
+        <GameTagModal
+          isOpen={isTag}
+          confirmMessage={'태그를 최소 1개 이상 선택해주세요!'}
+          closeHandler={modalCloseTag}
+        />
+      )}
       <StyledForm onSubmit={submitFormData}>
         {/* 게임 제목 */}
         <StyledGameNameContainer>

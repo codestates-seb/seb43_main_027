@@ -16,7 +16,7 @@ const TagButton = ({
   children
 }: TagButtonPropType) => {
   const isActive = tagStates[tagIndex];
-  const mainColor = Math.round(tagIndex % 4);
+  const mainColor = Math.round(tagIndex % 5);
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const newTagStates = [...tagStates];

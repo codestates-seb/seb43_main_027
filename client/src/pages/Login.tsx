@@ -20,6 +20,8 @@ const Login = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenFail, setIsOpenFail] = useState(false);
   const [isOpenError, setIsOpenError] = useState(false);
+  const [userTemp, setUserTemp] = useState<any>();
+
   const navigation = useNavigate();
 
   const dispatch = useDispatch();
@@ -37,8 +39,7 @@ const Login = () => {
         .then((response) => {
           localStorage.setItem('access_token', response.headers.authorization);
           localStorage.setItem('refresh_token', response.headers.refresh);
-          const userdata = response.data;
-          dispatch(setUser({ ...userdata }));
+          setUserTemp(response.data);
           setIsOpen(true);
         });
     } catch (error: any) {
@@ -59,10 +60,11 @@ const Login = () => {
   }, [userinfo]);
 
   const modalClose = () => {
+    dispatch(setUser({ ...userTemp }));
     navigation('/');
   };
   const modalCloseFail = () => {
-    navigation(-1);
+    setIsOpenFail(false);
   };
   const modalCloseError = () => {
     navigation('/error');

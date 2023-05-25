@@ -1,6 +1,6 @@
 import Modal from '../common/Modal';
 
-const LoginModal = ({
+const GameRegisterModal = ({
   isOpen,
   confirmMessage,
   closeHandler
@@ -21,4 +21,4 @@ const LoginModal = ({
   );
 };
 
-export default LoginModal;
+export default GameRegisterModal;

@@ -56,6 +56,8 @@ const GlobalStyle = createGlobalStyle`
     --category-tag-bg-2: #fff955;
     --category-tag-color-3: #2f2ba8;
     --category-tag-bg-3: #557dff;
+    --category-tag-color-4: #fff;
+    --category-tag-bg-4: #4f2ba8;
 
     /* 게임채널 색상 파레트 */
     --page-bg: #f7f7f8;
