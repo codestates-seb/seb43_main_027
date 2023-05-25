@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { type GamePagePostType, PageInfoType } from '../../types/dataTypes';
 
 import PostItem from '../GameChannel/PostItem';
+import SearchContentsTop from './SearchContentsTop';
 
 interface SearchContentsType {
   isSelectTab: '전체' | '게시글';
@@ -29,21 +30,24 @@ const SearchContents = ({
       {searchContentsInfo.data.length > 0 &&
       searchContentsInfo.data[0].postId > 0 ? (
         isSelectTab === '전체' ? (
-          searchContentsInfo.data
-            .slice(0, 5)
-            .map((post, index) => (
-              <PostItem
-                key={index}
-                postId={post.postId}
-                userName={post.userName}
-                title={post.title}
-                views={post.views}
-                postTag={post.postTag}
-                commentCount={post.commentCount}
-                likeCount={post.likeCount}
-                createdAt={post.createdAt}
-              />
-            ))
+          <>
+            <SearchContentsTop />
+            <StyledContentsContainer>
+              {searchContentsInfo.data.slice(0, 5).map((post, index) => (
+                <PostItem
+                  key={index}
+                  postId={post.postId}
+                  userName={post.userName}
+                  title={post.title}
+                  views={post.views}
+                  postTag={post.postTag}
+                  commentCount={post.commentCount}
+                  likeCount={post.likeCount}
+                  createdAt={post.createdAt}
+                />
+              ))}
+            </StyledContentsContainer>
+          </>
         ) : (
           searchContentsInfo.data.map((post, index) => (
             <PostItem
@@ -70,12 +74,25 @@ export default SearchContents;
 
 const StyledSearchContentsWrapper = styled.div<SearchContentsWrapperType>`
   display: flex;
+  flex-direction: column;
+  margin: 3rem;
+  background-color: #cfecee;
+  border-radius: 15px;
   ${(p) =>
     p.isPreview
-      ? 'flex-direction: column; height:30%; width:80%; '
+      ? 'flex-direction: column; height:30%;'
       : 'flex-direction: column; height:80%; width:80%'};
 `;
 
+const StyledContentsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 3rem;
+  > a {
+    background-color: white;
+    border-radius: 10px;
+  }
+`;
 const StyledEmptyItem = styled.div`
   width: 100%;
   display: flex;
