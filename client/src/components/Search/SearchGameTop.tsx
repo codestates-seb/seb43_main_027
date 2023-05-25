@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import ButtonEl from '../elements/Button';
 
 const SearchGameTop = () => {
-  const movetoGameTap = (e) => {
+  const movetoGameTap = (e: any) => {
     e.preventDefault();
     console.log('dd');
   };

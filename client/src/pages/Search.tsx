@@ -172,7 +172,7 @@ const Search = () => {
               getRequestGame,
               getRequestContents
             ]);
-            const extractedData = responses.map((response: any) => {
+            const extractedData: any = responses.map((response: any) => {
               return { data: response.data, pageInfo: response.pageinfo };
             });
             setData(extractedData);
@@ -204,7 +204,7 @@ const Search = () => {
             getRequestGame,
             getRequestContents
           ]);
-          const extractedData = responses.map((response: any) => {
+          const extractedData: any = responses.map((response: any) => {
             return { data: response.data, pageinfo: response.pageinfo };
           });
           setData(extractedData);
