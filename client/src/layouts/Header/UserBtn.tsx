@@ -4,18 +4,17 @@ import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { clearUser } from '../../slice/userSlice';
 import PATH_URL from '../../constants/pathUrl';
+import ComponentWithModal from '../../components/common/ComponentWithModal';
 
 const UserBtn = ({ url, memberId }: { url?: string; memberId: number }) => {
   const dispatch = useDispatch();
 
   const onClickHandler = () => {
-    if (confirm('로그아웃 하시겠습니까?')) {
-      localStorage.removeItem('access_token');
-      localStorage.removeItem('refresh_token');
-      localStorage.removeItem('user');
-      dispatch(clearUser());
-      window.location.reload();
-    }
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+    localStorage.removeItem('user');
+    dispatch(clearUser());
+    window.location.reload();
   };
 
   return (
@@ -27,7 +26,12 @@ const UserBtn = ({ url, memberId }: { url?: string; memberId: number }) => {
           <AiOutlineUser color={'var(--cyan-dark-500)'} size={20} />
         )}
       </Link>
-      <StyledBtn onClick={onClickHandler}>로그아웃</StyledBtn>
+      <ComponentWithModal
+        confirmMessage='로그아웃 하시겠습니까?'
+        cancelOnClick={onClickHandler}
+      >
+        <StyledBtn>로그아웃</StyledBtn>
+      </ComponentWithModal>
     </StyledContainer>
   );
 };
