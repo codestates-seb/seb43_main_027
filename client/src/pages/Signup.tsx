@@ -59,7 +59,7 @@ const Signup = () => {
     navigation('/login');
   };
   const modalCloseFail = () => {
-    navigation(-1);
+    setIsOpenFail(false);
   };
   const modalCloseError = () => {
     navigation('/error');
