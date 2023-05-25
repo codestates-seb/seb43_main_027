@@ -120,7 +120,6 @@ const GameRegister = () => {
         <StyledGameDetailContainer>
           <Label htmlFor='channeltitle'>게임 설명</Label>
           <textarea
-            rows={6}
             placeholder='ex)Crypt of Necrodancer는 주인공이 리듬에 맞춰 던젼을 탐험하며 아버지의 유산과 자신의 존재의미를 찾는 여정을 담은 rpg와 로그라이크 요소가 결합된 리듬게임입니다.'
             maxLength={1000}
             className='colorchange'
@@ -176,8 +175,8 @@ const StyledFormContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: (100%-50px);
-  margin-top: -5rem;
+  height: (100%-0px);
+  margin-top: 0rem;
   > form {
     width: 50rem;
     @media screen and (max-width: 650px) {
@@ -205,9 +204,10 @@ const StyledGameNameContainer = styled.div`
   }
 
   > input {
-    margin: 0.5rem 1rem;
+    margin: 0.2rem 0 0.5rem 0 !important;
     width: 100%;
     font-size: 1.4rem;
+    font-family: 'yg-jalnan';
   }
 
   .colorchange {
@@ -235,10 +235,12 @@ const StyledGameNameContainer = styled.div`
 const StyledGameDetailContainer = styled(StyledGameNameContainer)`
   width: 100%;
   textarea {
-    min-height: 20rem;
+    min-height: 15rem;
     width: 100%;
+    margin: 0.2rem 0 0.3rem 0 !important;
     padding: 1rem;
     font-size: 1.2rem;
+    font-family: 'yg-jalnan';
   }
   @media screen and (max-width: 650px) {
     flex-direction: column;
@@ -246,15 +248,15 @@ const StyledGameDetailContainer = styled(StyledGameNameContainer)`
       margin: 0rem 1rem;
     }
     textarea {
-      min-height: 30rem;
+      min-height: 20rem;
     }
   }
 `;
 
 const StyledButtonsContainer = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: center;
+  width: 90%;
+  justify-content: space-around;
 
   .enroll {
     background-color: var(--cyan-dark-400);
@@ -274,7 +276,7 @@ const StyledButtonsContainer = styled.div`
 const StyledSubmitButton = styled.button`
   color: white;
   border-style: none;
-  border-radius: 10px;
+  border-radius: 5px;
   width: 20rem;
   height: 4rem;
   font-size: 1.6rem;
@@ -285,7 +287,7 @@ const StyledCancelButton = styled.button`
   background-color: var(--button-inactive-color);
   color: white;
   border-style: none;
-  border-radius: 10px;
+  border-radius: 5px;
   width: 20rem;
   height: 4rem;
   font-size: 1.6rem;

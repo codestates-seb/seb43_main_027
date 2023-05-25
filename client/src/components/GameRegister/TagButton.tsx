@@ -51,8 +51,8 @@ export default TagButton;
 export const StyledButton = styled.button<StyledTagPropsType>`
   font-size: 14px;
   font-weight: bold;
-  margin: 0.5rem 1rem;
-  padding: 5px 10px;
+  margin: 0.4rem 1rem;
+  padding: 4px 10px;
   color: #3e3948;
   border-radius: 5px;
   border-style: none;
