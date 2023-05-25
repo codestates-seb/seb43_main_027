@@ -16,7 +16,7 @@ const GameContainer = () => {
   const [curPage, setCurPage] = useState(1);
   const [pageInfo, setPageInfo] = useState<PageInfoType>({
     page: 1,
-    size: 10,
+    size: 14,
     totalPage: 1,
     totalSize: 1
   });

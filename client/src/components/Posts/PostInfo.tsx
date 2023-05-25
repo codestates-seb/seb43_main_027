@@ -63,7 +63,7 @@ const PostInfo = ({
           <StyledInfoBox>
             <StyledIconBox>
               <AiFillEye />
-              <span>{views}</span>
+              <span>{views + 1}</span>
             </StyledIconBox>
             <span>{elapsedText(new Date(createdAt))}</span>
             {createdAt !== updatedAt && (

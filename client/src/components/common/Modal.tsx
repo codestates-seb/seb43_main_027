@@ -6,20 +6,25 @@ import { FiAlertCircle } from 'react-icons/fi';
 const Modal = ({
   isOpen,
   confirmMessage,
-  closeModalHandlerWithConfirm
+  closeModalHandlerWithConfirm,
+  needError = true
 }: {
   isOpen: boolean;
   confirmMessage: string;
   closeModalHandlerWithConfirm: () => void;
+  needError?: boolean;
 }) => {
   return (
     <>
       {isOpen && (
         <StyledModalBackdrop onClick={closeModalHandlerWithConfirm}>
           <StyledModalView onClick={(e) => e.stopPropagation()}>
-            <StyledConfirmMessageContainer>
-              <FiAlertCircle color={'red'} size={'3rem'} />
-            </StyledConfirmMessageContainer>
+            {needError && (
+              <StyledConfirmMessageContainer>
+                <FiAlertCircle color={'red'} size={'3rem'} />
+              </StyledConfirmMessageContainer>
+            )}
+
             <StyledConfirmMessageContainer>
               <StyledConfirmMessage>{confirmMessage}</StyledConfirmMessage>
             </StyledConfirmMessageContainer>
