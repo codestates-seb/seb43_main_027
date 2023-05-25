@@ -18,6 +18,8 @@ import oauthLogin from '../utils/OauthSignUpFunction';
 
 const Login = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenFail, setIsOpenFail] = useState(false);
+  const [isOpenError, setIsOpenError] = useState(false);
   const navigation = useNavigate();
 
   const dispatch = useDispatch();
@@ -39,11 +41,11 @@ const Login = () => {
           dispatch(setUser({ ...userdata }));
           setIsOpen(true);
         });
-    } catch (error) {
+    } catch (error: any) {
       if (error.response && error.response.status === 401) {
-        setIsOpen(true);
+        setIsOpenFail(true);
       } else {
-        setIsOpen(true);
+        setIsOpenError(true);
       }
     }
   };
@@ -68,21 +70,27 @@ const Login = () => {
 
   return (
     <StyledLoginContainer>
-      <LoginModal
-        isOpen={isOpen}
-        confirmMessage={'저희의 친구가 되주셔서 감사합니다!'}
-        closeHandler={modalClose}
-      />
-      <LoginFailModal
-        isOpen={isOpen}
-        confirmMessage={'아이디 또는 비밀번호가 일치하지 않습니다.'}
-        closeHandler={modalCloseFail}
-      />
-      <LoginErrorModal
-        isOpen={isOpen}
-        confirmMessage={'알 수 없는 오류가 발생했습니다.'}
-        closeHandler={modalCloseError}
-      />
+      {isOpen && (
+        <LoginModal
+          isOpen={isOpen}
+          confirmMessage={'다시 만나서 반가워요!'}
+          closeHandler={modalClose}
+        />
+      )}
+      {isOpenFail && (
+        <LoginFailModal
+          isOpen={isOpenFail}
+          confirmMessage={'아이디 또는 비밀번호가 일치하지 않습니다.'}
+          closeHandler={modalCloseFail}
+        />
+      )}
+      {isOpenError && (
+        <LoginErrorModal
+          isOpen={isOpenError}
+          confirmMessage={'알 수 없는 오류가 발생했습니다.'}
+          closeHandler={modalCloseError}
+        />
+      )}
       <StyledLoginFormWrapper>
         {/* top - component */}
         <LoginTopWrapper />
