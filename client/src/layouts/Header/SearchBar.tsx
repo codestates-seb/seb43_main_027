@@ -18,8 +18,6 @@ const SearchBar = () => {
   const onSubmitHandler = (e: SubmitEvent) => {
     e.preventDefault();
     if (inputRef.current) {
-      console.log(inputRef.current.value);
-
       setSearchParams({ q: inputRef.current.value }, { replace: true });
 
       navigation(`/search?q=${inputRef.current.value}`);

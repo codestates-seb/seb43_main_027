@@ -31,7 +31,6 @@ interface SearchUserWrapperType {
 }
 
 const SearchUser = ({ isSelectTab, searchUserInfo }: SearchUserType) => {
-  console.log(searchUserInfo);
   const [isMyFollowingList, setIsMyFollowingList] = useState<number[]>([]);
 
   const isFollowingIdIncluded = (memberId: number) => {

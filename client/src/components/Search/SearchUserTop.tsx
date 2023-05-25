@@ -4,7 +4,6 @@ import ButtonEl from '../elements/Button';
 const SearchUserTop = () => {
   const movetoUserTap = (e: any) => {
     e.preventDefault();
-    console.log('dd');
   };
   return (
     <StyledWrapper>

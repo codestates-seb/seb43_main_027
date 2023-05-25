@@ -10,8 +10,11 @@ import { ValidationFunction } from '../types/customHooksTypes';
  * @returns {Object} - input value(상태), input에서 작동할 onChangehandler, input 창의 유효성검사 결과
  */
 
-function useInput(init = '', extraActionWithValue?:(value:string)=>void ,
-                  customValidationFunction?:ValidationFunction) {
+function useInput(
+  init = '',
+  extraActionWithValue?: (value: string) => void,
+  customValidationFunction?: ValidationFunction
+) {
   const [value, setValue] = useState(init);
   const [validity, setValidity] = useState(false);
 
@@ -19,14 +22,16 @@ function useInput(init = '', extraActionWithValue?:(value:string)=>void ,
     // e.stopPropagation();
     setValue(e.target.value);
     if (customValidationFunction) {
-      const validationResult = useValidation(e.target.value,customValidationFunction)
+      const validationResult = useValidation(
+        e.target.value,
+        customValidationFunction
+      );
       setValidity(validationResult);
     }
     if (extraActionWithValue) extraActionWithValue(e.target.value);
-    console.log(validity);
   };
 
-  return { value, onChange, validity}
+  return { value, onChange, validity };
 }
 
 export default useInput;

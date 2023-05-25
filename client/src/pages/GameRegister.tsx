@@ -32,7 +32,6 @@ const GameRegister = () => {
 
   const titleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
-    console.log(title);
   };
   const detailOnChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setDetail(e.target.value);

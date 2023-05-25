@@ -9,7 +9,6 @@ const MenuBtn = () => {
   const dispatch = useDispatch();
 
   const onClickHandler = () => {
-    console.log(show);
     if (show) dispatch(hideNav());
     else dispatch(displayNav());
   };

@@ -38,7 +38,6 @@ const Reaction = ({
         }
       },
       (res) => {
-        console.log(res);
         onReactionChange({
           reaction: res.data.data,
           likeCount: reactionStatus === 'HAPPY' ? likeCount + 1 : likeCount,

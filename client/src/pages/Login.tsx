@@ -54,9 +54,7 @@ const Login = () => {
   useEffect(() => {
     if (userinfo.memberId !== -1) {
       navigation('/');
-      console.log('working?');
     }
-    console.log('working');
   }, [userinfo]);
 
   const modalClose = () => {

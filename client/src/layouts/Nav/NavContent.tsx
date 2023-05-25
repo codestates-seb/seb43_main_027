@@ -41,7 +41,7 @@ const NavContent = ({
           }
         );
         setIsLoading(false);
-        console.log('test');
+
         if (type === 'messages') {
           const tmp = new Set(
             res.data.data.map((data: any) => {
@@ -146,7 +146,6 @@ const StyledContainer = styled.div<{ navHeight: number }>`
     top: 0;
     padding-top: 60px;
     height: ${({ navHeight }) => {
-      console.log('test', navHeight);
       return `${navHeight}px`;
     }};
   }
