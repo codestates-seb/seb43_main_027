@@ -13,7 +13,7 @@ const CreateChannelButton = ({ text, onClick } : { text: string, onClick: React.
 export default CreateChannelButton;
 
 const StyledCreateChannelButton = ButtonEl({
-  fontSize: '18px',
+  fontSize: '17px',
   fontWeight: '600',
   padding: '10px 20px',
   hoverBg: 'var(--button-hover-color)',
