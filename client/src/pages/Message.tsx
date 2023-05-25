@@ -66,13 +66,6 @@ const Message = () => {
     setIsLoading(true);
 
     fetchData();
-
-    // const inter = setInterval(() => {
-    //   fetchData();
-    // }, 5000);
-    // return () => {
-    //   clearInterval(inter);
-    // };
   }, [isSubmitted]);
 
   const onWrapperClick = () => {

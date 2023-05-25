@@ -62,7 +62,7 @@ const GameContainer = () => {
             ...pageInfo,
             page: curPage !== pageInfo.page ? curPage : 1,
             totalSize: res.data.data.length,
-            totalPage: Math.ceil(res.data.data.length / 10)
+            totalPage: Math.ceil(res.data.data.length / 14)
           };
 
           const startInd = (newPageInfo.page - 1) * newPageInfo.size;
