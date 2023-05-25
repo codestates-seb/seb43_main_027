@@ -16,7 +16,7 @@ const GameContainer = () => {
   const [curPage, setCurPage] = useState(1);
   const [pageInfo, setPageInfo] = useState<PageInfoType>({
     page: 1,
-    size: 10,
+    size: 14,
     totalPage: 1,
     totalSize: 1
   });
@@ -62,7 +62,7 @@ const GameContainer = () => {
             ...pageInfo,
             page: curPage !== pageInfo.page ? curPage : 1,
             totalSize: res.data.data.length,
-            totalPage: Math.ceil(res.data.data.length / 10)
+            totalPage: Math.ceil(res.data.data.length / 14)
           };
 
           const startInd = (newPageInfo.page - 1) * newPageInfo.size;

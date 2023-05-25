@@ -51,7 +51,7 @@ const Message = () => {
           }
         }
       );
-      setMessageResponse((prev) => [...prev, ...res.data.data]);
+      setMessageResponse([...res.data.data]);
       setPageInfo(res.data.pageInfo);
       setIsLoading(false);
       setIsSubmitted(false);
@@ -66,13 +66,6 @@ const Message = () => {
     setIsLoading(true);
 
     fetchData();
-
-    // const inter = setInterval(() => {
-    //   fetchData();
-    // }, 5000);
-    // return () => {
-    //   clearInterval(inter);
-    // };
   }, [isSubmitted]);
 
   const onWrapperClick = () => {

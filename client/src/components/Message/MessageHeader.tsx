@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import PATH_URL from '../../constants/pathUrl';
 import { useDispatch } from 'react-redux';
 import { stopChat } from '../../slice/chatSlice';
-import { closeNav } from '../../slice/navSlice';
+import DeleteGamer from '../../asset/Deletegamer.png';
 
 const MessageHeader = ({
   imageUrl,
@@ -22,7 +22,7 @@ const MessageHeader = ({
   return (
     <StyledWrapper>
       <StyledLeft>
-        <StyledImg src={imageUrl} />
+        <StyledImg src={userName.length >= 20 ? DeleteGamer : imageUrl} />
         <Link to={`${PATH_URL.USER_INFO}${userId}`} onClick={onClickHandler}>
           <StyledUsername>
             {userName.length >= 20 ? '*삭제된 계정*' : userName}
