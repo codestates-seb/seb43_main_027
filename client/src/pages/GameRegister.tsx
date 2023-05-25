@@ -7,11 +7,17 @@ import styled from 'styled-components';
 
 import GameTagsContainer from '../components/GameRegister/GameTagsContainer';
 import GameRegisterImageSection from '../components/GameRegister/GameRegisterImageSection';
+import GameRegisterModal from '../components/GameRegister/GameRegisterModal';
+import GameRegisterFailModal from '../components/GameRegister/GameRegisterFailModal';
+import GameRegisterErrorModal from '../components/GameRegister/GameRegisterErrorModal';
 
 import { gameTagInfo } from '../data/gameTags';
 const { gameTags, textTranslate } = gameTagInfo;
 
 const GameRegister = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isOpenFail, setIsOpenFail] = useState(false);
+  const [isOpenError, setIsOpenError] = useState(false);
   const navigation = useNavigate();
   const [title, setTitle] = useState('');
   const [detail, setDetail] = useState('');
@@ -86,22 +92,50 @@ const GameRegister = () => {
     axios
       .post(`${process.env.REACT_APP_API_URL}/api/games`, formData, { headers })
       .then(() => {
-        alert('등록에 성공하였습니다');
-        navigation(-1);
+        setIsOpen(true);
       })
       .catch((error) => {
         if (error.response && error.response.status === 409) {
-          alert('중복된 게임이름입니다');
-          console.log('중복');
+          setIsOpenFail(true);
         } else {
-          alert(error);
-          navigation('/error');
+          setIsOpenError(true);
         }
       });
   };
 
+  const modalClose = () => {
+    navigation(-1);
+  };
+  const modalCloseFail = () => {
+    setIsOpenFail(false);
+  };
+  const modalCloseError = () => {
+    navigation('/error');
+  };
+
   return (
     <StyledFormContainer>
+      {isOpen && (
+        <GameRegisterModal
+          isOpen={isOpen}
+          confirmMessage={'등록에 성공하였습니다!'}
+          closeHandler={modalClose}
+        />
+      )}
+      {isOpenFail && (
+        <GameRegisterFailModal
+          isOpen={isOpenFail}
+          confirmMessage={'중복된 게임이름입니다'}
+          closeHandler={modalCloseFail}
+        />
+      )}
+      {isOpenError && (
+        <GameRegisterErrorModal
+          isOpen={isOpenError}
+          confirmMessage={'알 수 없는 오류가 발생했습니다.'}
+          closeHandler={modalCloseError}
+        />
+      )}
       <StyledForm onSubmit={submitFormData}>
         {/* 게임 제목 */}
         <StyledGameNameContainer>
