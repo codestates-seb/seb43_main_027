@@ -46,8 +46,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     private String createURI(String accessToken) {
         return UriComponentsBuilder.newInstance()
                 .scheme("http")
-                .host("localhost")
-                .port(3000)
+                .host("inddy-buddy.s3-website.ap-northeast-2.amazonaws.com")
+                .port(80)
                 .path("googleLogin")
                 .queryParam("token", accessToken)
                 .encode(StandardCharsets.UTF_8)
