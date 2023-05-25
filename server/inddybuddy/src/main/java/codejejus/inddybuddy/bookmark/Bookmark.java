@@ -22,7 +22,7 @@ public class Bookmark extends Timestamped {
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "post_id")
     private Post post;
 
