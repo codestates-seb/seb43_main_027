@@ -1,10 +1,11 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { RootState } from '../../store/store';
 import { useParams } from 'react-router-dom';
 import { postData } from '../../api/apiCollection';
 import { CommentType } from '../../types/dataTypes';
+import Modal from '../common/Modal';
 
 const ReCommentInput = ({
   parentCommentId,
@@ -16,10 +17,11 @@ const ReCommentInput = ({
   const commentRef = useRef<HTMLInputElement>(null);
   const { postId } = useParams();
   const user = useSelector((s: RootState) => s.user);
+  const [isOpen, setIsOpen] = useState(false);
 
   const onClickHandler = () => {
     if (commentRef?.current?.value.length === 0) {
-      alert('내용을 입력해주세요.');
+      setIsOpen(true);
       return;
     }
     postData(
@@ -58,6 +60,11 @@ const ReCommentInput = ({
           <StyledButton onClick={onClickHandler}>등록하기</StyledButton>
         </StyledInputBox>
       </StyledWrapper>
+      <Modal
+        isOpen={isOpen}
+        confirmMessage='내용을 입력해주세요.'
+        closeModalHandlerWithConfirm={() => setIsOpen(false)}
+      />
     </StyledContainer>
   );
 };

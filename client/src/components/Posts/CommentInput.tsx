@@ -1,10 +1,11 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { RootState } from '../../store/store';
 import { useParams } from 'react-router-dom';
 import { postData } from '../../api/apiCollection';
 import { CommentType } from '../../types/dataTypes';
+import Modal from '../common/Modal';
 
 const CommentInput = ({
   onCommentSubmit
@@ -12,12 +13,13 @@ const CommentInput = ({
   onCommentSubmit: (value: CommentType) => void;
 }) => {
   const commentRef = useRef<HTMLInputElement>(null);
-  const { gameId, postId } = useParams();
+  const { postId } = useParams();
+  const [isOpen, setIsOpen] = useState(false);
   const user = useSelector((s: RootState) => s.user);
 
   const onClickHandler = () => {
     if (commentRef?.current?.value.length === 0) {
-      alert('내용을 입력해주세요.');
+      setIsOpen(true);
       return;
     }
     postData(
@@ -56,6 +58,11 @@ const CommentInput = ({
         </StyledWrapper>
         <StyledButton onClick={onClickHandler}>등록하기</StyledButton>
       </StyledInputBox>
+      <Modal
+        isOpen={isOpen}
+        confirmMessage='내용을 입력해주세요.'
+        closeModalHandlerWithConfirm={() => setIsOpen(false)}
+      />
     </StyledContainer>
   );
 };

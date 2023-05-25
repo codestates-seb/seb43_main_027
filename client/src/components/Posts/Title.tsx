@@ -10,6 +10,8 @@ import { deleteData, postData } from '../../api/apiCollection';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import PATH_URL from '../../constants/pathUrl';
+import { useState } from 'react';
+import Modal from '../common/Modal';
 
 const Title = ({
   tag,
@@ -28,6 +30,7 @@ const Title = ({
   const tagId = postOptionTags.findIndex(
     (option) => option.value === convertTag.asKR(tag)
   );
+  const [isOpen, setIsOpen] = useState(false);
 
   const onBackClickHandler = () => {
     navigation(-1);
@@ -39,7 +42,7 @@ const Title = ({
 
   const onBookmarkClick = (status: undefined | string) => () => {
     if (user.memberId === -1) {
-      alert('로그인이 필요한 기능입니다.');
+      setIsOpen(true);
       return;
     }
     if (status !== 'ACTIVE') {
@@ -100,6 +103,11 @@ const Title = ({
           onClick={onBookmarkClick(bookmark?.bookmarkStatus)}
         />
       </StyledFlexWrapper>
+      <Modal
+        isOpen={isOpen}
+        closeModalHandlerWithConfirm={() => setIsOpen(false)}
+        confirmMessage='로그인이 필요한 서비스입니다.'
+      />
     </StyledContainer>
   );
 };

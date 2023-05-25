@@ -7,6 +7,9 @@ import PATH_URL from '../../constants/pathUrl';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { deleteData } from '../../api/apiCollection';
+import ComponentWithModal from '../common/ComponentWithModal';
+import Modal from '../common/Modal';
+import { useState } from 'react';
 
 const PostInfo = ({
   member,
@@ -21,6 +24,8 @@ const PostInfo = ({
 }) => {
   const { memberId } = useSelector((s: RootState) => s.user);
   const { gameId, postId } = useParams();
+  const [isOpen, setIsOpen] = useState(false);
+  const [message, setMessage] = useState('');
   const navigation = useNavigate();
 
   const onNameClickHandler = () => {
@@ -28,23 +33,22 @@ const PostInfo = ({
   };
 
   const onClickHandler = () => {
-    if (confirm('게시글을 삭제하시겠습니까?')) {
-      deleteData(
-        `${process.env.REACT_APP_API_URL}/api/posts/${postId}`,
-        {
-          headers: {
-            Authorization: localStorage.getItem('access_token')
-          }
-        },
-        () => {
-          alert('게시글이 삭제되었습니다.');
-          navigation(`${PATH_URL.GAME}${gameId}`);
-        },
-        () => {
-          alert('게시글을 삭제 도중 문제가 발생하였습니다.');
+    deleteData(
+      `${process.env.REACT_APP_API_URL}/api/posts/${postId}`,
+      {
+        headers: {
+          Authorization: localStorage.getItem('access_token')
         }
-      );
-    }
+      },
+      () => {
+        setIsOpen(true);
+        setMessage('게시글이 삭제되었습니다.');
+      },
+      () => {
+        setMessage('게시글을 삭제 도중 문제가 발생하였습니다.');
+      }
+    );
+
     return;
   };
 
@@ -73,11 +77,26 @@ const PostInfo = ({
               >
                 <StyledText>수정</StyledText>
               </Link>
-              <StyledText onClick={onClickHandler}>삭제</StyledText>
+              <div>
+                <ComponentWithModal
+                  confirmOnClick={onClickHandler}
+                  confirmMessage='게시글을 삭제하시겠습니까?'
+                >
+                  <StyledText>삭제</StyledText>
+                </ComponentWithModal>
+              </div>
             </StyledTextContainer>
           )}
         </StyledFlexBox>
       </StyledInfoFlexBox>
+      <Modal
+        isOpen={isOpen}
+        confirmMessage={message}
+        closeModalHandlerWithConfirm={() => {
+          setIsOpen(false);
+          navigation(`${PATH_URL.GAME}${gameId}`);
+        }}
+      />
     </StyledContainer>
   );
 };

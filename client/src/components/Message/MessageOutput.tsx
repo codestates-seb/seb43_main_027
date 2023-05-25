@@ -7,6 +7,7 @@ import { getData } from '../../api/apiCollection';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import Loading from '../common/Loading';
+import Modal from '../common/Modal';
 
 interface OutputType {
   messageResponse: Single[];
@@ -25,6 +26,7 @@ const MessageOutput = ({
   const [isLoading, setIsLoading] = useState(false);
   const observerTargetEl = useRef<HTMLDivElement>(null);
   const [firstLi, setFirstLi] = useState<Element | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
   const pageRef = useRef(2);
 
   const fetchNewMessages = () => {
@@ -43,7 +45,7 @@ const MessageOutput = ({
           setIsLoading(false);
         },
         (err) => {
-          console.error(err);
+          setIsOpen(true);
           setIsLoading(false);
         },
         {
@@ -104,6 +106,11 @@ const MessageOutput = ({
           )
         )}
       </StyledUL>
+      <Modal
+        isOpen={isOpen}
+        closeModalHandlerWithConfirm={() => setIsOpen(false)}
+        confirmMessage='내용을 불러오는 도중 문제가 발생했습니다.'
+      />
     </>
   );
 };
