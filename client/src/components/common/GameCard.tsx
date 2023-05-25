@@ -5,12 +5,27 @@ import { Link } from 'react-router-dom';
 import PATH_URL from '../../constants/pathUrl';
 import CategoryTag from './CategoryTag';
 import convertCategory from '../../utils/convertCategory';
+import { useState } from 'react';
+import DefaultGame from '../../asset/DefaultGame.png';
 
 const GameCard = ({ mainImgUrl, categories, gameName, gameId }: GameType) => {
+  const defaultImg =
+    mainImgUrl ===
+    'https://codejejus-deploy.s3.ap-northeast-2.amazonaws.com/images/defaultGameImg.png';
+  const [imageError, setImageError] = useState(false);
+
   return (
     <Link to={`${PATH_URL.GAME}${gameId}`}>
       <StyledContainer>
-        {mainImgUrl && <StyledImg src={mainImgUrl} />}
+        {defaultImg || imageError ? (
+          <StyledImg src={DefaultGame} />
+        ) : (
+          <StyledImg
+            src={mainImgUrl}
+            alt='game-image'
+            onError={() => setImageError(true)}
+          />
+        )}
         <StyledBadgeContainer>
           {categories?.slice(0, 2).map((category) => (
             <CategoryTag

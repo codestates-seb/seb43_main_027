@@ -14,7 +14,6 @@ const GameItem = ({
   categories,
   mainImgUrl
 }: GameItemPropsType) => {
-
   const [imageError, setImageError] = useState(false);
 
   const handleClick = () => {
@@ -25,20 +24,22 @@ const GameItem = ({
     setImageError(true);
   };
 
-  const defaultImg = mainImgUrl === 'https://codejejus-deploy.s3.ap-northeast-2.amazonaws.com/images/defaultGameImg.png';
+  const defaultImg =
+    mainImgUrl ===
+    'https://codejejus-deploy.s3.ap-northeast-2.amazonaws.com/images/defaultGameImg.png';
 
   return (
     <Link to={`${PATH_URL.GAME}${gameId}`} onClick={handleClick}>
       <StyledItemWrapper>
         {imageError || defaultImg ? (
-        <StyledImg src={DefaultGame} alt="default-game-image" />
-      ) : (
-        <StyledImg
-          src={mainImgUrl}
-          alt="game-image"
-          onError={handleImageError}
-        />
-      )}
+          <StyledImg src={DefaultGame} alt='default-game-image' />
+        ) : (
+          <StyledImg
+            src={mainImgUrl}
+            alt='game-image'
+            onError={handleImageError}
+          />
+        )}
         <StyledTagContain>
           {categories
             .map((item, index) => (
