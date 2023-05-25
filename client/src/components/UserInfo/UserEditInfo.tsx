@@ -13,6 +13,8 @@ import { UserOutlined, EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icon
 import { Input } from 'antd';
 import { useDispatch } from 'react-redux';
 import { setUser, clearUser } from '../../slice/userSlice';
+import Modal from '../common/Modal';
+import ComponentWithModal from '../common/ComponentWithModal';
 
 const UserEditInfo = ({ setIsEditClick }: UserInfoProps) => {
   const { memberId } = useParams();
@@ -30,6 +32,7 @@ const UserEditInfo = ({ setIsEditClick }: UserInfoProps) => {
   const [ remindError, setRemindError ] = useState('');
   const [ nickNameError, setNickNameError ] = useState('');
   const [ isOpenNewInput, setIsOpenNewInput ] = useState<boolean>(false);
+  const [ isOpenModal, setIsOpenModal ] = useState<boolean>(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [ selectedFile, setSelectedFile ] = useState<File | null>(null);
@@ -192,7 +195,7 @@ const UserEditInfo = ({ setIsEditClick }: UserInfoProps) => {
 
   const handleSubmitNewPassword = () => {
     if (!error && !remindError && editPassword.length !== 0) {
-      console.log('비밀번호 변경됨:', editPassword);
+
       const formData = new FormData();
       const jsonBlob = new Blob(
         [
@@ -216,7 +219,7 @@ const UserEditInfo = ({ setIsEditClick }: UserInfoProps) => {
           }
         )
         .then((response) => {
-          alert('비밀번호 변경 성공!');
+          alert('비밀번호가 변경되었습니다.');
           localStorage.removeItem('access_token');
           localStorage.removeItem('refresh_token');
           localStorage.removeItem('user');
@@ -233,11 +236,6 @@ const UserEditInfo = ({ setIsEditClick }: UserInfoProps) => {
 
   // 회원탈퇴 로직
   const handleRemoveClick = () => {
-    const result = window.confirm(
-      '회원탈퇴를 선택하시면 모든 계정 정보가 영구적으로 삭제됩니다.\n계속 진행하시겠습니까?'
-    );
-
-    if (result) {
       const token = localStorage.getItem('access_token');
       axios
         .delete(`${process.env.REACT_APP_API_URL}/api/members/${memberId}`, {
@@ -246,7 +244,7 @@ const UserEditInfo = ({ setIsEditClick }: UserInfoProps) => {
           }
         })
         .then((response) => {
-          alert('회원탈퇴가 완료되었습니다. 이용해주셔서 감사합니다.');
+          setIsOpenModal(true);
           localStorage.removeItem('user');
           localStorage.removeItem('access_token');
           localStorage.removeItem('refresh_token');
@@ -256,14 +254,12 @@ const UserEditInfo = ({ setIsEditClick }: UserInfoProps) => {
         .catch((error) => {
           console.error('언팔로우 요청 실패:', error);
         });
-    } else {
-      return;
-    }
   };
 
   return (
     <StyledEditWrapper>
       <StyledText>이미지 수정:</StyledText>
+      <UserProfileImg isUserImg={isUserImg} />
       <StyledEditImg>
         <input
           type='file'
@@ -279,7 +275,6 @@ const UserEditInfo = ({ setIsEditClick }: UserInfoProps) => {
           }}
         />
       </StyledEditImg>
-      <UserProfileImg isUserImg={isUserImg} />
       <StyledEmailText>{isUserEmail}</StyledEmailText>
       닉네임 수정:
       {nickNameError.length > 0 && <StyledError>{nickNameError}</StyledError>}
@@ -346,7 +341,20 @@ const UserEditInfo = ({ setIsEditClick }: UserInfoProps) => {
         }
         {isOpenNewInput && <StyledCancleBtn onClick={handleCanclePassword}>변경취소</StyledCancleBtn>}
       </StyledNewPassword>
-      <StyledRemoveBtn onClick={handleRemoveClick}>회원탈퇴</StyledRemoveBtn>
+      <StyledCenter>
+      <ComponentWithModal 
+        confirmMessage={`회원탈퇴를 선택하시면 모든 계정 정보가 영구적으로 삭제됩니다.
+        \n계속 진행하시겠습니까?`}
+        confirmOnClick={handleRemoveClick}
+      >
+        <StyledRemoveBtn >회원탈퇴</StyledRemoveBtn>
+      </ComponentWithModal>
+      </StyledCenter>
+      <Modal 
+        isOpen={isOpenModal} 
+        confirmMessage={'회원탈퇴가 완료되었습니다. 이용해주셔서 감사합니다.'}
+        closeModalHandlerWithConfirm={() => { setIsOpenModal(false)}}
+      />
     </StyledEditWrapper>
   );
 };
@@ -356,6 +364,9 @@ export default UserEditInfo;
 const StyledEditWrapper = styled(StyledTitleWrapper)`
   gap: 15px;
   font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   @media screen and (max-width: 650px) {
     height: 100vh;
   };
@@ -363,7 +374,7 @@ const StyledEditWrapper = styled(StyledTitleWrapper)`
 
 const StyledText = styled.p`
   position: relative;
-  top: 50px;
+  top: 0px;
 `;
 
 const StyledEditAboutMe = styled.div`
@@ -399,6 +410,7 @@ const StyledNewPassword = styled.div`
 const StyledSubmitBtn = styled.div`
   cursor: pointer;
   color: var(--category-tag-bg-default);
+  
   &:hover {
     color: var(--cyan-dark-600);
   }
@@ -410,13 +422,14 @@ const StyledRemoveBtn = styled.div`
   color: var(--default-text-color);
   cursor: pointer;
   border-style: none;
+
 `;
 
 const StyledEditImg = styled.div`
   font-size: 30px;
   position: relative;
-  top: 160px;
-  left: 55px;
+  top: -50px;
+  left: 50px;
   color: var(--button-inactive-color);
   font-weight: bold;
   cursor: pointer;
@@ -425,8 +438,10 @@ const StyledEditImg = styled.div`
   }
 `;
 
-const StyledEmailText = styled.p`
+const StyledEmailText = styled.span`
   color: var(--cyan-light-700);
+  position: relative;
+  top: -20px;
 `;
 
 const StyledInputForm = styled.div`
@@ -454,4 +469,9 @@ const StyledCancleBtn = styled.button`
 
 const StyledError = styled.p`
   color: var(--category-tag-color-2);
+`;
+
+const StyledCenter = styled.div`
+  display: flex;
+  justify-content: center;
 `;
