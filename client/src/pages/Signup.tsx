@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 import { useNavigate } from 'react-router-dom';
@@ -6,6 +6,9 @@ import SignupFieldsContainer from '../components/Signup/SignupFieldsContainer';
 import SignupTopWrapper from '../components/Signup/SignupTopWrapper';
 import SignupOauthContainer from '../components/Signup/SignupOauthContainer';
 import SignupButtonsContainer from '../components/Signup/SignupButtonsContainer';
+import SignupModal from '../components/Signup/SignupModal';
+import SignupFailModal from '../components/Signup/SignupFailModal';
+import SignupErrorModal from '../components/Signup/SignupErrorModal';
 
 import oauthSignup from '../utils/OauthSignUpFunction';
 
@@ -14,6 +17,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 
 const Signup = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const navigation = useNavigate();
 
   const userinfo = useSelector((state: RootState) => state.user);
@@ -29,14 +33,15 @@ const Signup = () => {
           email: signupinfo.email,
           password: signupinfo.password
         })
-        .then((response) => {
-          alert('you successfully signed up!');
-          navigation('/login');
+        .then(() => {
+          setIsOpen(true);
         });
     } catch (error) {
-      console.log(error);
-      alert('you failed to signup!');
-      navigation('/error');
+      if (error.response && error.response.status === 409) {
+        setIsOpen(true);
+      } else {
+        setIsOpen(true);
+      }
     }
   };
 
@@ -48,8 +53,33 @@ const Signup = () => {
     console.log('working');
   }, [userinfo]);
 
+  const modalClose = () => {
+    navigation('/login');
+  };
+  const modalCloseFail = () => {
+    navigation(-1);
+  };
+  const modalCloseError = () => {
+    navigation('/error');
+  };
+
   return (
     <StyledSignupContainer>
+      <SignupModal
+        isOpen={isOpen}
+        confirmMessage={'저희의 친구가 되주셔서 감사합니다!'}
+        closeHandler={modalClose}
+      />
+      <SignupFailModal
+        isOpen={isOpen}
+        confirmMessage={'이미 사용중인 닉네임,또는 아이디입니다.'}
+        closeHandler={modalCloseFail}
+      />
+      <SignupErrorModal
+        isOpen={isOpen}
+        confirmMessage={'알 수 없는 오류가 발생했습니다.'}
+        closeHandler={modalCloseError}
+      />
       <StyledSignupFormWrapper>
         {/* top - component */}
         <SignupTopWrapper />

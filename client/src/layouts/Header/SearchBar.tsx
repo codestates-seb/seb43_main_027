@@ -20,13 +20,9 @@ const SearchBar = () => {
     if (inputRef.current) {
       console.log(inputRef.current.value);
 
-      // 여기에서 변경사항을 적용했습니다.
       setSearchParams({ q: inputRef.current.value }, { replace: true });
 
-      navigation('/search');
-      console.log('useSearchParams working');
-      console.log(searchParams);
-      console.log(searchParams.get('q'));
+      navigation(`/search?q=${inputRef.current.value}`);
     }
 
     // 입력 완료 시 인풋창을 비우고 포커스아웃한다.

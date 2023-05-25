@@ -1,5 +1,6 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { type StyledTagPropsType } from '../../types/propsTypes';
 
 export interface TagButtonPropType {
   tagIndex: number;
@@ -15,7 +16,7 @@ const TagButton = ({
   children
 }: TagButtonPropType) => {
   const isActive = tagStates[tagIndex];
-
+  const mainColor = Math.round(tagIndex % 4);
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const newTagStates = [...tagStates];
@@ -37,7 +38,8 @@ const TagButton = ({
     <StyledButton
       type='button'
       onClick={handleClick}
-      className={isActive ? 'active' : ''}
+      className={isActive ? '' : 'inactive'}
+      styleId={mainColor}
     >
       {children}
     </StyledButton>
@@ -46,8 +48,23 @@ const TagButton = ({
 
 export default TagButton;
 
-export const StyledButton = styled.button`
-  display: flex;
-
-  margin: 0.5rem 0.3rem;
+export const StyledButton = styled.button<StyledTagPropsType>`
+  font-size: 14px;
+  font-weight: bold;
+  margin: 0.4rem 1rem;
+  padding: 4px 10px;
+  color: #3e3948;
+  border-radius: 5px;
+  border-style: none;
+  height: 3rem;
+  @media screen and (max-width: 650px) {
+    height: 2.5rem;
+  }
+  color: ${({ styleId }) =>
+    css`var(--category-tag-color-${styleId}, var(--category-tag-color-default));
+      `};
+  background-color: ${({ styleId }) =>
+    css`var(--category-tag-bg-${styleId}, var(--category-tag-bg-default))`};
+  word-break: keep-all;
+  overflow-wrap: break-word;
 `;

@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import Loading from '../common/Loading';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import { useDispatch } from 'react-redux';
 import { setUser } from '../../slice/userSlice';
+import Loading from '../common/Loading';
 
 const GoogleLogIn = () => {
   const navigator = useNavigate();
@@ -17,7 +17,7 @@ const GoogleLogIn = () => {
     const url = new URL(window.location.href);
     if (!localStorage.getItem('accessToken')) {
       const param = url.searchParams.get('token');
-      if (param) setAccessToken(param);
+      if (param) setAccessToken(`Bearer ${param}`);
     } else setAccessToken(localStorage.getItem('accessToken')!);
   }, []);
 

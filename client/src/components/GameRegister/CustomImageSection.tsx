@@ -52,7 +52,7 @@ const StyledContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  padding: 1rem;
+  padding: 0.4rem;
   border-bottom: 1px solid #ddd;
   gap: 3rem 5%;
 `;

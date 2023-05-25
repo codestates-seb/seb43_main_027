@@ -23,7 +23,7 @@ const StyledContainer = styled.div`
   width: fit-content;
   position: relative;
   @media screen and (min-width: 650px) {
-    width: 20%;
+    width: 30%;
   }
 `;
 
