@@ -129,6 +129,8 @@ const StyledConfirmMessageContainer = styled.div`
   height: 70%;
   justify-content: center;
   align-items: center;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 `;
 
 const StyledConfirmMessage = styled.div`
