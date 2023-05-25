@@ -40,10 +40,11 @@ public class GameService {
         verifyExistGameName(requestDto.getGameName());
         Game game = gameMapper.requestToEntity(requestDto);
         game.setMember(memberPrincipal.getMember());
-        if (multipartFile != null) {
-            File memberImg = fileService.createFile(multipartFile, game);
-            game.setMainImageUrl(memberImg.getFileUrl());
-        }
+        Optional.ofNullable(multipartFile)
+                .ifPresent(findMultiPart -> {
+                    File memberImg = fileService.createFile(findMultiPart, game);
+                    game.setMainImageUrl(memberImg.getFileUrl());
+                });
         Game save = gameRepository.save(game);
         List<Category> categories = categoryService.getCategoriesByName(requestDto.getCategoryNames());
         gameCategoryService.createGameInCategory(game, categories);
@@ -53,15 +54,18 @@ public class GameService {
     public GameDto.Response modifyGame(Long gameId, MemberPrincipal memberPrincipal, GameDto.Request requestDto, MultipartFile multipartFile) {
         Game findGame = findVerifidGame(gameId);
         memberService.verifySameMember(findGame.getMember(), memberPrincipal.getMember());
-        if (requestDto.getCategoryNames() != null) {
-            List<Category> patchCategories = categoryService.getCategoriesByName(requestDto.getCategoryNames());
-            gameCategoryService.modifyGameAndCategory(findGame, patchCategories);
-        }
-        if (multipartFile != null) {
-            fileService.deleteGameImg(findGame);
-            File file = fileService.createFile(multipartFile, findGame);
-            findGame.setMainImageUrl(file.getFileUrl());
-        }
+        Optional.ofNullable(requestDto.getCategoryNames())
+                .ifPresent(categoryNames -> {
+                    List<Category> patchCategories = categoryService.getCategoriesByName(categoryNames);
+                    gameCategoryService.modifyGameAndCategory(findGame, patchCategories);
+                });
+
+        Optional.ofNullable(multipartFile)
+                .ifPresent(findMultiPart -> {
+                    fileService.deleteGameImg(findGame);
+                    File file = fileService.createFile(findMultiPart, findGame);
+                    findGame.setMainImageUrl(file.getFileUrl());
+                });
         findGame.updateGame(requestDto.getGameName(), requestDto.getDownloadUrl());
         return gameMapper.entityToResponse(findGame);
     }
@@ -114,8 +118,7 @@ public class GameService {
     }
 
     private void verifyExistGameName(String gameName) {
-        boolean isExist = gameRepository.existsByGameName(gameName);
-        if (isExist) {
+        if (gameRepository.existsByGameName(gameName)) {
             throw new CustomException(ExceptionCode.GAME_NAME_EXIST);
         }
     }

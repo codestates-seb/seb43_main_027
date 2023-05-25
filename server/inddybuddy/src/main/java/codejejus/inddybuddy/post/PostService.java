@@ -49,10 +49,11 @@ public class PostService {
         Post post = postMapper.postToEntity(postDto);
         post.setGame(gameService.findGame(gameId));
         post.setMember(memberPrincipal.getMember());
-        if (multipartFiles != null) {
-            List<File> files = fileService.createFiles(multipartFiles, post);
-            files.forEach(post::addFile);
-        }
+        Optional.ofNullable(multipartFiles)
+                .ifPresent(files -> {
+                    List<File> createdFiles = fileService.createFiles(files, post);
+                    createdFiles.forEach(post::addFile);
+                });
         Post save = postRepository.save(post);
         return postMapper.entityToResponse(save);
     }
@@ -61,10 +62,11 @@ public class PostService {
         Post findPost = findVerifidPost(postId);
         memberService.verifySameMember(findPost.getMember(), memberPrincipal.getMember());
         fileService.deletePostFilesByPatchFileUrl(findPost, findPost.getFiles(), patchDto.getFileUrlList());
-        if (multipartFiles != null) {
-            List<File> files = fileService.createFiles(multipartFiles, findPost);
-            files.forEach(findPost::addFile);
-        }
+        Optional.ofNullable(multipartFiles)
+                .ifPresent(files -> {
+                    List<File> createdFiles = fileService.createFiles(files, findPost);
+                    createdFiles.forEach(findPost::addFile);
+                });
         findPost.updatePost(patchDto.getTitle(), patchDto.getContent(), patchDto.getPostTag());
 
         PostDto.Response response = postMapper.entityToResponse(findPost);
@@ -77,35 +79,33 @@ public class PostService {
         Post post = findVerifidPost(postId);
         postRepository.updateViewCount(post.getViews() + 1, post.getPostId());
         PostDto.Response response = postMapper.entityToResponse(post);
-        response.addView();
-        if (memberPrincipal != null) {
-            applyLoginMemberReaction(memberPrincipal, post, response);
-            applyLoginMemberBookmark(memberPrincipal, post, response);
-        }
+        Optional.ofNullable(memberPrincipal)
+                .ifPresent(member -> {
+                    applyLoginMemberReaction(member, post, response);
+                    applyLoginMemberBookmark(member, post, response);
+                });
         return response;
     }
 
     private void applyLoginMemberBookmark(MemberPrincipal memberPrincipal, Post post, PostDto.Response response) {
         BookmarkDto.Response bookmark = findBookmark(memberPrincipal.getMember(), post);
-        if (bookmark != null) {
-            response.updateBookmark(bookmark);
-        }
+        Optional.ofNullable(bookmark)
+                .ifPresent(response::updateBookmark);
     }
 
     private void applyLoginMemberReaction(MemberPrincipal memberPrincipal, Post post, PostDto.Response response) {
         ReactionDto.Response reaction = findReaction(memberPrincipal.getMember(), post);
-        if (reaction != null) {
-            response.updateReaction(reaction);
-        }
+        Optional.ofNullable(reaction)
+                .ifPresent(response::updateReaction);
     }
 
     @Transactional(readOnly = true)
     public Page<PostDto.SimpleResponse> getAllPosts(Long gameId, Pageable pageable, Post.PostTag postTag, String filter) {
         Game findGame = gameService.findGame(gameId);
         PageRequest pageRequest = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize(), Filter.getMatchedSort(filter));
-        Page<Post> postPage = postTag == null ?
-                postRepository.findAllByGame(findGame, pageRequest) :
-                postRepository.findAllByGameAndPostTag(findGame, postTag, pageRequest);
+        Page<Post> postPage = Optional.ofNullable(postTag)
+                .map(tag -> postRepository.findAllByGameAndPostTag(findGame, tag, pageRequest))
+                .orElseGet(() -> postRepository.findAllByGame(findGame, pageRequest));
         return postMapper.entityPageToSimpleResponsePage(postPage);
     }
 
@@ -121,9 +121,9 @@ public class PostService {
     public Page<PostDto.MyPageResponse> getPostsByMember(Long memberId, Post.PostTag postTag, Pageable pageable) {
         Member member = memberService.findMember(memberId);
         PageRequest pageRequest = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize(), Sort.by(Sort.Direction.DESC, "createdAt", "postId"));
-        Page<Post> postPage = postTag == null ?
-                postRepository.findAllByMember(member, pageRequest) :
-                postRepository.findAllByMemberAndPostTag(member, postTag, pageRequest);
+        Page<Post> postPage = Optional.ofNullable(postTag)
+                .map(tag -> postRepository.findAllByMemberAndPostTag(member, tag, pageRequest))
+                .orElseGet(() -> postRepository.findAllByMember(member, pageRequest));
         return postMapper.entityToMyPageResponse(postPage);
     }
 

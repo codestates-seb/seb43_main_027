@@ -46,78 +46,61 @@ public class MemberDto {
     }
 
     @Getter
-    public static class Response {
+    public static class BaseResponse {
 
         private final Long memberId;
         private final String email;
         private final String userName;
         private final Member.MemberStatus memberStatus;
         private final String imageUrl;
-        private final String aboutMe;
-        private final LocalDateTime createdAt;
-        private final LocalDateTime updatedAt;
 
-        public Response(Member member) {
+        public BaseResponse(Member member) {
             this.memberId = member.getMemberId();
             this.email = member.getEmail();
             this.userName = member.getUsername();
             this.memberStatus = member.getMemberStatus();
             this.imageUrl = member.getImageUrl();
+        }
+    }
+
+    @Getter
+    public static class Response extends BaseResponse {
+
+        private final String aboutMe;
+        private final LocalDateTime createdAt;
+        private final LocalDateTime updatedAt;
+
+        public Response(Member member) {
+            super(member);
             this.aboutMe = member.getAboutMe();
             this.createdAt = member.getCreatedAt();
             this.updatedAt = member.getUpdatedAt();
         }
     }
 
-    @AllArgsConstructor
     @Getter
-    public static class ProfileResponse {
+    public static class ProfileResponse extends Response {
 
-        private final Long memberId;
-        private final String email;
-        private final String userName;
-        private final Member.MemberStatus memberStatus;
-        private final String imageUrl;
-        private final String aboutMe;
-        private final LocalDateTime createdAt;
-        private final LocalDateTime updatedAt;
-        private final Long followerCount;
-        private final Long followingCount;
-    }
-
-    @Getter
-    public static class SimpleInfoResponse {
-
-        private final Long memberId;
-        private final String email;
-        private final String userName;
-        private final String imageUrl;
         private final Long followerCount;
         private final Long followingCount;
 
-        public SimpleInfoResponse(Member member) {
-            this.memberId = member.getMemberId();
-            this.email = member.getEmail();
-            this.userName = member.getUsername();
-            this.imageUrl = member.getImageUrl();
+        public ProfileResponse(Member member) {
+            super(member);
             this.followerCount = member.getFollowerCount();
             this.followingCount = member.getFollowingCount();
         }
     }
 
     @Getter
-    public static class MessageInfoResponse {
+    public static class SimpleInfoResponse extends BaseResponse {
 
-        private final Long memberId;
-        private final String email;
-        private final String userName;
-        private final String imageUrl;
+        private final Long followerCount;
+        private final Long followingCount;
 
-        public MessageInfoResponse(Member member) {
-            this.memberId = member.getMemberId();
-            this.email = member.getEmail();
-            this.userName = member.getUsername();
-            this.imageUrl = member.getImageUrl();
+        public SimpleInfoResponse(Member member) {
+            super(member);
+            this.followerCount = member.getFollowerCount();
+            this.followingCount = member.getFollowingCount();
         }
     }
 
@@ -125,12 +108,12 @@ public class MemberDto {
     @Getter
     public static class MessageResponse {
 
-        private MessageInfoResponse sender;
-        private MessageInfoResponse receiver;
+        private BaseResponse sender;
+        private BaseResponse receiver;
 
         public MessageResponse(MessageDto.MemberResponse memberResponse) {
-            this.sender = new MessageInfoResponse(memberResponse.getSender());
-            this.receiver = new MessageInfoResponse(memberResponse.getReceiver());
+            this.sender = new BaseResponse(memberResponse.getSender());
+            this.receiver = new BaseResponse(memberResponse.getReceiver());
         }
     }
 
