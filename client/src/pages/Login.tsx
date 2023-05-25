@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
@@ -10,10 +10,14 @@ import LoginFieldsContainer from '../components/Login/LoginFieldsContainer';
 import LoginTopWrapper from '../components/Login/LoginTopWrapper';
 import LoginOauthContainer from '../components/Login/LoginOauthContainer';
 import LoginButtonsContainer from '../components/Login/LoginButtonsContainer';
+import LoginModal from '../components/Login/LoginModal';
+import LoginFailModal from '../components/Login/LoginFailModal';
+import LoginErrorModal from '../components/Login/LoginErrorModal';
 
 import oauthLogin from '../utils/OauthSignUpFunction';
 
 const Login = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const navigation = useNavigate();
 
   const dispatch = useDispatch();
@@ -33,13 +37,14 @@ const Login = () => {
           localStorage.setItem('refresh_token', response.headers.refresh);
           const userdata = response.data;
           dispatch(setUser({ ...userdata }));
-          alert('you successfully logged in!');
-          navigation('/');
+          setIsOpen(true);
         });
     } catch (error) {
-      console.log(error);
-      alert('you failed to login!');
-      navigation('/error');
+      if (error.response && error.response.status === 401) {
+        setIsOpen(true);
+      } else {
+        setIsOpen(true);
+      }
     }
   };
 
@@ -51,8 +56,33 @@ const Login = () => {
     console.log('working');
   }, [userinfo]);
 
+  const modalClose = () => {
+    navigation('/');
+  };
+  const modalCloseFail = () => {
+    navigation(-1);
+  };
+  const modalCloseError = () => {
+    navigation('/error');
+  };
+
   return (
     <StyledLoginContainer>
+      <LoginModal
+        isOpen={isOpen}
+        confirmMessage={'저희의 친구가 되주셔서 감사합니다!'}
+        closeHandler={modalClose}
+      />
+      <LoginFailModal
+        isOpen={isOpen}
+        confirmMessage={'아이디 또는 비밀번호가 일치하지 않습니다.'}
+        closeHandler={modalCloseFail}
+      />
+      <LoginErrorModal
+        isOpen={isOpen}
+        confirmMessage={'알 수 없는 오류가 발생했습니다.'}
+        closeHandler={modalCloseError}
+      />
       <StyledLoginFormWrapper>
         {/* top - component */}
         <LoginTopWrapper />
