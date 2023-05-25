@@ -29,7 +29,7 @@ const StyledFlexBox = styled.div`
   @media screen and (min-width: 650px) {
     flex-direction: row;
     position: relative;
-    > div {
+    > div:not(.modal) {
       margin-left: 50px;
     }
   }
