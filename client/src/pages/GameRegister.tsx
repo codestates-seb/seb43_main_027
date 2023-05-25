@@ -10,6 +10,8 @@ import GameRegisterImageSection from '../components/GameRegister/GameRegisterIma
 import GameRegisterModal from '../components/GameRegister/GameRegisterModal';
 import GameRegisterFailModal from '../components/GameRegister/GameRegisterFailModal';
 import GameRegisterErrorModal from '../components/GameRegister/GameRegisterErrorModal';
+import GameTitleModal from '../components/GameRegister/GameTitleModal';
+import GameTagModal from '../components/GameRegister/GameTagModal';
 
 import { gameTagInfo } from '../data/gameTags';
 const { gameTags, textTranslate } = gameTagInfo;
@@ -18,6 +20,9 @@ const GameRegister = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenFail, setIsOpenFail] = useState(false);
   const [isOpenError, setIsOpenError] = useState(false);
+  const [isTitle, setIsTitle] = useState(false);
+  const [isTag, setIsTag] = useState(false);
+
   const navigation = useNavigate();
   const [title, setTitle] = useState('');
   const [detail, setDetail] = useState('');
@@ -51,9 +56,9 @@ const GameRegister = () => {
 
     if (title === '' || tagStates.filter((a) => a === true).length === 0) {
       if (title === '') {
-        return alert('제목을 입력해야합니다.');
+        return setIsTitle(true);
       }
-      return alert('태그를 최소 1개 이상 선택해주세요!');
+      return setIsTag(true);
     }
 
     const reducer = (a: number[], c: boolean, i: number) => {
@@ -112,6 +117,12 @@ const GameRegister = () => {
   const modalCloseError = () => {
     navigation('/error');
   };
+  const modalCloseTitle = () => {
+    setIsTitle(false);
+  };
+  const modalCloseTag = () => {
+    setIsTag(false);
+  };
 
   return (
     <StyledFormContainer>
@@ -134,6 +145,20 @@ const GameRegister = () => {
           isOpen={isOpenError}
           confirmMessage={'알 수 없는 오류가 발생했습니다.'}
           closeHandler={modalCloseError}
+        />
+      )}
+      {isTitle && (
+        <GameTitleModal
+          isOpen={isTitle}
+          confirmMessage={'제목을 입력해야합니다.'}
+          closeHandler={modalCloseTitle}
+        />
+      )}
+      {isTag && (
+        <GameTagModal
+          isOpen={isTag}
+          confirmMessage={'태그를 최소 1개 이상 선택해주세요!'}
+          closeHandler={modalCloseTag}
         />
       )}
       <StyledForm onSubmit={submitFormData}>
