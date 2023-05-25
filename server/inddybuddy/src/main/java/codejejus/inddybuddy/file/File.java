@@ -21,7 +21,7 @@ public class File {
     private String fileUrl;
     @Column(length = 150)
     private String fileName;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonBackReference
     @JoinColumn(name = "post_id")
     private Post post;
