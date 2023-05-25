@@ -8,7 +8,7 @@ import { setSignupInfo } from '../../slice/signupSlice';
 const usernameRegExp = /^[가-힣A-Za-z0-9]{2,10}$/;
 const emailRegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const passwordRegExp =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,16}$/;
+  /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-={}[\]|:;"'<>,.?/]).{8,16}$/;
 
 const usernameValidityTest = (value: string) => {
   return usernameRegExp.test(value);
