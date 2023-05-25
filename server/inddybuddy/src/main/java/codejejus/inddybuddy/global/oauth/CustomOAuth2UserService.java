@@ -13,6 +13,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -53,7 +54,14 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     }
 
     private Member createMember(OAuthAttributes attributes, String provider) {
-        Member member = attributes.toEntity(attributes.getOAuth2UserInfo(), provider, passwordEncoder);
+        Member member = verifyMemberUsername(attributes, provider);
         return memberRepository.save(member);
+    }
+
+    private Member verifyMemberUsername(OAuthAttributes attributes, String provider) {
+        if (memberRepository.existsByUsername(attributes.getOAuth2UserInfo().getUsername())) {
+            return attributes.toEntity(attributes.getOAuth2UserInfo(), UUID.randomUUID().toString(), provider, passwordEncoder);
+        }
+        return attributes.toEntity(attributes.getOAuth2UserInfo(), attributes.getOAuth2UserInfo().getUsername(), provider, passwordEncoder);
     }
 }

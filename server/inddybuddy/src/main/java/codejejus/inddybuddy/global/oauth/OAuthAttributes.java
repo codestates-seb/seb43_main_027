@@ -44,12 +44,13 @@ public class OAuthAttributes {
     }
 
     public Member toEntity(OAuth2UserInfo oAuth2UserInfo,
+                           String username,
                            String provider,
                            PasswordEncoder passwordEncoder) {
         return new Member(
                 oAuth2UserInfo.getEmail(),
                 passwordEncoder.encode("OAUTH" + UUID.randomUUID()),
-                oAuth2UserInfo.getUsername(),
+                username,
                 oAuth2UserInfo.getImageUrl(),
                 Collections.singletonList("ROLE_USER"),
                 provider,
