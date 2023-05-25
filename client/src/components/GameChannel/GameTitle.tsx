@@ -9,6 +9,7 @@ import CreateChannelButton from '../ui/CreateChannelButton';
 import PATH_URL from '../../constants/pathUrl';
 import categoryData from '../../data/categoryData';
 import DefaultGame from '../../asset/DefaultGame.png';
+import ComponentWithModal from '../common/ComponentWithModal';
 
 const GameTitle = () => {
   const { gameId } = useParams();
@@ -107,7 +108,16 @@ const GameTitle = () => {
     setImageError(true);
   };
 
+  const handlemoveClick = () => {
+    if (!emptyUrl) {
+      window.open(isGameData.downloadUrl, '_blank');
+    } else {
+      alert('경로가 비어있습니다.');
+    }
+  };
+
   const defaultImg = isGameData?.mainImgUrl === 'https://codejejus-deploy.s3.ap-northeast-2.amazonaws.com/images/defaultGameImg.png';
+  const emptyUrl = isGameData.downloadUrl.length === 0;
 
   return (
     <StyledTitleWrapper>
@@ -142,6 +152,26 @@ const GameTitle = () => {
           onClick={handleFollow}
         />
       </StyledFollowContain>
+      <StyledDownload>
+        <p>게임 다운로드 링크:</p>
+        {
+          !emptyUrl ? (
+            <ComponentWithModal 
+            confirmMessage={`다운로드 링크가 정확하지 않을 수 있습니다.
+            \n그래도 이동하시겠습니까?`}
+            confirmOnClick={handlemoveClick}
+          >
+          <StyldedLink>
+            {emptyUrl ? '다운로드 링크가 비어있습니다.' : isGameData.downloadUrl}
+          </StyldedLink>
+          </ComponentWithModal>
+          ) : (
+            <StyldedLink>
+              {emptyUrl ? '다운로드 링크가 비어있습니다.' : isGameData.downloadUrl}
+            </StyldedLink>
+          )
+        }
+      </StyledDownload>
     </StyledTitleWrapper>
   );
 };
@@ -216,4 +246,22 @@ const StyledFollowNumber = styled.p`
   &:hover {
     color: var(--cyan-dark-700);
   }
+`;
+
+const StyledDownload = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-size: 14px;
+  margin-top: 10px;
+  margin-left: -10px;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+`;
+
+const StyldedLink = styled.p`
+  cursor: pointer;
+  color: var(--cyan-dark-700);
+  word-break: keep-all;
+  overflow-wrap: break-word;
 `;
