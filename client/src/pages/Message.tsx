@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 
 import MessageHeader from '../components/Message/MessageHeader';
@@ -12,6 +12,7 @@ import { stopChat } from '../slice/chatSlice';
 import { closeNav } from '../slice/navSlice';
 import Loading from '../components/common/Loading';
 import { PageInfoType } from '../types/dataTypes';
+import Modal from '../components/common/Modal';
 
 // 대화 상대방 아이디 send 하는 쪽에 전달해주면 됨.
 
@@ -23,6 +24,7 @@ const Message = () => {
   const dispatch = useDispatch();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const addPrevMessages = (newData: Single[]) => {
     setMessageResponse((prev) => [...newData, ...prev]);
@@ -39,30 +41,38 @@ const Message = () => {
     }
   }, [user]);
 
+  const fetchData = async () => {
+    try {
+      const res = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/messages/${chatInfo.receiver.memberId}`,
+        {
+          headers: {
+            Authorization: localStorage.getItem('access_token')
+          }
+        }
+      );
+      setMessageResponse((prev) => [...prev, ...res.data.data]);
+      setPageInfo(res.data.pageInfo);
+      setIsLoading(false);
+      setIsSubmitted(false);
+    } catch (error) {
+      setIsOpen(true);
+      dispatch(stopChat());
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     setIsLoading(true);
-    const fetchData = async () => {
-      try {
-        const res = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/messages/${chatInfo.receiver.memberId}`,
-          {
-            headers: {
-              Authorization: localStorage.getItem('access_token')
-            }
-          }
-        );
-        setMessageResponse(res.data.data);
-        setPageInfo(res.data.pageInfo);
-        setIsLoading(false);
-        setIsSubmitted(false);
-      } catch (error) {
-        alert('채팅 내용을 불러오는 도중 에러가 발생했습니다.');
-        dispatch(stopChat());
-        setIsLoading(false);
-      }
-    };
 
     fetchData();
+
+    // const inter = setInterval(() => {
+    //   fetchData();
+    // }, 5000);
+    // return () => {
+    //   clearInterval(inter);
+    // };
   }, [isSubmitted]);
 
   const onWrapperClick = () => {
@@ -73,7 +83,7 @@ const Message = () => {
   };
 
   return (
-    <StyledWrapper onClick={onWrapperClick}>
+    <StyledWrapper onClick={onWrapperClick} className='modal'>
       <StyledMessageContainer onClick={onClickStopEvent}>
         <MessageHeader
           imageUrl={chatInfo.receiver.imageUrl}
@@ -91,6 +101,11 @@ const Message = () => {
         />
       </StyledMessageContainer>
       {isLoading && <Loading />}
+      <Modal
+        isOpen={isOpen}
+        confirmMessage='채팅 내용을 불러오는 도중 문제가 발생했습니다.'
+        closeModalHandlerWithConfirm={() => setIsOpen(false)}
+      />
     </StyledWrapper>
   );
 };
@@ -103,7 +118,7 @@ const StyledWrapper = styled.div`
     justify-content: center;
     align-items: center;
     position: fixed;
-    top: 25px;
+    top: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.4);

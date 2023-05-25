@@ -9,6 +9,7 @@ import { ReactionType } from '../../types/dataTypes';
 import { useParams } from 'react-router-dom';
 import { deleteData, postData } from '../../api/apiCollection';
 import { useState } from 'react';
+import Modal from '../common/Modal';
 
 const Reaction = ({
   reaction,
@@ -22,6 +23,7 @@ const Reaction = ({
   onReactionChange: (s: any) => () => void;
 }) => {
   const { postId } = useParams();
+  const [isOpen, setIsOpen] = useState(false);
 
   const onLikeClickHandler = (reactionStatus: string) => () => {
     postData(
@@ -46,7 +48,7 @@ const Reaction = ({
       },
       (err) => {
         if (err?.response?.status === 409) {
-          alert('이미 좋아요를 눌렀습니다.');
+          setIsOpen(true);
         }
       }
     );
@@ -69,7 +71,7 @@ const Reaction = ({
       },
       (err) => {
         if (err?.response?.status === 409) {
-          alert('이미 좋아요를 눌렀습니다.');
+          setIsOpen(true);
         }
       }
     );
@@ -106,6 +108,11 @@ const Reaction = ({
         )}
         <span>{unlikeCount}</span>
       </StyledIconBox>
+      <Modal
+        isOpen={isOpen}
+        closeModalHandlerWithConfirm={() => setIsOpen(false)}
+        confirmMessage='이미 반응을 남겼습니다.'
+      />
     </StyledContainer>
   );
 };

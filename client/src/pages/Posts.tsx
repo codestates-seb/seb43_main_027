@@ -11,12 +11,13 @@ import CommentSection from '../components/Posts/CommentSection';
 import Reaction from '../components/Posts/Reaction';
 import PATH_URL from '../constants/pathUrl';
 import { postInitValue } from '../data/initialData';
+import Modal from '../components/common/Modal';
 
 const Posts = () => {
   const { postId } = useParams();
   const [post, setPost] = useState<PostDataType>(postInitValue);
   const navigation = useNavigate();
-
+  const [isOpen, setIsOpen] = useState(false);
   const needFetch = (newState: any) => () => {
     setPost((prev) => ({ ...prev, ...newState }));
   };
@@ -25,12 +26,11 @@ const Posts = () => {
     getData(
       `${process.env.REACT_APP_API_URL}/api/posts/${postId}`,
       (res) => {
-        console.log(res.data.data);
         setPost({ ...res.data.data });
       },
       (err) => {
         if (err?.response?.status === 401) {
-          alert('유효하지 않은 토큰입니다.');
+          setIsOpen(true);
           navigation(PATH_URL.LOGIN);
         }
       },
@@ -67,6 +67,11 @@ const Posts = () => {
         commentCount={post.commentCount}
         comments={post.comments}
         onCommentSubmit={needFetch}
+      />
+      <Modal
+        isOpen={isOpen}
+        closeModalHandlerWithConfirm={() => setIsOpen(false)}
+        confirmMessage='유효하지 않은 토큰입니다.'
       />
     </StyledContainer>
   );

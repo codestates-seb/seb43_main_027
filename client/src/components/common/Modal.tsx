@@ -1,6 +1,7 @@
 import React from 'react';
 import ButtonEl from '../elements/Button';
 import styled from 'styled-components';
+import { FiAlertCircle } from 'react-icons/fi';
 
 const Modal = ({
   isOpen,
@@ -17,11 +18,14 @@ const Modal = ({
         <StyledModalBackdrop onClick={closeModalHandlerWithConfirm}>
           <StyledModalView onClick={(e) => e.stopPropagation()}>
             <StyledConfirmMessageContainer>
+              <FiAlertCircle color={'red'} size={'3rem'} />
+            </StyledConfirmMessageContainer>
+            <StyledConfirmMessageContainer>
               <StyledConfirmMessage>{confirmMessage}</StyledConfirmMessage>
             </StyledConfirmMessageContainer>
             <StyledButtonContainer>
               <ModalConfirmButton onClick={closeModalHandlerWithConfirm}>
-                확인
+                닫기
               </ModalConfirmButton>
             </StyledButtonContainer>
           </StyledModalView>
@@ -46,9 +50,9 @@ const StyledModalBackdrop = styled.div`
 `;
 
 const ModalConfirmButton = ButtonEl({
-  flex: '1',
   bg: 'var(--cyan-dark-400)',
-  hoverBg: 'var(--cyan-dark-500)'
+  hoverBg: 'var(--cyan-dark-500)',
+  padding: '.5rem 2rem'
 });
 
 const StyledButtonContainer = styled.div`
@@ -71,7 +75,7 @@ const StyledModalView = styled.div.attrs((props) => ({
 
   @media screen and (max-width: 650px) {
     width: 30rem;
-    min-height: 10rem;
+    /* min-height: 10rem; */
   }
 `;
 
@@ -84,6 +88,5 @@ const StyledConfirmMessageContainer = styled.div`
 
 const StyledConfirmMessage = styled.div`
   display: flex;
-  margin-top: 1.8rem;
   font-size: 1.8rem;
 `;

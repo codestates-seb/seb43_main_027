@@ -12,6 +12,9 @@ import { deleteData, postData } from '../../api/apiCollection';
 import { useState } from 'react';
 import { startChat } from '../../slice/chatSlice';
 import ComponentWithModal from '../common/ComponentWithModal';
+import { AiOutlineClose } from 'react-icons/ai';
+import DeleteGamer from '../../asset/Deletegamer.png';
+import Modal from '../common/Modal';
 
 const FollowerItem = (
   props: User & {
@@ -23,6 +26,7 @@ const FollowerItem = (
   const navigate = useNavigate();
   const user = useSelector((s: RootState) => s.user);
   const [isFollowed, setIsFollowed] = useState(props.isFollowed);
+  const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
 
   const onFollowBtnClickHandler = () => {
@@ -61,7 +65,11 @@ const FollowerItem = (
   };
 
   const onUserClickHandler = (memberId: number) => () => {
-    navigate(`${PATH_URL.USER_INFO}${memberId}`);
+    if (props.userName.length >= 20) {
+      setIsOpen(true);
+    } else {
+      navigate(`${PATH_URL.USER_INFO}${memberId}`);
+    }
   };
 
   const onMessageClickHandler = () => {
@@ -77,7 +85,14 @@ const FollowerItem = (
   return (
     <StyledWrapper>
       <StyledContain onClick={onUserClickHandler(props.memberId)}>
-        <UserProfileImg isUserImg={props.imageUrl} />
+        {props.userName.length >= 20 && (
+          <StyledDeletedIcon>
+            <AiOutlineClose />
+          </StyledDeletedIcon>
+        )}
+        <UserProfileImg
+          isUserImg={props.userName.length >= 20 ? DeleteGamer : props.imageUrl}
+        />
         <StyledUserName>
           {props.userName.length >= 20 ? '*삭제된 계정*' : props.userName}
         </StyledUserName>
@@ -137,6 +152,11 @@ const FollowerItem = (
           </StyledFollowButton>
         </StyledRow>
       )}
+      <Modal
+        isOpen={isOpen}
+        closeModalHandlerWithConfirm={() => setIsOpen(false)}
+        confirmMessage='삭제된 계정입니다.'
+      />
     </StyledWrapper>
   );
 };
@@ -183,7 +203,7 @@ const StyledFollowButton = styled.button<{ disabled?: boolean }>`
   outline: none;
   border: none;
   background-color: ${({ disabled }) =>
-    disabled ? '#888' : 'var(--cyan-light-700)'};
+    disabled ? 'var(--default-text-color)' : 'var(--cyan-light-700)'};
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   border-radius: 15px;
   color: var(--cyan-light-100);
@@ -214,4 +234,11 @@ const StyledRow = styled.div`
   gap: 1rem;
   width: 100%;
   padding: 1rem;
+`;
+
+const StyledDeletedIcon = styled.div`
+  position: absolute;
+  top: 110px;
+  font-size: 100px;
+  color: var(--category-tag-color-2);
 `;

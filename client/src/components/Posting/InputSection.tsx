@@ -23,6 +23,7 @@ const InputSection = () => {
   const { gameId, postId } = useParams();
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
   const navigation = useNavigate();
 
   const onTagChangeHandler = (postTag: string) => {
@@ -67,6 +68,7 @@ const InputSection = () => {
 
     if (!validatePost(post)) {
       setIsOpen(true);
+      setErrorMsg('입력값을 정확하게 입력해주세요.');
       return;
     }
     const formData = new FormData();
@@ -93,7 +95,7 @@ const InputSection = () => {
           }
         },
         () => navigation(`${PATH_URL.GAME}${gameId}`),
-        () => alert('게시글 작성에서 오류가 발생하였습니다.')
+        () => setErrorMsg('게시글 작성에 오류가 발생했습니다.')
       );
     } else {
       formData.append(
@@ -120,7 +122,7 @@ const InputSection = () => {
           }
         },
         () => navigation(`${PATH_URL.GAME}${gameId}`),
-        () => alert('게시글 작성에서 오류가 발생하였습니다.')
+        () => setErrorMsg('게시글 작성에 오류가 발생했습니다.')
       );
     }
   };
@@ -145,8 +147,8 @@ const InputSection = () => {
         setIsLoading(false);
       } catch (err: any) {
         if (err.response.status === 404) {
-          alert('존재하지 않는 게시글입니다.');
-          navigation(PATH_URL.ERROR);
+          () => setErrorMsg('존재하지 않는 게시글입니다.');
+          navigation(PATH_URL.HOME);
         }
         setIsLoading(false);
       }
@@ -194,7 +196,7 @@ const InputSection = () => {
       {isLoading && <Loading />}
       <Modal
         isOpen={isOpen}
-        confirmMessage='입력값을 정확히 입력해주세요.'
+        confirmMessage={errorMsg}
         closeModalHandlerWithConfirm={() => {
           setIsOpen(false);
         }}
