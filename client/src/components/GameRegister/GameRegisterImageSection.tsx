@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import styled from 'styled-components';
 import CustomImageSection from './CustomImageSection';
 
@@ -16,7 +17,7 @@ const GameRegisterImageSection = ({
   );
 };
 
-export default GameRegisterImageSection;
+export default memo(GameRegisterImageSection);
 
 const StyledImageContainer = styled.div`
   display: flex;
