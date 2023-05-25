@@ -1,13 +1,9 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
 
 import CategoryCard from '../common/CategoryCard';
-import Title from '../Home/Title';
-import CreateChannelButton from '../ui/CreateChannelButton';
 
 import { CategoryType } from '../../types/dataTypes';
-import { useNavigate } from 'react-router-dom';
 import categoryData from '../../data/categoryData';
 
 interface RecommandationBar {
@@ -20,11 +16,6 @@ const RecommandationBar = ({
   setRecommandTag
 }: RecommandationBar) => {
   const [categories, setCategories] = useState<CategoryType[]>([]);
-  const navigation = useNavigate();
-
-  const onClickCreateButtonHandler = () => {
-    navigation('/register');
-  };
 
   useEffect(() => {
     setCategories(
@@ -34,16 +25,12 @@ const RecommandationBar = ({
         categoryIcon: categoryData[category.categoryName].icon
       }))
     );
-  }, []);
+  }, [recommandTag]);
 
   return (
     <StyledWrapper>
       <StyledTitleContainer>
         <StyledTitle>추천 카테고리</StyledTitle>
-        {/* <CreateChannelButton
-          text='게임채널 추가'
-          onClick={onClickCreateButtonHandler}
-        /> */}
       </StyledTitleContainer>
       <StyledCategoryCardContainer>
         {categories.length > 0 ? (
@@ -64,12 +51,13 @@ const StyledWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  margin-top: 0rem;
   margin-right: 3rem;
   height: 100rem;
 `;
 
 const StyledTitle = styled.span`
-  font-size: 2rem;
+  font-size: 1.8rem;
 `;
 const StyledCategoryCardContainer = styled.div`
   display: flex;
