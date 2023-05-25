@@ -58,4 +58,6 @@ const StyledBtn = styled.button`
   border: white;
   padding: 0.5rem 1.3rem;
   border-radius: 20px;
+  width: fit-content;
+  word-break: keep-all;
 `;
