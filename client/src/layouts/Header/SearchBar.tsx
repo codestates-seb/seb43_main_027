@@ -18,8 +18,6 @@ const SearchBar = () => {
   const onSubmitHandler = (e: SubmitEvent) => {
     e.preventDefault();
     if (inputRef.current) {
-      console.log(inputRef.current.value);
-
       setSearchParams({ q: inputRef.current.value }, { replace: true });
 
       navigation(`/search?q=${inputRef.current.value}`);
@@ -51,9 +49,10 @@ export default SearchBar;
 
 const StyledFormContainer = styled.form`
   position: relative;
-  min-width: 70%;
+  min-width: 60%;
   @media screen and (max-width: 650px) {
     width: 100%;
+    min-width: 0%;
   }
 `;
 const StyledInput = styled.input`

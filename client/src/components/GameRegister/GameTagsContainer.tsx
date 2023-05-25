@@ -18,7 +18,6 @@ const GameTagsContainer = ({ tagStates, setTagStates }: TagsContainer) => {
     e.preventDefault();
     const tagsInitialStates: boolean[] = new Array(gameTags.length).fill(false);
     setTagStates(tagsInitialStates);
-    console.log(tagStates);
   };
 
   return (

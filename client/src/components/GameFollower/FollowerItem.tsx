@@ -27,6 +27,7 @@ const FollowerItem = (
   const user = useSelector((s: RootState) => s.user);
   const [isFollowed, setIsFollowed] = useState(props.isFollowed);
   const [isOpen, setIsOpen] = useState(false);
+  const [isError, setIsError] = useState(false);
   const dispatch = useDispatch();
 
   const onFollowBtnClickHandler = () => {
@@ -41,8 +42,8 @@ const FollowerItem = (
         () => {
           setIsFollowed(false);
         },
-        (err) => {
-          console.error(err);
+        () => {
+          setIsError(true);
         }
       );
     } else {
@@ -156,6 +157,11 @@ const FollowerItem = (
         isOpen={isOpen}
         closeModalHandlerWithConfirm={() => setIsOpen(false)}
         confirmMessage='삭제된 계정입니다.'
+      />
+      <Modal
+        isOpen={isError}
+        closeModalHandlerWithConfirm={() => setIsError(false)}
+        confirmMessage='오류가 발생했습니다.'
       />
     </StyledWrapper>
   );

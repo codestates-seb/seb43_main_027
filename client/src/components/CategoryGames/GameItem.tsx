@@ -63,8 +63,9 @@ export default GameItem;
 export const StyledItemWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: flex-start;
+  height: 300px;
   gap: 10px;
   cursor: pointer;
   width: 200px;

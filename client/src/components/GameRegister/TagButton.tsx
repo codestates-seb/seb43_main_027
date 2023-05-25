@@ -27,8 +27,6 @@ const TagButton = ({
       if (newTagStates[tagIndex] === true) {
         newTagStates[tagIndex] = !isActive;
         //  FALSE 를 바꾸는 것은 불가능
-      } else {
-        console.log('태그는 최대 5개까지만 선택이 가능합니다.');
       }
     } else newTagStates[tagIndex] = !isActive;
     setTagStates(newTagStates);

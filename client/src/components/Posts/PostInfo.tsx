@@ -45,6 +45,7 @@ const PostInfo = ({
         setMessage('게시글이 삭제되었습니다.');
       },
       () => {
+        setIsOpen(true);
         setMessage('게시글을 삭제 도중 문제가 발생하였습니다.');
       }
     );

@@ -61,7 +61,6 @@ const CommentItem = ({
           }
         },
         (res) => {
-          console.log(res);
           if (inputRef && inputRef.current) {
             onCommentSubmit(res.data.data, comment.commentId);
             inputRef.current.value = '';

@@ -15,7 +15,6 @@ const CommentSection = ({
   onCommentSubmit: (s: any) => () => void;
 }) => {
   const user = useSelector((s: RootState) => s.user);
-  console.log(comments);
   const onCommentValueChange = (value: CommentType) => {
     onCommentSubmit({
       commentCount: commentCount + 1,

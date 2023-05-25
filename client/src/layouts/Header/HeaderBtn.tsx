@@ -17,6 +17,8 @@ const HeaderBtn = ({ path, text, isSignupBtn }: HeaderProps) => {
 
 export default HeaderBtn;
 const StyledBtn = styled.button`
+  width: fit-content;
+  word-break: keep-all;
   background-color: ${(props: { isSignup: boolean }) =>
     props.isSignup ? 'white' : 'var(--cyan-dark-500)'};
   color: ${(props: { isSignup: boolean }) =>

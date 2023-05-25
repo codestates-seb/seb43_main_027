@@ -25,7 +25,6 @@ const SearchGame = ({ isSelectTab, searchGameInfo }: SearchGameType) => {
   const [recommandTag, setRecommandTag] = useState<CategoryType[]>([]);
 
   useEffect(() => {
-    console.log(searchGameInfo);
     const reducer = (accumulator: any, currentValue: any) => {
       const mergedArray = [...accumulator, ...currentValue.categories];
 

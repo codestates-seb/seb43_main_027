@@ -110,9 +110,6 @@ const Search = () => {
   ]);
   const [filteredData, setFilteredData] = useState();
 
-  console.log(searchParams.get('q'));
-  console.log(searchQuery);
-
   useEffect(() => {
     const searchFilterOn = (
       searchQuery: string | null
@@ -135,7 +132,6 @@ const Search = () => {
         filtered === 'posts'
       ) {
         const slicedsearchQuery = searchQuery.slice(5);
-        console.log(slicedsearchQuery);
 
         const fetchFilteredData = async () => {
           try {
@@ -144,7 +140,7 @@ const Search = () => {
               `${process.env.REACT_APP_API_URL}/api/${filtered}/search?q=${slicedsearchQuery}`
             ).then((res) => {
               setIsLoading(false);
-              console.log(res.data);
+
               setData([dummyUserData, { data: res.data }, dummyContentsData]);
             });
           } catch (error) {
@@ -176,7 +172,7 @@ const Search = () => {
               return { data: response.data, pageInfo: response.pageinfo };
             });
             setData(extractedData);
-            console.log('여기도 동작');
+
             setIsLoading(false);
           } catch (error) {
             console.error('Error fetching data:', error);

@@ -15,10 +15,9 @@ const Header = () => {
   return (
     <StyledContainer>
       <MenuBtn />
-      <StyledResponsiveContainer>
-        <Logo />
-        <SearchBar />
-      </StyledResponsiveContainer>
+      <Logo />
+      <SearchBar />
+
       {user.memberId !== -1 ? (
         <UserBtn url={user.imageUrl} memberId={user.memberId} />
       ) : (
@@ -36,17 +35,11 @@ const StyledContainer = styled.header`
   gap: 0.8rem;
   top: 0;
   align-items: center;
+  justify-content: space-between;
   border-bottom: 2px solid var(--cyan-dark-100);
   height: 50px;
   width: 100vw;
   padding: 0 2rem;
   background-color: #fff;
   z-index: 10;
-`;
-const StyledResponsiveContainer = styled.div`
-  flex: 1 0 0;
-  display: flex;
-  justify-content: space-between;
-  gap: 0.8rem;
-  align-items: center;
 `;
