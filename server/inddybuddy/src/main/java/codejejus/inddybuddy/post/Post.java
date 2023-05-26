@@ -43,7 +43,7 @@ public class Post extends Timestamped {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
     private PostTag postTag = PostTag.RECRUITMENT;
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<File> files = new ArrayList<>();
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
