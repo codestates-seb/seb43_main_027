@@ -13,12 +13,6 @@ env:
 on:
   push:
     branches: 
-      - 'be-dev'
-      - 'main'
-    paths-ignore: ["client/**"]
-  pull_request:
-    branches: 
-      - 'be-dev'
       - 'main'
     paths-ignore: ["client/**"]
   
