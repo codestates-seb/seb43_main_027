@@ -37,7 +37,7 @@ public class AlarmService {
 
     public void send(Alarm alarm) {
         alarmRepository.save(alarm);
-        Map<String, SseEmitter> sseEmitters = emitterRepository.findAllEmitterStartWithByMemberId(String.valueOf(alarm.getReceiver().getMemberId()));
+        Map<String, SseEmitter> sseEmitters = emitterRepository.findAllEmitterStartWithById(String.valueOf(alarm.getReceiver().getMemberId()));
 
         sseEmitters.forEach((key, emitter) -> {
             emitterRepository.saveEventCache(key, alarm);
@@ -77,7 +77,7 @@ public class AlarmService {
     }
 
     private void sendLostData(Long memberId, String lastEventId, SseEmitter emitter) {
-        Map<String, Alarm> events = emitterRepository.findAllEventCacheStartWithByMemberId(String.valueOf(memberId));
+        Map<String, Alarm> events = emitterRepository.findAllEventCacheStartWithById(String.valueOf(memberId));
         events.entrySet().stream()
                 .filter(entry -> lastEventId.compareTo(entry.getKey()) < 0)
                 .forEach(entry -> sendToClient(emitter, entry.getKey(), alarmMapper.notificationResponseNotificationDto(entry.getValue())));
