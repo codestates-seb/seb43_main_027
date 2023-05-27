@@ -2,6 +2,7 @@ package codejejus.inddybuddy.notification;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
@@ -16,6 +17,7 @@ public class AlarmEventListener {
     private final AlarmService alarmService;
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @Async
     public void handleAlarmEvent(AlarmEvent event) throws InterruptedException {
         Alarm alarm = event.getAlarm();
         if (!alarm.getReceiver().equals(alarm.getSender())) {
