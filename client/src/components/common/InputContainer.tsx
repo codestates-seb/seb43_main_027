@@ -101,6 +101,9 @@ const ValidMessage = styled.p`
   .msg {
     font-size: 1.2rem;
   }
+  @media screen and (max-width: 650px) {
+    font-size: 1rem !important;
+  }
 `;
 const ValidMessageInvisible = styled.p`
   color: transparent;
