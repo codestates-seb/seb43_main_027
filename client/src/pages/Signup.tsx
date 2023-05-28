@@ -136,9 +136,9 @@ const StyledSignupFormWrapper = styled.div`
 const StyledSignupFormContainer = styled.form`
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 85%;
 
   @media screen and (max-width: 650px) {
-    width: 80%;
+    width: 70%;
   }
 `;
