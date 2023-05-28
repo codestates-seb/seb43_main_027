@@ -9,24 +9,60 @@ import SignupButtonsContainer from '../components/Signup/SignupButtonsContainer'
 import SignupModal from '../components/Signup/SignupModal';
 import SignupFailModal from '../components/Signup/SignupFailModal';
 import SignupErrorModal from '../components/Signup/SignupErrorModal';
+import SignupConfirmModal from '../components/Signup/SignupConfirmModal';
 
 import oauthSignup from '../utils/OauthSignUpFunction';
 
 import axios from 'axios';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSignupValidity } from '../slice/signupValiditySlice';
 import { RootState } from '../store/store';
 
 const Signup = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenFail, setIsOpenFail] = useState(false);
   const [isOpenError, setIsOpenError] = useState(false);
+  const [isOpenConfirm, setIsOpenConfirm] = useState(false);
   const navigation = useNavigate();
+  const dispatch = useDispatch();
 
   const userinfo = useSelector((state: RootState) => state.user);
   const signupinfo = useSelector((state: RootState) => state.signup);
+  const emailconfirmed = useSelector(
+    (state: RootState) => state.signupvalid.emailconfirmed
+  );
 
   const emailSignup: React.MouseEventHandler = async (e: React.MouseEvent) => {
     e.preventDefault();
+
+    if (!emailconfirmed) {
+      try {
+        await axios
+          .post(
+            `${process.env.REACT_APP_API_URL}/api/email?email=${signupinfo.email}`,
+            {
+              email: signupinfo.email
+            },
+            {
+              headers: {
+                'ngrok-skip-browser-warning': '69420'
+              }
+            }
+          )
+          .then(() => {
+            console.log('1단계 성공');
+            return setIsOpenConfirm(true);
+          });
+      } catch (error: any) {
+        // 오류에 따라서 필요하면 다른 모달 제작... ㅠ
+        if (error.response && error.response.status === 409) {
+          setIsOpenFail(true);
+        } else {
+          setIsOpenError(true);
+        }
+      }
+      return setIsOpenConfirm(true);
+    }
 
     try {
       await axios
@@ -62,6 +98,26 @@ const Signup = () => {
   const modalCloseError = () => {
     navigation('/error');
   };
+  const modalCloseConfirm = async (value: string) => {
+    try {
+      await axios
+        .post(`${process.env.REACT_APP_API_URL}/api/email/confirm`, {
+          email: signupinfo.email,
+          code: value
+        })
+        .then(() => {
+          setIsOpenConfirm(false);
+          dispatch(setSignupValidity({ key: 'emailconfirmed', value: true }));
+        });
+    } catch (error: any) {
+      // 여기는 인증번호를 똑바로 입력하라는 모달 있어야함.
+      if (error.response && error.response.status === 409) {
+        setIsOpenFail(true);
+      } else {
+        setIsOpenError(true);
+      }
+    }
+  };
 
   return (
     <StyledSignupContainer>
@@ -86,6 +142,7 @@ const Signup = () => {
           closeHandler={modalCloseError}
         />
       )}
+
       <StyledSignupFormWrapper>
         {/* top - component */}
         <SignupTopWrapper />
@@ -96,7 +153,17 @@ const Signup = () => {
           {/* Input - components */}
           <SignupFieldsContainer />
           {/* Button - components */}
-          <SignupButtonsContainer onClick={emailSignup} />
+          {isOpenConfirm ? (
+            <SignupConfirmModal
+              isOpen={isOpenConfirm}
+              confirmMessage={'인증번호:'}
+              closeHandler={modalCloseConfirm}
+            >
+              <SignupButtonsContainer onClick={emailSignup} />
+            </SignupConfirmModal>
+          ) : (
+            <SignupButtonsContainer onClick={emailSignup} />
+          )}
         </StyledSignupFormContainer>
       </StyledSignupFormWrapper>
     </StyledSignupContainer>
