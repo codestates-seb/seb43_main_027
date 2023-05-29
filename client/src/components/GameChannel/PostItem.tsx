@@ -5,7 +5,7 @@ import convertTag from '../../utils/convertTag';
 import { elapsedText } from '../../utils/elapsedText';
 import CategoryTag from '../common/CategoryTag';
 import { type GamePagePostType } from '../../types/dataTypes';
-import { StarTwoTone } from '@ant-design/icons';
+import { AiFillStar } from 'react-icons/ai';
 import PATH_URL from '../../constants/pathUrl';
 import { postOptionTags } from '../../data/postOptionTags';
 import { Tooltip } from 'antd';
@@ -69,9 +69,9 @@ const PostItem = ({
           <StyledInfo>
             <StyledSpan>댓글:</StyledSpan>
             {commentCount}
-            <StarTwoTone
-              twoToneColor={isPostIdIncluded ? '#13A8A8' : '#b4b4b4'}
-              style={{ fontSize: '15px' }}
+            <AiFillStar
+              fill={isPostIdIncluded ? '#13A8A8' : '#b4b4b4'}
+              style={{ fontSize: '20px', top: '-3px', position: 'relative' }}
             />
           </StyledInfo>
         </StyledFlexRow>
