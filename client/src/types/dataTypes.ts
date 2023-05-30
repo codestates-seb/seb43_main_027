@@ -37,6 +37,7 @@ export type GameType = {
   categories: CategoryType[];
   createdAt?: string;
   description?: string;
+  memberId?: number;
 };
 
 export type PageInfoType = {
@@ -53,21 +54,7 @@ export type PostType = {
 };
 
 export type PathUrlType = {
-  HOME: string;
-  CATEGORY: string;
-  GAME: string;
-  POSTING: string;
-  LOGIN: string;
-  SIGNUP: string;
-  REGISTER: string;
-  POST: string;
-  EDIT: string;
-  GOOGLE: string;
-  ERROR: string;
-  NOTFOUND: string;
-  USER_INFO: string;
-  FOLLOWER: string;
-  SEARCH: string;
+  [key: string]: string,
 };
 
 export type PostOptionType = {
