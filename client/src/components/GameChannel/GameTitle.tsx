@@ -12,6 +12,7 @@ import DefaultGame from '../../asset/DefaultGame.png';
 import ComponentWithModal from '../common/ComponentWithModal';
 import { Tooltip } from 'antd';
 import { FiEdit } from 'react-icons/fi';
+import Modal from '../common/Modal';
 
 const GameTitle = () => {
   const { gameId } = useParams();
@@ -26,6 +27,8 @@ const GameTitle = () => {
   const [loading, setLoading] = useState(true);
   const [isFollowed, setIsFollowed] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const [isCreateMember, setIsCreateMember] = useState<string>('');
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const fetchGameData = async () => {
@@ -35,6 +38,11 @@ const GameTitle = () => {
         );
         const gameData = res.data.data;
         setIsGameData(gameData);
+
+        const userRes = await axios.get(
+          `${process.env.REACT_APP_API_URL}/api/members/${gameData.memberId}/profile`
+        );
+        setIsCreateMember(userRes.data.data.userName);
       } catch (error) {
         console.log(error);
       } finally {
@@ -129,6 +137,14 @@ const GameTitle = () => {
     navigate(`${PATH_URL.GAME_EDIT}${gameId}`);
   };
 
+  const handleUserProfile = () => {
+    if (isCreateMember.length >= 20) {
+      setIsOpen(true);
+    } else {
+      navigate(`${PATH_URL.USER_INFO}${Number(isGameData.memberId)}`);
+    }
+  };
+
   const defaultImg =
     isGameData?.mainImgUrl ===
     'https://codejejus-deploy.s3.ap-northeast-2.amazonaws.com/images/defaultGameImg.png';
@@ -140,19 +156,36 @@ const GameTitle = () => {
   const sameCreatedMember =
     isGameData.memberId === memberId;
 
+  const userNameState = isCreateMember.length >= 20
+  ? '*삭제된 계정*'
+  : isCreateMember;
+
+
   return (
     <StyledTitleWrapper>
-      {
-        sameCreatedMember && (
-        <StyledEditButton>
-          <Tooltip placement="bottom" title={'채널 수정하기'}>
-            <FiEdit 
-              onClick={handleEditClick}
-            />
+      <StyledCreateBy>
+        <p>
+          by.
+          <Tooltip placement="bottom" title={'채널관리자 프로필보기'}>
+            <StyledCreater
+              onClick={handleUserProfile}
+            >
+              {userNameState}
+            </StyledCreater>
           </Tooltip>
-        </StyledEditButton>
-        )
-      }
+        </p>
+        {
+          sameCreatedMember && (
+            <StyledEditButton>
+              <Tooltip placement="bottom" title={'채널 수정하기'}>
+              <FiEdit 
+                onClick={handleEditClick}
+              />
+            </Tooltip>
+          </StyledEditButton>
+          )
+        }
+      </StyledCreateBy>
       {imageError || defaultImg ? (
         <StyledGameImg src={DefaultGame} alt='default-game-image' />
       ) : (
@@ -215,6 +248,11 @@ const GameTitle = () => {
       <StyledDescription>
         {defaultDescription}
       </StyledDescription>
+      <Modal
+        isOpen={isOpen}
+        confirmMessage='인디버디를 떠난 유저에요...T^T'
+        closeModalHandlerWithConfirm={() => {setIsOpen(false)}}
+      />
     </StyledTitleWrapper>
   );
 };
@@ -225,6 +263,7 @@ const StyledTitleWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
   gap: 10px;
   padding: 30px;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
@@ -239,10 +278,7 @@ const StyledGameImg = styled.img`
   width: 300px;
   height: 250px;
   border-radius: 15px;
-  margin-top: 50px;
-  @media screen and (max-width: 650px) {
-    margin-top: 30px;
-  }
+  margin-top: 10px;
 `;
 
 const StyledGameName = styled.h3`
@@ -336,19 +372,39 @@ const StyledDescription = styled.div`
   }
 `;
 
+const StyledCreateBy = styled.div`
+  font-size: 16px;
+  color: var(--category-tag-bg-default);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: left;
+  margin-top: 25px;
+  p {
+    position: relative;
+    left: -100px;
+  }
+`;
+
 const StyledEditButton = styled.div`
-  position: relative;
   font-size: 30px;
   font-weight: bold;
   cursor: pointer;
-  top: 30px;
-  right: -180px;
+  position: relative;
   color: var(--button-inactive-color);
+  right: -100px;
   &:hover {
     color: var(--cyan-dark-500);
   }
   @media screen and (max-width: 650px) {
-    top: 20px;
-    right: -200px;
+    right: -100px;
+  }
+`;
+
+const StyledCreater = styled.span`
+  font-size: 17px;
+  cursor: pointer;
+  &:hover {
+    color: var(--cyan-dark-500);
   }
 `;
