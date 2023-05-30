@@ -104,7 +104,6 @@ const GameRegister = () => {
 
     // formData를 axios를 사용하여 POST합니다.
     if (isUpdated) {
-      console.log(patchData);
       axios
         .patch(
           `${process.env.REACT_APP_API_URL}/api/games/${gameId}`,
