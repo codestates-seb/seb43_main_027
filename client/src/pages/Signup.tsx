@@ -17,6 +17,7 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSignupValidity } from '../slice/signupValiditySlice';
 import { RootState } from '../store/store';
+import Loading from '../components/common/Loading';
 
 const Signup = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,6 +25,7 @@ const Signup = () => {
   const [isOpenError, setIsOpenError] = useState(false);
   const [isOpenConfirm, setIsOpenConfirm] = useState(false);
   const [isConfirmSent, setIsConfirmSent] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigate();
   const dispatch = useDispatch();
 
@@ -57,9 +59,10 @@ const Signup = () => {
         if (error.response && error.response.status === 409) {
           setIsOpenFail(true);
         } else {
-          ('여기서 에러나는거 emailSignup 함수 처음 if');
           setIsOpenError(true);
         }
+        setIsOpenConfirm(false);
+        setIsConfirmSent(false);
       }
     }
 
@@ -106,6 +109,7 @@ const Signup = () => {
     navigation('/error');
   };
   const modalCloseConfirm = async (value: string) => {
+    setIsLoading(true);
     try {
       await axios
         .post(`${process.env.REACT_APP_API_URL}/api/email/confirm`, {
@@ -113,7 +117,9 @@ const Signup = () => {
           code: value
         })
         .then((res) => {
+          setIsLoading(false);
           if (res.data === true) {
+            setIsConfirmSent(false);
             return dispatch(
               setSignupValidity({ key: 'emailconfirmed', value: true })
             );
@@ -128,53 +134,57 @@ const Signup = () => {
       } else {
         setIsOpenError(true);
       }
+      setIsLoading(false);
     }
   };
 
   return (
-    <StyledSignupContainer>
-      {isOpen && (
-        <SignupModal
-          isOpen={isOpen}
-          confirmMessage={'저희의 친구가 되주셔서 감사합니다!'}
-          closeHandler={modalClose}
-        />
-      )}
-      {isOpenFail && (
-        <SignupFailModal
-          isOpen={isOpenFail}
-          confirmMessage={'이미 사용중인 닉네임,또는 아이디입니다.'}
-          closeHandler={modalCloseFail}
-        />
-      )}
-      {isOpenError && (
-        <SignupErrorModal
-          isOpen={isOpenError}
-          confirmMessage={'알 수 없는 오류가 발생했습니다.'}
-          closeHandler={modalCloseError}
-        />
-      )}
+    <>
+      <StyledSignupContainer>
+        {isOpen && (
+          <SignupModal
+            isOpen={isOpen}
+            confirmMessage={'저희의 친구가 되주셔서 감사합니다!'}
+            closeHandler={modalClose}
+          />
+        )}
+        {isOpenFail && (
+          <SignupFailModal
+            isOpen={isOpenFail}
+            confirmMessage={'이미 사용중인 닉네임,또는 아이디입니다.'}
+            closeHandler={modalCloseFail}
+          />
+        )}
+        {isOpenError && (
+          <SignupErrorModal
+            isOpen={isOpenError}
+            confirmMessage={'알 수 없는 오류가 발생했습니다.'}
+            closeHandler={modalCloseError}
+          />
+        )}
 
-      <StyledSignupFormWrapper>
-        {/* top - component */}
-        <SignupTopWrapper />
-        {/* Form - component */}
-        <StyledSignupFormContainer>
-          {/* Oauth - component */}
-          <SignupOauthContainer onClick={oauthSignup} />
-          {/* Input - components */}
-          <SignupFieldsContainer />
-          {/* Button - components */}
-          <SignupConfirmModal
-            isOpen={isOpenConfirm}
-            confirmMessage={'인증번호:'}
-            closeHandler={modalCloseConfirm}
-          >
-            <SignupButtonsContainer onClick={emailSignup} />
-          </SignupConfirmModal>
-        </StyledSignupFormContainer>
-      </StyledSignupFormWrapper>
-    </StyledSignupContainer>
+        <StyledSignupFormWrapper>
+          {/* top - component */}
+          <SignupTopWrapper />
+          {/* Form - component */}
+          <StyledSignupFormContainer>
+            {/* Oauth - component */}
+            <SignupOauthContainer onClick={oauthSignup} />
+            {/* Input - components */}
+            <SignupFieldsContainer />
+            {/* Button - components */}
+            <SignupConfirmModal
+              isOpen={isOpenConfirm}
+              confirmMessage={'인증번호:'}
+              closeHandler={modalCloseConfirm}
+            >
+              <SignupButtonsContainer onClick={emailSignup} />
+            </SignupConfirmModal>
+          </StyledSignupFormContainer>
+        </StyledSignupFormWrapper>
+      </StyledSignupContainer>
+      {isLoading && <Loading />}
+    </>
   );
 };
 

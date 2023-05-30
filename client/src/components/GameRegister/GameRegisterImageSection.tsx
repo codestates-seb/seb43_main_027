@@ -4,15 +4,24 @@ import CustomImageSection from './CustomImageSection';
 
 const GameRegisterImageSection = ({
   files,
-  setFiles
+  setFiles,
+  url,
+  setImageUrl
 }: {
   files: File[];
   setFiles: React.Dispatch<React.SetStateAction<File[]>>;
+  url?: string;
+  setImageUrl: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   return (
     <StyledImageContainer>
       <StyledTitle>게임대표사진</StyledTitle>
-      <CustomImageSection files={files} setFiles={setFiles} />
+      <CustomImageSection
+        files={files}
+        setFiles={setFiles}
+        url={url}
+        setImageUrl={setImageUrl}
+      />
     </StyledImageContainer>
   );
 };
