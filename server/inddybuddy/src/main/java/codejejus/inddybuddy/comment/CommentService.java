@@ -36,22 +36,22 @@ public class CommentService {
         Comment save = commentRepository.save(comment);
 
         if (!memberPrincipal.getMember().equals(findPost.getMember())) {
-            Alarm alarm = createAlarm(findPost, save);
+            Alarm alarm = createAlarm(findPost, save, memberPrincipal.getMember());
             eventPublisher.publishEvent(new AlarmEvent(this, alarm));
         }
 
         return commentMapper.entityToResponse(save);
     }
 
-    private Alarm createAlarm(Post post, Comment comment) {
+    private Alarm createAlarm(Post post, Comment comment, Member sender) {
         AlarmType alarmType = (comment.getParentCommentId() == null) ? AlarmType.REPLY_COMMENT : AlarmType.REPLY_SUB_COMMENT;
-        Member receiver = (alarmType == AlarmType.REPLY_COMMENT) ? comment.getPost().getMember() : comment.getMember();
-        String content = (alarmType == AlarmType.REPLY_COMMENT) ? "게시글에 댓글이 달렸어요." : "대댓글이 달렸어요.";
+        Member receiver = (alarmType == AlarmType.REPLY_COMMENT) ? post.getMember() : findVerifidComment(comment.getParentCommentId()).getMember();
+        String content = (alarmType == AlarmType.REPLY_COMMENT) ? post.getMember().getUsername() + "님이 회원님의 게시물에 댓글을 달았습니다." : sender.getUsername() + "님의 회원님의 댓글에 댓글을 달았습니다.";
 
         return Alarm.builder()
                 .alarmType(alarmType)
                 .receiver(receiver)
-                .sender(comment.getMember())
+                .sender(sender)
                 .content(content)
                 .post(post)
                 .comment(comment)
