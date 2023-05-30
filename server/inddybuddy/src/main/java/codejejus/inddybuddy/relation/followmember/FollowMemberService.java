@@ -30,7 +30,7 @@ public class FollowMemberService {
         Alarm alarm = Alarm.builder()
                 .receiver(follow)
                 .sender(owner)
-                .content("[" + owner.getUsername() + "] 님이 팔로우 했어요")
+                .content(owner.getUsername() + "님이 회원님을 팔로우 했습니다.")
                 .alarmType(AlarmType.FOLLOW_REQUEST)
                 .build();
         eventPublisher.publishEvent(new AlarmEvent(this, alarm));
