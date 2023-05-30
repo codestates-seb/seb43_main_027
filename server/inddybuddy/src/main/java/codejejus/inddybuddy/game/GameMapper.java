@@ -5,6 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 @Component
 @RequiredArgsConstructor
@@ -36,5 +39,9 @@ public class GameMapper {
 
     public Page<GameDto.Response> entityPageToResponsePage(Page<Game> gamePage) {
         return gamePage.map(this::entityToResponse);
+    }
+
+    public List<GameDto.Response> entityListToResponseList(List<Game> gameList) {
+        return gameList.stream().map(this::entityToResponse).collect(Collectors.toList());
     }
 }

@@ -4,6 +4,7 @@ import codejejus.inddybuddy.bookmark.BookmarkService;
 import codejejus.inddybuddy.game.Game;
 import codejejus.inddybuddy.game.GameDto;
 import codejejus.inddybuddy.game.GameMapper;
+import codejejus.inddybuddy.game.GameService;
 import codejejus.inddybuddy.global.dto.MultiResponse;
 import codejejus.inddybuddy.global.dto.SingleResponse;
 import codejejus.inddybuddy.global.utils.UriCreator;
@@ -42,6 +43,7 @@ public class MemberController {
     private final MemberMapper memberMapper;
     private final GameMapper gameMapper;
     private final MemberService memberService;
+    private final GameService gameService;
     private final MessageService messageService;
     private final FollowMemberService followMemberService;
     private final FollowGameService followGameService;
@@ -81,6 +83,12 @@ public class MemberController {
     public ResponseEntity<SingleResponse<List<GameDto.Response>>> getFollowingGame(@PathVariable("member-id") @Valid @Positive Long memberId) {
         List<Game> games = followGameService.getAllFollowGame(memberId);
         List<GameDto.Response> responses = games.stream().map(gameMapper::entityToResponse).collect(Collectors.toList());
+        return ResponseEntity.ok(new SingleResponse<>(responses));
+    }
+
+    @GetMapping("/{member-id}/creategame")
+    public ResponseEntity<SingleResponse<List<GameDto.Response>>> getCreatedGame(@PathVariable("member-id") @Valid @Positive Long memberId) {
+        List<GameDto.Response> responses = gameService.getAllCreatedGame(memberId);
         return ResponseEntity.ok(new SingleResponse<>(responses));
     }
 
