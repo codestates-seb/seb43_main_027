@@ -11,6 +11,7 @@ import categoryData from '../../data/categoryData';
 import DefaultGame from '../../asset/DefaultGame.png';
 import ComponentWithModal from '../common/ComponentWithModal';
 import { Tooltip } from 'antd';
+import { FiEdit } from 'react-icons/fi';
 
 const GameTitle = () => {
   const { gameId } = useParams();
@@ -124,18 +125,34 @@ const GameTitle = () => {
     }
   };
 
+  const handleEditClick = () => {
+    navigate(`${PATH_URL.GAME_EDIT}${gameId}`);
+  };
+
   const defaultImg =
     isGameData?.mainImgUrl ===
     'https://codejejus-deploy.s3.ap-northeast-2.amazonaws.com/images/defaultGameImg.png';
   const emptyUrl = isGameData.downloadUrl.length === 0;
 
-  console.log(isGameData);
-
   const defaultDescription = 
   isGameData.description === null ? '게임 소개글이 없습니다.' : isGameData.description;
 
+  const sameCreatedMember =
+    isGameData.memberId === memberId;
+
   return (
     <StyledTitleWrapper>
+      {
+        sameCreatedMember && (
+        <StyledEditButton>
+          <Tooltip placement="bottom" title={'채널 수정하기'}>
+            <FiEdit 
+              onClick={handleEditClick}
+            />
+          </Tooltip>
+        </StyledEditButton>
+        )
+      }
       {imageError || defaultImg ? (
         <StyledGameImg src={DefaultGame} alt='default-game-image' />
       ) : (
@@ -316,5 +333,22 @@ const StyledDescription = styled.div`
   line-height: 1.5;
   @media screen and (max-width: 650px) {
     height: 100px;
+  }
+`;
+
+const StyledEditButton = styled.div`
+  position: relative;
+  font-size: 30px;
+  font-weight: bold;
+  cursor: pointer;
+  top: 30px;
+  right: -180px;
+  color: var(--button-inactive-color);
+  &:hover {
+    color: var(--cyan-dark-500);
+  }
+  @media screen and (max-width: 650px) {
+    top: 20px;
+    right: -200px;
   }
 `;
