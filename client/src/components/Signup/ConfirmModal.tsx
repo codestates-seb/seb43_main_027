@@ -34,11 +34,8 @@ const ConfirmModal = ({
 
   const openModalHandler = () => {
     if (!emailvalid || !usernamevalid || !passwordvalid || !isOpenConfirm) {
-      console.log(emailvalid, usernamevalid, passwordvalid, isOpenConfirm);
       setIsOpen(false);
       return;
-    } else {
-      console.log('open');
     }
     setIsOpen(!isOpen);
   };
@@ -60,7 +57,6 @@ const ConfirmModal = ({
   useEffect(() => {
     if (isOpenConfirm) setIsOpen(true);
     else setIsOpen(false);
-    console.log('?', isOpenConfirm);
   }, [isOpenConfirm]);
 
   return (
