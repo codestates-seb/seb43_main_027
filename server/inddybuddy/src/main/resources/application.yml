@@ -27,7 +27,7 @@ spring:
     default-encoding: UTF-8
     host: smtp.gmail.com
     port: 587
-    username: ${GOOGLE_MAIL_ADDRESS}
+    username: dlehdrms0824
     password: ${GOOGLE_MAIL_PASSWORD}
     properties:
       mail:
@@ -45,7 +45,7 @@ spring:
 
 email:
   from:
-    address: ${GOOGLE_MAIL_ADDRESS}@gmail.com
+    address: dlehdrms0824@gmail.com
     name: INDDYBUDDY
 
 jwt:
