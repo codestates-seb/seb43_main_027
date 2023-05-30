@@ -103,19 +103,8 @@
 ### DB Diagram
 <img alt="schema" src="docs/DB%20Schema.png" width="500" height=auto>
 
-### Prototyping
+### Figma
 [Wireframe Link (Figma)](https://www.figma.com/file/VzRAgvf5oXx476ylKOchHV/inddy-buddy?type=design&node-id=0-1&t=EqD0LKzE2oIl77L1-0)
-
-#### User Flow
-<img alt="userflow" src="docs" width="600" height=auto>
-
-#### UI Style (Figma)
-<img alt="UI style" src="docs" width="600" height=auto>
-
-
-#### Prototype (Figma)
-
-<img alt="Prototype" src="./docs/seb43_pre_35_figma.png" width="900" height=auto>
 
 </br>
 

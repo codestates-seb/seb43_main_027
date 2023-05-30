@@ -7,6 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ExceptionCode {
 
+    CONNECTION_ERROR(501, "SSE 연결 오류"),
     MEMBER_EMAIL_EXIST(409, "이미 사용중인 이메일 입니다."),
     MEMBER_USERNAME_EXIST(409, "이미 사용중인 닉네임 입니다."),
     GAME_NAME_EXIST(409, "이미 존재하는 게임 입니다."),

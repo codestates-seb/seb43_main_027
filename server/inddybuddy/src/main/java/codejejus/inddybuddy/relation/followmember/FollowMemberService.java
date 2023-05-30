@@ -3,7 +3,11 @@ package codejejus.inddybuddy.relation.followmember;
 import codejejus.inddybuddy.global.exception.CustomException;
 import codejejus.inddybuddy.global.exception.ExceptionCode;
 import codejejus.inddybuddy.member.entity.Member;
+import codejejus.inddybuddy.notification.Alarm;
+import codejejus.inddybuddy.notification.AlarmEvent;
+import codejejus.inddybuddy.notification.AlarmType;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,11 +20,20 @@ import java.util.Optional;
 public class FollowMemberService {
 
     private final FollowMemberRepository followMemberRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     public void following(Member follow, Member owner) {
         verifySelfFollow(follow, owner);
         verifyExistFollow(follow, owner);
         followMemberRepository.save(new FollowMember(follow, owner));
+
+        Alarm alarm = Alarm.builder()
+                .receiver(follow)
+                .sender(owner)
+                .content(owner.getUsername() + "님이 회원님을 팔로우 했습니다.")
+                .alarmType(AlarmType.FOLLOW_REQUEST)
+                .build();
+        eventPublisher.publishEvent(new AlarmEvent(this, alarm));
     }
 
     public void unfollowing(Member follow, Member owner) {

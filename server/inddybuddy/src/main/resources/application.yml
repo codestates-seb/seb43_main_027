@@ -62,3 +62,8 @@ cloud:
     region:
       auto: false
       static: ap-northeast-2
+  task:
+    execution:
+      pool:
+        core-size: 5
+        max-size: 5

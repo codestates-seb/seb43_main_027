@@ -6,14 +6,15 @@ import codejejus.inddybuddy.member.entity.Member;
 import codejejus.inddybuddy.member.entity.MemberPrincipal;
 import codejejus.inddybuddy.member.service.MemberService;
 import codejejus.inddybuddy.post.Post;
-import codejejus.inddybuddy.post.PostRepository;
 import codejejus.inddybuddy.post.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ReactionService {
 
@@ -29,6 +30,7 @@ public class ReactionService {
         reaction.update(member, post);
         verifyExistReaction(member, post);
         Reaction save = reactionRepository.save(reaction);
+
         return reactionMapper.entityToResponse(save);
     }
 

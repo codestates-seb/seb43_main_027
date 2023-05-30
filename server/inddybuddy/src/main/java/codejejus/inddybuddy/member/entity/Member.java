@@ -55,6 +55,26 @@ public class Member extends Timestamped {
         this.providerId = providerId;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        Member member = (Member) obj;
+
+        return this.memberId.equals(member.getMemberId());
+    }
+
+    @Override
+    public int hashCode() {
+        return memberId.hashCode();
+    }
+
     public void deleteMember() {
         this.memberStatus = MemberStatus.DELETE;
         String deletedId = "DEL" + UUID.randomUUID();
