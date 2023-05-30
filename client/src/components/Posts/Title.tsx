@@ -3,7 +3,7 @@ import postOptionTags from '../../data/postOptionTags';
 import convertTag from '../../utils/convertTag';
 import CategoryTag from '../common/CategoryTag';
 import { BiArrowBack } from 'react-icons/bi';
-import { StarTwoTone } from '@ant-design/icons';
+import { AiFillStar } from 'react-icons/ai';
 import { useNavigate, useParams } from 'react-router-dom';
 import { BookmarkType } from '../../types/dataTypes';
 import { deleteData, postData } from '../../api/apiCollection';
@@ -96,8 +96,8 @@ const Title = ({
 
       <StyledFlexWrapper>
         <StyledTitle>{title}</StyledTitle>
-        <StarTwoTone
-          twoToneColor={
+        <AiFillStar
+          fill={
             bookmark?.bookmarkStatus === 'ACTIVE' ? '#13A8A8' : '#b4b4b4'
           }
           onClick={onBookmarkClick(bookmark?.bookmarkStatus)}
