@@ -33,6 +33,7 @@ const UserEditInfo = ({ setIsEditClick }: UserInfoProps) => {
   const [ nickNameError, setNickNameError ] = useState('');
   const [ isOpenNewInput, setIsOpenNewInput ] = useState<boolean>(false);
   const [ isOpenModal, setIsOpenModal ] = useState<boolean>(false);
+  const [ isOpen, setIsOpen] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [ selectedFile, setSelectedFile ] = useState<File | null>(null);
@@ -193,6 +194,15 @@ const UserEditInfo = ({ setIsEditClick }: UserInfoProps) => {
     setIsOpenNewInput(false);
   };
 
+  const handleLogout = () => {
+    setIsOpen(false);
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+    localStorage.removeItem('user');
+    dispatch(clearUser());
+    navigate(`${PATH_URL.LOGIN}`);
+  }
+
   const handleSubmitNewPassword = () => {
     if (!error && !remindError && editPassword.length !== 0) {
 
@@ -219,12 +229,9 @@ const UserEditInfo = ({ setIsEditClick }: UserInfoProps) => {
           }
         )
         .then((response) => {
-          alert('비밀번호가 변경되었습니다.');
-          localStorage.removeItem('access_token');
-          localStorage.removeItem('refresh_token');
-          localStorage.removeItem('user');
-          dispatch(clearUser());
-          navigate(`${PATH_URL.LOGIN}`);
+          if (!error && !remindError && editPassword.length !== 0) {
+            setIsOpen(true);
+          }
         })
         .catch((error) => {
           console.error('프로필 저장 요청 실패:', error);
@@ -354,6 +361,13 @@ const UserEditInfo = ({ setIsEditClick }: UserInfoProps) => {
         isOpen={isOpenModal} 
         confirmMessage={'회원탈퇴가 완료되었습니다. 이용해주셔서 감사합니다.'}
         closeModalHandlerWithConfirm={() => { setIsOpenModal(false)}}
+      />
+      <Modal 
+        isOpen={isOpen}
+        confirmMessage={`비밀번호가 변경되었습니다. 
+        \n다시 로그인해주세요.`}
+        closeModalHandlerWithConfirm={handleLogout}
+        needError={false}
       />
     </StyledEditWrapper>
   );
