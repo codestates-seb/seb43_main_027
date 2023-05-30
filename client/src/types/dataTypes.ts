@@ -22,6 +22,13 @@ export type Signup = {
   password: string;
 };
 
+export type SignupValidity = {
+  usernamevalid: boolean;
+  emailvalid: boolean;
+  passwordvalid: boolean;
+  emailconfirmed: boolean;
+}
+
 export type CategoryType = {
   categoryId: number;
   categoryName: string;

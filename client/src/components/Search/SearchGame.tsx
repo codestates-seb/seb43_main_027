@@ -1,6 +1,5 @@
 import styled, { css } from 'styled-components';
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import { CategoryType, GameType, PageInfoType } from '../../types/dataTypes';
 import GameItem from '../CategoryGames/GameItem';
@@ -97,7 +96,6 @@ const StyledSearchGameWrapper = styled.div<SearchGameWrapperType>`
   display: flex;
   flex-direction: column;
   margin: 3rem;
-  background-color: #cfecee;
   border-radius: 15px;
   ${(p) =>
     p.isPreview
@@ -119,7 +117,8 @@ const StyledEmptyItem = styled.div`
 const StyledCardContainer = styled.div<SearchGameWrapperType>`
   display: flex;
   flex-wrap: wrap;
-
+  background-color: #cfecee;
+  border-radius: 15px;
   gap: 3rem 5%;
   justify-content: center;
   align-items: flex-start;
@@ -179,5 +178,7 @@ const StyledCardContainer = styled.div<SearchGameWrapperType>`
   > a {
     background-color: white;
     border-radius: 15px;
+    padding: 1rem;
+    margin-top: 2rem;
   }
 `;
