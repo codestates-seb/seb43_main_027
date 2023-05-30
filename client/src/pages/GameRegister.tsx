@@ -48,6 +48,7 @@ const GameRegister = () => {
     gameName: string;
     downloadUrl: string;
     categoryNames: string[];
+    description: string;
   }
 
   const submitFormData = (e: React.FormEvent) => {
@@ -70,7 +71,8 @@ const GameRegister = () => {
     const postData: PostDataType = {
       gameName: title,
       downloadUrl: url,
-      categoryNames: translatedTags
+      categoryNames: translatedTags,
+      description: detail
     };
 
     const formData = new FormData();

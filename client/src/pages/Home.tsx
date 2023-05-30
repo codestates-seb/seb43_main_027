@@ -2,13 +2,19 @@ import styled from 'styled-components';
 
 import CategoryContainer from '../components/Home/CategoryContainer';
 import GameContainer from '../components/Home/GameContainer';
+import { useState } from 'react';
+import NoticeModal from '../components/NoticeModal/NoticeModal';
 
 const Home = () => {
+  const [show, setShow] = useState(true);
   return (
-    <StyleContain>
-      <CategoryContainer />
-      <GameContainer />
-    </StyleContain>
+    <>
+      {show && <NoticeModal setShow={setShow} />}
+      <StyleContain>
+        <CategoryContainer />
+        <GameContainer />
+      </StyleContain>
+    </>
   );
 };
 
