@@ -22,9 +22,14 @@ const FilterBar = ({
           신규
         </StyledItem>
         {user.memberId !== -1 && (
+          <>
           <StyledItem onClick={onClickHandler(2)} selected={tabInd === 2}>
+            생성
+          </StyledItem>
+          <StyledItem onClick={onClickHandler(3)} selected={tabInd === 3}>
             팔로우
           </StyledItem>
+          </>
         )}
       </StyledFilterTabContainer>
     </StyledContainer>

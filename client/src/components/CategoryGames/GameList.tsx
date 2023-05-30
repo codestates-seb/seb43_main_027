@@ -71,6 +71,35 @@ const GameList: React.FC<TabSelectType> = ({ isSelectTab })  => {
             if (isFilteredGames.length === 0) setUserMessage('등록된 게임채널이 없습니다.');
             break;
           };
+          case '생성 게임': {
+            if (memberId === -1) {
+              setIsFilteredGames([]);
+              setUserMessage('로그인이 필요한 기능입니다.');
+            } else {
+              try {
+                const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/members/${memberId}/creategame`);
+                const data = res.data.data;
+                const followedGames = data.filter((game:any) =>
+                  game.categories.some((category:any) => category.categoryId?.toString() === categoryId)
+                );
+
+                if (followedGames.length > 0) {
+                  const totalGamesCount = followedGames.length;
+                  const startIndex = (isPage - 1) * isSize;
+                  const endIndex = startIndex + isSize;
+                  const currentGames = followedGames.slice(startIndex, endIndex);
+                  setTotalSize(totalGamesCount);
+                  setIsFilteredGames([...currentGames]);
+                } else {
+                  setIsFilteredGames([]);
+                  setUserMessage('생성한 게임채널이 없습니다.');
+                }
+              } catch (error) {
+                console.error(error);
+              }
+            }
+            break;
+          }
           case '팔로우 게임': {
             if (memberId === -1) {
               setIsFilteredGames([]);
