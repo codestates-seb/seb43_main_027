@@ -68,6 +68,8 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.POST, "/api/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers(HttpMethod.PATCH, "/api/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/api/**").hasAnyRole("USER", "ADMIN")
+                .antMatchers(HttpMethod.GET, "/api/connect").hasAnyRole("USER", "ADMIN")
+                .antMatchers(HttpMethod.GET, "/api/bookmark").hasAnyRole("USER", "ADMIN")
                 .anyRequest().permitAll()
 
                 .and()
@@ -86,6 +88,7 @@ public class SecurityConfig {
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "PUT", "DELETE", "HEAD"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setExposedHeaders(List.of("*"));
+        configuration.setAllowCredentials(false);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
