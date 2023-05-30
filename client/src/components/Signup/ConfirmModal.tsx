@@ -2,6 +2,7 @@ import { ReactElement, useState } from 'react';
 import styled from 'styled-components';
 
 import ButtonEl from '../elements/Button';
+import Timer from './Timer';
 import { ButtonType } from '../../types/componentsTypes';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
@@ -68,6 +69,7 @@ const ConfirmModal = ({
                 value={inputValue}
               />
             </StyledConfirmMessageContainer>
+            <Timer />
             <ModalConfirmButton
               onClick={(event) => {
                 event.stopPropagation();
@@ -126,7 +128,7 @@ const ModalConfirmButton = styled.button`
   font-size: 1.3rem;
   font-weight: 600;
   text-align: center;
-  margin: 0.5rem 0.7rem;
+  margin: 0 0.7rem;
   padding: 0.5rem 0.7rem;
   &:hover {
     background-color: var(--cyan-dark-500);
@@ -137,7 +139,8 @@ const ModalCancelButton = ButtonEl({
   flex: '1',
   bg: 'var(--button-inactive-color)',
   hoverBg: 'var(--button-inactive-hover-color)',
-  type: 'button'
+  type: 'button',
+  margin: '0 0.7rem'
 });
 
 const StyledModalView = styled.div.attrs((props) => ({
@@ -156,7 +159,7 @@ const StyledModalView = styled.div.attrs((props) => ({
 
 const StyledConfirmMessageContainer = styled.div`
   display: flex;
-  height: 70%;
+  height: 60%;
   justify-content: center;
   align-items: center;
   word-break: keep-all;
