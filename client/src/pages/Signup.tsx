@@ -17,6 +17,7 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSignupValidity } from '../slice/signupValiditySlice';
 import { RootState } from '../store/store';
+import Loading from '../components/common/Loading';
 
 const Signup = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,6 +25,7 @@ const Signup = () => {
   const [isOpenError, setIsOpenError] = useState(false);
   const [isOpenConfirm, setIsOpenConfirm] = useState(false);
   const [isConfirmSent, setIsConfirmSent] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigate();
   const dispatch = useDispatch();
 
@@ -46,7 +48,6 @@ const Signup = () => {
             }
           )
           .then(() => {
-            console.log('1단계 성공');
             setIsOpenConfirm(true);
             setIsConfirmSent(true);
             return setTimeout(() => {
@@ -57,10 +58,23 @@ const Signup = () => {
         // 오류에 따라서 필요하면 다른 모달 제작... ㅠ
         if (error.response && error.response.status === 409) {
           setIsOpenFail(true);
+          dispatch(
+            setSignupValidity({
+              key: 'usernamevalid',
+              value: false
+            })
+          );
         } else {
-          ('여기서 에러나는거 emailSignup 함수 처음 if');
           setIsOpenError(true);
+          dispatch(
+            setSignupValidity({
+              key: 'usernamevalid',
+              value: false
+            })
+          );
         }
+        setIsOpenConfirm(false);
+        setIsConfirmSent(false);
       }
     }
 
@@ -84,7 +98,6 @@ const Signup = () => {
           setIsOpenFail(true);
           setIsConfirmSent(false);
         } else {
-          console.log('여기서 에러나는거 emailSignup 함수');
           setIsOpenError(true);
           setIsConfirmSent(false);
         }
@@ -108,6 +121,7 @@ const Signup = () => {
     navigation('/error');
   };
   const modalCloseConfirm = async (value: string) => {
+    setIsLoading(true);
     try {
       await axios
         .post(`${process.env.REACT_APP_API_URL}/api/email/confirm`, {
@@ -115,15 +129,13 @@ const Signup = () => {
           code: value
         })
         .then((res) => {
-          console.log('email confirmation');
-          console.log(res);
+          setIsLoading(false);
           if (res.data === true) {
-            console.log('email confirmation true');
+            setIsConfirmSent(false);
             return dispatch(
               setSignupValidity({ key: 'emailconfirmed', value: true })
             );
           } else if (res.data === false) {
-            console.log('email confirmation false');
             return alert('인증번호를 확인해주세요');
           }
         });
@@ -134,53 +146,57 @@ const Signup = () => {
       } else {
         setIsOpenError(true);
       }
+      setIsLoading(false);
     }
   };
 
   return (
-    <StyledSignupContainer>
-      {isOpen && (
-        <SignupModal
-          isOpen={isOpen}
-          confirmMessage={'저희의 친구가 되주셔서 감사합니다!'}
-          closeHandler={modalClose}
-        />
-      )}
-      {isOpenFail && (
-        <SignupFailModal
-          isOpen={isOpenFail}
-          confirmMessage={'이미 사용중인 닉네임,또는 아이디입니다.'}
-          closeHandler={modalCloseFail}
-        />
-      )}
-      {isOpenError && (
-        <SignupErrorModal
-          isOpen={isOpenError}
-          confirmMessage={'알 수 없는 오류가 발생했습니다.'}
-          closeHandler={modalCloseError}
-        />
-      )}
+    <>
+      <StyledSignupContainer>
+        {isOpen && (
+          <SignupModal
+            isOpen={isOpen}
+            confirmMessage={'저희의 친구가 되주셔서 감사합니다!'}
+            closeHandler={modalClose}
+          />
+        )}
+        {isOpenFail && (
+          <SignupFailModal
+            isOpen={isOpenFail}
+            confirmMessage={'이미 사용중인 닉네임,또는 아이디입니다.'}
+            closeHandler={modalCloseFail}
+          />
+        )}
+        {isOpenError && (
+          <SignupErrorModal
+            isOpen={isOpenError}
+            confirmMessage={'알 수 없는 오류가 발생했습니다.'}
+            closeHandler={modalCloseError}
+          />
+        )}
 
-      <StyledSignupFormWrapper>
-        {/* top - component */}
-        <SignupTopWrapper />
-        {/* Form - component */}
-        <StyledSignupFormContainer>
-          {/* Oauth - component */}
-          <SignupOauthContainer onClick={oauthSignup} />
-          {/* Input - components */}
-          <SignupFieldsContainer />
-          {/* Button - components */}
-          <SignupConfirmModal
-            isOpen={isOpenConfirm}
-            confirmMessage={'인증번호:'}
-            closeHandler={modalCloseConfirm}
-          >
-            <SignupButtonsContainer onClick={emailSignup} />
-          </SignupConfirmModal>
-        </StyledSignupFormContainer>
-      </StyledSignupFormWrapper>
-    </StyledSignupContainer>
+        <StyledSignupFormWrapper>
+          {/* top - component */}
+          <SignupTopWrapper />
+          {/* Form - component */}
+          <StyledSignupFormContainer>
+            {/* Oauth - component */}
+            <SignupOauthContainer onClick={oauthSignup} />
+            {/* Input - components */}
+            <SignupFieldsContainer />
+            {/* Button - components */}
+            <SignupConfirmModal
+              isOpen={isOpenConfirm}
+              confirmMessage={'인증번호:'}
+              closeHandler={modalCloseConfirm}
+            >
+              <SignupButtonsContainer onClick={emailSignup} />
+            </SignupConfirmModal>
+          </StyledSignupFormContainer>
+        </StyledSignupFormWrapper>
+      </StyledSignupContainer>
+      {isLoading && <Loading />}
+    </>
   );
 };
 

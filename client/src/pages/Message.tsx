@@ -62,6 +62,7 @@ const Message = () => {
     }
   };
 
+  // 알람 오면 다시 요청 보내고 이전 채팅 전체 길이를 새로운 전체 길이에서 뺀 값만큼 최신순으로 데이터 추가하기
   useEffect(() => {
     setIsLoading(true);
 

@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import ButtonEl from '../elements/Button';
 import Timer from './Timer';
 import { ButtonType } from '../../types/componentsTypes';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 
 /** Modal 창이 포함된 Button 컴포넌트 입니다. 가장 바깥 div의 크기가 100%로 지정되어있으므로 감싸는 Container로 크기를 조정해 줄 수 있습니다.
  *
@@ -21,18 +23,25 @@ const ConfirmModal = ({
   confirmMessage,
   confirmOnClick,
   cancelOnClick,
+  isOpenConfirm,
   children
 }: ModalButtonType): JSX.Element => {
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState('');
+  const { usernamevalid, emailvalid, passwordvalid } = useSelector(
+    (state: RootState) => state.signupvalid
+  );
+
   const openModalHandler = () => {
+    if (!emailvalid || !usernamevalid || !passwordvalid || !isOpenConfirm) {
+      setIsOpen(false);
+      return;
+    }
     setIsOpen(!isOpen);
   };
 
   const closeModalHandlerWithConfirm = (value: string) => {
     if (confirmOnClick) {
-      console.log('this works');
-      console.log(value);
       confirmOnClick(value);
     }
     openModalHandler();
@@ -84,6 +93,7 @@ interface ModalButtonType extends ButtonType {
   confirmOnClick?: (value: string) => void;
   cancelOnClick?: () => void;
   children: ReactElement;
+  isOpenConfirm: boolean;
 }
 
 export default ConfirmModal;

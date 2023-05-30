@@ -17,4 +17,8 @@ const StyledContainer = styled.div`
 
 const StyledImg = styled.img`
   width: 100%;
+
+  @media screen and (min-width: 650px) {
+    max-width: 650px;
+  }
 `;

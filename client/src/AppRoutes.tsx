@@ -41,6 +41,7 @@ const AppRoutes = () => {
         />
         <Route path={PATH_URL.LOGIN} element={<LogIn />} />
         <Route path={PATH_URL.REGISTER} element={<GameRegister />} />
+        <Route path={'/gameEdit/:gameId'} element={<GameRegister />} />
         <Route path={PATH_URL.GOOGLE} element={<GoogleLogIn />} />
         <Route
           path={`${PATH_URL.GAME}:gameId${PATH_URL.POST}:postId`}

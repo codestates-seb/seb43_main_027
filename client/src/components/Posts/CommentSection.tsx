@@ -29,7 +29,6 @@ const CommentSection = ({
     })();
   };
   const onCommentDelete = (commentId: number) => {
-    console.log('deleted');
     onCommentSubmit({
       comments: comments.map((comment) =>
         comment.commentId === commentId
