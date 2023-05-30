@@ -12,6 +12,10 @@ public class LocalDateTimeSerializer implements JsonSerializer<LocalDateTime>, J
 
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
+    public static String toString(LocalDateTime dateTime) {
+        return formatter.format(dateTime);
+    }
+
     @Override
     public JsonElement serialize(LocalDateTime localDateTime, Type type, JsonSerializationContext context) {
         return new JsonPrimitive(formatter.format(localDateTime));
