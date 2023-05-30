@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import ButtonEl from '../elements/Button';
@@ -34,8 +34,11 @@ const ConfirmModal = ({
 
   const openModalHandler = () => {
     if (!emailvalid || !usernamevalid || !passwordvalid || !isOpenConfirm) {
+      console.log(emailvalid, usernamevalid, passwordvalid, isOpenConfirm);
       setIsOpen(false);
       return;
+    } else {
+      console.log('open');
     }
     setIsOpen(!isOpen);
   };
@@ -51,7 +54,15 @@ const ConfirmModal = ({
     openModalHandler();
     if (cancelOnClick) cancelOnClick();
   };
+
   const inputhandler = (e: any) => setInputValue(e.target.value);
+
+  useEffect(() => {
+    if (isOpenConfirm) setIsOpen(true);
+    else setIsOpen(false);
+    console.log('?', isOpenConfirm);
+  }, [isOpenConfirm]);
+
   return (
     <StyledModalContainer>
       <StyledModalButtonContainer>
