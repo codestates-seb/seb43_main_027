@@ -5,7 +5,8 @@ import ConfirmModal from './ConfirmModal';
 const SingupConfirmModal = ({
   children,
   confirmMessage,
-  closeHandler
+  closeHandler,
+  isOpen
 }: {
   children: React.ReactElement;
   isOpen: boolean;
@@ -17,6 +18,7 @@ const SingupConfirmModal = ({
       <ConfirmModal
         confirmMessage={confirmMessage}
         confirmOnClick={closeHandler}
+        isOpenConfirm={isOpen}
       >
         {children}
       </ConfirmModal>

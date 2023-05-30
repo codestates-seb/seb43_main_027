@@ -58,8 +58,20 @@ const Signup = () => {
         // 오류에 따라서 필요하면 다른 모달 제작... ㅠ
         if (error.response && error.response.status === 409) {
           setIsOpenFail(true);
+          dispatch(
+            setSignupValidity({
+              key: 'usernamevalid',
+              value: false
+            })
+          );
         } else {
           setIsOpenError(true);
+          dispatch(
+            setSignupValidity({
+              key: 'usernamevalid',
+              value: false
+            })
+          );
         }
         setIsOpenConfirm(false);
         setIsConfirmSent(false);

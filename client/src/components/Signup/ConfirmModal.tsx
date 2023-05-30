@@ -22,6 +22,7 @@ const ConfirmModal = ({
   confirmMessage,
   confirmOnClick,
   cancelOnClick,
+  isOpenConfirm,
   children
 }: ModalButtonType): JSX.Element => {
   const [isOpen, setIsOpen] = useState(false);
@@ -31,7 +32,10 @@ const ConfirmModal = ({
   );
 
   const openModalHandler = () => {
-    if (!emailvalid || !usernamevalid || !passwordvalid) return;
+    if (!emailvalid || !usernamevalid || !passwordvalid || !isOpenConfirm) {
+      setIsOpen(false);
+      return;
+    }
     setIsOpen(!isOpen);
   };
 
@@ -87,6 +91,7 @@ interface ModalButtonType extends ButtonType {
   confirmOnClick?: (value: string) => void;
   cancelOnClick?: () => void;
   children: ReactElement;
+  isOpenConfirm: boolean;
 }
 
 export default ConfirmModal;
