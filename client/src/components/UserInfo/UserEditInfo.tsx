@@ -173,7 +173,7 @@ const UserEditInfo = ({ setIsEditClick }: UserInfoProps) => {
         dispatch(setUser(response.data.data));
       })
       .catch((error) => {
-        console.error('프로필 저장 요청 실패:', error);
+        setNickNameError('중복되는 닉네임 입니다.');
       });
     } else {
       return;
