@@ -171,6 +171,7 @@ export default FollowerItem;
 
 const StyledWrapper = styled(StyledItemWrapper)`
   display: flex;
+  position: relative;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
   border-radius: 15px;
   justify-content: center;
@@ -244,7 +245,7 @@ const StyledRow = styled.div`
 
 const StyledDeletedIcon = styled.div`
   position: absolute;
-  top: 110px;
+  top: 40px;
   font-size: 100px;
   color: var(--category-tag-color-2);
 `;
