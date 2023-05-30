@@ -43,6 +43,7 @@ public class MemberService {
     public Member updateMember(Member member, MemberPrincipal memberPrincipal, MultipartFile multipartFile) {
         Member findMember = findVerifyMember(member.getMemberId());
         verifySameMember(findMember, memberPrincipal.getMember());
+        verifyExistUsername(member.getUsername());
         Optional.ofNullable(member.getMemberStatus())
                 .ifPresent(findMember::setMemberStatus);
         Optional.ofNullable(member.getPassword())
