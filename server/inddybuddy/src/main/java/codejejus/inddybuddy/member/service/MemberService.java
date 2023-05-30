@@ -93,7 +93,7 @@ public class MemberService {
                 .orElseThrow(() -> new CustomException(ExceptionCode.MEMBER_NOT_FOUND));
     }
 
-    private void verifyExistEmail(String email) {
+    public void verifyExistEmail(String email) {
         if (memberRepository.existsByEmail(email)) {
             throw new CustomException(ExceptionCode.MEMBER_EMAIL_EXIST);
         }
