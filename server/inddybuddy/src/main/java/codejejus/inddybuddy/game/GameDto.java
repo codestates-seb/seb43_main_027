@@ -24,6 +24,7 @@ public class GameDto {
     public static class Response {
 
         private final Long gameId;
+        private final Long memberId;
         private final String gameName;
         private final String downloadUrl;
         private final String description;
@@ -33,8 +34,9 @@ public class GameDto {
         private final LocalDateTime createdAt;
 
         @Builder
-        public Response(Long gameId, String gameName, String downloadUrl, String description, String mainImgUrl, List<Category> categories, Long followerCount, LocalDateTime createdAt) {
+        public Response(Long gameId, Long memberId, String gameName, String downloadUrl, String description, String mainImgUrl, List<Category> categories, Long followerCount, LocalDateTime createdAt) {
             this.gameId = gameId;
+            this.memberId = memberId;
             this.gameName = gameName;
             this.downloadUrl = downloadUrl;
             this.description = description;
