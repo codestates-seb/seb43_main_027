@@ -36,6 +36,7 @@ export type GameType = {
   followerCount: number;
   categories: CategoryType[];
   createdAt?: string;
+  description?: string;
 };
 
 export type PageInfoType = {
