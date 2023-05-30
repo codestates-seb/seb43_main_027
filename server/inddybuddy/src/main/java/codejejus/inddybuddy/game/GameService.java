@@ -66,7 +66,7 @@ public class GameService {
                     File file = fileService.createFile(findMultiPart, findGame);
                     findGame.setMainImageUrl(file.getFileUrl());
                 });
-        findGame.updateGame(requestDto.getGameName(), requestDto.getDownloadUrl());
+        findGame.updateGame(requestDto.getGameName(), requestDto.getDownloadUrl(), requestDto.getDescription());
         return gameMapper.entityToResponse(findGame);
     }
 
