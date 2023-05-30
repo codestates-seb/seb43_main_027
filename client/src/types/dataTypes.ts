@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 
 export type NavItemType = {
-  type: 'user' | 'bookmark' | 'games' | 'messages';
+  type: 'user' | 'bookmark' | 'games' | 'messages' | 'myGames';
   element: ReactElement;
   contentElement: (props: any) => JSX.Element;
 };
@@ -27,7 +27,7 @@ export type SignupValidity = {
   emailvalid: boolean;
   passwordvalid: boolean;
   emailconfirmed: boolean;
-}
+};
 
 export type CategoryType = {
   categoryId: number;
@@ -61,7 +61,7 @@ export type PostType = {
 };
 
 export type PathUrlType = {
-  [key: string]: string,
+  [key: string]: string;
 };
 
 export type PostOptionType = {
