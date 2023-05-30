@@ -26,7 +26,7 @@ const GameRegisterImageSection = ({
   );
 };
 
-export default memo(GameRegisterImageSection);
+export default GameRegisterImageSection;
 
 const StyledImageContainer = styled.div`
   display: flex;

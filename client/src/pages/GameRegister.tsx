@@ -93,9 +93,7 @@ const GameRegister = () => {
       })
     );
 
-    for (const afile of files) {
-      formData.append('file', afile);
-    }
+    formData.append('file', files[0]);
 
     const token = localStorage.getItem('access_token');
 
