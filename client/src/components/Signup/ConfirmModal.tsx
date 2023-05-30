@@ -26,12 +26,12 @@ const ConfirmModal = ({
 }: ModalButtonType): JSX.Element => {
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState('');
-  const emailvalid = useSelector(
-    (state: RootState) => state.signupvalid.emailvalid
+  const { usernamevalid, emailvalid, passwordvalid } = useSelector(
+    (state: RootState) => state.signupvalid
   );
 
   const openModalHandler = () => {
-    if (!emailvalid) return;
+    if (!emailvalid || !usernamevalid || !passwordvalid) return;
     setIsOpen(!isOpen);
   };
 
