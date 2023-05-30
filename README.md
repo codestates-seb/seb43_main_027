@@ -18,7 +18,7 @@
 ## 📎 바로가기
 - ▶️ [배포 링크 바로가기](http://inddy-buddy.s3-website.ap-northeast-2.amazonaws.com/)
 - 🎆 [팀 노션 페이지 바로가기](https://wirehaired-beret-069.notion.site/db95b27bc19e490caf7f534abcbaf34a?v=c152bce705ab42e2842870a7179b2901)
-- 🖥 [Github Repository 바로가기](https://codestates.notion.site/Code-JEJUS-6fe817949e304ca881084769433db868)
+- 🖥 [Github Repository 바로가기](https://github.com/codestates-seb/seb43_main_027)
 
 </br>
 
@@ -62,59 +62,35 @@
 ## 📌 Introduction to Project Features
 
 ### 회원 기능
-- 회원가입
-- 로그인 / 로그아웃
-- 회원 정보 조회 (마이페이지)
-- 회원 정보 수정 (자신의 정보만 수정 가능)
-- 회원 정보 삭제 (자신의 정보만 삭제 가능)
+- 회원가입(인증코드 메일) <br><img alt="userflow" src="./gif/배포회원가입.gif" width="600" height=auto>
+- 로그인 <br><img alt="userflow" src="./gif/배포로그인.gif" width="600" height=auto>
+- 로그아웃 <br><img alt="userflow" src="./gif/로그아웃시연.gif" width="600" height=auto>
+- 회원 정보 조회 (마이페이지/타유저페이지) <br><img alt="userflow" src="./gif/타유저페이지.gif" width="600" height=auto>
+- 회원 정보 수정 <br><img alt="userflow" src="./gif/회원수정기능.gif" width="600" height=auto>
+- 비밀번호 변경 <br><img alt="userflow" src="./gif/비밀번호변경.gif" width="600" height=auto>
+- 회원 정보 삭제 <br><img alt="userflow" src="./gif/회원탈퇴.gif" width="600" height=auto>
 
-### 카테고리
-- 카테고리 조회
-
-### 게임
-- 게임 생성(회원만 가능)
-- 게임 조회(비회원 조회 가능)
-- 정렬 기능(최신순, 추천순, 오래된 순)
+### 메인 기능
+- 카테고리 페이지(메인 화면) <br><img alt="userflow" src="./gif/카테고리페이지.gif" width="600" height=auto>
+- 게임 페이지 <br><img alt="userflow" src="./gif/게임페이지.gif" width="600" height=auto>
+- 게임 등록 <br><img alt="userflow" src="./gif/배포게임등록영상.gif" width="600" height=auto>
 
 ### 게시글 기능
-- 게시글 조회 (회원이 아닌 사람도 조회 가능)
-- 관련 댓글, 대댓글 모두 조회 가능
-- 정렬 기능(최신순, 추천순, 오래된 순)
-- 자신이 작성한 게시글 조회
-- 게시글 작성 (회원만 가능)
-- 게시글 수정 (게시글 작성자만 가능)
-- 게시글 삭제 (게시글 작성자만 가능)
-- 게시글 삭제 시, 질문 조회 불가능
-- 게시글 삭제 시, 관련 댓글 모두 삭제
+- 게시글 댓글(대댓글) 작성, 좋아요, 북마크 기능 <br><img alt="userflow" src="./gif/게시글상세페이지.gif" width="600" height=auto>
+- 게시글 작성 <br><img alt="userflow" src="./gif/게시글작성시연.gif" width="600" height=auto>
 
-### 댓글 기능
-- 질문에 댓글 작성 (회원만 가능)
-- 질문에 달린 댓글 수정 (댓글 작성자만 가능)
-- 질문에 달린 댓글 삭제 (댓글 작성자만 가능)
-- 대댓글 작성 (회원만 가능)
-- 대댓글 수정 (댓글 작성자만 가능)
-- 대댓글 삭제 (댓글 작성자만 가능)
-
-### 메시지
-- 메시지 보내기(회원만 가능)
-- 메시지 조회(보낸 사용자와 받은 사용자만 가능)
-
-### 북마크
-- 게시글 북마크 설정(회원만 가능)
-- 게시글 북마크 취소(북마크한 사용자만 가능)
-- 북마크 조회(회원만 가능)
-
-### 좋아요
-- 게임 좋아요 설정(회원만 가능)
-- 게임 좋아요 취소(자신의 좋아요한 게임 취소)
+### 팔로우 기능
+- 유저 팔로우<br><img alt="userflow" src="./gif/유저팔로우.gif" width="600" height=auto>
+- 게임 팔로우<br><img alt="userflow" src="./gif/게임팔로우.gif" width="600" height=auto>
 
 ### 검색 기능
-- 키워드 검색
-- 게임, 게시글, 멤버
+- 유저, 게임, 게시글 검색 <br><img alt="userflow" src="./gif/배포검색.gif" width="600" height=auto>
 
-</br>
+### 메시지(채팅) 기능
+- 메시지 전송 및 확인 <br><img alt="userflow" src="./gif/채팅시연영상.gif" width="600" height=auto>
 
-
+### 알림 기능
+- 메시지, 댓글, 대댓글, 좋아요, 팔로우 시 알림
 
 ## 🔖 Project Docs
 
