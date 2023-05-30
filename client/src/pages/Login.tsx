@@ -142,6 +142,7 @@ const StyledLoginFormContainer = styled.form`
   display: flex;
   flex-direction: column;
   width: 110%;
+  max-width: 36.1rem;
 
   @media screen and (max-width: 650px) {
     width: 91%;
