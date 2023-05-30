@@ -15,7 +15,9 @@ const GameTitle = () => {
   const { gameId } = useParams();
   const navigate = useNavigate();
   const getMemberData = localStorage.getItem('user');
-  const memberData = getMemberData ? JSON.parse(getMemberData) : { memberId: -1 };
+  const memberData = getMemberData
+    ? JSON.parse(getMemberData)
+    : { memberId: -1 };
   const memberId = memberData.memberId;
 
   const [isGameData, setIsGameData] = useState<GameType | null>(null);
@@ -89,17 +91,22 @@ const GameTitle = () => {
           });
       }
       if (!isFollowed) {
-        axios.post(`${process.env.REACT_APP_API_URL}/api/games/${gameId}/follow`, {}, {
-          headers: {
-            Authorization: `${token}`
-          }
-        })
-        .then(response => {
-          setIsFollowed(true);
-        })
-        .catch(error => {
-          console.error('팔로우 요청 실패:', error);
-        });
+        axios
+          .post(
+            `${process.env.REACT_APP_API_URL}/api/games/${gameId}/follow`,
+            {},
+            {
+              headers: {
+                Authorization: `${token}`
+              }
+            }
+          )
+          .then((response) => {
+            setIsFollowed(true);
+          })
+          .catch((error) => {
+            console.error('팔로우 요청 실패:', error);
+          });
       }
     }
   };
@@ -116,17 +123,19 @@ const GameTitle = () => {
     }
   };
 
-  const defaultImg = isGameData?.mainImgUrl === 'https://codejejus-deploy.s3.ap-northeast-2.amazonaws.com/images/defaultGameImg.png';
+  const defaultImg =
+    isGameData?.mainImgUrl ===
+    'https://codejejus-deploy.s3.ap-northeast-2.amazonaws.com/images/defaultGameImg.png';
   const emptyUrl = isGameData.downloadUrl.length === 0;
 
   return (
     <StyledTitleWrapper>
       {imageError || defaultImg ? (
-        <StyledGameImg src={DefaultGame} alt="default-game-image" />
+        <StyledGameImg src={DefaultGame} alt='default-game-image' />
       ) : (
         <StyledGameImg
           src={isGameData?.mainImgUrl}
-          alt="game-image"
+          alt='game-image'
           onError={handleImageError}
         />
       )}
@@ -153,24 +162,25 @@ const GameTitle = () => {
         />
       </StyledFollowContain>
       <StyledDownload>
-        <p>게임 다운로드 링크:</p>
-        {
-          !emptyUrl ? (
-            <ComponentWithModal 
+        {!emptyUrl ? (
+          <ComponentWithModal
             confirmMessage={`다운로드 링크가 정확하지 않을 수 있습니다.
             \n그래도 이동하시겠습니까?`}
             confirmOnClick={handlemoveClick}
           >
-          <StyldedLink>
-            {emptyUrl ? '다운로드 링크가 비어있습니다.' : isGameData.downloadUrl}
-          </StyldedLink>
-          </ComponentWithModal>
-          ) : (
             <StyldedLink>
-              {emptyUrl ? '다운로드 링크가 비어있습니다.' : isGameData.downloadUrl}
+              {emptyUrl
+                ? '다운로드 링크가 비어있습니다.'
+                : '게임 다운로드 링크'}
             </StyldedLink>
-          )
-        }
+          </ComponentWithModal>
+        ) : (
+          <StyldedLink>
+            {emptyUrl
+              ? '다운로드 링크가 비어있습니다.'
+              : isGameData.downloadUrl}
+          </StyldedLink>
+        )}
       </StyledDownload>
     </StyledTitleWrapper>
   );
@@ -202,24 +212,33 @@ const StyledGameImg = styled.img`
 `;
 
 const StyledGameName = styled.h3`
+  display: flex;
+  justify-content: left;
+  flex-direction: row;
   margin-top: 10px;
   font-size: 28px;
   font-weight: 700;
   width: 300px;
   word-break: keep-all;
   overflow-wrap: break-word;
+  @media screen and (max-width: 650px) {
+    justify-content: center;
+  }
 `;
 
 const StyledTagContain = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: left;
   padding-top: 10px;
   gap: 10px;
   width: 100%;
   flex-wrap: wrap;
   & > a {
     margin-bottom: 20px;
+  }
+  @media screen and (max-width: 650px) {
+    justify-content: center;
   }
 `;
 
@@ -249,14 +268,7 @@ const StyledFollowNumber = styled.p`
 `;
 
 const StyledDownload = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
   font-size: 14px;
-  margin-top: 10px;
-  margin-left: -10px;
-  word-break: keep-all;
-  overflow-wrap: break-word;
 `;
 
 const StyldedLink = styled.p`
