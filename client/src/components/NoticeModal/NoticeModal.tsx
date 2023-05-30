@@ -24,7 +24,6 @@ const NoticeModal = ({
       localStorage.removeItem('notice');
       setShow(true);
     } else {
-      console.log('test');
       setShow(false);
     }
   }, []);
