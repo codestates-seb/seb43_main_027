@@ -3,6 +3,8 @@ import styled from 'styled-components';
 
 import ButtonEl from '../elements/Button';
 import { ButtonType } from '../../types/componentsTypes';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 
 /** Modal 창이 포함된 Button 컴포넌트 입니다. 가장 바깥 div의 크기가 100%로 지정되어있으므로 감싸는 Container로 크기를 조정해 줄 수 있습니다.
  *
@@ -24,7 +26,12 @@ const ConfirmModal = ({
 }: ModalButtonType): JSX.Element => {
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState('');
+  const emailvalid = useSelector(
+    (state: RootState) => state.signupvalid.emailvalid
+  );
+
   const openModalHandler = () => {
+    if (!emailvalid) return;
     setIsOpen(!isOpen);
   };
 
