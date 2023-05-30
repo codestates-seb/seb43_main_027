@@ -45,7 +45,7 @@ spring:
 
 mail:
   from:
-    address: dlehdrms0824@gmail.com
+    address: ${GOOGLE_MAIL_ADDRESS}@gmail.com
     name: INDDYBUDDY
 
 jwt:
