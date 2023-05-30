@@ -43,7 +43,7 @@ spring:
     check-template: true
     cache: false
 
-mail:
+email:
   from:
     address: ${GOOGLE_MAIL_ADDRESS}@gmail.com
     name: INDDYBUDDY
