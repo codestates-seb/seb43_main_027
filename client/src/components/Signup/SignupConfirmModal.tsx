@@ -1,4 +1,6 @@
-import Modal from './ConfirmModal';
+import styled from 'styled-components';
+
+import ConfirmModal from './ConfirmModal';
 
 const SingupConfirmModal = ({
   children,
@@ -11,12 +13,20 @@ const SingupConfirmModal = ({
   closeHandler: (value: string) => void;
 }) => {
   return (
-    <>
-      <Modal confirmMessage={confirmMessage} confirmOnClick={closeHandler}>
+    <StyledContainer>
+      <ConfirmModal
+        confirmMessage={confirmMessage}
+        confirmOnClick={closeHandler}
+      >
         {children}
-      </Modal>
-    </>
+      </ConfirmModal>
+    </StyledContainer>
   );
 };
 
 export default SingupConfirmModal;
+
+const StyledContainer = styled.div`
+  display: flex;
+  width: 100%;
+`;

@@ -23,6 +23,7 @@ const Signup = () => {
   const [isOpenFail, setIsOpenFail] = useState(false);
   const [isOpenError, setIsOpenError] = useState(false);
   const [isOpenConfirm, setIsOpenConfirm] = useState(false);
+  const [isConfirmSent, setIsConfirmSent] = useState(false);
   const navigation = useNavigate();
   const dispatch = useDispatch();
 
@@ -35,50 +36,58 @@ const Signup = () => {
   const emailSignup: React.MouseEventHandler = async (e: React.MouseEvent) => {
     e.preventDefault();
 
-    if (!emailconfirmed) {
+    if (!emailconfirmed && !isConfirmSent) {
       try {
         await axios
           .post(
             `${process.env.REACT_APP_API_URL}/api/email?email=${signupinfo.email}`,
             {
               email: signupinfo.email
-            },
-            {
-              headers: {
-                'ngrok-skip-browser-warning': '69420'
-              }
             }
           )
           .then(() => {
             console.log('1단계 성공');
-            return setIsOpenConfirm(true);
+            setIsOpenConfirm(true);
+            setIsConfirmSent(true);
+            return setTimeout(() => {
+              setIsConfirmSent(false);
+            }, 180000);
           });
       } catch (error: any) {
         // 오류에 따라서 필요하면 다른 모달 제작... ㅠ
         if (error.response && error.response.status === 409) {
           setIsOpenFail(true);
         } else {
+          ('여기서 에러나는거 emailSignup 함수 처음 if');
           setIsOpenError(true);
         }
       }
-      return setIsOpenConfirm(true);
     }
 
-    try {
-      await axios
-        .post(`${process.env.REACT_APP_API_URL}/api/members/signup`, {
-          username: signupinfo.username,
-          email: signupinfo.email,
-          password: signupinfo.password
-        })
-        .then(() => {
-          setIsOpen(true);
-        });
-    } catch (error: any) {
-      if (error.response && error.response.status === 409) {
-        setIsOpenFail(true);
-      } else {
-        setIsOpenError(true);
+    if (emailconfirmed) {
+      e.stopPropagation();
+      try {
+        await axios
+          .post(`${process.env.REACT_APP_API_URL}/api/members/signup`, {
+            username: signupinfo.username,
+            email: signupinfo.email,
+            password: signupinfo.password
+          })
+          .then(() => {
+            setIsOpen(true);
+            dispatch(
+              setSignupValidity({ key: 'emailconfirmed', value: false })
+            );
+          });
+      } catch (error: any) {
+        if (error.response && error.response.status === 409) {
+          setIsOpenFail(true);
+          setIsConfirmSent(false);
+        } else {
+          console.log('여기서 에러나는거 emailSignup 함수');
+          setIsOpenError(true);
+          setIsConfirmSent(false);
+        }
       }
     }
   };
@@ -105,9 +114,18 @@ const Signup = () => {
           email: signupinfo.email,
           code: value
         })
-        .then(() => {
-          setIsOpenConfirm(false);
-          dispatch(setSignupValidity({ key: 'emailconfirmed', value: true }));
+        .then((res) => {
+          console.log('email confirmation');
+          console.log(res);
+          if (res.data === true) {
+            console.log('email confirmation true');
+            return dispatch(
+              setSignupValidity({ key: 'emailconfirmed', value: true })
+            );
+          } else if (res.data === false) {
+            console.log('email confirmation false');
+            return alert('인증번호를 확인해주세요');
+          }
         });
     } catch (error: any) {
       // 여기는 인증번호를 똑바로 입력하라는 모달 있어야함.
@@ -153,17 +171,13 @@ const Signup = () => {
           {/* Input - components */}
           <SignupFieldsContainer />
           {/* Button - components */}
-          {isOpenConfirm ? (
-            <SignupConfirmModal
-              isOpen={isOpenConfirm}
-              confirmMessage={'인증번호:'}
-              closeHandler={modalCloseConfirm}
-            >
-              <SignupButtonsContainer onClick={emailSignup} />
-            </SignupConfirmModal>
-          ) : (
+          <SignupConfirmModal
+            isOpen={isOpenConfirm}
+            confirmMessage={'인증번호:'}
+            closeHandler={modalCloseConfirm}
+          >
             <SignupButtonsContainer onClick={emailSignup} />
-          )}
+          </SignupConfirmModal>
         </StyledSignupFormContainer>
       </StyledSignupFormWrapper>
     </StyledSignupContainer>

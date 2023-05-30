@@ -16,7 +16,7 @@ import { ButtonType } from '../../types/componentsTypes';
  *
  */
 
-const ComponentWithModal = ({
+const ConfirmModal = ({
   confirmMessage,
   confirmOnClick,
   cancelOnClick,
@@ -29,7 +29,11 @@ const ComponentWithModal = ({
   };
 
   const closeModalHandlerWithConfirm = (value: string) => {
-    if (confirmOnClick) confirmOnClick(value);
+    if (confirmOnClick) {
+      console.log('this works');
+      console.log(value);
+      confirmOnClick(value);
+    }
     openModalHandler();
   };
 
@@ -41,7 +45,7 @@ const ComponentWithModal = ({
   return (
     <StyledModalContainer>
       <StyledModalButtonContainer>
-        <div onClick={openModalHandler}>{children}</div>
+        <StyledDiv onClick={openModalHandler}>{children}</StyledDiv>
       </StyledModalButtonContainer>
       {isOpen && (
         //  모달 바깥을 클릭해도 취소가 되도록 할지 여부에 따라 backdrop 온클릭 속성 유무 결정
@@ -56,7 +60,10 @@ const ComponentWithModal = ({
               />
             </StyledConfirmMessageContainer>
             <ModalConfirmButton
-              onClick={() => closeModalHandlerWithConfirm(inputValue)}
+              onClick={(event) => {
+                event.stopPropagation();
+                closeModalHandlerWithConfirm(inputValue);
+              }}
             >
               확인
             </ModalConfirmButton>
@@ -77,7 +84,7 @@ interface ModalButtonType extends ButtonType {
   children: ReactElement;
 }
 
-export default ComponentWithModal;
+export default ConfirmModal;
 
 const StyledModalBackdrop = styled.div`
   position: fixed;
@@ -102,12 +109,25 @@ const StyledModalButtonContainer = styled.div`
   width: 100%;
 `;
 
-const ModalConfirmButton = styled.button``;
+const ModalConfirmButton = styled.button`
+  background-color: var(--cyan-dark-400);
+  border-style: none;
+  border-radius: 5px;
+  font-size: 1.3rem;
+  font-weight: 600;
+  text-align: center;
+  margin: 0.5rem 0.7rem;
+  padding: 0.5rem 0.7rem;
+  &:hover {
+    background-color: var(--cyan-dark-500);
+  }
+`;
 
 const ModalCancelButton = ButtonEl({
   flex: '1',
   bg: 'var(--button-inactive-color)',
-  hoverBg: 'var(--button-inactive-hover-color)'
+  hoverBg: 'var(--button-inactive-hover-color)',
+  type: 'button'
 });
 
 const StyledModalView = styled.div.attrs((props) => ({
@@ -143,4 +163,11 @@ const StyledInput = styled.input`
   margin-top: 1.9rem;
   margin-left: 1rem;
   font-size: 1.6rem;
+  outline: none;
+  border: 1px solid var(--cyan-dark-500);
+  border-radius: 5px;
+`;
+
+const StyledDiv = styled.div`
+  width: 100%;
 `;
