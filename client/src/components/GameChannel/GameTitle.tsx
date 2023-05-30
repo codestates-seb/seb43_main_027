@@ -212,24 +212,33 @@ const StyledGameImg = styled.img`
 `;
 
 const StyledGameName = styled.h3`
+  display: flex;
+  justify-content: left;
+  flex-direction: row;
   margin-top: 10px;
   font-size: 28px;
   font-weight: 700;
   width: 300px;
   word-break: keep-all;
   overflow-wrap: break-word;
+  @media screen and (max-width: 650px) {
+    justify-content: center;
+  }
 `;
 
 const StyledTagContain = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: left;
   padding-top: 10px;
   gap: 10px;
   width: 100%;
   flex-wrap: wrap;
   & > a {
     margin-bottom: 20px;
+  }
+  @media screen and (max-width: 650px) {
+    justify-content: center;
   }
 `;
 
@@ -259,14 +268,7 @@ const StyledFollowNumber = styled.p`
 `;
 
 const StyledDownload = styled.div`
-  /* display: flex;
-  flex-direction: column;
-  gap: 20px; */
   font-size: 14px;
-  /* margin-top: 10px;
-  margin-left: -10px; */
-  /* word-break: keep-all;
-  overflow-wrap: break-word; */
 `;
 
 const StyldedLink = styled.p`
@@ -275,5 +277,3 @@ const StyldedLink = styled.p`
   word-break: keep-all;
   overflow-wrap: break-word;
 `;
-
-const StyledBtn = styled.button``;

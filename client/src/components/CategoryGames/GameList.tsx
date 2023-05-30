@@ -166,9 +166,8 @@ const StyledGameListWrapper = styled.div`
 const StyledGameList = styled.div`
   display: flex;
   width: 100%;
-  padding: 50px;
+  padding: 30px;
   position: relative;
-  align-items: center;
   justify-content: left;
   gap: 25px;
   flex-direction: row;
@@ -178,7 +177,7 @@ const StyledGameList = styled.div`
   @media screen and (max-width: 650px) {
     flex-wrap: wrap;
     flex-basis: 50%;
-    padding: 50px 35px;
+    padding: 30px 35px;
   }
 `;
 
@@ -187,7 +186,6 @@ const StyledEmptyItem = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 50px 0px;
   font-size: 18px;
   font-weight: 700;
   color: var(--default-text-color);
