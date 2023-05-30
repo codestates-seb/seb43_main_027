@@ -16,6 +16,9 @@ import GameTagModal from '../components/GameRegister/GameTagModal';
 import { gameTagInfo } from '../data/gameTags';
 import { getData } from '../api/apiCollection';
 import convertCategory from '../utils/convertCategory';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/store';
+import PATH_URL from '../constants/pathUrl';
 const { gameTags, textTranslate } = gameTagInfo;
 
 const GameRegister = () => {
@@ -24,7 +27,7 @@ const GameRegister = () => {
   const [isOpenError, setIsOpenError] = useState(false);
   const [isTitle, setIsTitle] = useState(false);
   const [isTag, setIsTag] = useState(false);
-
+  const user = useSelector((s: RootState) => s.user);
   const navigation = useNavigate();
   const [title, setTitle] = useState('');
   const [detail, setDetail] = useState('');
@@ -156,10 +159,16 @@ const GameRegister = () => {
 
   useEffect(() => {
     if (!gameId) return;
+    if (user.memberId === -1) {
+      navigation(PATH_URL.ERROR);
+    }
     getData(
       `${process.env.REACT_APP_API_URL}/api/games/${gameId}`,
       (res) => {
-        console.log(res.data.data);
+        if (user.memberId !== res.data.data.memberId) {
+          navigation(PATH_URL.ERROR);
+          return;
+        }
         setTitle(res.data.data.gameName);
         setDetail(res.data.data.description);
         setUrl(res.data.data.downloadUrl);
