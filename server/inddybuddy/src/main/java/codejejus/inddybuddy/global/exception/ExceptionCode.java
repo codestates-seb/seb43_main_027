@@ -27,7 +27,9 @@ public enum ExceptionCode {
     MEMBER_NOT_SAME(403, "일치하지 않는 회원입니다."),
     CANT_FOLLOW_SELF(403, "자기 자신은 팔로우할 수 없습니다."),
     NEED_DIFFERENT_MEMBER(403, "다른 유저여야 합니다."),
-    EMPTY_FILE(400, "빈 파일입니다.");
+    EMPTY_FILE(400, "빈 파일입니다."),
+    CODE_ISSUANCE_UNAVAILABLE(400, "인증번호를 발급한지 3분이 지나지 않았습니다."),
+    MAIL_SEND_ERROR(400, "인증번호가 전송되지 않았습니다.");
 
     private final int code;
     private final String message;

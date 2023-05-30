@@ -46,12 +46,15 @@ public class Game extends Timestamped {
         this.mainImageUrl = mainImageUrl;
     }
 
-    public void updateGame(String gameName, String downloadUrl) {
+    public void updateGame(String gameName, String downloadUrl, String description) {
         if (gameName != null) {
             this.gameName = gameName;
         }
         if (downloadUrl != null) {
             this.downloadUrl = downloadUrl;
+        }
+        if (description != null) {
+            this.description = description;
         }
     }
 }

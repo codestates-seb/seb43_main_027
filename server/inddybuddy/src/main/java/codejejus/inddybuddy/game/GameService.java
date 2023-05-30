@@ -42,8 +42,8 @@ public class GameService {
         game.setMember(memberPrincipal.getMember());
         Optional.ofNullable(multipartFile)
                 .ifPresent(findMultiPart -> {
-                    File memberImg = fileService.createFile(findMultiPart, game);
-                    game.setMainImageUrl(memberImg.getFileUrl());
+                    File file = fileService.createFile(findMultiPart, game);
+                    game.setMainImageUrl(file.getFileUrl());
                 });
         Game save = gameRepository.save(game);
         List<Category> categories = categoryService.getCategoriesByName(requestDto.getCategoryNames());
@@ -66,7 +66,7 @@ public class GameService {
                     File file = fileService.createFile(findMultiPart, findGame);
                     findGame.setMainImageUrl(file.getFileUrl());
                 });
-        findGame.updateGame(requestDto.getGameName(), requestDto.getDownloadUrl());
+        findGame.updateGame(requestDto.getGameName(), requestDto.getDownloadUrl(), requestDto.getDescription());
         return gameMapper.entityToResponse(findGame);
     }
 
@@ -96,6 +96,13 @@ public class GameService {
     public Page<GameDto.Response> getAllGames(Pageable pageable, String filter) {
         Page<Game> games = getGames(pageable, filter);
         return gameMapper.entityPageToResponsePage(games);
+    }
+
+    @Transactional(readOnly = true)
+    public List<GameDto.Response> getAllCreatedGame(Long memberId) {
+        Member member = memberService.findMember(memberId);
+        List<Game> games = gameRepository.findAllByMember(member);
+        return gameMapper.entityListToResponseList(games);
     }
 
     @Transactional(readOnly = true)
