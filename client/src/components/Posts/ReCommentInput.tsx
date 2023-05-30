@@ -42,8 +42,8 @@ const ReCommentInput = ({
           commentRef.current.value = '';
         }
       },
-      () => {
-        console.log('test');
+      (err) => {
+        console.error(err);
       }
     );
   };

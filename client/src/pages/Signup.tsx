@@ -46,7 +46,6 @@ const Signup = () => {
             }
           )
           .then(() => {
-            console.log('1단계 성공');
             setIsOpenConfirm(true);
             setIsConfirmSent(true);
             return setTimeout(() => {
@@ -84,7 +83,6 @@ const Signup = () => {
           setIsOpenFail(true);
           setIsConfirmSent(false);
         } else {
-          console.log('여기서 에러나는거 emailSignup 함수');
           setIsOpenError(true);
           setIsConfirmSent(false);
         }
@@ -115,15 +113,11 @@ const Signup = () => {
           code: value
         })
         .then((res) => {
-          console.log('email confirmation');
-          console.log(res);
           if (res.data === true) {
-            console.log('email confirmation true');
             return dispatch(
               setSignupValidity({ key: 'emailconfirmed', value: true })
             );
           } else if (res.data === false) {
-            console.log('email confirmation false');
             return alert('인증번호를 확인해주세요');
           }
         });

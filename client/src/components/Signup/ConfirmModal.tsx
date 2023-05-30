@@ -30,8 +30,6 @@ const ConfirmModal = ({
 
   const closeModalHandlerWithConfirm = (value: string) => {
     if (confirmOnClick) {
-      console.log('this works');
-      console.log(value);
       confirmOnClick(value);
     }
     openModalHandler();
