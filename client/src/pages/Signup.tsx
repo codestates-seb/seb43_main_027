@@ -9,40 +9,85 @@ import SignupButtonsContainer from '../components/Signup/SignupButtonsContainer'
 import SignupModal from '../components/Signup/SignupModal';
 import SignupFailModal from '../components/Signup/SignupFailModal';
 import SignupErrorModal from '../components/Signup/SignupErrorModal';
+import SignupConfirmModal from '../components/Signup/SignupConfirmModal';
 
 import oauthSignup from '../utils/OauthSignUpFunction';
 
 import axios from 'axios';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSignupValidity } from '../slice/signupValiditySlice';
 import { RootState } from '../store/store';
 
 const Signup = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenFail, setIsOpenFail] = useState(false);
   const [isOpenError, setIsOpenError] = useState(false);
+  const [isOpenConfirm, setIsOpenConfirm] = useState(false);
+  const [isConfirmSent, setIsConfirmSent] = useState(false);
   const navigation = useNavigate();
+  const dispatch = useDispatch();
 
   const userinfo = useSelector((state: RootState) => state.user);
   const signupinfo = useSelector((state: RootState) => state.signup);
+  const emailconfirmed = useSelector(
+    (state: RootState) => state.signupvalid.emailconfirmed
+  );
 
   const emailSignup: React.MouseEventHandler = async (e: React.MouseEvent) => {
     e.preventDefault();
 
-    try {
-      await axios
-        .post(`${process.env.REACT_APP_API_URL}/api/members/signup`, {
-          username: signupinfo.username,
-          email: signupinfo.email,
-          password: signupinfo.password
-        })
-        .then(() => {
-          setIsOpen(true);
-        });
-    } catch (error: any) {
-      if (error.response && error.response.status === 409) {
-        setIsOpenFail(true);
-      } else {
-        setIsOpenError(true);
+    if (!emailconfirmed && !isConfirmSent) {
+      try {
+        await axios
+          .post(
+            `${process.env.REACT_APP_API_URL}/api/email?email=${signupinfo.email}`,
+            {
+              email: signupinfo.email
+            }
+          )
+          .then(() => {
+            console.log('1단계 성공');
+            setIsOpenConfirm(true);
+            setIsConfirmSent(true);
+            return setTimeout(() => {
+              setIsConfirmSent(false);
+            }, 180000);
+          });
+      } catch (error: any) {
+        // 오류에 따라서 필요하면 다른 모달 제작... ㅠ
+        if (error.response && error.response.status === 409) {
+          setIsOpenFail(true);
+        } else {
+          ('여기서 에러나는거 emailSignup 함수 처음 if');
+          setIsOpenError(true);
+        }
+      }
+    }
+
+    if (emailconfirmed) {
+      e.stopPropagation();
+      try {
+        await axios
+          .post(`${process.env.REACT_APP_API_URL}/api/members/signup`, {
+            username: signupinfo.username,
+            email: signupinfo.email,
+            password: signupinfo.password
+          })
+          .then(() => {
+            setIsOpen(true);
+            dispatch(
+              setSignupValidity({ key: 'emailconfirmed', value: false })
+            );
+          });
+      } catch (error: any) {
+        if (error.response && error.response.status === 409) {
+          setIsOpenFail(true);
+          setIsConfirmSent(false);
+        } else {
+          console.log('여기서 에러나는거 emailSignup 함수');
+          setIsOpenError(true);
+          setIsConfirmSent(false);
+        }
       }
     }
   };
@@ -61,6 +106,35 @@ const Signup = () => {
   };
   const modalCloseError = () => {
     navigation('/error');
+  };
+  const modalCloseConfirm = async (value: string) => {
+    try {
+      await axios
+        .post(`${process.env.REACT_APP_API_URL}/api/email/confirm`, {
+          email: signupinfo.email,
+          code: value
+        })
+        .then((res) => {
+          console.log('email confirmation');
+          console.log(res);
+          if (res.data === true) {
+            console.log('email confirmation true');
+            return dispatch(
+              setSignupValidity({ key: 'emailconfirmed', value: true })
+            );
+          } else if (res.data === false) {
+            console.log('email confirmation false');
+            return alert('인증번호를 확인해주세요');
+          }
+        });
+    } catch (error: any) {
+      // 여기는 인증번호를 똑바로 입력하라는 모달 있어야함.
+      if (error.response && error.response.status === 409) {
+        setIsOpenFail(true);
+      } else {
+        setIsOpenError(true);
+      }
+    }
   };
 
   return (
@@ -86,6 +160,7 @@ const Signup = () => {
           closeHandler={modalCloseError}
         />
       )}
+
       <StyledSignupFormWrapper>
         {/* top - component */}
         <SignupTopWrapper />
@@ -96,7 +171,13 @@ const Signup = () => {
           {/* Input - components */}
           <SignupFieldsContainer />
           {/* Button - components */}
-          <SignupButtonsContainer onClick={emailSignup} />
+          <SignupConfirmModal
+            isOpen={isOpenConfirm}
+            confirmMessage={'인증번호:'}
+            closeHandler={modalCloseConfirm}
+          >
+            <SignupButtonsContainer onClick={emailSignup} />
+          </SignupConfirmModal>
         </StyledSignupFormContainer>
       </StyledSignupFormWrapper>
     </StyledSignupContainer>
@@ -136,9 +217,9 @@ const StyledSignupFormWrapper = styled.div`
 const StyledSignupFormContainer = styled.form`
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 85%;
 
   @media screen and (max-width: 650px) {
-    width: 80%;
+    width: 70%;
   }
 `;

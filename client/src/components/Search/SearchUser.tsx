@@ -124,6 +124,7 @@ const StyledProfileContainer = styled.div<SearchUserWrapperType>`
     isPreview ? 'padding: 0 3rem 2rem 3rem;' : 'padding: 3rem;'}
   gap: 2rem;
   width: 100%;
+  flex-wrap: wrap;
   > div {
     background-color: white;
   }
