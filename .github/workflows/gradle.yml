@@ -45,9 +45,7 @@ jobs:
           jwt.secret: ${{ secrets.JWT_SECRET }}
           cloud.aws.credentials.accessKey: ${{ secrets.AWS_ACCESS_KEY_ID }}
           cloud.aws.credentials.secretKey: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          spring.mail.username: ${{ secrets.GOOGLE_MAIL_ADDRESS }}
           spring.mail.password: ${{ secrets.GOOGLE_MAIL_PASSWORD }}
-          email.from.address: ${{ secrets.GOOGLE_MAIL_ADDRESS }}@gmail.com
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
@@ -65,7 +63,6 @@ jobs:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
           AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          GOOGLE_MAIL_ADDRESS: ${{ secrets.GOOGLE_MAIL_ADDRESS }}
           GOOGLE_MAIL_PASSWORD: ${{ secrets.GOOGLE_MAIL_PASSWORD }}
 
       # 디렉토리 생성
