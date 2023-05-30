@@ -49,7 +49,7 @@ public class FileService {
 
     public void deleteGameImg(Game game) {
         File file = fileRepository.findByGame(game);
-        if (file != null && file.getFileUrl().equals(Constants.GAME_DEFAULT_IMG)) {
+        if (file != null && !file.getFileUrl().equals(Constants.GAME_DEFAULT_IMG)) {
             amazonS3Service.deleteFile(file.getFileName());
             log.info("[AWS S3] Delete to file S3 complete");
             fileRepository.delete(file);
