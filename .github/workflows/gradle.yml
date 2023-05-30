@@ -47,7 +47,7 @@ jobs:
           cloud.aws.credentials.secretKey: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           spring.mail.username: ${{ secrets.GOOGLE_MAIL_ADDRESS }}
           spring.mail.password: ${{ secrets.GOOGLE_MAIL_PASSWORD }}
-          email.from.address: ${{ secrets.GOOGLE_MAIL_ADDRESS }}
+          email.from.address: ${{ secrets.GOOGLE_MAIL_ADDRESS }}@gmail.com
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
