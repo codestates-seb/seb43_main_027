@@ -41,7 +41,7 @@ public class MessageService {
         Message message = messageMapper.toEntity(request, sender, receiver);
         messageRepository.save(message);
 
-        String content = sender.getUsername() + "님이 [" + request.getContent() + "] 메세지를 보냈습니다.";
+        String content = sender.getUsername() + ": " + request.getContent();
         Alarm alarm = Alarm.builder()
                 .receiver(receiver)
                 .sender(sender)
@@ -68,7 +68,7 @@ public class MessageService {
     }
 
     private void verifySender(Member receiver, Member sender) {
-        if (sender.getEmail().equals(receiver.getEmail())) {
+        if (sender.equals(receiver)) {
             throw new CustomException(ExceptionCode.NEED_DIFFERENT_MEMBER);
         }
     }
