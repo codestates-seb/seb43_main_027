@@ -173,7 +173,11 @@ const UserEditInfo = ({ setIsEditClick }: UserInfoProps) => {
         dispatch(setUser(response.data.data));
       })
       .catch((error) => {
-        setNickNameError('이미 사용중인 닉네임 입니다.');
+        if (error.response && error.response.status === 409) {
+          setNickNameError('이미 사용중인 닉네임입니다.');
+        } else {
+          console.error('프로필 저장 요청 실패:', error);
+        }
       });
     } else {
       return;
