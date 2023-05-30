@@ -61,7 +61,7 @@ const UserItem = ({
 
   const handleUserPageClick = () => {
     if (userNameState === '*삭제된 계정*') {
-      alert('삭제된 계정입니다.');
+      setIsOpen(true);
     } else {
       navigate(`${PATH_URL.USER_INFO}${memberId}`);
       window.location.reload();
@@ -151,7 +151,7 @@ const UserItem = ({
     }
     <Modal 
       isOpen={isOpen}
-      confirmMessage='로그인이 필요한 서비스입니다.'
+      confirmMessage={ delectUser ? '인디버디를 떠난 유저에요...T^T' : '로그인이 필요한 서비스입니다.' }
       closeModalHandlerWithConfirm={() => setIsOpen(false)}
       />
     </StyledWrapper>
