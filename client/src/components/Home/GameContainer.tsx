@@ -23,12 +23,12 @@ const GameContainer = () => {
 
   const [tabInd, setTabInd] = useState<number>(0);
 
-  const apiRef = useRef([
+  const apiRef = [
     '/api/games/?filter=POPULAR',
     '/api/games/?filter=NEW',
     `/api/members/${user.memberId}/creategame`,
     `/api/members/${user.memberId}/mygame`
-  ]);
+  ];
 
   const onClickHandler = (i: number) => () => {
     setTabInd(i);
@@ -42,7 +42,7 @@ const GameContainer = () => {
       (async () => {
         try {
           const res = await axios.get(
-            `${process.env.REACT_APP_API_URL}${apiRef.current[tabInd]}&page=${
+            `${process.env.REACT_APP_API_URL}${apiRef[tabInd]}&page=${
               curPage !== pageInfo.page ? curPage : 1
             }&size=${pageInfo.size}`
           );
@@ -57,7 +57,7 @@ const GameContainer = () => {
       (async () => {
         try {
           const res = await axios.get(
-            `${process.env.REACT_APP_API_URL}${apiRef.current[tabInd]}`
+            `${process.env.REACT_APP_API_URL}${apiRef[tabInd]}`
           );
           const newPageInfo = {
             ...pageInfo,
