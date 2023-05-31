@@ -51,6 +51,8 @@ public class MemberService {
                 .ifPresent(username -> {
                     if (!username.equals(findMember.getUsername())) {
                         findMember.setUsername(username);
+                    } else {
+                        verifyExistUsername(username);
                     }
                 });
         Optional.ofNullable(member.getAboutMe())
