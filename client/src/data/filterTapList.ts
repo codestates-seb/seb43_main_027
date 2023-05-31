@@ -9,7 +9,8 @@ export const gameChannelFilterTab: string[] = [
 export const categoryFilterTab: string[] = [
   '전체 게임',
   '인기 게임', 
-  '신규 게임', 
+  '신규 게임',
+  '생성 게임',
   '팔로우 게임'
 ];
 
@@ -23,6 +24,7 @@ export const searchFilterTab: string[] = [
 export const userInfoTab: string[] = [
   '팔로워',
   '팔로잉',
+  '생성 게임',
   '팔로우 게임',
   '작성글',
   '북마크 글'
@@ -31,6 +33,7 @@ export const userInfoTab: string[] = [
 export const otherInfoTab: string[] = [
   '팔로워',
   '팔로잉',
+  '생성 게임',
   '팔로우 게임',
   '작성글'
 ];

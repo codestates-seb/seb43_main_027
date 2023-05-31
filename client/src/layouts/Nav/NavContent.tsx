@@ -5,7 +5,6 @@ import { RootState } from '../../store/store';
 import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import Loading from '../../components/common/Loading';
-import { filterDeletedUser } from '../../utils/filterDeletedUser';
 
 const NavContent = ({
   type,
@@ -23,7 +22,8 @@ const NavContent = ({
     user: `/api/members/${user.memberId}/following`,
     bookmark: `/api/members/${user.memberId}/bookmark`,
     games: `/api/members/${user.memberId}/mygame`,
-    messages: '/api/members/messages'
+    messages: '/api/members/messages',
+    myGames: `/api/members/${user.memberId}/creategame`
   });
 
   useEffect(() => {
@@ -100,7 +100,8 @@ const NavContent = ({
         user: '팔로우한 유저가 없습니다.',
         bookmark: '북마크한 게시글이 없습니다.',
         games: '팔로우한 게임이 없습니다.',
-        messages: '채팅한 유저가 없습니다.'
+        messages: '채팅한 유저가 없습니다.',
+        myGames: '생성한 게임이 없습니다.'
       };
       return (
         <StyledNotiMsgContainer>

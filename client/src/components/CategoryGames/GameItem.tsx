@@ -94,6 +94,7 @@ const StyledTitle = styled.h2`
   font-weight: 700;
   word-break: keep-all;
   overflow-wrap: break-word;
+  text-align: left;
 `;
 
 const StyledFollow = styled.p`

@@ -131,6 +131,25 @@ const UserInfoList = ({ isSelectTab, isSameUser, isSelectTag, isMappingTag }
               };
               break;
           };
+          case '생성 게임': {
+            setIsFollowedList([]);
+            setIsFilteredPosts([]);
+            setIsBookmarkClick(false);
+              try {
+                const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/members/${currentId}/creategame`);
+                const followedGames = res.data.data;
+                setIsTotalCount(followedGames.length);
+                if (followedGames.length > 0) {
+                  setIsFollowedGames([...followedGames]);
+                } else {
+                  setIsFollowedGames([]);
+                  setUserMessage('생성한 게임채널이 없습니다.');
+                }
+              } catch (error) {
+                console.error(error);
+                }
+            break;
+          };
           case '팔로우 게임': {
             setIsFollowedList([]);
             setIsFilteredPosts([]);

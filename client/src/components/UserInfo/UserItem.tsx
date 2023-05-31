@@ -12,6 +12,7 @@ import { useDispatch } from 'react-redux';
 import { startChat } from '../../slice/chatSlice';
 import { UserItemPropsType, UserStyledButtonPropsType } from '../../types/propsTypes';
 import DeleteGamer from '../../asset/Deletegamer.png';
+import Modal from '../common/Modal';
 
 const UserItem = ({
   imageUrl,
@@ -21,6 +22,7 @@ const UserItem = ({
   memberId,
   isFollowingIdIncluded
 }: UserItemPropsType) => {
+
   const getMemberData = localStorage.getItem('user');
 
   const memberData = getMemberData
@@ -37,24 +39,29 @@ const UserItem = ({
   const delectUserAction = userNameState === '*삭제된 계정*' && !isFollowingIdIncluded;
   const delectUser = userNameState === '*삭제된 계정*';
 
-
+  const [ isOpen, setIsOpen] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleMessage = () => {
-    const receiver = {
-      memberId,
-      imageUrl,
-      userName
-    };
 
-    dispatch(startChat(receiver));
+    if (Number(loginedId) !== -1) {
+      const receiver = {
+        memberId,
+        imageUrl,
+        userName
+      };
+  
+      dispatch(startChat(receiver));
+    } else {
+      setIsOpen(true);
+    }
   };
 
   const handleUserPageClick = () => {
     if (userNameState === '*삭제된 계정*') {
-      alert('삭제된 계정입니다.');
+      setIsOpen(true);
     } else {
       navigate(`${PATH_URL.USER_INFO}${memberId}`);
       window.location.reload();
@@ -100,7 +107,7 @@ const UserItem = ({
           });
       };
     } else {
-      alert('로그인이 필요한 기능입니다.');
+      setIsOpen(true);
     }
   };
 
@@ -142,6 +149,11 @@ const UserItem = ({
       </StyledFollowButton>
       )
     }
+    <Modal 
+      isOpen={isOpen}
+      confirmMessage={ delectUser ? '인디버디를 떠난 유저에요...T^T' : '로그인이 필요한 서비스입니다.' }
+      closeModalHandlerWithConfirm={() => setIsOpen(false)}
+      />
     </StyledWrapper>
   );
 };
