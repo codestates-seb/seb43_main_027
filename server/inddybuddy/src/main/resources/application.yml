@@ -67,3 +67,7 @@ cloud:
       pool:
         core-size: 5
         max-size: 5
+logging:
+    level:
+      com.zaxxer.hikari.HikariConfig: DEBUG
+      com.zaxxer.hikari: TRACE
