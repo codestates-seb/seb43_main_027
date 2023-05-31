@@ -20,8 +20,8 @@ import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @Slf4j
@@ -31,7 +31,7 @@ public class EmailService {
     private final JavaMailSender mailSender;
     private final MemberService memberService;
     private final TemplateEngine templateEngine;
-    public static HashMap<String, String> codeStorage = new HashMap<>();
+    public static ConcurrentHashMap<String, String> codeStorage = new ConcurrentHashMap<>();
     @Value("${email.from.address}")
     private String FROM_ADDRESS;
     @Value("${email.from.name}")

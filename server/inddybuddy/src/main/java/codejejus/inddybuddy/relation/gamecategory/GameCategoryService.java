@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +25,11 @@ public class GameCategoryService {
     public void modifyGameAndCategory(Game game, List<Category> patchCategories) {
         gameCategoryRepository.deleteAllByGame(game);
         createGameInCategory(game, patchCategories);
+    }
+
+    public List<Category> findCategoryByGame(Game game) {
+        List<GameCategory> gameCategories = gameCategoryRepository.findAllByGame(game);
+        return gameCategories.stream().map(GameCategory::getCategory).collect(Collectors.toList());
     }
 
     public Page<Game> findGamesByCategory(Category category, Pageable pageable) {
