@@ -182,7 +182,8 @@ const GameRegister = () => {
 
         categories.forEach((category: string) => {
           const ind = Object.values(gameTags).findIndex((value) => {
-            if (category === '핵 앤 슬레쉬') return value === '핵앤슬';
+            if (category === '핵 앤 슬래쉬') return value === '핵앤슬';
+            if (category === '턴베이스') return value === '턴제';
             else return value === category;
           });
           if (ind !== -1) {
