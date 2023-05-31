@@ -30,6 +30,7 @@ const StyledTitle = styled.span`
   color: black;
   font-size: 3rem;
   margin: 3rem 0 0 5rem;
+  white-space: nowrap;
 `;
 
 const StyledBlock = styled.div`

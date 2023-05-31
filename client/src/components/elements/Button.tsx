@@ -33,6 +33,7 @@ const StyledBtn = styled.button.attrs((props) => ({
   padding: ${(props) => props.padding || '0.5rem 0.7rem'};
   border-radius: ${(props) => props.radius || '5px'};
   border: ${(props) => props.border || 'none'};
+  white-space: nowrap;
   &:hover {
     background-color: ${(props) => props.hoverBg || 'var(--cyan-dark-500)'};
   }
