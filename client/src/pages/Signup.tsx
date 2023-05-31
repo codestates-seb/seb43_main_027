@@ -204,7 +204,7 @@ const Signup = () => {
             {/* Oauth - component */}
             <SignupOauthContainer onClick={oauthSignup} />
             {/* Input - components */}
-            <SignupFieldsContainer />
+            <SignupFieldsContainer setIsConfirmSent={setIsConfirmSent} />
             {/* Button - components */}
             <SignupConfirmModal
               isOpen={isOpenConfirm}
