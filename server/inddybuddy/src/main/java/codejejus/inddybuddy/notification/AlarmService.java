@@ -17,6 +17,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 @Slf4j
 public class AlarmService {
 
@@ -96,7 +97,6 @@ public class AlarmService {
         }
     }
 
-    @Transactional
     public void readAlarm(AlarmDto.Request request) {
         String[] alarms = request.getId();
         for (String alarm : alarms) {
