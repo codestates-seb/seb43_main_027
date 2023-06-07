@@ -1,0 +1,73 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${RDS_ENDPOINT}:${RDS_PORT}/inddybuddydb?useSSL=false&&serverTimezone=Asia/Seoul
+    username: ${RDS_USERNAME}
+    password: ${RDS_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: none
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    database: mysql
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            scope:
+              - profile
+              - email
+  mail:
+    default-encoding: UTF-8
+    host: smtp.gmail.com
+    port: 587
+    username: dlehdrms0824
+    password: ${GOOGLE_MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+        starttls:
+          enable: true
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    encoding: UTF-8
+    check-template: true
+    cache: false
+
+email:
+  from:
+    address: dlehdrms0824@gmail.com
+    name: INDDYBUDDY
+
+jwt:
+  secret: ${JWT_SECRET}
+cloud:
+  aws:
+    stack:
+      auto: false
+    credentials:
+      accessKey: ${AWS_ACCESS_KEY}
+      secretKey: ${AWS_SECRET_KEY}
+    s3:
+      bucket: codejejus-deploy/images
+    region:
+      auto: false
+      static: ap-northeast-2
+  task:
+    execution:
+      pool:
+        core-size: 5
+        max-size: 5
+logging:
+    level:
+      com.zaxxer.hikari.HikariConfig: DEBUG
+      com.zaxxer.hikari: TRACE

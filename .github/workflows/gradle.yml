@@ -5,16 +5,20 @@
 # This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
 name: Java CI with Gradle
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-permissions:
-  contents: read
 
 env:
   S3_BUCKET_NAME: codejejus-deploy
+  RESOURCE_PATH: ./server/inddybuddy/src/main/resources/application.yml
+
+on:
+  push:
+    branches: 
+      - 'main'
+    paths-ignore: ["client/**"]
+  
+permissions:
+  contents: read
+  
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -28,12 +32,38 @@ jobs:
         with:
           java-version: '11'
           distribution: 'temurin'
+      - name: Set yml file
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ${{ env.RESOURCE_PATH }}
+        env:
+          spring.datasource.url: jdbc:mysql://${{ secrets.RDS_ENDPOINT }}:${{ secrets.RDS_PORT }}/inddybuddydb?useSSL=false&&serverTimezone=Asia/Seoul
+          spring.datasource.username: ${{ secrets.RDS_USERNAME }}
+          spring.datasource.password: ${{ secrets.RDS_PASSWORD }}
+          spring.security.oauth2.client.registration.google.client-id: ${{ secrets.GOOGLE_CLIENT_ID }}
+          spring.security.oauth2.client.registration.google.client-secret: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          jwt.secret: ${{ secrets.JWT_SECRET }}
+          cloud.aws.credentials.accessKey: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          cloud.aws.credentials.secretKey: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          spring.mail.password: ${{ secrets.GOOGLE_MAIL_PASSWORD }}
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew build -Pprofile=prod
+        shell: bash
+        env:
+          RDS_ENDPOINT: ${{ secrets.RDS_ENDPOINT }}
+          RDS_PORT: ${{ secrets.RDS_PORT }}
+          RDS_USERNAME: ${{ secrets.RDS_USERNAME }}
+          RDS_PASSWORD: ${{ secrets.RDS_PASSWORD }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          GOOGLE_MAIL_PASSWORD: ${{ secrets.GOOGLE_MAIL_PASSWORD }}
 
       # 디렉토리 생성
       - name: Make Directory
@@ -75,5 +105,5 @@ jobs:
           --application-name inddybuddy
           --deployment-group-name code-jejus
           --file-exists-behavior OVERWRITE
-          --s3-location bucket=codejejus-deploy,bundleType=zip,key=codejejus.zip
+          --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=codejejus.zip
           --region ap-northeast-2
