@@ -17,7 +17,6 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 @Slf4j
 public class AlarmService {
 
@@ -36,6 +35,7 @@ public class AlarmService {
         return emitter;
     }
 
+    @Transactional
     public void send(Alarm alarm) {
         alarmRepository.save(alarm);
         Map<String, SseEmitter> sseEmitters = emitterRepository.findAllEmitterStartWithById(String.valueOf(alarm.getReceiver().getMemberId()));
@@ -65,7 +65,8 @@ public class AlarmService {
         return emitter;
     }
 
-    private void sendUnReadNotification(Long memberId, String emitterId, SseEmitter emitter) {
+    @Transactional
+    public void sendUnReadNotification(Long memberId, String emitterId, SseEmitter emitter) {
         List<Alarm> alarms = alarmRepository.findAllByReceiverId(memberId);
         log.info(emitterId + "로 " + alarms.size() + "개의 알림 전송");
         alarms.forEach(notification -> {
@@ -97,6 +98,7 @@ public class AlarmService {
         }
     }
 
+    @Transactional
     public void readAlarm(AlarmDto.Request request) {
         String[] alarms = request.getId();
         for (String alarm : alarms) {
