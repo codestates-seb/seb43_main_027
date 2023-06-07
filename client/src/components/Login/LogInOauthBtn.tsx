@@ -1,5 +1,5 @@
 import ButtonEl from '../elements/Button';
-import { OauthButton } from './LoginOauthContainer';
+import { OauthButton } from './LogInOauthContainer';
 
 const LoginOauthBtn = ({ onClick }: OauthButton) => {
   return (

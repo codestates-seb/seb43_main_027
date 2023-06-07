@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import LoginLogo from './LoginLogo';
+import LoginLogo from './LogInLogo';
 
 const LoginTopWrapper = () => {
   return (
