@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
 
 import CategoryCard from '../common/CategoryCard';
 import Title from './Title';
@@ -9,6 +8,25 @@ import CreateChannelButton from '../ui/CreateChannelButton';
 import { CategoryType } from '../../types/dataTypes';
 import { useNavigate } from 'react-router-dom';
 import categoryData from '../../data/categoryData';
+import { getData } from '../../api/apiCollection';
+
+const makeCategoryArray = (data: CategoryType[]) => {
+  const newCategories: CategoryType[] = [];
+
+  data.forEach((category) => {
+    const newCategory = {
+      ...category,
+      categoryName: categoryData[category.categoryName].text,
+      categoryIcon: categoryData[category.categoryName].icon
+    };
+
+    category.categoryName === 'OTHER'
+      ? newCategories.unshift(newCategory)
+      : newCategories.push(newCategory);
+  });
+
+  return newCategories;
+};
 
 const CategoryContainer = () => {
   const [categories, setCategories] = useState<CategoryType[]>([]);
@@ -19,30 +37,13 @@ const CategoryContainer = () => {
   };
 
   useEffect(() => {
-    (async () => {
-      try {
-        const { data }: { data: CategoryType[] } = await axios(
-          `${process.env.REACT_APP_API_URL}/api/categories`
-        );
-        const newCategories: CategoryType[] = [];
-
-        data.forEach((category) => {
-          const newCategory = {
-            ...category,
-            categoryName: categoryData[category.categoryName].text,
-            categoryIcon: categoryData[category.categoryName].icon
-          };
-
-          category.categoryName === 'OTHER'
-            ? newCategories.unshift(newCategory)
-            : newCategories.push(newCategory);
-        });
-
-        setCategories(newCategories);
-      } catch (err) {
-        console.error(err);
-      }
-    })();
+    getData(
+      `${process.env.REACT_APP_API_URL}/api/categories`,
+      (res) => {
+        setCategories(makeCategoryArray(res.data));
+      },
+      console.error
+    );
   }, []);
 
   return (
