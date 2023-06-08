@@ -28,21 +28,19 @@ public class AlarmService {
     public SseEmitter subscribe(Long memberId, String lastEventId) {
         String emitterId = createEmitterId(memberId);
         SseEmitter emitter = createEmitter(emitterId);
-        sendUnReadNotification(memberId, emitterId, emitter);
         if (hasLostData(lastEventId)) {
             sendLostData(memberId, lastEventId, emitter);
         }
         return emitter;
     }
 
-    @Transactional
     public void send(Alarm alarm) {
         alarmRepository.save(alarm);
         Map<String, SseEmitter> sseEmitters = emitterRepository.findAllEmitterStartWithById(String.valueOf(alarm.getReceiver().getMemberId()));
 
         sseEmitters.forEach((key, emitter) -> {
             emitterRepository.saveEventCache(key, alarm);
-            sendToClient(emitter, key, alarmMapper.notificationResponseNotificationDto(alarm));
+            sendToClient(emitter, key, alarmMapper.alarmToAlarmDto(alarm));
         });
     }
 
@@ -54,10 +52,13 @@ public class AlarmService {
 
     private SseEmitter createEmitter(String emitterId) {
         SseEmitter emitter = emitterRepository.save(emitterId, new SseEmitter(DEFAULT_TIMEOUT));
-        emitter.onCompletion(() -> emitterRepository.deleteById(emitterId));
+        emitter.onCompletion(() -> {
+            log.info("onCompletion callback");
+            emitterRepository.deleteById(emitterId);
+        });
         emitter.onTimeout(() -> {
-            emitterRepository.deleteAllEmitterStartWithId(emitterId);
-            emitterRepository.deleteAllEventCacheStartWithId(emitterId);
+            log.info("onTimeout callback");
+            emitter.complete();
         });
 
         sendToClient(emitter, emitterId, "EventStream Created. [memberId=" + emitterId.split("_")[0] + "]");
@@ -65,13 +66,9 @@ public class AlarmService {
         return emitter;
     }
 
-    @Transactional
-    public void sendUnReadNotification(Long memberId, String emitterId, SseEmitter emitter) {
+    public List<AlarmDto.BaseResponse> sendUnReadNotification(Long memberId) {
         List<Alarm> alarms = alarmRepository.findAllByReceiverId(memberId);
-        log.info(emitterId + "로 " + alarms.size() + "개의 알림 전송");
-        alarms.forEach(notification -> {
-            sendToClient(emitter, emitterId, alarmMapper.notificationResponseNotificationDto(notification));
-        });
+        return alarmMapper.alarmsToAlarmDto(alarms);
     }
 
     private boolean hasLostData(String lastEventId) {
@@ -82,7 +79,7 @@ public class AlarmService {
         Map<String, Alarm> events = emitterRepository.findAllEventCacheStartWithById(String.valueOf(memberId));
         events.entrySet().stream()
                 .filter(entry -> lastEventId.compareTo(entry.getKey()) < 0)
-                .forEach(entry -> sendToClient(emitter, entry.getKey(), alarmMapper.notificationResponseNotificationDto(entry.getValue())));
+                .forEach(entry -> sendToClient(emitter, entry.getKey(), alarmMapper.alarmToAlarmDto(entry.getValue())));
     }
 
     private void sendToClient(SseEmitter emitter, String emitterId, Object data) {
