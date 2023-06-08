@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import LoginOauthBtn from './LoginOauthBtn';
+import LoginOauthBtn from './LogInOauthBtn';
 
 export interface OauthButton {
   onClick: React.MouseEventHandler;

@@ -1,16 +1,15 @@
-import { SetStateAction, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-const NoticeModal = ({
-  setShow
-}: {
-  setShow: React.Dispatch<SetStateAction<boolean>>;
-}) => {
+const NoticeModal = () => {
+  const [show, setShow] = useState(true);
   const [isChecked, setIsChecked] = useState(false);
+
   const onCloseButtonClickHandler = () => {
     isChecked && localStorage.setItem('notice', Date.now().toString());
     setShow(false);
   };
+
   const onChangeHandler = () => {
     setIsChecked((prev) => !prev);
   };
@@ -29,26 +28,32 @@ const NoticeModal = ({
   }, []);
 
   return (
-    <StyledWrapper className='modal'>
-      <StyledContainer>
-        <StyledCloseBtn onClick={onCloseButtonClickHandler}>X</StyledCloseBtn>
-        <StyledHeaderContainer>
-          <StyledHeader>인디버디에 방문해주셔서 감사합니다!</StyledHeader>
-        </StyledHeaderContainer>
-        <StyledContentContainer>
-          <StyledContent>
-            즐겨하는 <strong>인디 게임을 등록</strong>해보세요!
-          </StyledContent>
-          <StyledContent>
-            함께 게임을 하고 싶은 <strong>친구들을 찾아보아요!</strong>
-          </StyledContent>
-        </StyledContentContainer>
-        <StyledCheckBoxContainer>
-          <span>하루동안 그만보기</span>
-          <input type='checkbox' onChange={onChangeHandler} />
-        </StyledCheckBoxContainer>
-      </StyledContainer>
-    </StyledWrapper>
+    <>
+      {show && (
+        <StyledWrapper className='modal'>
+          <StyledContainer>
+            <StyledCloseBtn onClick={onCloseButtonClickHandler}>
+              X
+            </StyledCloseBtn>
+            <StyledHeaderContainer>
+              <StyledHeader>인디버디에 방문해주셔서 감사합니다!</StyledHeader>
+            </StyledHeaderContainer>
+            <StyledContentContainer>
+              <StyledContent>
+                즐겨하는 <strong>인디 게임을 등록</strong>해보세요!
+              </StyledContent>
+              <StyledContent>
+                함께 게임을 하고 싶은 <strong>친구들을 찾아보아요!</strong>
+              </StyledContent>
+            </StyledContentContainer>
+            <StyledCheckBoxContainer>
+              <span>하루동안 그만보기</span>
+              <input type='checkbox' onChange={onChangeHandler} />
+            </StyledCheckBoxContainer>
+          </StyledContainer>
+        </StyledWrapper>
+      )}
+    </>
   );
 };
 

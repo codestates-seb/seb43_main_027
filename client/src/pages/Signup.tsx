@@ -25,6 +25,7 @@ const Signup = () => {
   const [isOpenError, setIsOpenError] = useState(false);
   const [isOpenConfirm, setIsOpenConfirm] = useState(false);
   const [isConfirmSent, setIsConfirmSent] = useState(false);
+  const [isConfirming, setIsConfirming] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigate();
   const dispatch = useDispatch();
@@ -39,6 +40,7 @@ const Signup = () => {
     e.preventDefault();
 
     if (!emailconfirmed && !isConfirmSent) {
+      setIsOpenConfirm(true);
       try {
         await axios
           .post(
@@ -48,7 +50,6 @@ const Signup = () => {
             }
           )
           .then(() => {
-            setIsOpenConfirm(true);
             setIsConfirmSent(true);
             return setTimeout(() => {
               setIsConfirmSent(false);
@@ -56,8 +57,19 @@ const Signup = () => {
           });
       } catch (error: any) {
         // 오류에 따라서 필요하면 다른 모달 제작... ㅠ
+        if (error.response && error.response.status === 400) {
+          setIsConfirmSent(true);
+          setIsConfirming(true);
+          dispatch(
+            setSignupValidity({
+              key: 'usernamevalid',
+              value: false
+            })
+          );
+        }
         if (error.response && error.response.status === 409) {
           setIsOpenFail(true);
+          setIsOpenConfirm(false);
           dispatch(
             setSignupValidity({
               key: 'usernamevalid',
@@ -92,11 +104,13 @@ const Signup = () => {
             dispatch(
               setSignupValidity({ key: 'emailconfirmed', value: false })
             );
+            setIsLoading(false);
           });
       } catch (error: any) {
         if (error.response && error.response.status === 409) {
           setIsOpenFail(true);
           setIsConfirmSent(false);
+          setIsOpenConfirm(false);
         } else {
           setIsOpenError(true);
           setIsConfirmSent(false);
@@ -174,6 +188,13 @@ const Signup = () => {
             closeHandler={modalCloseError}
           />
         )}
+        {isConfirming && (
+          <SignupFailModal
+            isOpen={isOpenFail}
+            confirmMessage={'3분 뒤 이메일 인증 요청을 다시 시도하세요.'}
+            closeHandler={modalCloseFail}
+          />
+        )}
 
         <StyledSignupFormWrapper>
           {/* top - component */}
@@ -183,7 +204,7 @@ const Signup = () => {
             {/* Oauth - component */}
             <SignupOauthContainer onClick={oauthSignup} />
             {/* Input - components */}
-            <SignupFieldsContainer />
+            <SignupFieldsContainer setIsConfirmSent={setIsConfirmSent} />
             {/* Button - components */}
             <SignupConfirmModal
               isOpen={isOpenConfirm}

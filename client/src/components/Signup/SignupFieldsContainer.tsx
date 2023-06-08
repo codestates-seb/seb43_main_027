@@ -2,9 +2,11 @@ import styled from 'styled-components';
 
 import InputContainer from '../../components/common/InputContainer';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setSignupInfo } from '../../slice/signupSlice';
 import { setSignupValidity } from '../../slice/signupValiditySlice';
+import { SetStateAction } from 'react';
+import { RootState } from '../../store/store';
 
 const usernameRegExp = /^[가-힣A-Za-z0-9]{2,10}$/;
 const emailRegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -21,7 +23,12 @@ const passwordValidityTest = (value: string) => {
   return passwordRegExp.test(value);
 };
 
-const SignupFieldsContainer = () => {
+const SignupFieldsContainer = ({
+  setIsConfirmSent
+}: {
+  setIsConfirmSent: React.Dispatch<SetStateAction<boolean>>;
+}) => {
+  const signUpInfo = useSelector((s: RootState) => s.signup);
   const dispatch = useDispatch();
 
   //  Signup 관련 store 업데이트
@@ -35,6 +42,9 @@ const SignupFieldsContainer = () => {
     );
   };
   const dispatchEmail = (value: string) => {
+    if (value !== signUpInfo.email) {
+      setIsConfirmSent(false);
+    }
     dispatch(setSignupInfo({ key: 'email', value }));
     dispatch(
       setSignupValidity({ key: 'emailvalid', value: emailValidityTest(value) })

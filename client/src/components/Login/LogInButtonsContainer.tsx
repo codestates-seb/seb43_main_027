@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-import LoginButton, { LoginButtonType } from './LoginButton';
-import MoveToSignupBtn from './MoveToSignupButton';
+import LoginButton, { LoginButtonType } from './LogInButton';
+import MoveToSignupBtn from './MoveToSignUpButton';
 
 const LoginButtonsContainer = ({ onClick }: LoginButtonType) => {
   return (
