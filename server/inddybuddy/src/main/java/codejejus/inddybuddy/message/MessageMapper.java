@@ -1,6 +1,5 @@
 package codejejus.inddybuddy.message;
 
-import codejejus.inddybuddy.member.MemberMapper;
 import codejejus.inddybuddy.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -9,8 +8,6 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class MessageMapper {
-
-    private final MemberMapper memberMapper;
 
     public Message toEntity(MessageDto.Request request, Member sender, Member receiver) {
         return Message.builder()

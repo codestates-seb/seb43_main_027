@@ -1,6 +1,6 @@
 package codejejus.inddybuddy.game;
 
-import codejejus.inddybuddy.relation.gamecategory.GameCategoryService;
+import codejejus.inddybuddy.relation.gamecategory.GameCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
@@ -13,8 +13,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class GameMapper {
 
-    private final GameCategoryService gameCategoryService;
-
     public Game requestToEntity(GameDto.Request requestDto) {
         return Game.builder()
                 .gameName(requestDto.getGameName())
@@ -26,12 +24,11 @@ public class GameMapper {
     public GameDto.Response entityToResponse(Game game) {
         return GameDto.Response.builder()
                 .gameId(game.getGameId())
-                .memberId(game.getMember().getMemberId())
                 .gameName(game.getGameName())
                 .mainImgUrl(game.getMainImageUrl())
                 .description(game.getDescription())
                 .downloadUrl(game.getDownloadUrl())
-                .categories(gameCategoryService.findCategoryByGame(game))
+                .categories(game.getGameCategories().stream().map(GameCategory::getCategory).collect(Collectors.toList()))
                 .followerCount(game.getFollowerCount())
                 .createdAt(game.getCreatedAt())
                 .build();

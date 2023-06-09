@@ -20,14 +20,17 @@ public class GameCategory extends Timestamped {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "game_id", nullable = false)
     private Game game;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
     @Formula("(select count(*) from follow_game fg join game g on g.game_id = fg.game_id where g.game_id = game_id)")
     private Long followerCount;
 
-    public GameCategory(Game game, Category category) {
+    public void addGame(Game game) {
         this.game = game;
+    }
+
+    public void addCategory(Category category) {
         this.category = category;
     }
 }

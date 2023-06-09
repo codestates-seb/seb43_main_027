@@ -17,9 +17,10 @@ public interface FollowGameRepository extends JpaRepository<FollowGame, Long> {
             "ON f.follower.memberId = m.memberId where f.game.gameId = :gameId")
     List<Member> findAllByFollower(@Param("gameId") Long gameId);
 
-    @Query(value = "select g from FollowGame f inner join Game g " +
-            "ON f.game.gameId = g.gameId where f.follower.memberId = :memberId")
+    @Query(value = "select distinct g from FollowGame f " +
+            "inner join Game g ON f.game.gameId = g.gameId " +
+            "join fetch g.gameCategories gc " +
+            "join fetch gc.category c " +
+            "where f.follower.memberId = :memberId")
     List<Game> findAllByGame(@Param("memberId") Long memberId);
-
-    Long countByGame(Game game);
 }
