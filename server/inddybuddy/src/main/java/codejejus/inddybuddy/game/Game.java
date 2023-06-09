@@ -3,12 +3,16 @@ package codejejus.inddybuddy.game;
 import codejejus.inddybuddy.global.audit.Timestamped;
 import codejejus.inddybuddy.global.constant.Constants;
 import codejejus.inddybuddy.member.entity.Member;
+import codejejus.inddybuddy.relation.gamecategory.GameCategory;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -29,6 +33,14 @@ public class Game extends Timestamped {
     private Member member;
     @Formula("(select count(*) from follow_game fg where fg.game_id = game_id)")
     private Long followerCount;
+    @OneToMany(mappedBy = "game")
+    @BatchSize(size = 100)
+    private List<GameCategory> gameCategories = new ArrayList<>();
+
+    public void addGameCategory(GameCategory gameCategory) {
+        gameCategories.add(gameCategory);
+        gameCategory.addGame(this);
+    }
 
     @Builder
     public Game(String gameName, String downloadUrl, String description, Member member) {
