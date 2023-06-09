@@ -19,7 +19,14 @@ public class GameCategoryService {
     private final GameCategoryRepository gameCategoryRepository;
 
     public void createGameInCategory(Game game, List<Category> categories) {
-        categories.forEach(category -> gameCategoryRepository.save(new GameCategory(game, category)));
+        categories.forEach(category -> saveGameCategory(game, category));
+    }
+
+    private void saveGameCategory(Game game, Category category) {
+        GameCategory gameCategory = new GameCategory();
+        gameCategory.addCategory(category);
+        game.addGameCategory(gameCategory);
+        gameCategoryRepository.save(gameCategory);
     }
 
     public void modifyGameAndCategory(Game game, List<Category> patchCategories) {

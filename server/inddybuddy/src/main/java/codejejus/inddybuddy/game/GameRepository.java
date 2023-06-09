@@ -13,6 +13,8 @@ public interface GameRepository extends JpaRepository<Game, Long> {
 
     Page<Game> findByGameNameContaining(Pageable pageable, String keyword);
 
+    Page<Game> findAll(Pageable pageable);
+
     List<Game> findAllByMember(Member member);
 
     boolean existsByGameName(String gameName);

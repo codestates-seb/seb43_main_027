@@ -2,10 +2,13 @@ package codejejus.inddybuddy.notification;
 
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class AlarmMapper {
 
-    AlarmDto.BaseResponse notificationResponseNotificationDto(Alarm alarm) {
+    public AlarmDto.BaseResponse alarmToAlarmDto(Alarm alarm) {
         AlarmType alarmType = alarm.getAlarmType();
 
         switch (alarmType) {
@@ -17,6 +20,10 @@ public class AlarmMapper {
             default:
                 return ofBaseResponse(alarm);
         }
+    }
+
+    public List<AlarmDto.BaseResponse> alarmsToAlarmDto(List<Alarm> alarms) {
+        return alarms.stream().map(this::alarmToAlarmDto).collect(Collectors.toList());
     }
 
     private AlarmDto.CommentResponse ofCommentResponse(Alarm alarm) {

@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-public class EmitterRepositoryCustom implements EmitterRepository {
+public class EmitterInMemoryCustom implements EmitterInMemory {
 
     private final Map<String, SseEmitter> emitters = new ConcurrentHashMap<>();
     private final Map<String, Alarm> eventCache = new ConcurrentHashMap<>();
@@ -40,7 +40,6 @@ public class EmitterRepositoryCustom implements EmitterRepository {
     @Override
     public void deleteById(String emitterId) {
         emitters.remove(emitterId);
-
     }
 
     @Override

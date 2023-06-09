@@ -13,11 +13,10 @@ import java.util.List;
 @Repository
 public interface GameCategoryRepository extends JpaRepository<GameCategory, Long> {
 
-    @EntityGraph(attributePaths = "category")
-    List<GameCategory> findAllByGame(Game game);
-
-    @EntityGraph(attributePaths = "game")
+    @EntityGraph(attributePaths = {"game"})
     Page<GameCategory> findAllByCategory(Category category, Pageable pageable);
 
     void deleteAllByGame(Game game);
+
+    List<GameCategory> findAllByGame(Game game);
 }
