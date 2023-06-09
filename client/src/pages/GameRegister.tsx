@@ -1,6 +1,6 @@
 import Label from '../components/elements/Label';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 
 import styled from 'styled-components';
@@ -14,6 +14,11 @@ import GameTitleModal from '../components/GameRegister/GameTitleModal';
 import GameTagModal from '../components/GameRegister/GameTagModal';
 
 import { gameTagInfo } from '../data/gameTags';
+import { getData } from '../api/apiCollection';
+import convertCategory from '../utils/convertCategory';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/store';
+import PATH_URL from '../constants/pathUrl';
 const { gameTags, textTranslate } = gameTagInfo;
 
 const GameRegister = () => {
@@ -22,13 +27,15 @@ const GameRegister = () => {
   const [isOpenError, setIsOpenError] = useState(false);
   const [isTitle, setIsTitle] = useState(false);
   const [isTag, setIsTag] = useState(false);
-
+  const user = useSelector((s: RootState) => s.user);
   const navigation = useNavigate();
   const [title, setTitle] = useState('');
   const [detail, setDetail] = useState('');
   const [url, setUrl] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
   const [tagStates, setTagStates] = useState<boolean[]>([]);
   const [files, setFiles] = useState<File[]>([]);
+  const { gameId } = useParams();
 
   const titleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -53,7 +60,7 @@ const GameRegister = () => {
 
   const submitFormData = (e: React.FormEvent) => {
     e.preventDefault();
-
+    const isUpdated = !!gameId;
     if (title === '' || tagStates.filter((a) => a === true).length === 0) {
       if (title === '') {
         return setIsTitle(true);
@@ -74,18 +81,22 @@ const GameRegister = () => {
       categoryNames: translatedTags,
       description: detail
     };
+    const patchData = {
+      gameName: title,
+      downloadUrl: url,
+      categoryNames: translatedTags,
+      description: detail
+    };
 
     const formData = new FormData();
     formData.append(
-      'post',
-      new Blob([JSON.stringify(postData)], {
+      isUpdated ? 'patch' : 'post',
+      new Blob([JSON.stringify(isUpdated ? patchData : postData)], {
         type: 'application/json'
       })
     );
 
-    for (const afile of files) {
-      formData.append('file', afile);
-    }
+    formData.append('file', files[0]);
 
     const token = localStorage.getItem('access_token');
 
@@ -95,18 +106,39 @@ const GameRegister = () => {
     };
 
     // formData를 axios를 사용하여 POST합니다.
-    axios
-      .post(`${process.env.REACT_APP_API_URL}/api/games`, formData, { headers })
-      .then(() => {
-        setIsOpen(true);
-      })
-      .catch((error) => {
-        if (error.response && error.response.status === 409) {
-          setIsOpenFail(true);
-        } else {
-          setIsOpenError(true);
-        }
-      });
+    if (isUpdated) {
+      axios
+        .patch(
+          `${process.env.REACT_APP_API_URL}/api/games/${gameId}`,
+          formData,
+          { headers }
+        )
+        .then(() => {
+          setIsOpen(true);
+        })
+        .catch((error) => {
+          if (error.response && error.response.status === 409) {
+            setIsOpenFail(true);
+          } else {
+            setIsOpenError(true);
+          }
+        });
+    } else {
+      axios
+        .post(`${process.env.REACT_APP_API_URL}/api/games`, formData, {
+          headers
+        })
+        .then(() => {
+          setIsOpen(true);
+        })
+        .catch((error) => {
+          if (error.response && error.response.status === 409) {
+            setIsOpenFail(true);
+          } else {
+            setIsOpenError(true);
+          }
+        });
+    }
   };
 
   const modalClose = () => {
@@ -124,6 +156,47 @@ const GameRegister = () => {
   const modalCloseTag = () => {
     setIsTag(false);
   };
+
+  useEffect(() => {
+    if (!gameId) return;
+    if (user.memberId === -1) {
+      navigation(PATH_URL.ERROR);
+    }
+    getData(
+      `${process.env.REACT_APP_API_URL}/api/games/${gameId}`,
+      (res) => {
+        if (user.memberId !== res.data.data.memberId) {
+          navigation(PATH_URL.ERROR);
+          return;
+        }
+        setTitle(res.data.data.gameName);
+        setDetail(res.data.data.description);
+        setUrl(res.data.data.downloadUrl);
+        setImageUrl(res.data.data.mainImgUrl);
+
+        const newTags = new Array(gameTags.length).fill(false);
+        const categories = res.data.data.categories.map(
+          (a: { categoryName: string; categoryId: number }) =>
+            convertCategory.asKR(a.categoryName)
+        );
+
+        categories.forEach((category: string) => {
+          const ind = Object.values(gameTags).findIndex(
+            (value) => value === category
+          );
+          if (ind !== -1) {
+            newTags[ind] = true;
+          } else {
+            alert('없는 카테고리입니다.');
+          }
+        });
+        setTagStates(newTags);
+      },
+      (err) => {
+        console.error(err);
+      }
+    );
+  }, []);
 
   return (
     <StyledFormContainer>
@@ -200,7 +273,12 @@ const GameRegister = () => {
           />
         </StyledGameNameContainer>
         {/* 게임 대표이미지 */}
-        <GameRegisterImageSection files={files} setFiles={setFiles} />
+        <GameRegisterImageSection
+          files={files}
+          setFiles={setFiles}
+          url={imageUrl}
+          setImageUrl={setImageUrl}
+        />
 
         {/* 확인/취소 버튼 */}
         <StyledButtonsContainer>

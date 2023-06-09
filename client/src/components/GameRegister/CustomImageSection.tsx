@@ -1,14 +1,20 @@
 import { AiOutlineUpload } from 'react-icons/ai';
 import styled from 'styled-components';
 import ImagePreview from './ImagePreview';
+import { useState } from 'react';
 
 const ImageSection = ({
   files,
-  setFiles
+  setFiles,
+  url,
+  setImageUrl
 }: {
   files: File[];
   setFiles: React.Dispatch<React.SetStateAction<File[]>>;
+  url?: string;
+  setImageUrl: React.Dispatch<React.SetStateAction<string>>;
 }) => {
+  const [showPreview, setShowPreview] = useState(true);
   const onUploadHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
     if (file) setFiles([file]);
@@ -17,20 +23,32 @@ const ImageSection = ({
   const onDeleteClickHandler = (index: number) => () => {
     setFiles(files.filter((_, i) => i !== index));
   };
+  const onDeletePreviewClickHandler = (index: number) => () => {
+    setShowPreview(false);
+    setImageUrl('');
+  };
   return (
     <>
       <StyledContainer>
-        {files.map((file, i) => {
-          const url = URL.createObjectURL(file);
-          return (
-            <ImagePreview
-              url={url}
-              key={url}
-              index={i}
-              onClick={onDeleteClickHandler}
-            />
-          );
-        })}
+        {url && showPreview && files.length === 0 ? (
+          <ImagePreview
+            url={url}
+            index={0}
+            onClick={onDeletePreviewClickHandler}
+          />
+        ) : (
+          files.map((file, i) => {
+            const url = URL.createObjectURL(file);
+            return (
+              <ImagePreview
+                url={url}
+                key={url}
+                index={i}
+                onClick={onDeleteClickHandler}
+              />
+            );
+          })
+        )}
       </StyledContainer>
       <StyledUploadLabel htmlFor='file-upload'>
         <AiOutlineUpload />

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 import { IoGameControllerOutline } from 'react-icons/io5';
+import { MdOutlineCreateNewFolder } from 'react-icons/md';
 import { AiOutlineUser } from 'react-icons/ai';
 import { FaRegBookmark } from 'react-icons/fa';
 import { NavItemType } from '../../types/dataTypes';
@@ -10,7 +11,6 @@ import NavContent from './NavContent';
 import UserNavItem from './UserNavItem';
 import PostItem from '../../components/common/PostItem';
 
-import { NavStateType } from '../../types/propsTypes';
 import NavGameCardContainer from './NavGameCardContainer';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
@@ -40,6 +40,11 @@ const itemList: NavItemType[] = [
     type: 'messages',
     element: <TbMessages />,
     contentElement: UserNavItem
+  },
+  {
+    type: 'myGames',
+    element: <MdOutlineCreateNewFolder />,
+    contentElement: NavGameCardContainer
   }
 ];
 

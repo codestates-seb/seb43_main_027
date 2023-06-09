@@ -3,8 +3,12 @@ import ButtonEl from '../elements/Button';
 import { Link } from 'react-router-dom';
 
 const MoveToLoginBtn = () => {
+  const handleClick = (event: any) => {
+    event.stopPropagation();
+  };
+
   return (
-    <StyledLoginBtnContainer>
+    <StyledLoginBtnContainer onClick={handleClick}>
       <StyledLoginBtn>
         <Link to='/login'>
           <p>로그인</p>
@@ -13,7 +17,6 @@ const MoveToLoginBtn = () => {
     </StyledLoginBtnContainer>
   );
 };
-
 export default MoveToLoginBtn;
 
 const StyledLoginBtnContainer = styled.div`

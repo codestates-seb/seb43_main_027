@@ -4,6 +4,7 @@ import InputContainer from '../../components/common/InputContainer';
 
 import { useDispatch } from 'react-redux';
 import { setSignupInfo } from '../../slice/signupSlice';
+import { setSignupValidity } from '../../slice/signupValiditySlice';
 
 const usernameRegExp = /^[가-힣A-Za-z0-9]{2,10}$/;
 const emailRegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -24,12 +25,30 @@ const SignupFieldsContainer = () => {
   const dispatch = useDispatch();
 
   //  Signup 관련 store 업데이트
-  const dispatchUsername = (value: string) =>
+  const dispatchUsername = (value: string) => {
     dispatch(setSignupInfo({ key: 'username', value }));
-  const dispatchEmail = (value: string) =>
+    dispatch(
+      setSignupValidity({
+        key: 'usernamevalid',
+        value: usernameValidityTest(value)
+      })
+    );
+  };
+  const dispatchEmail = (value: string) => {
     dispatch(setSignupInfo({ key: 'email', value }));
-  const dispatchPassword = (value: string) =>
+    dispatch(
+      setSignupValidity({ key: 'emailvalid', value: emailValidityTest(value) })
+    );
+  };
+  const dispatchPassword = (value: string) => {
     dispatch(setSignupInfo({ key: 'password', value }));
+    dispatch(
+      setSignupValidity({
+        key: 'passwordvalid',
+        value: passwordValidityTest(value)
+      })
+    );
+  };
 
   return (
     <StyledSignupFieldsContainer>
@@ -51,7 +70,7 @@ const SignupFieldsContainer = () => {
         placeholder='8자리 이상'
         title='비밀번호'
         extraAction={dispatchPassword}
-        validationMessage='비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자의 조합이어야 합니다.'
+        validationMessage='8~16자 영문 대/소문자, 숫자, 특수문자의 조합이어야 합니다.'
         validationFunction={passwordValidityTest}
         type='password'
       ></StyledInputContainer>

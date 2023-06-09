@@ -24,6 +24,7 @@ public class GameMapper {
     public GameDto.Response entityToResponse(Game game) {
         return GameDto.Response.builder()
                 .gameId(game.getGameId())
+                .memberId(game.getMember().getMemberId())
                 .gameName(game.getGameName())
                 .mainImgUrl(game.getMainImageUrl())
                 .description(game.getDescription())

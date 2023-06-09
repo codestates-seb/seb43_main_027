@@ -26,6 +26,7 @@ const GameContainer = () => {
   const apiRef = useRef([
     '/api/games/?filter=POPULAR',
     '/api/games/?filter=NEW',
+    `/api/members/${user.memberId}/creategame`,
     `/api/members/${user.memberId}/mygame`
   ]);
 

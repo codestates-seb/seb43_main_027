@@ -15,7 +15,8 @@ const PATH_URL: PathUrlType = {
   NOTFOUND: '*',
   USER_INFO: '/users/',
   FOLLOWER: '/follower',
-  SEARCH: '/search'
+  SEARCH: '/search',
+  GAME_EDIT: '/gameEdit/',
 };
 
 export default PATH_URL;
