@@ -21,6 +21,11 @@ export const useCheckAuth = (navigateTo: string) => {
 
   useEffect(() => {
     const access_token = localStorage.getItem('access_token');
+
+    if (!access_token) {
+      onFail();
+    }
+
     if (access_token && user.memberId === -1) {
       getData(
         `${process.env.REACT_APP_API_URL}/api/members/profile`,
