@@ -9,22 +9,25 @@ import CreateChannelButton from '../components/ui/CreateChannelButton';
 import SelectTag from '../components/common/SelectTag';
 import PostList from '../components/GameChannel/PostList';
 import { postOptionTags, optionMapping } from '../data/postOptionTags';
-import { gameChannelFilterTab } from '../data/filterTapList';
+import { gameChannelFilterTab } from '../data/filterTabList';
 import PATH_URL from '../constants/pathUrl';
 
 // todo: 버튼 클릭시 경로 설정
 
-const GameChannel = ()  => {
-
+const GameChannel = () => {
   const { gameId } = useParams();
   const navigate = useNavigate();
   const getMemberData = localStorage.getItem('user');
-  const memberData = getMemberData ? JSON.parse(getMemberData) : { memberId: -1 };
+  const memberData = getMemberData
+    ? JSON.parse(getMemberData)
+    : { memberId: -1 };
   const memberId = memberData.memberId;
 
-  const [ isSelectTag, setIsSelectTag ] = useState<string>('전체');
-  const [ isSelectTab, setIsSelectTab ] = useState<string>(gameChannelFilterTab[0]);
-  const [ isMappingTag, setIsMappingTag ] = useState<string>('');
+  const [isSelectTag, setIsSelectTag] = useState<string>('전체');
+  const [isSelectTab, setIsSelectTab] = useState<string>(
+    gameChannelFilterTab[0]
+  );
+  const [isMappingTag, setIsMappingTag] = useState<string>('');
 
   const handleChange = (value: string) => {
     setIsSelectTag(value);
@@ -48,21 +51,15 @@ const GameChannel = ()  => {
       <StyledGameChannelContain>
         <GameTitle />
         <StyledMainContent>
-        <StyledSubContent>
-          <SelectTag 
-            options={postOptionTags}
-            onChange={handleChange}
-          />
-          <CreateChannelButton 
-            text='게시글 작성' 
-            onClick={handleCreate}
-          />
-        </StyledSubContent>
+          <StyledSubContent>
+            <SelectTag options={postOptionTags} onChange={handleChange} />
+            <CreateChannelButton text='게시글 작성' onClick={handleCreate} />
+          </StyledSubContent>
           <FilterTap
             filterList={gameChannelFilterTab}
             onClickFilter={handleClick}
           />
-          <PostList 
+          <PostList
             isSelectTag={isSelectTag}
             isSelectTab={isSelectTab}
             isMappingTag={isMappingTag}
