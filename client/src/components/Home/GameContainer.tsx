@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 
 import FilterBar from './FilterBar';
@@ -9,6 +9,7 @@ import Pagination from 'react-js-pagination';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import axios from 'axios';
+import { getFilterPath } from '../../data/filterTabList';
 
 const GameContainer = () => {
   const user = useSelector((s: RootState) => s.user);
@@ -21,33 +22,28 @@ const GameContainer = () => {
     totalSize: 1
   });
 
-  const [tabInd, setTabInd] = useState<number>(0);
+  const [tab, setTab] = useState<string>('인기');
+  const apiPath = useMemo(() => getFilterPath(user.memberId), [user]);
 
-  const apiRef = [
-    '/api/games/?filter=POPULAR',
-    '/api/games/?filter=NEW',
-    `/api/members/${user.memberId}/creategame`,
-    `/api/members/${user.memberId}/mygame`
-  ];
-
-  const onClickHandler = (i: number) => () => {
-    setTabInd(i);
+  const onTabClickHandler = (clickTab: string) => () => {
+    setTab(clickTab);
   };
   const onPageClickHandler = (page: number) => {
     setCurPage(page);
   };
 
   useEffect(() => {
-    if (tabInd === 0 || tabInd === 1) {
+    if (tab === '인기' || tab === '신규') {
       (async () => {
         try {
           const res = await axios.get(
-            `${process.env.REACT_APP_API_URL}${apiRef[tabInd]}&page=${
+            `${process.env.REACT_APP_API_URL}${apiPath[tab]}&page=${
               curPage !== pageInfo.page ? curPage : 1
             }&size=${pageInfo.size}`
           );
           setGames(res.data.data);
           setPageInfo(res.data.pageInfo);
+          // isTabIndChanged() && setCurPage(1);
           curPage === pageInfo.page && setCurPage(1);
         } catch (err) {
           console.error(err);
@@ -57,7 +53,7 @@ const GameContainer = () => {
       (async () => {
         try {
           const res = await axios.get(
-            `${process.env.REACT_APP_API_URL}${apiRef[tabInd]}`
+            `${process.env.REACT_APP_API_URL}${apiPath[tab]}`
           );
           const newPageInfo = {
             ...pageInfo,
@@ -70,18 +66,19 @@ const GameContainer = () => {
           const endInd = startInd + newPageInfo.size;
           setGames(res.data.data.slice(startInd, endInd));
           setPageInfo(newPageInfo);
+          // isTabIndChanged() && setCurPage(1);
           curPage === pageInfo.page && setCurPage(1);
         } catch (err) {
           console.error(err);
         }
       })();
     }
-  }, [tabInd, curPage]);
+  }, [tab, curPage]);
 
   return (
     <StyledWrapper>
       <StyledContainer>
-        <FilterBar onClickHandler={onClickHandler} tabInd={tabInd} />
+        <FilterBar onClickHandler={onTabClickHandler} tab={tab} />
         <StyledCardContainer>
           {games.length === 0 && (
             <StyledEmptyItem>등록된 게임 채널이 없습니다.</StyledEmptyItem>
