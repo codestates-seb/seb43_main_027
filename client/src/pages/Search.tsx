@@ -11,7 +11,7 @@ import SearchContents, {
 } from '../components/Search/SearchContents';
 import SearchPagination from '../components/Search/SearchPagination';
 import FilterTap from '../components/common/FilterTap';
-import { searchFilterTab } from '../data/filterTapList';
+import { searchFilterTab } from '../data/filterTabList';
 import SkeletonComponent from '../components/common/SkeletonComponent';
 
 export interface SingleResponse {
