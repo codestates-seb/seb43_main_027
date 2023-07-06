@@ -22,7 +22,9 @@ const FilterBar = ({
             key={tabName}
             onClick={onClickHandler(tabName)}
             selected={tab === tabName}
-          />
+          >
+            {tabName}
+          </StyledItem>
         ))}
       </StyledFilterTabContainer>
     </StyledContainer>
