@@ -6,17 +6,16 @@ import UserEditInfo from '../components/UserInfo/UserEditInfo';
 import UserInfoTap from '../components/UserInfo/UserInfoTap';
 import UserInfoList from '../components/UserInfo/UserInfoList';
 import { StyledMainContent } from './GameChannel';
-import { otherInfoTab } from '../data/filterTapList';
+import { otherInfoTab } from '../data/filterTabList';
 
 const UserInfoPage = () => {
-
   const { memberId } = useParams();
-  const [ isEditClick, setIsEditClick ] = useState<boolean>(false);
-  const [ isSameUser, setIsSameUser ] = useState<boolean>(false);
-  const [ windowWidth, setWindowWidth ] = useState<number>(window.innerWidth);
-  const [ isSelectTab, setIsSelectTab ] = useState<string>(otherInfoTab[0]);
-  const [ isSelectTag, setIsSelectTag ] = useState<string>('전체');
-  const [ isMappingTag, setIsMappingTag ] = useState<string>('');
+  const [isEditClick, setIsEditClick] = useState<boolean>(false);
+  const [isSameUser, setIsSameUser] = useState<boolean>(false);
+  const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
+  const [isSelectTab, setIsSelectTab] = useState<string>(otherInfoTab[0]);
+  const [isSelectTag, setIsSelectTag] = useState<string>('전체');
+  const [isMappingTag, setIsMappingTag] = useState<string>('');
 
   const navigate = useNavigate();
 
@@ -43,38 +42,34 @@ const UserInfoPage = () => {
       setIsSameUser(true);
     } else {
       setIsSameUser(false);
-    };
+    }
   }, [memberId]);
 
   return (
     <StyledMyPageWrapper>
       <StyledMyPageContain>
-      {isEditClick ? (
+        {isEditClick ? (
           <UserEditInfo setIsEditClick={setIsEditClick} />
         ) : (
           <UserTitle setIsEditClick={setIsEditClick} />
         )}
-        {
-          windowWidth > 650 || !isEditClick 
-          ? (
-            <StyledContain>
-              <UserInfoTap 
-                isSameUser={isSameUser} 
-                setIsSelectTab={setIsSelectTab} 
-                isSelectTab={isSelectTab} 
-                setIsSelectTag={setIsSelectTag}
-                setIsMappingTag={setIsMappingTag}
-              />
-              <UserInfoList 
-                isSelectTab={isSelectTab}
-                isSameUser={isSameUser}
-                isSelectTag={isSelectTag}
-                isMappingTag={isMappingTag}
-              />
-            </StyledContain>
-            ) 
-          : null
-        }
+        {windowWidth > 650 || !isEditClick ? (
+          <StyledContain>
+            <UserInfoTap
+              isSameUser={isSameUser}
+              setIsSelectTab={setIsSelectTab}
+              isSelectTab={isSelectTab}
+              setIsSelectTag={setIsSelectTag}
+              setIsMappingTag={setIsMappingTag}
+            />
+            <UserInfoList
+              isSelectTab={isSelectTab}
+              isSameUser={isSameUser}
+              isSelectTag={isSelectTag}
+              isMappingTag={isMappingTag}
+            />
+          </StyledContain>
+        ) : null}
       </StyledMyPageContain>
     </StyledMyPageWrapper>
   );
@@ -101,7 +96,7 @@ const StyledMyPageContain = styled.div`
   gap: 20px;
   @media screen and (max-width: 650px) {
     flex-direction: column;
-  };
+  }
 `;
 
 const StyledContain = styled(StyledMainContent)`
@@ -110,5 +105,5 @@ const StyledContain = styled(StyledMainContent)`
   margin-top: -10px;
   @media screen and (max-width: 650px) {
     margin-top: -20px;
-  };
+  }
 `;

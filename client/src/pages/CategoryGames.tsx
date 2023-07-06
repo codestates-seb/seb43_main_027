@@ -4,7 +4,7 @@ import GameList from '../components/CategoryGames/GameList';
 import FilterTap from '../components/common/FilterTap';
 import RecommendGames from '../components/CategoryGames/RecommendGames';
 import TitleCategory from '../components/CategoryGames/TitleCategory';
-import { categoryFilterTab } from '../data/filterTapList';
+import { categoryFilterTab } from '../data/filterTabList';
 
 const CategoryGames = () => {
   const [isSelectTab, setIsSelectTab] = useState<string>(categoryFilterTab[0]);

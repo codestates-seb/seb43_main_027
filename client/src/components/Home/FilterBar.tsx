@@ -2,35 +2,30 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { RootState } from '../../store/store';
+import { getFilterPath } from '../../data/filterTabList';
 
 const FilterBar = ({
   onClickHandler,
-  tabInd
+  tab
 }: {
-  onClickHandler: (i: number) => () => void;
-  tabInd: number;
+  onClickHandler: (i: string) => () => void;
+  tab: string;
 }) => {
   const user = useSelector((s: RootState) => s.user);
+  const tabs = Object.keys(getFilterPath(user.memberId));
 
   return (
     <StyledContainer>
       <StyledFilterTabContainer>
-        <StyledItem onClick={onClickHandler(0)} selected={tabInd === 0}>
-          인기
-        </StyledItem>
-        <StyledItem onClick={onClickHandler(1)} selected={tabInd === 1}>
-          신규
-        </StyledItem>
-        {user.memberId !== -1 && (
-          <>
-          <StyledItem onClick={onClickHandler(2)} selected={tabInd === 2}>
-            생성
+        {tabs.map((tabName) => (
+          <StyledItem
+            key={tabName}
+            onClick={onClickHandler(tabName)}
+            selected={tab === tabName}
+          >
+            {tabName}
           </StyledItem>
-          <StyledItem onClick={onClickHandler(3)} selected={tabInd === 3}>
-            팔로우
-          </StyledItem>
-          </>
-        )}
+        ))}
       </StyledFilterTabContainer>
     </StyledContainer>
   );
