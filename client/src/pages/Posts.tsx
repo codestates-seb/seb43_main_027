@@ -18,7 +18,8 @@ const Posts = () => {
   const [post, setPost] = useState<PostDataType>(postInitValue);
   const navigation = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-  const needFetch = (newState: any) => () => {
+
+  const changePostState = (newState: any) => () => {
     setPost((prev) => ({ ...prev, ...newState }));
   };
 
@@ -47,7 +48,7 @@ const Posts = () => {
         title={post.title}
         tag={post.postTag}
         bookmark={post.bookmark}
-        onBookmarkChange={needFetch}
+        onBookmarkChange={changePostState}
       />
       <PostInfo
         member={post.member}
@@ -61,12 +62,12 @@ const Posts = () => {
         reaction={post.reaction}
         likeCount={post.likeCount}
         unlikeCount={post.unlikeCount}
-        onReactionChange={needFetch}
+        onReactionChange={changePostState}
       />
       <CommentSection
         commentCount={post.commentCount}
         comments={post.comments}
-        onCommentSubmit={needFetch}
+        onCommentSubmit={changePostState}
       />
       <Modal
         isOpen={isOpen}
