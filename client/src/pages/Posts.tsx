@@ -12,6 +12,11 @@ import Reaction from '../components/Posts/Reaction';
 import PATH_URL from '../constants/pathUrl';
 import { postInitValue } from '../data/initialData';
 import Modal from '../components/common/Modal';
+import {
+  BookmarkDataType,
+  CommentDataType,
+  ReactionDataType
+} from '../types/parameterTypes';
 
 const Posts = () => {
   const { postId } = useParams();
@@ -19,9 +24,10 @@ const Posts = () => {
   const navigation = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
-  const changePostState = (newState: any) => () => {
-    setPost((prev) => ({ ...prev, ...newState }));
-  };
+  const changePostState =
+    (newState: BookmarkDataType | ReactionDataType | CommentDataType) => () => {
+      setPost((prev) => ({ ...prev, ...newState }));
+    };
 
   useEffect(() => {
     getData(
