@@ -12,15 +12,22 @@ import Reaction from '../components/Posts/Reaction';
 import PATH_URL from '../constants/pathUrl';
 import { postInitValue } from '../data/initialData';
 import Modal from '../components/common/Modal';
+import {
+  BookmarkDataType,
+  CommentDataType,
+  ReactionDataType
+} from '../types/parameterTypes';
 
 const Posts = () => {
   const { postId } = useParams();
   const [post, setPost] = useState<PostDataType>(postInitValue);
   const navigation = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-  const needFetch = (newState: any) => () => {
-    setPost((prev) => ({ ...prev, ...newState }));
-  };
+
+  const changePostState =
+    (newState: BookmarkDataType | ReactionDataType | CommentDataType) => () => {
+      setPost((prev) => ({ ...prev, ...newState }));
+    };
 
   useEffect(() => {
     getData(
@@ -47,7 +54,7 @@ const Posts = () => {
         title={post.title}
         tag={post.postTag}
         bookmark={post.bookmark}
-        onBookmarkChange={needFetch}
+        onBookmarkChange={changePostState}
       />
       <PostInfo
         member={post.member}
@@ -61,12 +68,12 @@ const Posts = () => {
         reaction={post.reaction}
         likeCount={post.likeCount}
         unlikeCount={post.unlikeCount}
-        onReactionChange={needFetch}
+        onReactionChange={changePostState}
       />
       <CommentSection
         commentCount={post.commentCount}
         comments={post.comments}
-        onCommentSubmit={needFetch}
+        onCommentSubmit={changePostState}
       />
       <Modal
         isOpen={isOpen}
