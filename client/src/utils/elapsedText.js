@@ -67,7 +67,7 @@ export function elapsedText(date) {
   } else if (elapsedTime < day * 15) {
     elapsedText = `${Math.trunc(elapsedTime / day)}일 전`;
   } else {
-    elapsedText = SimpleDateTimeFormat(date, 'yyyy.mm.dd');
+    elapsedText = SimpleDateTimeFormat(date, 'yyyy.MM.dd');
   }
 
   return elapsedText;
