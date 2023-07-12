@@ -12,6 +12,7 @@ import { RootState } from '../../store/store';
 import PATH_URL from '../../constants/pathUrl';
 import { useState } from 'react';
 import Modal from '../common/Modal';
+import { BookmarkDataType } from '../../types/parameterTypes';
 
 const Title = ({
   tag,
@@ -22,7 +23,7 @@ const Title = ({
   tag: string;
   title: string;
   bookmark: BookmarkType | null;
-  onBookmarkChange: (s: any) => () => void;
+  onBookmarkChange: (s: BookmarkDataType) => () => void;
 }) => {
   const navigation = useNavigate();
   const user = useSelector((s: RootState) => s.user);
@@ -57,7 +58,11 @@ const Title = ({
             Authorization: localStorage.getItem('access_token')
           }
         },
-        onBookmarkChange({ bookmark: { bookmarkStatus: 'ACTIVE' } }),
+        (res) => {
+          onBookmarkChange({
+            bookmark: res.data.data
+          })();
+        },
         (err) => {
           console.error(err);
         }
@@ -97,9 +102,7 @@ const Title = ({
       <StyledFlexWrapper>
         <StyledTitle>{title}</StyledTitle>
         <AiFillStar
-          fill={
-            bookmark?.bookmarkStatus === 'ACTIVE' ? '#13A8A8' : '#b4b4b4'
-          }
+          fill={bookmark?.bookmarkStatus === 'ACTIVE' ? '#13A8A8' : '#b4b4b4'}
           onClick={onBookmarkClick(bookmark?.bookmarkStatus)}
         />
       </StyledFlexWrapper>
