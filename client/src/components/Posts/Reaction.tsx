@@ -12,6 +12,7 @@ import { useState } from 'react';
 import Modal from '../common/Modal';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
+import { ReactionDataType } from '../../types/parameterTypes';
 
 const Reaction = ({
   reaction,
@@ -22,7 +23,7 @@ const Reaction = ({
   reaction: ReactionType | null;
   likeCount: number;
   unlikeCount: number;
-  onReactionChange: (s: any) => () => void;
+  onReactionChange: (s: ReactionDataType) => () => void;
 }) => {
   const { postId } = useParams();
   const user = useSelector((s: RootState) => s.user);
@@ -70,14 +71,12 @@ const Reaction = ({
           Authorization: localStorage.getItem('access_token')
         }
       },
-      () => {
-        onReactionChange({
-          reaction: null,
-          likeCount: reactionStatus === 'HAPPY' ? likeCount - 1 : likeCount,
-          unlikeCount:
-            reactionStatus === 'UNHAPPY' ? unlikeCount - 1 : unlikeCount
-        })();
-      },
+      onReactionChange({
+        reaction: null,
+        likeCount: reactionStatus === 'HAPPY' ? likeCount - 1 : likeCount,
+        unlikeCount:
+          reactionStatus === 'UNHAPPY' ? unlikeCount - 1 : unlikeCount
+      }),
       (err) => {
         if (err?.response?.status === 409) {
           setIsOpen(true);
