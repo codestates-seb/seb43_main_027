@@ -1,4 +1,5 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { RequestType } from '../types/utilTypes';
 
 export const getData = (
   url: string,
@@ -15,13 +16,7 @@ export const getData = (
     }
   })();
 };
-export const postData = (
-  url: string,
-  data: any,
-  config: AxiosRequestConfig,
-  success: (res: AxiosResponse<any, any>) => void,
-  fail: (err?: AxiosError) => void
-) => {
+export const postData: RequestType = (url, data, config, success, fail) => {
   (async () => {
     try {
       const res = await axios.post(url, data, config);
@@ -31,13 +26,7 @@ export const postData = (
     }
   })();
 };
-export const patchData = (
-  url: string,
-  data: any,
-  config: AxiosRequestConfig,
-  success: (res: AxiosResponse<any, any>) => void,
-  fail: (err?: AxiosError) => void
-) => {
+export const patchData: RequestType = (url, data, config, success, fail) => {
   (async () => {
     try {
       const res = await axios.patch(url, data, config);
