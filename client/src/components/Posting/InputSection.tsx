@@ -18,8 +18,10 @@ import Modal from '../common/Modal';
 
 const InputSection = () => {
   const [post, setPost] = useState<PostType>(postInputInitValue);
-  const [url, setUrl] = useState<string[]>([]);
-  const [files, setFiles] = useState<File[]>([]);
+  const [images, setImages] = useState<{ urls: string[]; files: File[] }>({
+    urls: [],
+    files: []
+  });
   const { gameId, postId } = useParams();
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -37,29 +39,31 @@ const InputSection = () => {
 
   const onDeleteFileClickHandler = useCallback(
     (index: number) => () => {
-      setFiles((prev) => prev.filter((_, i) => i !== index));
+      setImages((prev) => ({
+        ...prev,
+        files: prev.files.filter((_, i) => i !== index)
+      }));
     },
     []
   );
 
   const onDeleteUrlClickHandler = useCallback(
     (index: number) => () => {
-      setUrl((prev) => prev.filter((_, i) => i !== index));
+      setImages((prev) => ({
+        ...prev,
+        urls: prev.urls.filter((_, i) => i !== index)
+      }));
     },
     []
   );
 
   const onUploadHandler = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (!e.target.files) return;
-
-      if (e.target.files !== null) {
-        setFiles((prev) => [
-          ...prev,
-          ...Array.from(e.target.files as FileList)
-        ]);
-      }
-    },
+    (e: React.ChangeEvent<HTMLInputElement>) =>
+      e.target.files &&
+      setImages((prev) => ({
+        ...prev,
+        files: [...prev.files, ...Array.from(e.target.files as FileList)]
+      })),
     []
   );
 
@@ -72,13 +76,14 @@ const InputSection = () => {
       return;
     }
     const formData = new FormData();
-    if (files.length !== 0) {
-      files.forEach((file) => {
+    if (images.files.length !== 0) {
+      images.files.forEach((file) => {
         formData.append('files', file);
       });
     }
 
     if (!postId) {
+      // 함수 추출 가능
       formData.append(
         'post',
         new Blob([JSON.stringify(post)], {
@@ -103,8 +108,7 @@ const InputSection = () => {
         new Blob(
           [
             JSON.stringify({
-              ...post,
-              fileUrlList: [...url]
+              fileUrlList: [...images.urls]
             })
           ],
           {
@@ -129,6 +133,7 @@ const InputSection = () => {
 
   useEffect(() => {
     if (!postId) return;
+    // 함수 추출 가능
     (async () => {
       setIsLoading(true);
       try {
@@ -143,7 +148,7 @@ const InputSection = () => {
           title,
           postTag
         }));
-        setUrl(fileUrlList);
+        setImages((prev) => ({ ...prev, urls: fileUrlList }));
         setIsLoading(false);
       } catch (err: any) {
         if (err.response.status === 404) {
@@ -180,11 +185,11 @@ const InputSection = () => {
             onChange={onInputChangeHandler('content')}
           />
           <ImageSection
-            files={files}
+            files={images.files}
             onUploadHandler={onUploadHandler}
             onDeleteFileClickHandler={onDeleteFileClickHandler}
             onDeleteUrlClickHandler={onDeleteUrlClickHandler}
-            urls={url}
+            urls={images.urls}
           />
           <StyledButtonContainer>
             <StyledSubmitButton onClick={onSubmitHandler}>
