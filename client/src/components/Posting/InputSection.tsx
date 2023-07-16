@@ -3,23 +3,25 @@ import ButtonEl from '../elements/Button';
 import ImageSection from './ImageSection';
 import { useCallback, useEffect, useState } from 'react';
 import postOptionTags from '../../data/postOptionTags';
-import axios from 'axios';
 import convertTag from '../../utils/convertTag';
 import { PostType } from '../../types/dataTypes';
 import { validatePost } from '../../utils/validatePost';
 import { useNavigate, useParams } from 'react-router-dom';
 import PATH_URL from '../../constants/pathUrl';
 import { InputChangeType, SubmitType } from '../../types/parameterTypes';
-import { patchData, postData } from '../../api/apiCollection';
+import { getData, patchData, postData } from '../../api/apiCollection';
 import { Select, Space } from 'antd';
 import Loading from '../common/Loading';
 import { postInputInitValue } from '../../data/initialData';
 import Modal from '../common/Modal';
+import { RequestType } from '../../types/utilTypes';
 
 const InputSection = () => {
   const [post, setPost] = useState<PostType>(postInputInitValue);
-  const [url, setUrl] = useState<string[]>([]);
-  const [files, setFiles] = useState<File[]>([]);
+  const [images, setImages] = useState<{ urls: string[]; files: File[] }>({
+    urls: [],
+    files: []
+  });
   const { gameId, postId } = useParams();
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -37,31 +39,64 @@ const InputSection = () => {
 
   const onDeleteFileClickHandler = useCallback(
     (index: number) => () => {
-      setFiles((prev) => prev.filter((_, i) => i !== index));
+      setImages((prev) => ({
+        ...prev,
+        files: prev.files.filter((_, i) => i !== index)
+      }));
     },
     []
   );
 
   const onDeleteUrlClickHandler = useCallback(
     (index: number) => () => {
-      setUrl((prev) => prev.filter((_, i) => i !== index));
+      setImages((prev) => ({
+        ...prev,
+        urls: prev.urls.filter((_, i) => i !== index)
+      }));
     },
     []
   );
 
   const onUploadHandler = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (!e.target.files) return;
-
-      if (e.target.files !== null) {
-        setFiles((prev) => [
-          ...prev,
-          ...Array.from(e.target.files as FileList)
-        ]);
-      }
-    },
+    (e: React.ChangeEvent<HTMLInputElement>) =>
+      e.target.files &&
+      setImages((prev) => ({
+        ...prev,
+        files: [...prev.files, ...Array.from(e.target.files as FileList)]
+      })),
     []
   );
+
+  const appendFormData = (formData: FormData, name: string, data: PostType) => {
+    formData.append(
+      name,
+      new Blob([JSON.stringify(data)], {
+        type: 'application/json'
+      })
+    );
+  };
+
+  const requestData = (
+    formData: FormData,
+    name: string,
+    data: PostType,
+    path: string,
+    fn: RequestType
+  ) => {
+    appendFormData(formData, name, data);
+    fn(
+      path,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: localStorage.getItem('access_token')
+        }
+      },
+      () => navigation(`${PATH_URL.GAME}${gameId}`),
+      () => setErrorMsg('게시글 작성에 오류가 발생했습니다.')
+    );
+  };
 
   const onSubmitHandler = (e: SubmitType) => {
     e.preventDefault();
@@ -72,69 +107,30 @@ const InputSection = () => {
       return;
     }
     const formData = new FormData();
-    if (files.length !== 0) {
-      files.forEach((file) => {
+
+    if (images.files.length !== 0) {
+      images.files.forEach((file) => {
         formData.append('files', file);
       });
     }
 
-    if (!postId) {
-      formData.append(
-        'post',
-        new Blob([JSON.stringify(post)], {
-          type: 'application/json'
-        })
-      );
-      postData(
-        `${process.env.REACT_APP_API_URL}/api/games/${gameId}/posts`,
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: localStorage.getItem('access_token')
-          }
-        },
-        () => navigation(`${PATH_URL.GAME}${gameId}`),
-        () => setErrorMsg('게시글 작성에 오류가 발생했습니다.')
-      );
-    } else {
-      formData.append(
-        'patch',
-        new Blob(
-          [
-            JSON.stringify({
-              ...post,
-              fileUrlList: [...url]
-            })
-          ],
-          {
-            type: 'application/json'
-          }
-        )
-      );
-      patchData(
-        `${process.env.REACT_APP_API_URL}/api/posts/${postId}`,
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: localStorage.getItem('access_token')
-          }
-        },
-        () => navigation(`${PATH_URL.GAME}${gameId}`),
-        () => setErrorMsg('게시글 작성에 오류가 발생했습니다.')
-      );
-    }
+    const method = postId ? 'patch' : 'post';
+    const data = postId ? { ...post, fileUrlList: [...images.urls] } : post;
+    const url = postId
+      ? `${process.env.REACT_APP_API_URL}/api/posts/${postId}`
+      : `${process.env.REACT_APP_API_URL}/api/games/${gameId}/posts`;
+    const reqFunc = postId ? patchData : postData;
+
+    requestData(formData, method, data, url, reqFunc);
   };
 
   useEffect(() => {
     if (!postId) return;
-    (async () => {
-      setIsLoading(true);
-      try {
-        const res = await axios(
-          `${process.env.REACT_APP_API_URL}/api/posts/${postId}`
-        );
+    // 함수 추출 가능
+    setIsLoading(true);
+    getData(
+      `${process.env.REACT_APP_API_URL}/api/posts/${postId}`,
+      (res) => {
         const { content, title, fileUrlList, postTag } = res.data.data;
 
         setPost((prev) => ({
@@ -143,16 +139,17 @@ const InputSection = () => {
           title,
           postTag
         }));
-        setUrl(fileUrlList);
+        setImages((prev) => ({ ...prev, urls: fileUrlList }));
         setIsLoading(false);
-      } catch (err: any) {
-        if (err.response.status === 404) {
+      },
+      (err) => {
+        if (err?.response?.status === 404) {
           () => setErrorMsg('존재하지 않는 게시글입니다.');
           navigation(PATH_URL.HOME);
         }
         setIsLoading(false);
       }
-    })();
+    );
   }, [postId]);
 
   return (
@@ -180,11 +177,11 @@ const InputSection = () => {
             onChange={onInputChangeHandler('content')}
           />
           <ImageSection
-            files={files}
+            files={images.files}
             onUploadHandler={onUploadHandler}
             onDeleteFileClickHandler={onDeleteFileClickHandler}
             onDeleteUrlClickHandler={onDeleteUrlClickHandler}
-            urls={url}
+            urls={images.urls}
           />
           <StyledButtonContainer>
             <StyledSubmitButton onClick={onSubmitHandler}>

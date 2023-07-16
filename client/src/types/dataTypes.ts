@@ -58,6 +58,7 @@ export type PostType = {
   postTag: string;
   title: string;
   content: string;
+  fileUrlList?: string[];
 };
 
 export type PathUrlType = {
