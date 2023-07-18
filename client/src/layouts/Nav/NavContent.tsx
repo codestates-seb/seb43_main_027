@@ -5,6 +5,7 @@ import { RootState } from '../../store/store';
 import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import Loading from '../../components/common/Loading';
+import { ContentElementType, User } from '../../types/dataTypes';
 
 const NavContent = ({
   type,
@@ -12,7 +13,7 @@ const NavContent = ({
   navHeight
 }: {
   type: string;
-  Content: (props: any) => JSX.Element;
+  Content: ContentElementType;
   navHeight: number;
 }) => {
   const [data, setData] = useState([]);
@@ -44,7 +45,7 @@ const NavContent = ({
 
         if (type === 'messages') {
           const tmp = new Set(
-            res.data.data.map((data: any) => {
+            res.data.data.map((data: { sender: User; receiver: User }) => {
               if (data.sender.memberId !== user.memberId)
                 return data.sender.memberId;
               else return data.receiver.memberId;
@@ -52,11 +53,11 @@ const NavContent = ({
           );
 
           const newData = res.data.data
-            .map((data: any) => {
+            .map((data: { sender: User; receiver: User }) => {
               if (data.sender.memberId !== user.memberId) return data.sender;
               else return data.receiver;
             })
-            .filter((a: any) => {
+            .filter((a: User) => {
               if (tmp.has(a.memberId)) {
                 tmp.delete(a.memberId);
                 return true;

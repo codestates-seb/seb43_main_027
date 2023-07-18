@@ -11,6 +11,6 @@ export type RequestType = (
   url: string,
   data: any,
   config: AxiosRequestConfig,
-  success: (res: AxiosResponse<any, any>) => void,
+  success: (res: AxiosResponse) => void,
   fail: (err?: AxiosError) => void
 ) => void;

@@ -1,9 +1,14 @@
 import { ReactElement } from 'react';
 
+type UserNavType = ({ data }: { data: User }) => JSX.Element;
+type PostItemType = ({ data }: { data: GamePagePostType }) => JSX.Element;
+type GameItemType = ({ data }: { data: GameType }) => JSX.Element;
+export type ContentElementType = UserNavType | PostItemType | GameItemType;
+
 export type NavItemType = {
   type: 'user' | 'bookmark' | 'games' | 'messages' | 'myGames';
   element: ReactElement;
-  contentElement: (props: any) => JSX.Element;
+  contentElement: ContentElementType;
 };
 
 export type User = {

@@ -4,6 +4,7 @@ import CommentInput from './CommentInput';
 import CommentItem from './CommentItem';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
+import { CommentDataType } from '../../types/parameterTypes';
 
 const CommentSection = ({
   commentCount,
@@ -12,7 +13,7 @@ const CommentSection = ({
 }: {
   commentCount: number;
   comments: CommentType[];
-  onCommentSubmit: (s: any) => () => void;
+  onCommentSubmit: (s: CommentDataType) => () => void;
 }) => {
   const user = useSelector((s: RootState) => s.user);
   const onCommentValueChange = (value: CommentType) => {

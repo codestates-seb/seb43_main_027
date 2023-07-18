@@ -22,8 +22,12 @@ const CommentItem = ({
   comment: CommentType;
   onCommentSubmit: (s: CommentType, id: number) => void;
   onCommentDelete: (commentId: number) => void;
-  onReCommentSubmit: (s: any, id: number) => void;
-  onReCommentUpdate: (s: any, commentId: number, parentId: number) => void;
+  onReCommentSubmit: (s: CommentType, id: number) => void;
+  onReCommentUpdate: (
+    s: CommentType,
+    commentId: number,
+    parentId: number
+  ) => void;
   onReCommentDelete: (commentId: number, parentId: number) => void;
 }) => {
   const user = useSelector((s: RootState) => s.user);
@@ -41,7 +45,7 @@ const CommentItem = ({
     setIsUpdate((prev) => !prev);
   };
 
-  const onReCommentSubmitHandler = (s: any, id: number) => {
+  const onReCommentSubmitHandler = (s: CommentType, id: number) => {
     onReCommentClickHandler();
     onReCommentSubmit(s, id);
   };
