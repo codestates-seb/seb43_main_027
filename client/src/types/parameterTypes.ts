@@ -16,5 +16,6 @@ export type ReactionDataType = {
   unlikeCount: number;
 };
 export type CommentDataType = {
+  commentCount?: number;
   comments: CommentType[];
 };
