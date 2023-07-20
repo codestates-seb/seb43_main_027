@@ -10,7 +10,10 @@ import { TbMessages } from 'react-icons/tb';
 import { AiOutlineClose } from 'react-icons/ai';
 import { useDispatch } from 'react-redux';
 import { startChat } from '../../slice/chatSlice';
-import { UserItemPropsType, UserStyledButtonPropsType } from '../../types/propsTypes';
+import {
+  UserItemPropsType,
+  UserStyledButtonPropsType
+} from '../../types/propsTypes';
 import DeleteGamer from '../../asset/Deletegamer.png';
 import Modal from '../common/Modal';
 
@@ -22,7 +25,6 @@ const UserItem = ({
   memberId,
   isFollowingIdIncluded
 }: UserItemPropsType) => {
-
   const getMemberData = localStorage.getItem('user');
 
   const memberData = getMemberData
@@ -32,27 +34,25 @@ const UserItem = ({
 
   const sameItem = memberId === String(loginedId);
 
-  const userNameState = userName.length >= 20
-  ? '*삭제된 계정*'
-  : userName;
+  const userNameState = userName.length >= 20 ? '*삭제된 계정*' : userName;
 
-  const delectUserAction = userNameState === '*삭제된 계정*' && !isFollowingIdIncluded;
+  const delectUserAction =
+    userNameState === '*삭제된 계정*' && !isFollowingIdIncluded;
   const delectUser = userNameState === '*삭제된 계정*';
 
-  const [ isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleMessage = () => {
-
     if (Number(loginedId) !== -1) {
       const receiver = {
         memberId,
         imageUrl,
         userName
       };
-  
+
       dispatch(startChat(receiver));
     } else {
       setIsOpen(true);
@@ -105,7 +105,7 @@ const UserItem = ({
           .catch((error) => {
             console.error('팔로우 요청 실패:', error);
           });
-      };
+      }
     } else {
       setIsOpen(true);
     }
@@ -113,46 +113,45 @@ const UserItem = ({
 
   return (
     <StyledWrapper>
-    <StyledContain onClick={handleUserPageClick}>
-      {
-        delectUser && (
-        <StyledDeltedIcon>
-          <AiOutlineClose />
-        </StyledDeltedIcon>
-        )
-      }
-      <UserProfileImg isUserImg={delectUser ? DeleteGamer : imageUrl } />
+      <StyledContain onClick={handleUserPageClick}>
+        {delectUser && (
+          <StyledDeltedIcon>
+            <AiOutlineClose />
+          </StyledDeltedIcon>
+        )}
+        <UserProfileImg isUserImg={delectUser ? DeleteGamer : imageUrl} />
         <StyledUserName>{userNameState}</StyledUserName>
         <StyledFollowed>
-        <p>팔로워: {followerCount}</p>
-        <p>팔로잉: {followingCount}</p>
-      </StyledFollowed>
-    </StyledContain>
-    { !sameItem ? (
-    <StyledRow>
-      <StyledFollowButton
-        onClick={handleFollow}
-        disabled={delectUserAction}
-        delectUser={delectUserAction}
-      >
-        {isFollowingIdIncluded ? '팔로우 취소' : '팔로우 하기'}
-      </StyledFollowButton>
-      <StyledMessageContain>
-        <TbMessages onClick={handleMessage} />
-      </StyledMessageContain>
-    </StyledRow>
-    ) :  (
-        <StyledFollowButton
-          onClick={handleUserPageClick}
-        >
-        {'내 프로필보기'}
-      </StyledFollowButton>
-      )
-    }
-    <Modal 
-      isOpen={isOpen}
-      confirmMessage={ delectUser ? '인디버디를 떠난 유저에요...T^T' : '로그인이 필요한 서비스입니다.' }
-      closeModalHandlerWithConfirm={() => setIsOpen(false)}
+          <p>팔로워: {followerCount}</p>
+          <p>팔로잉: {followingCount}</p>
+        </StyledFollowed>
+      </StyledContain>
+      {!sameItem ? (
+        <StyledRow>
+          <StyledFollowButton
+            onClick={handleFollow}
+            disabled={delectUserAction}
+            delectUser={delectUserAction}
+          >
+            {isFollowingIdIncluded ? '팔로우 취소' : '팔로우 하기'}
+          </StyledFollowButton>
+          <StyledMessageContain>
+            <TbMessages onClick={handleMessage} />
+          </StyledMessageContain>
+        </StyledRow>
+      ) : (
+        <StyledFollowButton onClick={handleUserPageClick}>
+          {'내 프로필보기'}
+        </StyledFollowButton>
+      )}
+      <Modal
+        isOpen={isOpen}
+        confirmMessage={
+          delectUser
+            ? '인디버디를 떠난 유저에요...T^T'
+            : '로그인이 필요한 서비스입니다.'
+        }
+        closeModalHandlerWithConfirm={() => setIsOpen(false)}
       />
     </StyledWrapper>
   );
@@ -199,7 +198,8 @@ const StyledFollowButton = styled.button<UserStyledButtonPropsType>`
   font-family: 'yg-jalnan';
   font-size: 13px;
   padding: 10px 15px;
-  background-color: ${({ delectUser }) => delectUser ? 'var(--category-tag-bg-default)' : 'var(--cyan-light-700)' };
+  background-color: ${({ delectUser }) =>
+    delectUser ? 'var(--category-tag-bg-default)' : 'var(--cyan-light-700)'};
   border-radius: 15px;
   color: var(--cyan-light-100);
   display: flex;
@@ -208,7 +208,10 @@ const StyledFollowButton = styled.button<UserStyledButtonPropsType>`
   border-style: none;
   cursor: ${({ delectUser }) => (delectUser ? 'not-allowed' : 'pointer')};
   &:hover {
-    background-color: ${({ delectUser }) => delectUser ? 'var(--category-tag-bg-default)' : 'var(--button-inactive-hover-color)' };
+    background-color: ${({ delectUser }) =>
+      delectUser
+        ? 'var(--category-tag-bg-default)'
+        : 'var(--button-inactive-hover-color)'};
   }
 `;
 
